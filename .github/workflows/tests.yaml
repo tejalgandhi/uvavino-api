@@ -26,13 +26,7 @@ jobs:
           composer require "laravel/framework" --no-interaction --no-update
           composer update --prefer-stable --prefer-dist --no-interaction
       - name: Execute tests
-        uses: php-actions/phpunit@v3
         env:
           XDEBUG_MODE: coverage
           APP_KEY: base64:Y1WR7iq6v9BIQFqGIK32cN2IHGabXWh+EAmWmEloves=
-        with:
-          bootstarp: vendor/autoload.php
-          configuration: phpunit.xml
-          php_extention: xdebug
-          args: tests --coverage-text
         run: php artisan test --coverage
