@@ -1,0 +1,37 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    name: run test and check coverage
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-uvavino-composer-${{ hashFiles('composer.json') }}
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+          extensions: mbstring, pdo, pdo_sqlite
+          coverage: none
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework" --no-interaction --no-update
+          composer update --prefer-stable --prefer-dist --no-interaction
+      - name: Execute tests
+        uses: php-action/phpunit@v3
+        env:
+          XDEBUG_MODE: coverage
+        with:
+          bootstarp: vendor/autoload.php
+          configuration: phpunit.xml
+          php_extention: xdebug
+          args: tests --coverage-text
+        # run: ./vendor/bin/phpunit --verbose
