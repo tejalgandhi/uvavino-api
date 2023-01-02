@@ -26,7 +26,7 @@ jobs:
           composer require "laravel/framework" --no-interaction --no-update
           composer update --prefer-stable --prefer-dist --no-interaction
       - name: Execute tests
-        uses: php-action/phpunit@v3
+        uses: php-actions/phpunit@v3
         env:
           XDEBUG_MODE: coverage
         with:
