@@ -1,0 +1,27 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+
+    paths:
+        - app/
+        - config/
+        - database/
+        - lang/
+        - resources/
+        - routes/
+        - tests/
+    excludePaths:
+        - resources/views/vendor
+
+    level: 5
+
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        - '#PHPDoc type#'
+        - '#Call to an undefined method Faker#'
+        - '#to an undefined property App\\Http\\Resources#'
+        - '#to an undefined method App\\Http\\Resources#'
+        -
+            message: '#Undefined variable: \$this#'
+            path: routes/console.php
