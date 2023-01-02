@@ -25,6 +25,7 @@ jobs:
         run: |
           composer require "laravel/framework" --no-interaction --no-update
           composer update --prefer-stable --prefer-dist --no-interaction
+          php artisan key:generate
       - name: Execute tests
         uses: php-actions/phpunit@v3
         env:
