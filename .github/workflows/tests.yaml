@@ -35,4 +35,4 @@ jobs:
           configuration: phpunit.xml
           php_extention: xdebug
           args: tests --coverage-text
-        # run: ./vendor/bin/phpunit --verbose
+        run: php artisan test --coverage
