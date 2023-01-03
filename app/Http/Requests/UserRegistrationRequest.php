@@ -24,7 +24,7 @@ class UserRegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            "name" => ["required"],
+            "username" => ["required"],
             "email" => ["required", "email"],
             "password" => ["required"]
         ];
