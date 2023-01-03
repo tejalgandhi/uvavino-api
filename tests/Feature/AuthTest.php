@@ -19,7 +19,7 @@ class AuthTest extends TestCase
         $this->assertEquals(0, User::count(), "User already exists before starting the test.");
 
         $response = $this->post('/api/auth/register', [
-            "name" => "Harikrushna",
+            "username" => "Harikrushna",
             "email" => "harikrushna@enstead.com",
             "password" => "123123"
         ]);
@@ -34,7 +34,7 @@ class AuthTest extends TestCase
         $this->assertEquals(0, User::count(), "User already exists before starting the test.");
 
         $response = $this->post('/api/auth/register', [
-            "name" => "Harikrushna",
+            "username" => "Harikrushna",
             "email" => "harikrushna",
             "password" => "123123"
         ]);
@@ -49,7 +49,7 @@ class AuthTest extends TestCase
         $this->assertEquals(0, User::count(), "User already exists before starting the test.");
 
         $response = $this->post('/api/auth/register', [
-            "name" => "Harikrushna",
+            "username" => "Harikrushna",
             "password" => "123123"
         ]);
         
@@ -64,7 +64,7 @@ class AuthTest extends TestCase
         $this->assertEquals(0, User::count(), "User already exists before starting the test.");
 
         $response = $this->post('/api/auth/register', [
-            "name" => "Harikrushna",
+            "username" => "Harikrushna",
             "email" => "harikrushna@enstead.com"
         ]);
         
@@ -84,7 +84,7 @@ class AuthTest extends TestCase
         ]);
         
         $this->assertEquals(0, User::count(), "User count doens not match with expected count 0.");
-        $response->assertJsonValidationErrors(['name']);
+        $response->assertJsonValidationErrors(['username']);
         $response->assertStatus(422);
 
     }

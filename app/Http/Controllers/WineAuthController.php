@@ -33,10 +33,10 @@ class WineAuthController extends Controller
             return (new Fail("User not found"))->json();
         }
         if ( !Hash::check($request->password, $user->password) ) {
-            return (new Fail("Invalid Password !"))->json($status);
+            return (new Fail("Invalid Password !"))->json();
         }
         $token = $user->createToken('login');
-        return (new AuthToken($token->plainTextToken))->json();
+        return (new AuthToken($token->plainTextToken))->json($status);
     }
 
     public function logout(Request $request) {
