@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Events\ForgotPassword;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -113,7 +115,7 @@ class AuthTest extends TestCase
             "password" => "123123"
         ]);
         $response->assertJson(["message" => "User not found"]);
-        $response->assertStatus(400);
+        $response->assertStatus(404);
     }
 
     public function test_login_invalid_pswd ()
@@ -161,5 +163,29 @@ class AuthTest extends TestCase
         $user = User::create([ ...$userdata, 'password' => Hash::make('123123') ]);
         $response = $this->actingAs($user)->get('/api/user');
         $response->assertJson($userdata);
+    }
+
+    public function test_forget_password_no_user ()
+    {
+        $email = 'harikrushna@enstead.com';
+        $response = $this->post('/api/auth/forget-password', compact('email'));
+        $response->assertJson(["message" => "User not found"]);
+        $response->assertStatus(404);
+    }
+
+    public function test_forget_password_success ()
+    {
+        Event::fake();
+        $email = 'harikrushna@enstead.com';
+        $user = User::create([
+            'username' => "adiechahk",
+            'email' => $email,
+            'password' => Hash::make('123123')
+        ]);
+        $response = $this->post('/api/auth/forget-password', compact('email'));
+        Event::assertDispatched(ForgotPassword::class, function ($e) use ($user) {
+            return $e->user->id === $user->id;
+        });
+        $response->assertStatus(200);
     }
 }

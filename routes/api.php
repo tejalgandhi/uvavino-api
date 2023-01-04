@@ -25,6 +25,8 @@ Route::prefix('auth')->group(function() {
     Route::post('/register', [WineAuthController::class, 'register']);
     Route::post('/login', [WineAuthController::class, 'login']);
     Route::post('/logout', [WineAuthController::class, 'logout']);
+    Route::post('/forget-password', [WineAuthController::class, 'forget']);
+    Route::post('/reset-password', [WineAuthController::class, 'reset']);
 });
 
 
