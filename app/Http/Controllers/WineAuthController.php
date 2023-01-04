@@ -40,7 +40,9 @@ class WineAuthController extends Controller
     }
 
     public function logout(Request $request) {
-        $request->user()->tokens()->delete();
+        $user = $request->user();
+        if (!$user) return (new Fail('User/token Invalid'))->json(400);
+        $user->tokens()->delete();
         return (new Success("Logged out."))->json();
     }
 }
