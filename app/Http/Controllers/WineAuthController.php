@@ -64,7 +64,6 @@ class WineAuthController extends Controller
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
-                // dd("ok");
                 $user->forceFill([
                     'password' => Hash::make($password)
                 ]);

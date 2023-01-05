@@ -51,7 +51,6 @@ class ForgetPasswordEmail extends Mailable
     public function content()
     {
         return new Content(
-            // view: 'welcome',
             view: 'emails.forget_password',
         );
     }
