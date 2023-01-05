@@ -17,6 +17,14 @@ class Base extends JsonResource
         return parent::toArray($request);
     }
 
+
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  int $status
+     * @return \Illuminate\Http\JsonResponse.
+     */
+    
     public function json($status = 200) {
         // $res = match(gettype($data)) {
         //     "string", "integer", "double" => ["message" => $data],
