@@ -3,11 +3,14 @@
 namespace Tests\Feature;
 
 use App\Events\ForgotPassword;
+use App\Listeners\SendForgotPasswordMail;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -96,7 +99,7 @@ class AuthTest extends TestCase
         User::create([
             'username' => "adiechahk",
             'email' => "harikrushna@enstead.com",
-            'password' => Hash::make('123123')
+            'password' => Hash::make("123123")
         ]);
         $this->assertEquals(1, User::count(), "User count doens not match with expected count 1.");
         $response = $this->post('/api/auth/login', [
@@ -187,5 +190,51 @@ class AuthTest extends TestCase
             return $e->user->id === $user->id;
         });
         $response->assertStatus(200);
+    }
+
+    public function test_reset_password_with_correct_token()
+    {
+        $email = 'harikrushna@enstead.com';
+        $user = User::create([
+            'username' => "adiechahk",
+            'email' => $email,
+            'password' => Hash::make('123123')
+        ]);
+        $this->assertEquals(1, User::count(), "User count doens not match with expected count 1.");
+        $response = $this->post('/api/auth/login', [
+            "email" => "harikrushna@enstead.com",
+            "password" => "123123"
+        ]);
+        $response->assertJsonStructure(['token']);
+        $response->assertStatus(200);
+        $response = $this->actingAs($user)->post('/api/auth/logout');
+        $response->assertJson(["message" => "Logged out."]);
+        $response->assertStatus(200);
+        $token = Password::createToken($user);
+        $response = $this->post('/api/auth/reset-password', [
+            "token" => $token,
+            "email" => $email,
+            "password" => "112233",
+            "password_confirmation" => "112233"
+        ]);
+        $response->assertJson(["message" => "passwords.reset"]);
+        $response->assertStatus(200);
+    }
+
+    public function test_forgot_password_handler()
+    {
+        Mail::fake();
+        $user = User::create([
+            'username' => "adiechahk",
+            'email' => 'harikrushna@enstead.com',
+            'password' => Hash::make('123123')
+        ]);
+        $this->assertTrue(true);
+        $token = Password::createToken($user);
+        (new SendForgotPasswordMail())->handle(new ForgotPassword($user, $token));
+        // Mail::assertNothingSent();
+
+        Mail::assertSent(ForgetPasswordEmail::class, 0);
+        
     }
 }
