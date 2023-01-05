@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Events\ForgotPassword;
 use App\Listeners\SendForgotPasswordMail;
+use App\Mail\ForgetPasswordEmail;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -232,9 +233,20 @@ class AuthTest extends TestCase
         $this->assertTrue(true);
         $token = Password::createToken($user);
         (new SendForgotPasswordMail())->handle(new ForgotPassword($user, $token));
-        // Mail::assertNothingSent();
+        Mail::assertSent(ForgetPasswordEmail::class);
+    }
 
-        Mail::assertSent(ForgetPasswordEmail::class, 0);
-        
+    public function test_forgot_password_mail()
+    {
+        $email = 'harikrushna@enstead.com';
+        $user = User::create([
+            'username' => "adiechahk",
+            'email' => $email,
+            'password' => Hash::make('123123')
+        ]);
+        $token = Password::createToken($user);
+        $mailable = new ForgetPasswordEmail($user, $token);
+        $mailable->assertHasSubject('Forget Password Email');
+        $mailable->assertSeeInHtml($token);  
     }
 }
