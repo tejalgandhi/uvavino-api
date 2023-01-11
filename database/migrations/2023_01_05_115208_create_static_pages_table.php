@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('static_pages', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->string('slug')->unique()->index();
-            $table->text('content')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('static_pages')) {
+            Schema::create('static_pages', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->string('slug')->unique()->index();
+                $table->text('content')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
