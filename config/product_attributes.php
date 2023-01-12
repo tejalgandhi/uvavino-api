@@ -1,5 +1,4 @@
 <?php
-use App\Models\DrinkType;
 
 return [
 	"drink-type" => [
@@ -11,7 +10,7 @@ return [
 			"status",
 			"is_approved"
 		]
-		],
+	],
 	"wine-type" => [
 		"table" => 'wine_types',
 		"list_attrs" => [
@@ -20,6 +19,15 @@ return [
 			"slug",
 			"status",
 			"is_approved"
+		]
+	],
+	"country" => [
+		"table" => 'countries',
+		"list_attrs" => [
+			"id",
+			"name",
+			"slug",
+			"status"
 		]
 	]
 ];
