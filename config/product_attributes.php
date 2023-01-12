@@ -31,6 +31,16 @@ return [
 			"is_approved"
 		]
 	],
+	"wine-tag" => [
+		"table" => 'wine_tags',
+		"list_attrs" => [
+			"id",
+			"name",
+			"slug",
+			"status",
+			"is_approved"
+		]
+	],
 	"country" => [
 		"table" => 'countries',
 		"list_attrs" => [
