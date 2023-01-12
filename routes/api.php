@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\WineAuthController;
+use App\Http\Controllers\ProductAttributeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +28,10 @@ Route::prefix('auth')->group(function() {
     Route::post('/logout', [WineAuthController::class, 'logout']);
     Route::post('/forget-password', [WineAuthController::class, 'forget']);
     Route::post('/reset-password', [WineAuthController::class, 'reset']);
+
+
 });
+    Route::get('/product-attribute/{attribute_name}', [ProductAttributeController::class, 'attribute_list']);
 
 
 // Protected Routes
