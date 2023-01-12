@@ -49,5 +49,15 @@ return [
 			"slug",
 			"status"
 		]
+	],
+	"region" => [
+		"table" => 'regions',
+		"list_attrs" => [
+			"id",
+			"country_id",
+			"name",
+			"slug",
+			"status"
+		]
 	]
 ];
