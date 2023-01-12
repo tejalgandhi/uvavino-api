@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\User;
+use App\Models\WineUser;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,7 +15,7 @@ class ForgotPassword
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public User $user;
+    public WineUser $user;
     public $token;
 
     /**
@@ -23,7 +23,7 @@ class ForgotPassword
      *
      * @return void
      */
-    public function __construct(User $user, $token)
+    public function __construct(WineUser $user, $token)
     {
         $this->user = $user;
         $this->token = $token;
