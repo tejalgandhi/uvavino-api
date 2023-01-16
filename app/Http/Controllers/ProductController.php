@@ -15,8 +15,8 @@ class ProductController extends Controller
         return ProductResource::collection(Products::paginate(10));
     }
 
-    public function show(Request $request, $slug)
+    public function show(Request $request, $id)
     {
-        return Products::whereSlug($slug)->first();
+        return Products::whereId($id)->first();
     }
 }

@@ -39,8 +39,9 @@ Route::prefix('auth')->group(function() {
 Route::get('/pages', [StaticPageController::class, 'index']);
 Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
 
-//Celler
-Route::get('/celler', [ProductController::class, 'index']);
+//cellar
+Route::get('/cellar', [ProductController::class, 'index']);
+Route::get('/cellar/{cellar_id}', [ProductController::class, 'show']);
 
 // Protected Routes
 Route::middleware('auth:sanctum')->group(function() {

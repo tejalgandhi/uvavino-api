@@ -16,8 +16,25 @@ class ProductResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
+            'wine_name' => $this->resource->wine_name,
             'description' => $this->resource->description,
-            'title' => $this->resource->title
+            'wine_user' => $this->resource->wine_user->username,
+            'drink_type' => $this->resource->drink_type->name,
+            'bottle_size' => $this->resource->bottle_size,
+            'country_name' => $this->resource->country->name,
+            'region_name' => $this->resource->region->name,
+            'producer_name' => $this->resource->producer->name,
+            'wine_maker' => $this->resource->wine_maker,
+            'wine_type' => $this->resource->wine_type->name,
+            'year' => $this->resource->year,
+            'grape_varieties' => $this->resource->grape_varieties,
+            'wine_tag' => $this->resource->wine_tag->name,
+            'storage_condition' => $this->resource->storage_condition,
+            'review_and_rewards' => $this->resource->review_and_rewards,
+            'medal' => $this->resource->medal,
+            'award_name' => $this->resource->award_name,
+            'score' => $this->resource->score,
+            'review_name' => $this->resource->review_name,
         ];
     }
 }
