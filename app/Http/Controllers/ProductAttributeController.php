@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Fail;
 use App\Http\Resources\ProductAttributeResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -13,7 +14,7 @@ class ProductAttributeController extends Controller
     {
         $conf = Arr::get(config('product_attributes'), $attribute_name);
         if (!$conf) {
-            return "Not found";
+            return (new Fail("Attribute '$attribute_name' not present or not configured."))->json(404);
         }
         $query = $conf['model']::query();
             

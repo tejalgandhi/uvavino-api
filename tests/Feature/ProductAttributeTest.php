@@ -152,4 +152,10 @@ class ProductAttributeTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_unknown_attribute_listing()
+    {
+        $response = $this->get('/api/product-attribute/random');
+        // $response->assertJsonCount(0, 'data');
+        $response->assertStatus(404);
+    }
 }
