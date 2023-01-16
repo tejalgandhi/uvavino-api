@@ -14,7 +14,7 @@ class ProductAttributeController extends Controller
     {
         $conf = Arr::get(config('product_attributes'), $attribute_name);
         if (!$conf) {
-            return (new Fail("Attribute '$attribute_name' not present or not configured."))->json(404);
+            return (new Fail(__('product_attributes.invalid', compact('attribute_name'))))->json(404);
         }
         $query = $conf['model']::query();
             
