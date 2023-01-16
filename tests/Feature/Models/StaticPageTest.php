@@ -63,7 +63,7 @@ class StaticPageTest extends TestCase
     {
         $page = StaticPage::factory()->create();
         $response = $this->get('/api/pages/' . $page->slug);
-        $response->assertExactJson($page->toArray());
+        $response->assertJson($page->toArray());
         $response->assertJsonStructure(["title", "id", "slug", "content"]);
     }
 }

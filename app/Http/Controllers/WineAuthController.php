@@ -8,7 +8,7 @@ use App\Http\Requests\UserRegistrationRequest;
 use App\Http\Resources\AuthToken;
 use App\Http\Resources\Fail;
 use App\Http\Resources\Success;
-use App\Models\User;
+use App\Models\WineUser;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +23,7 @@ class WineAuthController extends Controller
             "password" => Hash::make($request->password)
         ];
         // dd($user_attrs);
-        User::create($user_attrs);
+        WineUser::create($user_attrs);
         return $this->_login($request, 201);
     }
 
@@ -32,7 +32,7 @@ class WineAuthController extends Controller
     }
 
     protected function _login(Request $request, $status = 200) {
-        $user = User::whereEmail($request->email)->first();
+        $user = WineUser::whereEmail($request->email)->first();
         if ( !$user ) {
             return (new Fail("User not found"))->json(404);
         }
@@ -52,7 +52,7 @@ class WineAuthController extends Controller
 
     public function forget (ForgotPasswordRequest $request)
     {
-        $user = User::whereEmail($request->email)->first();
+        $user = WineUser::whereEmail($request->email)->first();
         if (!$user) return (new Fail("User not found"))->json(404);
         $token = Password::createToken($user);
         event(new ForgotPassword($user, $token));

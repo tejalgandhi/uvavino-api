@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\User;
+use App\Models\WineUser;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -14,7 +14,7 @@ class ForgetPasswordEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public User $user;
+    public WineUser $user;
     public $token;
     public $reset_url;
 
@@ -23,7 +23,7 @@ class ForgetPasswordEmail extends Mailable
      *
      * @return void
      */
-    public function __construct(User $user, $token)
+    public function __construct(WineUser $user, $token)
     {
         //
         $this->user = $user;
