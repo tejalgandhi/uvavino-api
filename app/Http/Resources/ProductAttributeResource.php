@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Arr;
 
 class ProductAttributeResource extends JsonResource
 {
@@ -14,6 +15,18 @@ class ProductAttributeResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $result = [];
+        if(in_array("*", $request->list_attrs)) {
+            return parent::toArray($request);
+        }
+        foreach($request->list_attrs as $indx => $attr) {
+            if(is_numeric($indx)) {
+                $key = implode("_", explode(".", $attr));
+                $result[$key] = Arr::get($this, $attr);
+            } else {
+                $result[$attr] = Arr::get($this, $indx);
+            }
+        }
+        return $result;
     }
 }

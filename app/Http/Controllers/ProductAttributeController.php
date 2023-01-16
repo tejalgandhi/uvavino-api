@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductAttributeResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -14,9 +15,16 @@ class ProductAttributeController extends Controller
         if (!$conf) {
             return "Not found";
         }
-        return DB::table($conf['table'])
-            ->select($conf['list_attrs'])
-            ->get();
+        $query = $conf['model']::query();
+            
+        if (Arr::has($conf, 'with')) {
+            $query->with(Arr::get($conf, 'with', []));
+        }
+
+        // Adding list attributes to request to use it in the resource.
+        $request->merge(['list_attrs' => $conf['list_attrs']]);
+
+        return ProductAttributeResource::collection($query->get());
         
     }
 }
