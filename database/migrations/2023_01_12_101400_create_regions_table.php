@@ -16,12 +16,13 @@ return new class extends Migration
         if (!Schema::hasTable('regions')) {
             Schema::create('regions', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('country_id')->constrained();
-                $table->string('name');
-                $table->string('slug');
+                $table->unsignedBigInteger('country_id');
+                $table->string('name')->nullable();
+                $table->string('slug')->nullable();
                 $table->enum('status', ['0', '1'])->comment('0=>Inactive,1=>active')->default(1);
                 $table->enum('is_approved', ['0', '1'])->comment('0=>No,1=>Yes')->default(1);
                 $table->timestamps();
+                $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             });
         }
     }
