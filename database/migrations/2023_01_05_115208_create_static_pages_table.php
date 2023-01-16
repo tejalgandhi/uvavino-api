@@ -13,13 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('static_pages')) {
-            Schema::create('static_pages', function (Blueprint $table) {
+        if (!Schema::hasTable('pages')) {
+            Schema::create('pages', function (Blueprint $table) {
                 $table->id();
+                $table->string('template');
+                $table->string('name');
                 $table->string('title');
-                $table->string('slug')->unique()->index();
+                $table->string('slug', 127)->unique()->nullable();
                 $table->text('content')->nullable();
+                $table->longText('extras')->nullable();
+                $table->longText('extras_translatable')->nullable();
                 $table->timestamps();
+                $table->softDeletes();
             });
         }
     }
@@ -31,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('static_pages');
+        Schema::dropIfExists('pages');
     }
 };
