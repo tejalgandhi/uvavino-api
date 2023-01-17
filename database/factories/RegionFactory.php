@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
  */
 class RegionFactory extends Factory
 {
+    use RandomizeTrait;
     /**
      * Define the model's default state.
      *
@@ -18,7 +19,7 @@ class RegionFactory extends Factory
      */
     public function definition()
     {
-        $country_id = Country::factory();
+        $country_id = $this->randomize(Country::class);
         $name = ucfirst(fake()->word());
         $slug = Str::slug($name);
         return compact('country_id', 'name', 'slug');
