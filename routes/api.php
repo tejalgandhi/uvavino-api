@@ -41,6 +41,7 @@ Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
 
 //cellar
 Route::get('/cellar', [ProductController::class, 'index']);
+Route::post('/cellar', [ProductController::class, 'store']);
 Route::get('/cellar/{cellar_id}', [ProductController::class, 'show']);
 
 // Protected Routes

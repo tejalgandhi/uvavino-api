@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Products extends Model
+class Product extends Model
 {
     use HasFactory;
     protected $table = 'products';
+
+    protected $guarded = ['id'];
+
 
     public function wine_user(){
         return $this->belongsTo(WineUser::class,'wine_user_id','id');
