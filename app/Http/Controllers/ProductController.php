@@ -13,7 +13,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $wine_user_id = $request->wine_user_id;
+        $user_id = $request->wine_user_id;
         $drink_type_id = $request->drink_type_id;
         $country_id = $request->country_id;
         $region_id = $request->region_id;
