@@ -35,13 +35,13 @@ Route::prefix('auth')->group(function() {
 });
 Route::get('/product-attribute/{attribute_name}', [ProductAttributeController::class, 'attribute_list']);
 
-// Static page
-Route::get('/pages', [StaticPageController::class, 'index']);
-Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
-
 //product
 Route::get('/product', [ProductController::class, 'index']);
 Route::get('/product/{product_id}', [ProductController::class, 'show']);
+
+// Static page
+Route::get('/pages', [StaticPageController::class, 'index']);
+Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
 
 // Protected Routes
 Route::middleware('auth:sanctum')->group(function() {

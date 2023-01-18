@@ -21,9 +21,9 @@ class ProductController extends Controller
         $type_of_wine = $request->type_of_wine;
         $wine_tag_id = $request->wine_tag_id;
 
-        $product = Product::select('*');
-        if(!empty($wine_user_id)){
-            $product =  $product->where('wine_user_id');
+        $product = Product::query();
+        if(!empty($user_id)){
+            $product =  $product->where('user_id');
         }
         if(!empty($drink_type_id)){
             $product =  $product->where('drink_type_id');
@@ -55,14 +55,32 @@ class ProductController extends Controller
     }
     public function store(ProductRequest $productRequest){
         try {
-            $wine_user_id = \request()->user()->id;
+            $wine_user_id = request()->user()->id;
             $productRequest->merge(['wine_user_id' =>$wine_user_id]);
 
-            Product::create($productRequest->only(["wine_name", "description", "wine_user_id", "drink_type_id","bottle_size",
-                "country_id","region_id","producer_id","wine_maker","type_of_wine","year","grape_varieties",
-                "wine_tag_id","storage_condition","review_and_rewards","medal","award_name","score","review_name"]));
+            Product::create($productRequest->only([
+                "wine_name",
+                "description",
+                "wine_user_id",
+                "drink_type_id",
+                "bottle_size",
+                "country_id",
+                "region_id",
+                "producer_id",
+                "wine_maker",
+                "type_of_wine",
+                "year",
+                "grape_varieties",
+                "wine_tag_id",
+                "storage_condition",
+                "review_and_rewards",
+                "medal",
+                "award_name",
+                "score",
+                "review_name"
+            ]));
 
-            return (new Success("Product store successfully."))->json();
+            return (new Success(__("Product store successfully.")))->json();
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
