@@ -29,10 +29,9 @@ Route::prefix('auth')->group(function() {
     Route::post('/logout', [WineAuthController::class, 'logout']);
     Route::post('/forget-password', [WineAuthController::class, 'forget']);
     Route::post('/reset-password', [WineAuthController::class, 'reset']);
-
-
 });
-    Route::get('/product-attribute/{attribute_name}', [ProductAttributeController::class, 'attribute_list']);
+
+Route::get('/product-attribute/{attribute_name}', [ProductAttributeController::class, 'attribute_list']);
 
 // Static page
 Route::get('/pages', [StaticPageController::class, 'index']);
@@ -41,4 +40,8 @@ Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
 // Protected Routes
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/user', function() { return request()->user(); });
+
+    // Routes for connect as seller of wine products
+    Route::post('/connect-as-seller', [SellerController::class, 'connect']);
+
 });

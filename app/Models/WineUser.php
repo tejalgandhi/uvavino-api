@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Contracts\ConnectableUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class WineUser extends Authenticatable
+class WineUser extends Authenticatable implements ConnectableUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -43,5 +44,20 @@ class WineUser extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function updateConnectId($id): void {
+        $this->connect_id = $id;
+        $this->save();
+        $this->refresh();
+    }
+
+    public function getConnectId(): string {
+        return $this->connect_id;
+    }
+
+    public function getEmail(): string {
+        return $this->email;
+    }
+  
 
 }
