@@ -25,7 +25,6 @@ class ProductRequest extends FormRequest
     {
         return [
             "wine_name" => ["required"],
-            "wine_user_id" => ["required"],
             "drink_type_id" => ["required"],
             "bottle_size" => ["required"],
             "country_id" => ["required"],
