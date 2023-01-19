@@ -20,12 +20,12 @@ class ProductController extends Controller
             'region_id' => 'can_list',
             'producer_id' => 'can_list',
             'wine_tag_id' => 'can_list',
-        ]; 
+        ];
 
         $logics = [
-            'can_list' => fn($q, $a, $v) => $q->whereIn($a, is_array($v)? $v: [$v])
+            'can_list' =>  function($q, $a, $v) { return $q->whereIn($a, is_array($v)? $v: [$v]); }
         ];
-        
+
         $query = Product::query();
         foreach($filter_attrs as $attr => $logic) {
             if ($request->has($attr)) {
