@@ -14,16 +14,18 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $filter_attrs = [
-            'type_of_wine' => 'can_list',
-            'drink_type_id' => 'can_list',
-            'country_id' => 'can_list',
-            'region_id' => 'can_list',
-            'producer_id' => 'can_list',
-            'wine_tag_id' => 'can_list',
+            'wine_name' => 'like',
+            'type_of_wine' => 'in',
+            'drink_type_id' => 'in',
+            'country_id' => 'in',
+            'region_id' => 'in',
+            'producer_id' => 'in',
+            'wine_tag_id' => 'in',
         ];
 
         $logics = [
-            'can_list' =>  function($q, $a, $v) { return $q->whereIn($a, is_array($v)? $v: [$v]); }
+            'in' =>  function($q, $a, $v) { return $q->whereIn($a, is_array($v)? $v: [$v]); },
+            'like' =>  function($q, $a, $v) { return $q->where($a,'LIKE','%'.$v.'%'); }
         ];
 
         $query = Product::query();
