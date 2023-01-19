@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\WineAuthController;
 use App\Http\Controllers\ProductAttributeController;
@@ -43,5 +44,10 @@ Route::middleware('auth:sanctum')->group(function() {
 
     // Routes for connect as seller of wine products
     Route::post('/connect-as-seller', [SellerController::class, 'connect']);
+
+    // Order API
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::get('/orders/{id}', [OrderController::class, 'show']);
+    Route::post('/orders', [OrderController::class, 'store']);
 
 });
