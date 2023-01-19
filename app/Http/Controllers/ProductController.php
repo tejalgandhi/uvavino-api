@@ -44,9 +44,6 @@ class ProductController extends Controller
     }
     public function store(ProductRequest $productRequest){
         try {
-            $wine_user_id = request()->user()->id;
-            $productRequest->merge(['wine_user_id' =>$wine_user_id]);
-
             Product::create($productRequest->only([
                 "wine_name",
                 "description",

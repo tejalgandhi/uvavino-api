@@ -44,7 +44,7 @@ Route::get('/pages', [StaticPageController::class, 'index']);
 Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
 
 // Protected Routes
-Route::middleware('auth:sanctum')->group(function() {
+Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::get('/user', function() { return request()->user(); });
 
     //product
