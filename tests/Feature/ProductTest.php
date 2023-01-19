@@ -57,7 +57,7 @@ class ProductTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_filter_user_product_listing()
+    public function test_filter_wine_name_product_listing()
     {
         $response = $this->get('/api/product');
         $response->assertJsonCount(0, 'data');
@@ -66,11 +66,9 @@ class ProductTest extends TestCase
         $c = rand(10, 30);
         Product::factory()->count($c)->create();
         $user = WineUser::factory()->create();
-        $response = $this->get('/api/product', ['user_id' => $user->id]);
-        $response->assertJsonCount(0, 'data');
-        Product::factory()->count(3)->create(['wine_user_id' => $user->id]);
-        $response = $this->get('/api/product', ['user_id' => $user->id]);
-        $response->assertJsonCount(3, 'data');
+        $product = Product::factory()->create(['wine_user_id' => $user->id]);
+        $response = $this->get('/api/product', ['wine_name' => $product->wine_name]);
+        $response->assertJsonCount(1, 'data');
         $response->assertJsonStructure([
             "meta"=>["current_page","last_page","from","to","total","per_page"],
             "data" => ["*" => ["id",
