@@ -14,22 +14,8 @@ use Tests\TestCase;
 
 class ProductTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_simple_product_listing()
-    {
-        $response = $this->get('/api/product');
-        $response->assertJsonCount(0, 'data');
-        $response->assertStatus(200);
 
-        $c = rand(10, 30);
-        Product::factory()->count($c)->create();
-
-        $response = $this->get('/api/product');
-        $response->assertJsonCount(10, 'data');
+    private function check_structure($response) {
         $response->assertJsonStructure([
             "meta"=>["current_page","last_page","from","to","total","per_page"],
             "data" => ["*" => ["id",
@@ -54,83 +40,91 @@ class ProductTest extends TestCase
                 "review_name"
             ]]
         ]);
-        $response->assertStatus(200);
     }
 
-    public function test_filter_wine_name_product_listing()
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     */
+    public function test_simple_product_listing()
     {
         $response = $this->get('/api/product');
         $response->assertJsonCount(0, 'data');
         $response->assertStatus(200);
 
-        $c = rand(10, 30);
+        $c = rand(15, 30);
         Product::factory()->count($c)->create();
-        $user = WineUser::factory()->create();
-        $product = Product::factory()->create(['wine_user_id' => $user->id]);
-        $response = $this->get('/api/product', ['wine_name' => $product->wine_name]);
-        $response->assertJsonCount(1, 'data');
-        $response->assertJsonStructure([
-            "meta"=>["current_page","last_page","from","to","total","per_page"],
-            "data" => ["*" => ["id",
-                "wine_name",
-                "description",
-                "wine_user",
-                "drink_type",
-                "bottle_size",
-                "country_name",
-                "region_name",
-                "producer_name",
-                "wine_maker",
-                "wine_type",
-                "year",
-                "grape_varieties",
-                "wine_tag",
-                "storage_condition",
-                "review_and_rewards",
-                "medal",
-                "award_name",
-                "score",
-                "review_name"
-                ]]
-        ]);
+
+        $response = $this->get('/api/product');
+        $response->assertJsonCount(10, 'data');
+        $this->check_structure($response);
+        $response->assertStatus(200);
+    }
+
+    public function test_filter_products_with_correct_wine_name()
+    {
+        $wine1 = 'first';
+        $wine2 = 'last';
+        Product::factory()->count(3)->create(['wine_name' => $wine1]);
+        Product::factory()->count(15)->create(['wine_name' => $wine2]);
+        // normal query with first wine name
+        $response = $this->get('/api/product?wine_name='.$wine1);
+        $response->assertJsonCount(3, 'data');
+        $this->check_structure($response);
+
+        // Normal query with second wine name
+        $response->assertStatus(200);
+        $response = $this->get('/api/product?wine_name='.$wine2);
+        $response->assertJsonCount(10, 'data');
+        $this->check_structure($response);
+        $response->assertStatus(200);
+
+        // change first wine name adding some extra chars
+        $response = $this->get('/api/product?wine_name=firstc');
+        $response->assertJsonCount(0, 'data');
+        $this->check_structure($response);
+        $response->assertStatus(200);
+
+        // change first wine name removing some extra chars
+        $response = $this->get('/api/product?wine_name=fir');
+        $response->assertJsonCount(3, 'data');
+        $this->check_structure($response);
+        $response->assertStatus(200);
+
+        // query wine name with combination
+        $response = $this->get('/api/product?wine_name=st');
+        $response->assertJsonCount(10, 'data');
+        $this->check_structure($response);
         $response->assertStatus(200);
     }
 
     public function test_filter_drink_type_product_listing()
     {
-        $response = $this->get('/api/product');
+        Product::factory()->count(20)->create();
+        $drink_type = DrinkType::factory()->create();
+        $response = $this->get('/api/product?drink_type_id='.$drink_type->id);
         $response->assertJsonCount(0, 'data');
         $response->assertStatus(200);
 
-        $c = rand(10, 30);
-        Product::factory()->count($c)->create();
-        $drink_type = DrinkType::factory()->create();
-        $response = $this->get('/api/product', ['drink_type_id' => $drink_type->id]);
+        Product::factory()->count(3)->create(['drink_type_id' => $drink_type->id]);
+        $response = $this->get('/api/product?drink_type_id='.$drink_type->id);
+        $response->assertJsonCount(3, 'data');
+        $this->check_structure($response);
+        $response->assertStatus(200);
+
+        $drink_type2 = DrinkType::factory()->create();
+        Product::factory()->count(9)->create(['drink_type_id' => $drink_type2->id]);
+        $response = $this->get('/api/product?drink_type_id[]='.$drink_type->id.'&drink_type_id[]='.$drink_type2->id);
         $response->assertJsonCount(10, 'data');
-        $response->assertJsonStructure([
-            "meta"=>["current_page","last_page","from","to","total","per_page"],
-            "data" => ["*" => ["id",
-                "wine_name",
-                "description",
-                "wine_user",
-                "drink_type",
-                "bottle_size",
-                "country_name",
-                "region_name",
-                "producer_name",
-                "wine_maker",
-                "wine_type",
-                "year",
-                "grape_varieties",
-                "wine_tag",
-                "storage_condition",
-                "review_and_rewards",
-                "medal",
-                "award_name",
-                "score",
-                "review_name"
-                ]]
-        ]);
+        $this->check_structure($response);
+        $response->assertStatus(200);
+
+        $drink_type3 = DrinkType::factory()->create();
+        Product::factory()->count(4)->create(['drink_type_id' => $drink_type3->id]);
+        $response = $this->get('/api/product?drink_type_id[]='.$drink_type->id.'&drink_type_id[]='.$drink_type3->id);
+        $response->assertJsonCount(7, 'data');
+        $this->check_structure($response);
         $response->assertStatus(200);
     }
 

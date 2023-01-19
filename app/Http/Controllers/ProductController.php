@@ -32,13 +32,9 @@ class ProductController extends Controller
         foreach($filter_attrs as $attr => $logic) {
             if ($request->has($attr)) {
                 $query = $logics[$logic]($query, $attr, $request->$attr);
-                // $query = $query->where($attr, $request->$attr);
             }
         }
-
-        // dd($query->get());
         $products = $query->paginate(10);
-
         return ProductResource::collection($products);
     }
 
