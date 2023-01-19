@@ -27,16 +27,15 @@ class ProductController extends Controller
         foreach($filter_attrs as $attr => $logic) {
             if ($request->has($attr)) {
                 if($logic == 'can_list') {
-                    $query = $query->whereIn($attr, is_array( $request->attr) ?  $request->attr : [$request->attr]);
+                    $query = $query->whereIn($attr, is_array($request->$attr) ?  $request->$attr : [$request->$attr]);
                 }
                 if($logic == 'can_name_list') {
-                    $query = $query->where($attr, 'like', '%' . $request->attr . '%');
+                    $query = $query->where($attr, 'like', '%' . $request->$attr . '%');
                 }
             }
         }
 
         $products = $query->paginate(10);
-
         return ProductResource::collection($products);
     }
 
