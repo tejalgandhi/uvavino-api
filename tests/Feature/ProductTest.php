@@ -290,7 +290,7 @@ class ProductTest extends TestCase
     public function test_get_single_product()
     {
         $product = Product::factory()->create();
-        $response = $this->get('/api/product/' . $product->id);
+        $response = $this->get('/api/product/' . $product->slug);
         $response->assertJson($product->toArray());
         $response->assertJsonStructure(["id",
             "wine_name",
@@ -315,8 +315,8 @@ class ProductTest extends TestCase
             ]);
         $response->assertStatus(200);
 
-        $product_id = 5;
-        $response = $this->get('/api/product/' . $product_id);
+        $slug = 'Test';
+        $response = $this->get('/api/product/' . $slug);
         $response->assertStatus(200);
     }
 

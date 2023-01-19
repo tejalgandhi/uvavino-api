@@ -38,9 +38,9 @@ class ProductController extends Controller
         return ProductResource::collection($products);
     }
 
-    public function show(Request $request, $id)
+    public function show(Request $request, $slug)
     {
-        return Product::whereId($id)->first();
+        return Product::whereSlug($slug)->first();
     }
     public function store(ProductRequest $productRequest){
         try {

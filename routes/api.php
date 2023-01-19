@@ -37,7 +37,7 @@ Route::get('/product-attribute/{attribute_name}', [ProductAttributeController::c
 
 //product
 Route::get('/product', [ProductController::class, 'index']);
-Route::get('/product/{product_id}', [ProductController::class, 'show']);
+Route::get('/product/{slug}', [ProductController::class, 'show']);
 
 // Static page
 Route::get('/pages', [StaticPageController::class, 'index']);
