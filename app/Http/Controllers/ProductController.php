@@ -13,52 +13,41 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $user_id = $request->wine_user_id;
-        $drink_type_id = $request->drink_type_id;
-        $country_id = $request->country_id;
-        $region_id = $request->region_id;
-        $producer_id = $request->producer_id;
-        $type_of_wine = $request->type_of_wine;
-        $wine_tag_id = $request->wine_tag_id;
+        $filter_attrs = [
+            'type_of_wine' => 'can_list',
+            'drink_type_id',
+            'country_id',
+            'region_id',
+            'producer_id',
+            'wine_tag_id'
+        ]; 
+        $logics = [
+            'can_list' => fn($q, $a, $v) => $q->whereIn($a, is_array($v)? $v: [$v])
+        ];
 
-        $product = Product::query();
-        if(!empty($user_id)){
-            $product =  $product->where('user_id');
-        }
-        if(!empty($drink_type_id)){
-            $product =  $product->where('drink_type_id');
-        }
-        if(!empty($country_id)){
-            $product =  $product->where('country_id');
-        }
-        if(!empty($region_id)){
-            $product =  $product->where('region_id');
-        }
-        if(!empty($producer_id)){
-            $product =  $product->where('producer_id');
-        }
-        if(!empty($type_of_wine)){
-            $product =  $product->where('type_of_wine');
-        }
-        if(!empty($wine_tag_id)){
-            $product =  $product->where('wine_tag_id');
+        $query = Product::query();
+        foreach($filter_attrs as $attr => $logic) {
+            if ($request->has($attr)) {
+                $query = $logics[$logic]($query, $attr, $request->attr);
+                // $query = $query->where($attr, $request->$attr);
+            }
         }
 
-        $product = $product->paginate(10);
+        $products = $query->paginate(10);
 
-        return ProductResource::collection($product);
+        return ProductResource::collection($products);
     }
 
     public function show(Request $request, $id)
     {
         return Product::whereId($id)->first();
     }
-    public function store(ProductRequest $productRequest){
+    public function store(ProductRequest $request){
         try {
             $wine_user_id = request()->user()->id;
-            $productRequest->merge(['wine_user_id' =>$wine_user_id]);
+            $request->merge(['wine_user_id' =>$wine_user_id]);
 
-            Product::create($productRequest->only([
+            Product::create($request->only([
                 "wine_name",
                 "description",
                 "wine_user_id",

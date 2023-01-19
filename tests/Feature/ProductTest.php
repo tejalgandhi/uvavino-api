@@ -67,7 +67,10 @@ class ProductTest extends TestCase
         Product::factory()->count($c)->create();
         $user = WineUser::factory()->create();
         $response = $this->get('/api/product', ['user_id' => $user->id]);
-        $response->assertJsonCount(10, 'data');
+        $response->assertJsonCount(0, 'data');
+        Product::factory()->count(3)->create(['wine_user_id' => $user->id]);
+        $response = $this->get('/api/product', ['user_id' => $user->id]);
+        $response->assertJsonCount(3, 'data');
         $response->assertJsonStructure([
             "meta"=>["current_page","last_page","from","to","total","per_page"],
             "data" => ["*" => ["id",
