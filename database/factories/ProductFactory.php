@@ -31,6 +31,7 @@ class ProductFactory extends Factory
         $drink_type_id = DrinkType::factory();
         $wine_tag_id = WineTag::factory();
         $wine_name = ucfirst(fake()->word());
+        $slug = str_replace(" ","_",fake()->word());
         $description = fake()->paragraph(50);
         $bottle_size = ucfirst(fake()->word());
         $wine_maker = ucfirst(fake()->word());
@@ -42,7 +43,7 @@ class ProductFactory extends Factory
         $medal = fake()->word();
         $award_name = fake()->word();
         $score = fake()->numberBetween(11,50);
-        return compact('wine_name','wine_user_id', 'description','bottle_size','drink_type_id','country_id','region_id','producer_id',
+        return compact('wine_name',"slug",'wine_user_id', 'description','bottle_size','drink_type_id','country_id','region_id','producer_id',
             'wine_maker','type_of_wine','year','grape_varieties','wine_tag_id','storage_condition','review_and_rewards','medal','award_name','score','review_name' );
 
     }
