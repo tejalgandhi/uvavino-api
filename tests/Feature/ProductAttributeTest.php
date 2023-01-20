@@ -155,7 +155,7 @@ class ProductAttributeTest extends TestCase
     public function test_unknown_attribute_listing()
     {
         $response = $this->get('/api/product-attribute/random');
-        // $response->assertJsonCount(0, 'data');
+        $response->assertJson(["message" => "Attribute 'random' not present or not configured."]);
         $response->assertStatus(404);
     }
 }
