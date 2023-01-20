@@ -38,18 +38,18 @@ class ProductController extends Controller
         return ProductResource::collection($products);
     }
 
-    public function show(Request $request, $slug)
+    public function show($slug)
     {
         $product =  Product::whereSlug($slug)->first();
-
         if(!$product){
             return (new Fail(__('Product does not exist')))->json(404);
         }
         return $product;
     }
-    public function store(ProductRequest $productRequest){
+
+    public function store(ProductRequest $request){
         try {
-            Product::create($productRequest->only([
+            Product::create($request->only([
                 "wine_name",
                 "description",
                 "wine_user_id",
@@ -70,10 +70,17 @@ class ProductController extends Controller
                 "score",
                 "review_name"
             ]));
-
             return (new Success(__("Product store successfully.")))->json();
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
+    }
+
+    public function recommended($slug) {
+        $product =  Product::whereSlug($slug)->first();
+        if(!$product){
+            return (new Fail(__('Product does not exist')))->json(404);
+        }
+        return ProductResource::collection($product->recommended());
     }
 }

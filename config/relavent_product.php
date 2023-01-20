@@ -27,7 +27,7 @@ return [
   "templates" => [
 
     "default" => "IF(`:attribute` = :expected, :score, 0)",
-    "strcmp" => "IF(STRCMP(`:attribute`,':expected'), :score, 0)",
+    "strcmp" => "IF(`:attribute` = ':expected', :score, 0)",
 
   ],
 
