@@ -18,7 +18,7 @@ return new class extends Migration
                 $table->id();
                 $table->foreignId('wine_user_id')->constrained();
                 $table->string('wine_name');
-                $table->string('slug')->nullable();
+                $table->string('slug');
                 $table->text('description')->nullable();
                 $table->foreignId('drink_type_id')->constrained();
                 $table->string('bottle_size')->nullable();
