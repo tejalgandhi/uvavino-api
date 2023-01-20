@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -56,5 +57,25 @@ class Product extends Model
         });
     }
 
+    public function recommended($count = NULL) {
+        if($count == NULL) {
+            $count = config('relavent_product.product_count');
+        }
+        $product = $this;
+        $attributes = config('relavent_product.attributes');
+        $rank = Arr::join(array_values(Arr::map($attributes, function($conf, $attribute) use ($product) {
+            $expected = $product->$attribute;
+            $score = Arr::get($conf, 'score', 1);
+            $template_name = Arr::get($conf, 'template', 'default');
+            $template = Arr::get(config('relavent_product.templates'), $template_name);
+            return __($template, compact('attribute', 'expected', 'score'));
+        })), " + ");
 
+        $select = Arr::join(config('relavent_product.select', ["*"]),",") . ", ($rank) as rank";
+        
+        return static::selectRaw($select)
+            ->orderBy('rank', 'desc')
+            ->limit($count)
+            ->get();
+    }
 }
