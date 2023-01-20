@@ -54,6 +54,30 @@ class ProductTest extends TestCase
         return compact("wine_user","drink_type","country","region","producer","type_of_wine","wine_tag");
     }
 
+    public function store_product_array($params = null){
+        $data = $this->common_factory();
+        $product = [
+            "wine_name" => "Test wine",
+            "wine_user_id" =>$data['wine_user']->id,
+            "drink_type_id" =>$data['drink_type']->id,
+            "bottle_size" =>"L",
+            "country_id"=> $data['country']->id,
+            "region_id" => $data['region']->id,
+            "producer_id" => $data['producer']->id,
+            "wine_maker" =>"Wine maker",
+            "type_of_wine" =>$data['type_of_wine']->id,
+            "year" =>"2022",
+            "grape_varieties"=>"Wine maker",
+            "wine_tag_id" =>$data['wine_tag']->id
+        ];
+
+        if(!empty($params)){
+            unset($product[$params]);
+        }
+
+        return compact('product','data');
+    }
+
     /**
      * A basic feature test example.
      *
@@ -323,145 +347,55 @@ class ProductTest extends TestCase
 
     public function test_simple_store_product()
     {
-        $data = $this->common_factory();
-        $response =  $this->actingAs($data['wine_user'])->post('/api/product', [
-            "wine_name" => "Test wine",
-            "wine_user_id" =>$data['wine_user']->id,
-            "drink_type_id" =>$data['drink_type']->id,
-            "bottle_size" =>"L",
-            "country_id"=> $data['country']->id,
-            "region_id" => $data['region']->id,
-            "producer_id" => $data['producer']->id,
-            "wine_maker" =>"Wine maker",
-            "type_of_wine" =>$data['type_of_wine']->id,
-            "year" =>"2022",
-            "grape_varieties"=>"Wine maker",
-            "wine_tag_id" =>$data['wine_tag']->id
-        ]);
+        $data = $this->store_product_array();
+        $response =  $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertStatus(200);
     }
 
     public function test_store_product_without_drink_type_required_field_failed()
     {
-        $data = $this->common_factory();
-        $response = $this->actingAs($data['wine_user'])->post('/api/product', [
-            "wine_name" => "Test wine",
-            "wine_user_id" =>$data['wine_user']->id,
-            "bottle_size" =>"L",
-            "country_id"=> $data['country']->id,
-            "region_id" => $data['region']->id,
-            "producer_id" => $data['producer']->id,
-            "wine_maker" =>"Wine maker",
-            "type_of_wine" =>$data['type_of_wine']->id,
-            "year" =>"2022",
-            "grape_varieties"=>"Wine maker",
-            "wine_tag_id" =>$data['wine_tag']->id
-        ]);
-
+        $data = $this->store_product_array('drink_type_id');
+        $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertJsonValidationErrors(['drink_type_id']);
         $response->assertStatus(422);
     }
 
     public function test_store_product_without_wine_name_required_field_failed()
     {
-        $data = $this->common_factory();
-        $response = $this->actingAs($data['wine_user'])->post('/api/product', [
-            "drink_type_id" =>$data['drink_type']->id,
-            "wine_user_id" =>$data['wine_user']->id,
-            "bottle_size" =>"L",
-            "country_id"=> $data['country']->id,
-            "region_id" => $data['region']->id,
-            "producer_id" => $data['producer']->id,
-            "wine_maker" =>"Wine maker",
-            "type_of_wine" =>$data['type_of_wine']->id,
-            "year" =>"2022",
-            "grape_varieties"=>"Wine maker",
-            "wine_tag_id" =>$data['wine_tag']->id
-        ]);
-
+        $data = $this->store_product_array('wine_name');
+        $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertJsonValidationErrors(['wine_name']);
         $response->assertStatus(422);
     }
 
     public function test_store_product_without_bottle_size_required_field_failed()
     {
-        $data = $this->common_factory();
-        $response = $this->actingAs($data['wine_user'])->post('/api/product', [
-            "wine_name" => "Test wine",
-            "drink_type_id" =>$data['drink_type']->id,
-            "wine_user_id" =>$data['wine_user']->id,
-            "country_id"=> $data['country']->id,
-            "region_id" => $data['region']->id,
-            "producer_id" => $data['producer']->id,
-            "wine_maker" =>"Wine maker",
-            "type_of_wine" =>$data['type_of_wine']->id,
-            "year" =>"2022",
-            "grape_varieties"=>"Wine maker",
-            "wine_tag_id" =>$data['wine_tag']->id
-        ]);
-
+        $data = $this->store_product_array('bottle_size');
+        $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertJsonValidationErrors(['bottle_size']);
         $response->assertStatus(422);
     }
 
     public function test_store_product_without_country_required_field_failed()
     {
-        $data = $this->common_factory();
-        $response = $this->actingAs($data['wine_user'])->post('/api/product', [
-            "wine_name" => "Test wine",
-            "drink_type_id" =>$data['drink_type']->id,
-            "wine_user_id" =>$data['wine_user']->id,
-            "bottle_size" =>"L",
-            "region_id" => $data['region']->id,
-            "producer_id" => $data['producer']->id,
-            "wine_maker" =>"Wine maker",
-            "type_of_wine" =>$data['type_of_wine']->id,
-            "year" =>"2022",
-            "grape_varieties"=>"Wine maker",
-            "wine_tag_id" =>$data['wine_tag']->id
-        ]);
-
+        $data = $this->store_product_array('country_id');
+        $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertJsonValidationErrors(['country_id']);
         $response->assertStatus(422);
     }
 
     public function test_store_product_without_region_required_field_failed()
     {
-        $data = $this->common_factory();
-        $response = $this->actingAs($data['wine_user'])->post('/api/product', [
-            "wine_name" => "Test wine",
-            "drink_type_id" =>$data['drink_type']->id,
-            "wine_user_id" =>$data['wine_user']->id,
-            "bottle_size" =>"L",
-            "country_id"=> $data['country']->id,
-            "producer_id" => $data['producer']->id,
-            "wine_maker" =>"Wine maker",
-            "type_of_wine" =>$data['type_of_wine']->id,
-            "year" =>"2022",
-            "grape_varieties"=>"Wine maker",
-            "wine_tag_id" =>$data['wine_tag']->id
-        ]);
-
+        $data = $this->store_product_array('region_id');
+        $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertJsonValidationErrors(['region_id']);
         $response->assertStatus(422);
     }
 
     public function test_store_product_without_producer_required_field_failed()
     {
-        $data = $this->common_factory();
-        $response = $this->actingAs($data['wine_user'])->post('/api/product', [
-            "wine_name" => "Test wine",
-            "drink_type_id" =>$data['drink_type']->id,
-            "wine_user_id" =>$data['wine_user']->id,
-            "bottle_size" =>"L",
-            "country_id"=> $data['country']->id,
-            "region_id" => $data['region']->id,
-            "wine_maker" =>"Wine maker",
-            "type_of_wine" =>$data['type_of_wine']->id,
-            "year" =>"2022",
-            "grape_varieties"=>"Wine maker",
-            "wine_tag_id" =>$data['wine_tag']->id
-        ]);
+        $data = $this->store_product_array('producer_id');
+        $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
 
         $response->assertJsonValidationErrors(['producer_id']);
         $response->assertStatus(422);
@@ -469,20 +403,8 @@ class ProductTest extends TestCase
 
     public function test_store_product_without_wine_maker_required_field_failed()
     {
-        $data = $this->common_factory();
-        $response = $this->actingAs($data['wine_user'])->post('/api/product', [
-            "wine_name" => "Test wine",
-            "drink_type_id" =>$data['drink_type']->id,
-            "wine_user_id" =>$data['wine_user']->id,
-            "bottle_size" =>"L",
-            "country_id"=> $data['country']->id,
-            "region_id" => $data['region']->id,
-            "producer_id" => $data['producer']->id,
-            "type_of_wine" =>$data['type_of_wine']->id,
-            "year" =>"2022",
-            "grape_varieties"=>"Wine maker",
-            "wine_tag_id" =>$data['wine_tag']->id
-        ]);
+        $data = $this->store_product_array('wine_maker');
+        $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
 
         $response->assertJsonValidationErrors(['wine_maker']);
         $response->assertStatus(422);
@@ -490,20 +412,8 @@ class ProductTest extends TestCase
 
     public function test_store_product_without_type_of_wine_required_field_failed()
     {
-        $data = $this->common_factory();
-        $response = $this->actingAs($data['wine_user'])->post('/api/product', [
-            "wine_name" => "Test wine",
-            "drink_type_id" =>$data['drink_type']->id,
-            "wine_user_id" =>$data['wine_user']->id,
-            "bottle_size" =>"L",
-            "country_id"=> $data['country']->id,
-            "region_id" => $data['region']->id,
-            "producer_id" => $data['producer']->id,
-            "wine_maker" =>"Wine maker",
-            "year" =>"2022",
-            "grape_varieties"=>"Wine maker",
-            "wine_tag_id" =>$data['wine_tag']->id
-        ]);
+        $data = $this->store_product_array('type_of_wine');
+        $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
 
         $response->assertJsonValidationErrors(['type_of_wine']);
         $response->assertStatus(422);
@@ -511,41 +421,16 @@ class ProductTest extends TestCase
 
     public function test_store_product_without_year_required_field_failed()
     {
-        $data = $this->common_factory();
-        $response = $this->actingAs($data['wine_user'])->post('/api/product', [
-            "wine_name" => "Test wine",
-            "drink_type_id" =>$data['drink_type']->id,
-            "wine_user_id" =>$data['wine_user']->id,
-            "bottle_size" =>"L",
-            "country_id"=> $data['country']->id,
-            "region_id" => $data['region']->id,
-            "producer_id" => $data['producer']->id,
-            "wine_maker" =>"Wine maker",
-            "type_of_wine" =>$data['type_of_wine']->id,
-            "grape_varieties"=>"Wine maker",
-            "wine_tag_id" =>$data['wine_tag']->id
-        ]);
-
+        $data = $this->store_product_array('year');
+        $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertJsonValidationErrors(['year']);
         $response->assertStatus(422);
     }
 
     public function test_store_product_without_grape_varieties_required_field_failed()
     {
-        $data = $this->common_factory();
-        $response = $this->actingAs($data['wine_user'])->post('/api/product', [
-            "wine_name" => "Test wine",
-            "drink_type_id" =>$data['drink_type']->id,
-            "wine_user_id" =>$data['wine_user']->id,
-            "bottle_size" =>"L",
-            "country_id"=> $data['country']->id,
-            "region_id" => $data['region']->id,
-            "producer_id" => $data['producer']->id,
-            "wine_maker" =>"Wine maker",
-            "type_of_wine" =>$data['type_of_wine']->id,
-            "year" =>"2022",
-            "wine_tag_id" =>$data['wine_tag']->id
-        ]);
+        $data = $this->store_product_array('grape_varieties');
+        $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
 
         $response->assertJsonValidationErrors(['grape_varieties']);
         $response->assertStatus(422);
@@ -553,20 +438,8 @@ class ProductTest extends TestCase
 
     public function test_store_product_without_wine_tag_required_field_failed()
     {
-        $data = $this->common_factory();
-        $response = $this->actingAs($data['wine_user'])->post('/api/product', [
-            "wine_name" => "Test wine",
-            "drink_type_id" =>$data['drink_type']->id,
-            "wine_user_id" =>$data['wine_user']->id,
-            "bottle_size" =>"L",
-            "country_id"=> $data['country']->id,
-            "region_id" => $data['region']->id,
-            "producer_id" => $data['producer']->id,
-            "wine_maker" =>"Wine maker",
-            "type_of_wine" =>$data['type_of_wine']->id,
-            "year" =>"2022",
-            "grape_varieties"=>"Wine maker",
-        ]);
+        $data = $this->store_product_array('wine_tag_id');
+        $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
 
         $response->assertJsonValidationErrors(['wine_tag_id']);
         $response->assertStatus(422);
