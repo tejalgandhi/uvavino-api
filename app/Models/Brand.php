@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Brand extends Model
 {
     use HasFactory;
-
+    protected $table = 'brands';
     public function country() {
         return $this->belongsTo(Country::class, 'country_id');
     }
