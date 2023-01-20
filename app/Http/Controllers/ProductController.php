@@ -38,15 +38,17 @@ class ProductController extends Controller
         return ProductResource::collection($products);
     }
 
-    public function show(Request $request, $id)
+    public function show(Request $request, $slug)
     {
-        return Product::whereId($id)->first();
+        $product =  Product::whereSlug($slug)->first();
+
+        if(!$product){
+            return (new Fail(__('Product does not exist')))->json(404);
+        }
+        return $product;
     }
     public function store(ProductRequest $productRequest){
         try {
-            $wine_user_id = request()->user()->id;
-            $productRequest->merge(['wine_user_id' =>$wine_user_id]);
-
             Product::create($productRequest->only([
                 "wine_name",
                 "description",

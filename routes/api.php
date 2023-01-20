@@ -4,6 +4,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\WineAuthController;
 use App\Http\Controllers\ProductAttributeController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,12 +35,16 @@ Route::prefix('auth')->group(function() {
 
 Route::get('/product-attribute/{attribute_name}', [ProductAttributeController::class, 'attribute_list']);
 
+//product
+Route::get('/product', [ProductController::class, 'index']);
+Route::get('/product/{slug}', [ProductController::class, 'show']);
+
 // Static page
 Route::get('/pages', [StaticPageController::class, 'index']);
 Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
 
 // Protected Routes
-Route::middleware('auth:sanctum')->group(function() {
+Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::get('/user', function() { return request()->user(); });
 
     // Routes for connect as seller of wine products
@@ -50,4 +55,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/orders/{id}', [OrderController::class, 'show']);
     Route::post('/orders', [OrderController::class, 'store']);
 
+    //product
+    Route::post('/product', [ProductController::class, 'store']);
 });

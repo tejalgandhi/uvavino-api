@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('brands', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('wine_user_id')->constrained();
-            $table->foreignId('country_id')->constrained();
-            $table->string('name');
-            $table->string('slug');
-            $table->enum('is_approved', ['0', '1'])->comment('0=>No,1=>Yes')->default(1);
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('brands')) {
+            Schema::create('brands', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('wine_user_id')->constrained();
+                $table->foreignId('country_id')->constrained();
+                $table->string('name');
+                $table->string('slug');
+                $table->enum('is_approved', ['0', '1'])->comment('0=>No,1=>Yes')->default(1);
+                $table->timestamps();
+            });
+        }
     }
 
     /**
