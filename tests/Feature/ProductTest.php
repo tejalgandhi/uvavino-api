@@ -317,7 +317,7 @@ class ProductTest extends TestCase
 
         $slug = 'Test';
         $response = $this->get('/api/product/' . $slug);
-        $response->assertStatus(200);
+        $response->assertStatus(404);
     }
 
 

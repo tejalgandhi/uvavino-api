@@ -40,7 +40,12 @@ class ProductController extends Controller
 
     public function show(Request $request, $slug)
     {
-        return Product::whereSlug($slug)->first();
+        $product =  Product::whereSlug($slug)->first();
+
+        if(empty($product)){
+            return (new Fail('Product does not exist'))->json(404);
+        }
+        return $product;
     }
     public function store(ProductRequest $productRequest){
         try {
