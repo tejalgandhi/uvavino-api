@@ -42,8 +42,8 @@ class ProductController extends Controller
     {
         $product =  Product::whereSlug($slug)->first();
 
-        if(empty($product)){
-            return (new Fail('Product does not exist'))->json(404);
+        if(!$product){
+            return (new Fail(__('Product does not exist')))->json(404);
         }
         return $product;
     }

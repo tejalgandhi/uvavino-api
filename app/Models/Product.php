@@ -46,7 +46,13 @@ class Product extends Model
         parent::boot();
 
         static::creating(function ($product) {
-            $product->slug = Str::slug($product->wine_name);
+            $slug = Str::slug($product->wine_name);
+            $count = 1;
+            while(static::whereSlug($slug)->count() > 0) {
+                $slug = Str::slug($product->wine_name . "-" . $count);
+                $count++;
+            }
+            $product->slug = $slug;
         });
     }
 
