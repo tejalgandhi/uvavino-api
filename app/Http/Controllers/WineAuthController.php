@@ -22,7 +22,6 @@ class WineAuthController extends Controller
             ...$request->only(['username', 'first_name', 'last_name', 'email']),
             "password" => Hash::make($request->password)
         ];
-        // dd($user_attrs);
         WineUser::create($user_attrs);
         return $this->_login($request, 201);
     }
@@ -34,10 +33,10 @@ class WineAuthController extends Controller
     protected function _login(Request $request, $status = 200) {
         $user = WineUser::whereEmail($request->email)->first();
         if ( !$user ) {
-            return (new Fail("User not found"))->json(404);
+            return (new Fail(__('auth.not_found')))->json(404);
         }
         if ( !Hash::check($request->password, $user->password) ) {
-            return (new Fail("Invalid Password !"))->json();
+            return (new Fail(__('auth.incorrect_password')))->json();
         }
         $token = $user->createToken('login');
         return (new AuthToken($token->plainTextToken))->json($status);
@@ -45,18 +44,18 @@ class WineAuthController extends Controller
 
     public function logout(Request $request) {
         $user = $request->user();
-        if (!$user) return (new Fail('User/token Invalid'))->json(400);
+        if (!$user) return (new Fail(__('auth.invalid_user')))->json(400);
         $user->tokens()->delete();
-        return (new Success("Logged out."))->json();
+        return (new Success(__('auth.logout')))->json();
     }
 
     public function forget (ForgotPasswordRequest $request)
     {
         $user = WineUser::whereEmail($request->email)->first();
-        if (!$user) return (new Fail("User not found"))->json(404);
+        if (!$user) return (new Fail(__('auth.not_found')))->json(404);
         $token = Password::createToken($user);
         event(new ForgotPassword($user, $token));
-        return (new Success("Email will be send to your email id"))->json();
+        return (new Success(__('passwords.sent')))->json();
     }
 
     public function reset (Request $request)
@@ -72,8 +71,8 @@ class WineAuthController extends Controller
         );
 
         return (match ($status) {
-            Password::PASSWORD_RESET => new Success($status),
-            default => new Fail($status)
+            Password::PASSWORD_RESET => new Success(__($status)),
+            default => new Fail(__($status))
         })->json();
         
     }

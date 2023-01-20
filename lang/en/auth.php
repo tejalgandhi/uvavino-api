@@ -13,6 +13,11 @@ return [
     |
     */
 
+
+    'not_found' => 'User not found',
+    'incorrect_password' => 'Incorrect Password !',
+    'logout' => 'Logged out.',
+
     'failed' => 'These credentials do not match our records.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
