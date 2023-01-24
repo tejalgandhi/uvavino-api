@@ -46,18 +46,22 @@ class WineUser extends Authenticatable implements ConnectableUser
     ];
 
     public function updateConnectId($id): void {
-        $this->connect_id = $id;
+        $this->connection_id = $id;
         $this->save();
         $this->refresh();
     }
 
     public function getConnectId(): string {
-        return $this->connect_id;
+        return $this->connection_id;
     }
 
     public function getEmail(): string {
         return $this->email;
     }
   
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 
 }
