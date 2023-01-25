@@ -4,6 +4,7 @@ use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\WineAuthController;
 use App\Http\Controllers\ProductAttributeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ArticleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,10 @@ Route::get('/product-attribute/{attribute_name}', [ProductAttributeController::c
 Route::get('/product', [ProductController::class, 'index']);
 Route::get('/product/{slug}', [ProductController::class, 'show']);
 Route::get('/product/{slug}/recommended', [ProductController::class, 'recommended']);
+
+//Article
+Route::get('/articles', [ArticleController::class, 'index']);
+Route::get('/article/{slug}', [ArticleController::class, 'show']);
 
 // Static page
 Route::get('/pages', [StaticPageController::class, 'index']);
