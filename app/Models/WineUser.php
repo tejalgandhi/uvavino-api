@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Immera\Payment\Contracts\PaymentUserContract;
 use Laravel\Sanctum\HasApiTokens;
 
-class WineUser extends Authenticatable implements ConnectableUser
+class WineUser extends Authenticatable implements ConnectableUser, PaymentUserContract
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -64,4 +65,16 @@ class WineUser extends Authenticatable implements ConnectableUser
         return $this->hasMany(Order::class);
     }
 
+    // This will be used in the payment to get stripe ID
+    public function getId()
+    {
+        return $this->stripe_customer_id;
+    }
+
+    public function getName()
+    {
+        return $this->first_name && $this->last_name ?
+            implode(" ", [$this->first_name, $this->last_name]):
+            $this->username;
+    }
 }

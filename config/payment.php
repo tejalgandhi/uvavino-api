@@ -15,4 +15,5 @@ return [
         'default' => ['bank_transfer', 'card', 'paypal']
     ],
     'route_prefix' => env('PAYMENT_ROUTE_PREFIX', "/api"),
+    'route_middlewares' => ['auth:sanctum']
 ];
