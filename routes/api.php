@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuctionPackController;
 use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\WineAuthController;
 use App\Http\Controllers\ProductAttributeController;
@@ -48,6 +49,9 @@ Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::get('/user', function() { return request()->user(); });
 
-    //product
+    // product
     Route::post('/product', [ProductController::class, 'store']);
+
+    // auction pack
+    Route::get('/auction-packs', [AuctionPackController::class, 'index']);
 });
