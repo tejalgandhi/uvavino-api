@@ -50,4 +50,9 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     //product
     Route::post('/product', [ProductController::class, 'store']);
+
+    //wishlist
+    Route::post('/wishlist', [ProductController::class, 'store']);
+    Route::get('/wishlist', [ProductController::class, 'index']);
+    Route::delete('/wishlist', [ProductController::class, 'destroy']);
 });
