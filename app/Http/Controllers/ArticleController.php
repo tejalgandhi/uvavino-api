@@ -23,7 +23,7 @@ class ArticleController extends Controller
         if(!$article){
             return (new Fail(__('Article does not exist')))->json(404);
         }
-        return $article;
+        return ArticleResource::make($article);
     }
 
 }
