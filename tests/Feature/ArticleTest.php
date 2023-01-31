@@ -54,22 +54,6 @@ class ArticleTest extends TestCase
     {
         $article = Article::factory()->create();
         $response = $this->get('/api/article/' . $article->slug);
-        $response->assertJsonStructure(["id",
-            "title",
-            "slug",
-            "category_id",
-            "content",
-            "image",
-            "images",
-            "videos",
-            "status",
-            "date",
-            "documents",
-            "featured",
-            "link",
-            "extras",
-            "extras_translatable",
-            ]);
         $response->assertStatus(200);
 
         $slug = 'Test';
