@@ -2,17 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductRequest;
+use App\Http\Requests\WishlistRequest;
 use App\Http\Resources\Fail;
-use App\Http\Resources\ProductResource;
 use App\Http\Resources\Success;
-use App\Models\Product;
+use App\Http\Resources\WishlistResource;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 
 class WishlistController extends Controller
 {
-    public function store(Request $request){
+    public function index(Request $request){
+        try {
+            $wishlist =  Wishlist::where('wine_user_id',$request->wine_user_id)->orderByDesc('id')->get();
+            if(count($wishlist) == 0){
+                return (new Fail(__('Wishlist does not exist')))->json(404);
+            }
+            return WishlistResource::collection($wishlist);
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
+
+    public function store(WishlistRequest $request){
         try {
             Wishlist::create($request->only([
                 "wine_user_id",
@@ -24,22 +35,14 @@ class WishlistController extends Controller
         }
     }
 
-    public function get(Request $request){
-        try {
-            $wishlist =  Wishlist::where('wine_user_id',$request->wine_user_id)->first();
-            if(!$wishlist){
-                return (new Fail(__('Wishlist does not exist')))->json(404);
-            }
-            return $wishlist;
-        }catch (\Exception $e) {
-            return (new Fail($e->getMessage()))->json();
-        }
-    }
-
     public function destroy(Request $request){
         try {
-            $wishlist =  Wishlist::where('product_id',$request->product_id)->delete();
-            return $wishlist;
+            $wishlist = Wishlist::where('product_id',$request->product_id)->first();
+            if(!$wishlist){
+                return (new Fail(__('Product does not exist')))->json(404);
+            }
+             Wishlist::where('product_id',$request->product_id)->delete();
+            return (new Success(__("Product delete successfully.")))->json();
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }

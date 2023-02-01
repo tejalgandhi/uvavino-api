@@ -4,6 +4,7 @@ use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\WineAuthController;
 use App\Http\Controllers\ProductAttributeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -52,7 +53,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::post('/product', [ProductController::class, 'store']);
 
     //wishlist
-    Route::post('/wishlist', [ProductController::class, 'store']);
-    Route::get('/wishlist', [ProductController::class, 'index']);
-    Route::delete('/wishlist', [ProductController::class, 'destroy']);
+    Route::post('/wishlist', [WishlistController::class, 'store']);
+    Route::get('/wishlist', [WishlistController::class, 'index']);
+    Route::delete('/wishlist', [WishlistController::class, 'destroy']);
 });
