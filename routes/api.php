@@ -54,4 +54,10 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     // auction pack
     Route::get('/auction-packs', [AuctionPackController::class, 'index']);
+
+    // auction api
+    Route::post('/auction', [AuctionController::class, 'create']);
+    Route::get('/auction', [AuctionController::class, 'index']);
+    Route::get('/auction/{auction}', [AuctionController::class, 'show']);
+    Route::post('/auction/{auction}/bid', [AuctionController::class, 'bid']);
 });
