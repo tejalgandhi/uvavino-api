@@ -43,6 +43,7 @@ class ArticleTest extends TestCase
     {
         $c = rand(15, 30);
         $category = Category::factory()->create();
+        /* @phpstan-ignore-next-line */
         $category->factory()->hasArticles($c)->create();
         $response = $this->get('/api/articles');
         $response->assertJsonCount(10, 'data');
