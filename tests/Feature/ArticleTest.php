@@ -43,7 +43,10 @@ class ArticleTest extends TestCase
     {
         $c = rand(15, 30);
         $category = Category::factory()->create();
-        Article::factory()->count($c)->create(['category_id'=>$category->id]);
+        // $category->articles()->factory()->count($c)->create();
+        $category->factory()->hasArticles($c)->create();
+
+        // Article::factory()->count($c)->create(['category_id'=>$category->id]);
         $response = $this->get('/api/articles');
         $response->assertJsonCount(10, 'data');
         $this->check_structure($response);
