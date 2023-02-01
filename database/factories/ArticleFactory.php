@@ -49,8 +49,6 @@ class ArticleFactory extends Factory
             'category_id' => $category_id,
             'featured' => 0,
             'date' => $date
-//            'created_at' => $date,
-//            'updated_at' => $date,
         ];
     }
 }
