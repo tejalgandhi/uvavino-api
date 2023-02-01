@@ -1,5 +1,5 @@
 <?php
-
+// Don't Modify this file, As this is the gema digital package file That used in backend
 return [
     'general' => [
         'boolean' => [
