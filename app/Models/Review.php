@@ -16,5 +16,9 @@ class Review extends Model
     public function wine_user(){
         return $this->belongsTo(WineUser::class,'user_id','id');
     }
+    public function reviewable()
+    {
+        return $this->morphTo();
+    }
 
 }
