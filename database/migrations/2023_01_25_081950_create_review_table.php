@@ -16,7 +16,7 @@ return new class extends Migration
         if (!Schema::hasTable('reviews')) {
             Schema::create('reviews', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('ref_type')->constrained();
+                $table->foreignId('reviewable_id')->constrained();
                 $table->morphs('reviewable');
                 $table->foreignId('user_id')->constrained();
                 $table->double('rating', 15, 8);
