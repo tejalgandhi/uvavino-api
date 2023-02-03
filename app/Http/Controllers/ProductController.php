@@ -13,6 +13,9 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
+        $order_by_column = $request->order_by_column;
+        $order_by = $request->order_by;
+
         $filter_attrs = [
             'wine_name' => 'like',
             'type_of_wine' => 'in',
@@ -34,6 +37,11 @@ class ProductController extends Controller
                 $query = $logics[$logic]($query, $attr, $request->$attr);
             }
         }
+
+        if($order_by_column && $order_by) {
+            $query = $query->orderBy($order_by_column, $order_by);
+        }
+
         $products = $query->paginate(10);
         return ProductResource::collection($products);
     }
