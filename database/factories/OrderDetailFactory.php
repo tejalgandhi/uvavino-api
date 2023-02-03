@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,8 +24,8 @@ class OrderDetailFactory extends Factory
             'order_id' => Order::factory(),
             'orderable_id' => $orderable::factory(),
             'orderable_type' => $orderable,
-            'amount' => fake()->randomNumber(2000, 50000) / 100,
-            'qty' => fake()->randomNumber(1, 20),
+            'amount' => rand(2000, 50000) / 100,
+            'qty' => rand(1, 20),
         ];
     }
 

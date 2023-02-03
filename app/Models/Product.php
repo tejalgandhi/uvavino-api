@@ -37,7 +37,7 @@ class Product extends Model
 
     public function orders()
     {
-        return $this->morphMany(OrderDetail::class, 'orderable')->with('order');
+        return $this->morphMany(OrderDetail::class, 'orderable');
     }
 
     public function wine_type(){

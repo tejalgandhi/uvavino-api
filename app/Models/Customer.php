@@ -19,7 +19,7 @@ class Customer
       $user->stripe_customer_id = $data['stripe_customer_id'];
       $user->save();
       $user->refresh();
-      return (new static($user->stripe_customer_id));
+      return (new Customer($user->stripe_customer_id));
     }
     else return null;
   }
@@ -27,7 +27,7 @@ class Customer
   public static function getCustomer($id)
   {
     $user = WineUser::whereStripeCustomerId($id)->first();
-    if ($user) return (new static($user->stripe_customer_id));
+    if ($user) return (new Customer($user->stripe_customer_id));
     else return null;
   }
 

@@ -25,12 +25,12 @@ class Payment {
         'email' => $user->getEmail(),
         'settings' => ['payouts' => ['schedule' => ['interval' => 'manual']]],
       ]);
-      if ($account) {
+      if ($account != null && $account->id) {
         $user->updateConnectId($account->id);
       }
     }
     $accountInfo =$this->stripe->accounts->retrieve($user->getConnectId());
-    if (!($accountInfo && $accountInfo->charges_enabled)) {
+    if (!($accountInfo != null && $accountInfo->charges_enabled)) {
       $front_url = config('app.front_app_url');
       $account_links = $this->stripe->accountLinks->create([
         'account' => $user->getConnectId(),
@@ -39,7 +39,7 @@ class Payment {
         'type' => 'account_onboarding',
         'collect' => 'eventually_due',
       ]);
-      if ($account_links) {
+      if ($account_links != null) {
         return $account_links->url;
       }
     }

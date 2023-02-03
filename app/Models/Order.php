@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\User
+ * App\Models\Order
  *
  * @property mixed $id
  * @property string $name
- * @property App\Models\WineUser $wine_user
+ * @property WineUser $wine_user
  */
 class Order extends Model
 {
