@@ -11,37 +11,24 @@ use Illuminate\Http\Request;
 
 class WishlistController extends Controller
 {
-    public function index(Request $request){
-        try {
-            $wishlist =  $request->user()->wishlist;
-            if(count($wishlist) == 0){
-                return (new Fail(__('Wishlist does not exist')))->json(404);
-            }
-            return WishlistResource::collection($wishlist);
-        }catch (\Exception $e) {
-            return (new Fail($e->getMessage()))->json();
-        }
+    public function index(Request $request)
+    {
+        return WishlistResource::collection($request->user()->wishlist);
     }
 
-    public function store(WishlistRequest $request){
-        try {
-            Wishlist::create($request->only([
-                "wine_user_id",
-                "product_id"
-            ]));
-            return (new Success(__("Wishlist store successfully.")))->json(201);
-        }catch (\Exception $e) {
-            return (new Fail($e->getMessage()))->json();
-        }
+    public function store(WishlistRequest $request)
+    {
+        Wishlist::create($request->only([
+            "wine_user_id",
+            "product_id"
+        ]));
+        return (new Success(__("Wishlist store successfully.")))->json(201);
     }
 
-    public function destroy(Request $request){
-        try {
-             Wishlist::where('wine_user_id',$request->wine_user_id)->where('product_id',$request->product_id)->delete();
-            return (new Success(__("Product delete successfully.")))->json();
-        }catch (\Exception $e) {
-            return (new Fail($e->getMessage()))->json();
-        }
+    public function destroy(Request $request)
+    {
+        Wishlist::where($request->only(['wine_user_id','product_id']))->delete();
+        return (new Success(__("Product delete successfully.")))->json();
     }
 
 }
