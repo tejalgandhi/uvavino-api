@@ -7,19 +7,24 @@ use App\Http\Resources\Fail;
 use App\Http\Resources\ReviewResource;
 use App\Http\Resources\Success;
 use App\Models\Review;
+use App\Enums\ReviewType;
 use Illuminate\Http\Request;
+
 class ReviewController extends Controller
 {
     public function index(Request $request)
     {
         //category => product
         //category_id => product_id
-        $category = $request->category;
-        $category_id = $request->category_id;
-        $review =  Review::Query();
+        $category = $request->type;
+        $category_id = $request->id;
+        $review =  Review::with(['wine_user']);
         if(!empty($category) && !empty($category_id)) {
-            $review = $review->where('ref_type', $category)
-                ->where('ref_id', $category_id);
+            $cat = match($request->type){
+             'product' => ReviewType::Product
+            };
+            $review = $review->where('reviewable_type', $cat)
+                ->where('reviewable_id', $category_id);
         }
         $review = $review->paginate(10);
         return ReviewResource::collection($review);
@@ -28,13 +33,15 @@ class ReviewController extends Controller
     public function store(ReviewRequest $request)
     {
         try {
-            Review::create($request->only([
-                "ref_type",
-                "ref_id",
-                "user_id",
-                "rating",
-                "review_content",
-            ]));
+            Review::create([
+               "reviewable_type" => match($request->type){
+                    'product' => ReviewType::Product
+                },
+                "reviewable_id" => $request->id,
+                "wine_user_id" => $request->wine_user_id,
+                "rating" => $request->rating,
+                "review_content" => $request->review_content,
+            ]);
             return (new Success(__("Review store successfully.")))->json();
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();

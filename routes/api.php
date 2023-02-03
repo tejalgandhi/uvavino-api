@@ -41,13 +41,11 @@ Route::get('/product', [ProductController::class, 'index']);
 Route::get('/product/{slug}', [ProductController::class, 'show']);
 Route::get('/product/{slug}/recommended', [ProductController::class, 'recommended']);
 
-//Review
-Route::post('/reviews', [ReviewController::class, 'store']);
-Route::get('/reviews', [ReviewController::class, 'index']);
-
 // Static page
 Route::get('/pages', [StaticPageController::class, 'index']);
 Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
+
+Route::get('/reviews', [ReviewController::class, 'index']);
 
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
@@ -55,4 +53,8 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     //product
     Route::post('/product', [ProductController::class, 'store']);
+
+    //Review
+    Route::post('/reviews', [ReviewController::class, 'store']);
+
 });

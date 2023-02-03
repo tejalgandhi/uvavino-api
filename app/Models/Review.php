@@ -9,13 +9,13 @@ class Review extends Model
 {
     use HasFactory;
 
-    public $guarded = ['id'];
+    public $fillable = ['reviewable_type','reviewable_id','wine_user_id','rating','review_content'];
 
-    CONST PRODUCT_REF_TYPE = 'product';
 
     public function wine_user(){
-        return $this->belongsTo(WineUser::class,'user_id','id');
+        return $this->belongsTo(WineUser::class,'wine_user_id','id');
     }
+
     public function reviewable()
     {
         return $this->morphTo();

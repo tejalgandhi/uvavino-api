@@ -24,11 +24,9 @@ class ReviewRequest extends FormRequest
     public function rules()
     {
         return [
-            "ref_type" => ["required"],
-            "ref_id" => ["required"],
-            "user_id" => ["required"],
+            "type" => ["required", 'in:product'],
+            "id" => ["required"],
             "rating" => ["required","numeric","min:1","max:10"],
-
         ];
     }
 }

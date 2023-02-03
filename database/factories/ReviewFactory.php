@@ -2,7 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Review;
+use App\Models\WineUser;
+use App\Enums\ReviewType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -19,12 +20,12 @@ class ReviewFactory extends Factory
     public function definition()
     {
         $r= rand(1,10);
-        $u= rand(1,10);
         $rating= rand(1,10);
+        $user = WineUser::latest()->first();
         return [
-            'ref_type'=>Review::PRODUCT_REF_TYPE,
-            'ref_id'=>$r,
-            'user_id'=>$u,
+            'reviewable_type'=>ReviewType::Product,
+            'reviewable_id'=>$r,
+            'wine_user_id'=>$user->id,
             'rating'=>$rating,
             'review_content'=>'Test Content',
         ];

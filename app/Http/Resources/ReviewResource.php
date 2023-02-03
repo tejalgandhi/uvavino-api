@@ -16,9 +16,9 @@ class ReviewResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'ref_type' => $this->resource->ref_type,
-            'ref_id' => $this->resource->ref_id,
-            'user_id' => $this->resource->user_id,
+            'reviewable_type' => $this->resource->reviewable_type,
+            'reviewable_id' => $this->resource->reviewable_id,
+            'wine_user_id' => $this->resource->wine_user_id,
             'user_name' => $this->resource->wine_user->username,
             'rating' => $this->resource->rating,
             'review_content' => $this->resource->review_content,

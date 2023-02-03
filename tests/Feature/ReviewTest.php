@@ -2,15 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\Country;
-use App\Models\DrinkType;
-use App\Models\Producer;
+
 use App\Models\Product;
-use App\Models\Region;
 use App\Models\Review;
 use App\Models\User;
-use App\Models\WineTag;
-use App\Models\WineType;
+use App\Enums\ReviewType;
 use App\Models\WineUser;
 use Tests\TestCase;
 
@@ -21,9 +17,9 @@ class ReviewTest extends TestCase
         $response->assertJsonStructure([
             "meta"=>["current_page","last_page","from","to","total","per_page"],
             "data" => ["*" => ["id",
-                "ref_type",
-                "ref_id",
-                "user_id",
+                "reviewable_type",
+                "reviewable_id",
+                "wine_user_id",
                 "rating",
                 "review_content",
             ]]
@@ -34,6 +30,10 @@ class ReviewTest extends TestCase
         $c = rand(1, 15);
         Product::factory($c)->create();
         User::factory($c)->create();
+        $product = Product::latest()->first();
+        $wine_user = User::latest()->first();
+
+        return compact('wine_user','product');
     }
 
     /**
@@ -53,19 +53,19 @@ class ReviewTest extends TestCase
         $response->assertStatus(200);
 
         $c = rand(15, 30);
-        Review::factory()->count($c)->create(['ref_type' => 'product','ref_id'=>$product->id,'user_id'=>$user->id]);
+        Review::factory()->count($c)->create(['reviewable_type' => ReviewType::Product,'reviewable_id'=>$product->id,'wine_user_id'=>$user->id]);
 
         $response = $this->get('/api/reviews');
         $response->assertJsonCount(10, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
 
-        $response = $this->get('/api/reviews?ref_type=product&ref_id='.$product->id);
+        $response = $this->get('/api/reviews?reviewable_type=product&reviewable_id='.$product->id);
         $response->assertJsonCount(10, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
 
-        $response = $this->get('/api/reviews?ref_type=product&ref_id=1000');
+        $response = $this->get('/api/reviews?reviewable_type=product&reviewable_id=1000');
         $response->assertJsonCount(10, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
@@ -73,23 +73,18 @@ class ReviewTest extends TestCase
 
     public function test_store_review(){
         $data = $this->store_review_array();
-        $response =  $this->post('/api/reviews', $data['review']);
+        $response =  $this->actingAs($data['data']['wine_user'])->post('/api/reviews', $data['review']);
         $response->assertStatus(200);
 
 
-        $data = $this->store_review_array('ref_type');
-        $response =  $this->post('/api/reviews', $data['review']);
-        $response->assertJsonValidationErrors(['ref_type']);
+        $data = $this->store_review_array('type');
+        $response =  $this->actingAs($data['data']['wine_user'])->post('/api/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['type']);
         $response->assertStatus(422);
 
-        $data = $this->store_review_array('ref_id');
+        $data = $this->store_review_array('id');
         $response =  $this->post('/api/reviews', $data['review']);
-        $response->assertJsonValidationErrors(['ref_id']);
-        $response->assertStatus(422);
-
-        $data = $this->store_review_array('user_id');
-        $response =  $this->post('/api/reviews', $data['review']);
-        $response->assertJsonValidationErrors(['user_id']);
+        $response->assertJsonValidationErrors(['id']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('rating');
@@ -110,12 +105,9 @@ class ReviewTest extends TestCase
     public function store_review_array($params = null ,$param_value = null){
         $data = $this->common_factory();
         $c =rand(1,10);
-        $product = Product::latest()->first();
-        $user = User::latest()->first();
         $review = [
-            "ref_type"=>"product",
-            "ref_id"=>$product->id,
-            "user_id"=>$user->id,
+            "type"=>"product",
+            "id"=>$data['product']->id,
             "rating"=>$c,
             "review_content"=>'Test rating',
         ];
