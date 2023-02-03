@@ -44,4 +44,8 @@ class WineUser extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function wishlist() {
+        return $this->hasMany(Wishlist::class,'wine_user_id','id');
+    }
+
 }

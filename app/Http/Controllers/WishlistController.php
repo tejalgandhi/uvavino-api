@@ -13,7 +13,7 @@ class WishlistController extends Controller
 {
     public function index(Request $request){
         try {
-            $wishlist =  Wishlist::where('wine_user_id',$request->wine_user_id)->orderByDesc('id')->get();
+            $wishlist =  $request->user()->wishlist;
             if(count($wishlist) == 0){
                 return (new Fail(__('Wishlist does not exist')))->json(404);
             }
@@ -37,11 +37,7 @@ class WishlistController extends Controller
 
     public function destroy(Request $request){
         try {
-            $wishlist = Wishlist::where('product_id',$request->product_id)->first();
-            if(!$wishlist){
-                return (new Fail(__('Product does not exist')))->json(404);
-            }
-             Wishlist::where('product_id',$request->product_id)->delete();
+             Wishlist::where('wine_user_id',$request->wine_user_id)->where('product_id',$request->product_id)->delete();
             return (new Success(__("Product delete successfully.")))->json();
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
