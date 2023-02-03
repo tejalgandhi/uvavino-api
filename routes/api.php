@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\AuctionPackController;
 use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\WineAuthController;

@@ -8,4 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class Auction extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'lot_type',
+        'title',
+        'description',
+        'is_private',
+        'auction_type',
+        'max_price',
+        'invitations',
+    ];
+
+    public function bids()
+    {
+        $this->hasMany(AuctionBid::class);
+    }
+
+    public function canBid(int $amt):bool
+    {
+        return true;
+    }
 }

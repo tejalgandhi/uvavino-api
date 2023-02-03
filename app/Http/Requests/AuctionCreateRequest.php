@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\WineUser;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class AuctionCreateRequest extends FormRequest
 {
@@ -13,7 +15,8 @@ class AuctionCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        $user = Auth::id()? WineUser::find(Auth::id()): null;
+        return $user && $user->canAuction();
     }
 
     /**
@@ -24,7 +27,7 @@ class AuctionCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "title" => ["required"]
         ];
     }
 }
