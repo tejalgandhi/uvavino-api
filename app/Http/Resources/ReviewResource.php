@@ -19,7 +19,7 @@ class ReviewResource extends JsonResource
             'reviewable_type' => $this->resource->reviewable_type,
             'reviewable_id' => $this->resource->reviewable_id,
             'wine_user_id' => $this->resource->wine_user_id,
-            'user_name' => $this->resource->wine_user->username,
+            'user_name' => $this->resource->wineUser->username,
             'rating' => $this->resource->rating,
             'review_content' => $this->resource->review_content,
 
