@@ -61,4 +61,5 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::get('/auction', [AuctionController::class, 'index']);
     Route::get('/auction/{auction}', [AuctionController::class, 'show']);
     Route::post('/auction/{auction}/bid', [AuctionController::class, 'bid']);
+    Route::post('/auction/{auction}/automatic-bid', [AuctionController::class, 'automaticBid']);
 });
