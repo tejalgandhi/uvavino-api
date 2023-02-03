@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(10)->create();
         \App\Models\WineUser::factory(10)->create();
         \App\Models\Country::factory(10)->create();
+        \App\Models\Category::factory(10)->create();
         \App\Models\StaticPage::factory(10)->create();
         \App\Models\DrinkType::factory(10)->create();
         \App\Models\WineTag::factory(10)->create();
