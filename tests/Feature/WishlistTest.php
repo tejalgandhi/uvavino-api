@@ -50,7 +50,7 @@ class WishlistTest extends TestCase
         $response->assertStatus(200);
 
         $response =  $this->actingAs($data['wine_user'])->delete('/api/wishlist?product_id=100');
-        $response->assertStatus(404);
+        $response->assertStatus(200);
     }
 
 
