@@ -25,7 +25,9 @@ class WishlistTest extends TestCase
     public function test_get_wishlist()
     {
         $data = $this->common_factory();
-        $response =  $this->actingAs($data['wine_user'])->post('/api/wishlist?product_id='.$data['product']->id);
+        $response =  $this->actingAs($data['wine_user'])->post('/api/wishlist',[
+            'product_id' => $data['product']->id
+        ]);
         $response->assertStatus(200);
         $response =  $this->actingAs($data['wine_user'])->get('/api/wishlist');
         $response->assertStatus(200);
@@ -34,7 +36,9 @@ class WishlistTest extends TestCase
     public function test_simple_store_wishlist()
     {
         $data = $this->common_factory();
-        $response =  $this->actingAs($data['wine_user'])->post('/api/wishlist?product_id='.$data['product']->id);
+        $response =  $this->actingAs($data['wine_user'])->post('/api/wishlist',[
+            'product_id' => $data['product']->id
+        ]);
         $response->assertStatus(200);
 
         $response =  $this->actingAs($data['wine_user'])->post('/api/wishlist');
