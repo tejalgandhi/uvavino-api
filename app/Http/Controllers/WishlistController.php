@@ -29,7 +29,7 @@ class WishlistController extends Controller
                 "wine_user_id",
                 "product_id"
             ]));
-            return (new Success(__("Wishlist store successfully.")))->json();
+            return (new Success(__("Wishlist store successfully.")))->json(201);
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
