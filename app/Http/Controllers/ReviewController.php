@@ -18,10 +18,11 @@ class ReviewController extends Controller
         //category_id => product_id
         $category = $request->type;
         $category_id = $request->id;
-        $review =  Review::with(['wine_user']);
+        $review =  Review::with('wineUser');
         if(!empty($category) && !empty($category_id)) {
             $cat = match($request->type){
-             'product' => ReviewType::Product
+                'product' => ReviewType::Product,
+                default => ReviewType::Product
             };
             $review = $review->where('reviewable_type', $cat)
                 ->where('reviewable_id', $category_id);
@@ -35,7 +36,8 @@ class ReviewController extends Controller
         try {
             Review::create([
                "reviewable_type" => match($request->type){
-                    'product' => ReviewType::Product
+                    'product' => ReviewType::Product,
+                    default =>  ReviewType::Product
                 },
                 "reviewable_id" => $request->id,
                 "wine_user_id" => $request->wine_user_id,

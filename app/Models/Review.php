@@ -11,8 +11,12 @@ class Review extends Model
 
     public $fillable = ['reviewable_type','reviewable_id','wine_user_id','rating','review_content'];
 
-
-    public function wine_user(){
+    /**
+     * Return relationship of belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function wineUser(){
         return $this->belongsTo(WineUser::class,'wine_user_id','id');
     }
 
