@@ -6,14 +6,17 @@ use App\Http\Requests\WishlistRequest;
 use App\Http\Resources\Fail;
 use App\Http\Resources\Success;
 use App\Http\Resources\WishlistResource;
+use App\Models\WineUser;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WishlistController extends Controller
 {
     public function index(Request $request)
     {
-        return WishlistResource::collection($request->user()->wishlist);
+        $user = WineUser::find(Auth::id());
+        return WishlistResource::collection($user->wishlist);
     }
 
     public function store(WishlistRequest $request)
