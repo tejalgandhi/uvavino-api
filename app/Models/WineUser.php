@@ -54,4 +54,9 @@ class WineUser extends Authenticatable
         return $this->hasMany(Wishlist::class,'wine_user_id','id');
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
 }
