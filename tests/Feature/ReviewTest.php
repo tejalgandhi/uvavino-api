@@ -83,22 +83,22 @@ class ReviewTest extends TestCase
         $response->assertStatus(422);
 
         $data = $this->store_review_array('id');
-        $response =  $this->post('/api/reviews', $data['review']);
+        $response =  $this->actingAs($data['data']['wine_user'])->post('/api/reviews', $data['review']);
         $response->assertJsonValidationErrors(['id']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('rating');
-        $response =  $this->post('/api/reviews', $data['review']);
+        $response =  $this->actingAs($data['data']['wine_user'])->post('/api/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('rating',15);
-        $response =  $this->post('/api/reviews', $data['review']);
+        $response =  $this->actingAs($data['data']['wine_user'])->post('/api/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('rating',0);
-        $response =  $this->post('/api/reviews', $data['review']);
+        $response =  $this->actingAs($data['data']['wine_user'])->post('/api/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
     }
