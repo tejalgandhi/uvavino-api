@@ -44,4 +44,9 @@ class WineUser extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
 }
