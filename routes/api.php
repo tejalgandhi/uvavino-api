@@ -61,13 +61,14 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     // product
     Route::post('/product', [ProductController::class, 'store']);
 
+    //Review
+    Route::post('/reviews', [ReviewController::class, 'store']);
+
+
     //wishlist
     Route::post('/wishlist', [WishlistController::class, 'store']);
     Route::get('/wishlist', [WishlistController::class, 'index']);
     Route::delete('/wishlist', [WishlistController::class, 'destroy']);
-
-    //Review
-    Route::post('/reviews', [ReviewController::class, 'store']);
 
 
     // auction pack
