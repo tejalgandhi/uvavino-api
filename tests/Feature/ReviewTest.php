@@ -73,35 +73,37 @@ class ReviewTest extends TestCase
 
     public function test_store_review(){
         $data = $this->store_review_array();
-        $response =  $this->actingAs($data['data']['wine_user'])->post('/api/reviews', $data['review']);
+        $this->actingAs($data['data']['wine_user']);
+        $response =  $this->post('/api/reviews', $data['review']);
         $response->assertStatus(200);
 
 
         $data = $this->store_review_array('type');
-        $response =  $this->actingAs($data['data']['wine_user'])->post('/api/reviews', $data['review']);
+        $response =  $this->post('/api/reviews', $data['review']);
         $response->assertJsonValidationErrors(['type']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('id');
-        $response =  $this->actingAs($data['data']['wine_user'])->post('/api/reviews', $data['review']);
+        $response =  $this->post('/api/reviews', $data['review']);
         $response->assertJsonValidationErrors(['id']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('rating');
-        $response =  $this->actingAs($data['data']['wine_user'])->post('/api/reviews', $data['review']);
+        $response =  $this->post('/api/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('rating',15);
-        $response =  $this->actingAs($data['data']['wine_user'])->post('/api/reviews', $data['review']);
+        $response =  $this->post('/api/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('rating',0);
-        $response =  $this->actingAs($data['data']['wine_user'])->post('/api/reviews', $data['review']);
+        $response =  $this->post('/api/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
     }
+
     public function store_review_array($params = null ,$param_value = null){
         $data = $this->common_factory();
         $c =rand(1,10);
