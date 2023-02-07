@@ -17,10 +17,10 @@ class WishlistResource extends JsonResource
         return [
             'id' => $this->resource->id,
             'wine_user_id' => $this->resource->wine_user_id,
-            'product_id' => $this->resource->product_id,
-            'wine_name' => $this->resource->product->wine_name,
-            'slug' => $this->resource->product->slug,
-            'description' => $this->resource->product->description,
+            'product_id' => $this->resource->pivot_product_id,
+            'wine_name' => $this->resource->wine_name,
+            'slug' => $this->resource->slug,
+            'description' => $this->resource->description,
         ];
     }
 }

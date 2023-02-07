@@ -7,6 +7,7 @@ use App\Models\DrinkType;
 use App\Models\Producer;
 use App\Models\Product;
 use App\Models\Region;
+use App\Models\User;
 use App\Models\WineTag;
 use App\Models\WineType;
 use App\Models\WineUser;
