@@ -13,7 +13,6 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $order_by_column = $request->order_by_column;
         $order_by = $request->order_by;
 
         $filter_attrs = [
@@ -38,8 +37,12 @@ class ProductController extends Controller
             }
         }
 
-        if($order_by_column && $order_by) {
-            $query = $query->orderBy($order_by_column, $order_by);
+        if(!empty($order_by)) {
+                $ordering = [
+                    'recent' => function($q) { return $q->orderBy('created_at', 'desc'); },
+                    'older' => function($q) { return $q->orderBy('created_at', 'asc'); },
+                ];
+                $query = $ordering[$order_by]($query);
         }
 
         $products = $query->paginate(10);
