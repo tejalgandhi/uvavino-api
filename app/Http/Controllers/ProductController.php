@@ -46,15 +46,13 @@ class ProductController extends Controller
             }
         }
 
-        if(!empty($order_by)) {
-                $ordering = [
-                    'recent' => function($q) { return $q->orderBy('created_at', 'desc'); },
-                    'older' => function($q) { return $q->orderBy('created_at', 'asc'); },
-                    'expensive' => function($q) { return $q->orderBy('packaging.price', 'desc'); },
-                    'cheapest' => function($q) { return $q->orderBy('packaging.price', 'asc'); },
-                ];
-                $query = $ordering[$order_by]($query);
-        }
+        $query = match($order_by) {
+            'recent' => $query->orderBy('products.created_at', 'desc'),
+            'older' => $query->orderBy('products.created_at', 'asc'),
+            'expensive' => $query->orderBy('packaging.price', 'desc'),
+            'cheapest' => $query->orderBy('packaging.price', 'asc'),
+            default => $query
+        };
 
         return $query->select(ProductResource::selectLst())->paginate(10);
     }
