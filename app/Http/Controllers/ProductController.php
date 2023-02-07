@@ -6,6 +6,7 @@ use App\Http\Requests\ProductRequest;
 use App\Http\Resources\Fail;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\Success;
+use App\Models\DrinkType;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,15 @@ class ProductController extends Controller
             'like' =>  function($q, $a, $v) { return $q->where($a,'LIKE','%'.$v.'%'); }
         ];
 
-        $query = Product::query();
+        $query = Product::query()
+            ->leftJoin('wine_users', 'products.wine_user_id', '=', 'wine_users.id')
+            ->leftJoin('drink_types', 'products.drink_type_id', '=', 'drink_types.id')
+            ->leftJoin('countries', 'products.country_id', '=', 'countries.id')
+            ->leftJoin('regions', 'products.region_id', '=', 'regions.id')
+            ->leftJoin('producers', 'products.producer_id', '=', 'producers.id')
+            ->leftJoin('wine_types', 'products.type_of_wine', '=', 'wine_types.id')
+            ->leftJoin('wine_tags', 'products.wine_tag_id', '=', 'wine_tags.id')
+            ->leftJoin('packaging', 'products.id', '=', 'packaging.product_id');
         foreach($filter_attrs as $attr => $logic) {
             if ($request->has($attr)) {
                 $query = $logics[$logic]($query, $attr, $request->$attr);
@@ -41,12 +50,13 @@ class ProductController extends Controller
                 $ordering = [
                     'recent' => function($q) { return $q->orderBy('created_at', 'desc'); },
                     'older' => function($q) { return $q->orderBy('created_at', 'asc'); },
+                    'expensive' => function($q) { return $q->orderBy('packaging.price', 'desc'); },
+                    'cheapest' => function($q) { return $q->orderBy('packaging.price', 'asc'); },
                 ];
                 $query = $ordering[$order_by]($query);
         }
 
-        $products = $query->paginate(10);
-        return ProductResource::collection($products);
+        return $query->select(ProductResource::selectLst())->paginate(10);
     }
 
     public function show($slug)

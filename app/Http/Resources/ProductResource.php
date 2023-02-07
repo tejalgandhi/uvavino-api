@@ -17,6 +17,7 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->resource->id,
             'wine_name' => $this->resource->wine_name,
+            'price' => $this->resource->packaging?->price,
             'description' => $this->resource->description,
             'wine_user' => $this->resource->wine_user->username,
             'drink_type' => $this->resource->drink_type->name,
@@ -35,6 +36,32 @@ class ProductResource extends JsonResource
             'award_name' => $this->resource->award_name,
             'score' => $this->resource->score,
             'review_name' => $this->resource->review_name,
+        ];
+    }
+
+    public static function selectLst() {
+        return [
+            'products.id',
+            'products.wine_name',
+            'packaging.price',
+            'products.description',
+            'wine_users.username AS wine_user',
+            'drink_types.name AS drink_type',
+            'products.bottle_size',
+            'countries.name AS country_name',
+            'regions.name AS region_name',
+            'producers.name AS producer_name',
+            'products.wine_maker',
+            'wine_types.name AS wine_type',
+            'products.year',
+            'products.grape_varieties',
+            'wine_tags.name AS wine_tag',
+            'products.storage_condition',
+            'products.review_and_rewards',
+            'products.medal',
+            'products.award_name',
+            'products.score',
+            'products.review_name',
         ];
     }
 }

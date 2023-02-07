@@ -43,6 +43,11 @@ class Product extends Model
         return $this->belongsTo(WineTag::class);
     }
 
+    public function packaging()
+    {
+        return $this->hasOne(Packaging::class);
+    }
+
     protected static function boot() {
         parent::boot();
 
