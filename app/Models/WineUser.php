@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
+/**
+ * App\Models\WineUser
+ *
+ * @property mixed $id
+ * @property string $name
+ * @property mixed $wishlist
+ */
 class WineUser extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -43,6 +49,10 @@ class WineUser extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function wishlist() {
+        return $this->belongsToMany(Product::class, 'wishlist', 'wine_user_id', 'product_id');
+    }
 
     public function reviews()
     {

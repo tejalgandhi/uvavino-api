@@ -5,6 +5,7 @@ use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\WineAuthController;
 use App\Http\Controllers\ProductAttributeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ArticleController;
 use Illuminate\Http\Request;
@@ -62,6 +63,12 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     //Review
     Route::post('/reviews', [ReviewController::class, 'store']);
+
+
+    //wishlist
+    Route::post('/wishlist/products', [WishlistController::class, 'store']);
+    Route::get('/wishlist/products', [WishlistController::class, 'index']);
+    Route::delete('/wishlist/products/{product_id}', [WishlistController::class, 'destroy']);
 
 
     // auction pack
