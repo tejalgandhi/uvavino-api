@@ -6,6 +6,8 @@ use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\WineAuthController;
 use App\Http\Controllers\ProductAttributeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ArticleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,9 +44,15 @@ Route::get('/product', [ProductController::class, 'index']);
 Route::get('/product/{slug}', [ProductController::class, 'show']);
 Route::get('/product/{slug}/recommended', [ProductController::class, 'recommended']);
 
+//Article
+Route::get('/articles', [ArticleController::class, 'index']);
+Route::get('/article/{slug}', [ArticleController::class, 'show']);
+
 // Static page
 Route::get('/pages', [StaticPageController::class, 'index']);
 Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
+
+Route::get('/reviews', [ReviewController::class, 'index']);
 
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
@@ -52,6 +60,10 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     // product
     Route::post('/product', [ProductController::class, 'store']);
+
+    //Review
+    Route::post('/reviews', [ReviewController::class, 'store']);
+
 
     // auction pack
     Route::get('/auction-packs', [AuctionPackController::class, 'index']);

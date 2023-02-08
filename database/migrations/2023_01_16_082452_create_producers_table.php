@@ -20,7 +20,9 @@ return new class extends Migration
                 $table->foreignId('country_id')->constrained();
                 $table->string('name');
                 $table->string('slug');
-                $table->enum('is_approved', ['0', '1'])->comment('0=>No,1=>Yes')->default(1);
+//                $table->enum('is_approved', ['0', '1'])->comment('0=>No,1=>Yes')->default(1);
+                $table->integer('status')->default(1);
+                $table->integer('is_approved')->default(1);
                 $table->timestamps();
             });
         }
