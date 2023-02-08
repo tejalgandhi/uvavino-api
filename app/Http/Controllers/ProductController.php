@@ -17,13 +17,15 @@ class ProductController extends Controller
         $order_by = $request->order_by;
 
         $filter_attrs = [
-            'wine_name' => 'like',
-            'type_of_wine' => 'in',
-            'drink_type_id' => 'in',
-            'country_id' => 'in',
-            'region_id' => 'in',
-            'producer_id' => 'in',
-            'wine_tag_id' => 'in',
+            'products' => [
+                'wine_name' => 'like',
+                'type_of_wine' => 'in',
+                'drink_type_id' => 'in',
+                'country_id' => 'in',
+                'region_id' => 'in',
+                'producer_id' => 'in',
+                'wine_tag_id' => 'in',
+            ]
         ];
 
         $logics = [
@@ -40,9 +42,11 @@ class ProductController extends Controller
             ->leftJoin('wine_types', 'products.type_of_wine', '=', 'wine_types.id')
             ->leftJoin('wine_tags', 'products.wine_tag_id', '=', 'wine_tags.id')
             ->leftJoin('packaging', 'products.id', '=', 'packaging.product_id');
-        foreach($filter_attrs as $attr => $logic) {
-            if ($request->has($attr)) {
-                $query = $logics[$logic]($query, $attr, $request->$attr);
+        foreach($filter_attrs as $tbl => $attrs) {
+            foreach($attrs as $attr => $logic) {
+                if ($request->has($attr)) {
+                    $query = $logics[$logic]($query, implode(".", [$tbl,$attr]), $request->$attr);
+                }
             }
         }
 
@@ -56,7 +60,11 @@ class ProductController extends Controller
             default => $query
         };
 
-        return $query->select(ProductResource::selectLst())->paginate(10);
+        return ProductResource::collection(
+            $query->select(
+                ProductResource::selectLst()
+            )->paginate(10)
+        );
     }
 
     public function show($slug)
