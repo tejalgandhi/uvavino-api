@@ -18,10 +18,10 @@ class AuctionFactory extends Factory
     {
         return [
             'lot_type' => 1 + (rand(1, 100) % 2),
-            'title' => implode(" ", fake()->words(rand(5,10))),
+            'title' => fake()->words(rand(5,10), true),
             'description' => fake()->paragraph,
-            'is_private' => str(rand(1, 100) % 2),
-            'auction_type' => str(rand(1, 100) % 2),
+            'is_private' => rand(1, 100) % 2,
+            'auction_type' => rand(1, 100) % 2,
             'max_price' => rand(300,800)
         ];
     }

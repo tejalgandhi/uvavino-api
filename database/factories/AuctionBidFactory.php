@@ -20,8 +20,8 @@ class AuctionBidFactory extends Factory
     public function definition()
     {
         return [
-            'wine_user_id' => $this->randomise(WineUser::class),
-            'auction_id' => $this->randomise(Auction::class),
+            'wine_user_id' => $this->randomize(WineUser::class),
+            'auction_id' => $this->randomize(Auction::class),
             'value' => rand(100,500)
         ];
     }

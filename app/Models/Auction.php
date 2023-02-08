@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Auction extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'lot_type',
         'title',
@@ -25,6 +26,13 @@ class Auction extends Model
 
     public function canBid(int $amt):bool
     {
+        // Need to write correct logic
         return true;
+    }
+
+    public function nextMinBid()
+    {
+        // Need to write correct logic
+        return 0;
     }
 }
