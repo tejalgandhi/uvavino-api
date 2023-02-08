@@ -16,7 +16,6 @@ class WishlistResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'wine_user_id' => $this->resource->wine_user_id,
             'product_id' => $this->resource->pivot_product_id,
             'wine_name' => $this->resource->wine_name,
             'slug' => $this->resource->slug,
