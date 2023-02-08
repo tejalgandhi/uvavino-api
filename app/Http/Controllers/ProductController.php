@@ -47,8 +47,8 @@ class ProductController extends Controller
         }
 
         $query = match($order_by) {
-            'a-z' => $query->orderBy('products.wine_name', 'asc'),
-            'z-a' => $query->orderBy('products.wine_name', 'desc'),
+            'ascending' => $query->orderBy('products.wine_name', 'asc'),
+            'descending' => $query->orderBy('products.wine_name', 'desc'),
             'recent' => $query->orderBy('products.created_at', 'desc'),
             'older' => $query->orderBy('products.created_at', 'asc'),
             'expensive' => $query->orderBy('packaging.price', 'desc'),
