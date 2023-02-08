@@ -43,6 +43,11 @@ class Product extends Model
         return $this->belongsTo(WineTag::class);
     }
 
+    public function reviewable()
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
+
     public function packaging()
     {
         return $this->hasOne(Packaging::class);
@@ -77,7 +82,7 @@ class Product extends Model
         })), " + ");
 
         $select = Arr::join(config('relavent_product.select', ["*"]),",") . ", ($rank) as rank";
-        
+
         return static::selectRaw($select)
             ->orderBy('rank', 'desc')
             ->limit($count)
