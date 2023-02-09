@@ -35,6 +35,11 @@ class Product extends Model
         return $this->belongsTo(Producer::class);
     }
 
+    public function orders()
+    {
+        return $this->morphMany(OrderDetail::class, 'orderable');
+    }
+
     public function wine_type(){
         return $this->belongsTo(WineType::class,'type_of_wine','id');
     }
@@ -46,6 +51,11 @@ class Product extends Model
     public function reviewable()
     {
         return $this->morphMany(Review::class, 'reviewable');
+    }
+
+    public function packaging()
+    {
+        return $this->hasOne(Packaging::class);
     }
 
     protected static function boot() {

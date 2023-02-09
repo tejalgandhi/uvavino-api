@@ -99,6 +99,23 @@ class ProductTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_order_products_ascending()
+    {
+        Product::factory()->count(20)->create();
+        $response = $this->get('/api/product?order_by=ascending');
+        $response->assertJsonCount(10, 'data');
+        $response->assertStatus(200);
+    }
+
+    public function test_order_products_descending()
+    {
+        Product::factory()->count(20)->create();
+        $response = $this->get('/api/product?order_by=descending');
+        $response->assertJsonCount(10, 'data');
+        $response->assertStatus(200);
+    }
+
+
     public function test_filter_products_with_correct_wine_name()
     {
         $wine1 = 'first';
