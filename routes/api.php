@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AuctionPackController;
 use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\WineAuthController;
 use App\Http\Controllers\ProductAttributeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SellerController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ArticleController;
@@ -34,9 +36,8 @@ Route::prefix('auth')->group(function() {
     Route::post('/logout', [WineAuthController::class, 'logout']);
     Route::post('/forget-password', [WineAuthController::class, 'forget']);
     Route::post('/reset-password', [WineAuthController::class, 'reset']);
-
-
 });
+
 Route::get('/product-attribute/{attribute_name}', [ProductAttributeController::class, 'attribute_list']);
 
 //product
@@ -58,7 +59,15 @@ Route::get('/reviews', [ReviewController::class, 'index']);
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::get('/user', function() { return request()->user(); });
 
-    // product
+    // Routes for connect as seller of wine products
+    Route::post('/connect-as-seller', [SellerController::class, 'connect']);
+
+    // Order API
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::get('/orders/{order}', [OrderController::class, 'show']);
+    Route::post('/orders', [OrderController::class, 'store']);
+
+    //product
     Route::post('/product', [ProductController::class, 'store']);
 
     //Review

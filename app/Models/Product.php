@@ -35,6 +35,11 @@ class Product extends Model
         return $this->belongsTo(Producer::class);
     }
 
+    public function orders()
+    {
+        return $this->morphMany(OrderDetail::class, 'orderable');
+    }
+
     public function wine_type(){
         return $this->belongsTo(WineType::class,'type_of_wine','id');
     }
