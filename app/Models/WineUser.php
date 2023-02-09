@@ -10,6 +10,13 @@ use Illuminate\Notifications\Notifiable;
 use Immera\Payment\Contracts\PaymentUserContract;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * App\Models\WineUser
+ *
+ * @property mixed $id
+ * @property string $name
+ * @property mixed $wishlist
+ */
 class WineUser extends Authenticatable implements ConnectableUser, PaymentUserContract
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -77,4 +84,14 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
             implode(" ", [$this->first_name, $this->last_name]):
             $this->username;
     }
+
+    public function wishlist() {
+        return $this->belongsToMany(Product::class, 'wishlist', 'wine_user_id', 'product_id');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
 }
