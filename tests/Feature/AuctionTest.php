@@ -52,4 +52,22 @@ class AuctionTest extends TestCase
         $response = $this->actingAs($user)->post('/api/auction', $data);
         $this->assertEquals(1, Auction::count(), "There should not be only one auction present in the db.");
     }
+
+    public function test_get_single_auction()
+    {
+        $user = WineUser::factory()->create();
+        $auction = Auction::factory()->create();
+        $response = $this->actingAs($user)->get('/api/auction/' . $auction->id);
+        $response->assertStatus(200);
+    }
+
+    public function test_make_bid_on_auction()
+    {
+        $user = WineUser::factory()->create();
+        $auction = Auction::factory()->create();
+        $response = $this->actingAs($user)->post('/api/auction/' . $auction->id . '/bid',[
+            'value' => 100
+        ]);
+        $response->assertStatus(201);
+    }
 }

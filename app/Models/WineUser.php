@@ -58,11 +58,6 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
         return $this->hasMany(AuctionPackage::class);
     }
 
-    public function orders()
-    {
-        // return $this->hasMany(Order::class);
-    }
-
     public function canAuction(): bool
     {
         // get purchased auctions
