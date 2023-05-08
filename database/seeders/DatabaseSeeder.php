@@ -46,14 +46,14 @@ class DatabaseSeeder extends Seeder
         $producer = Producer::first();
         $brand = Brand::first();
 
-        \App\Models\Product::factory(10)->create([
-            'country_id'=>$country->id,
-            'wine_user_id'=>$wine_user->id,
-            'drink_type_id'=>$drink_type->id,
-            'wine_tag_id'=>$wine_tag->id,
-            'region_id'=>$region->id,
-            'producer_id'=>$producer->id,
-        ]);
+//        \App\Models\Product::factory(10)->create([
+//            'country_id'=>$country->id,
+//            'wine_user_id'=>$wine_user->id,
+//            'drink_type_id'=>$drink_type->id,
+//            'wine_tag_id'=>$wine_tag->id,
+//            'region_id'=>$region->id,
+//            'producer_id'=>$producer->id,
+//        ]);
 
     }
 }
