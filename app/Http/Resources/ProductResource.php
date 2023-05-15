@@ -17,7 +17,7 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->resource->id,
             'wine_name' => $this->resource->wine_name,
-            'price' => $this->resource->packaging?->price,
+            'price' => $this->resource->price,
             'description' => $this->resource->description,
             'wine_user' => $this->resource->wine_user,
             'drink_type' => $this->resource->drink_type,
@@ -43,7 +43,7 @@ class ProductResource extends JsonResource
         return [
             'products.id',
             'products.wine_name',
-            'packaging.price',
+            'baskets.price',
             'products.description',
             'wine_users.username AS wine_user',
             'drink_types.name AS drink_type',

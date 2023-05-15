@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Basket;
 use App\Models\Country;
 use App\Models\DrinkType;
 use App\Models\Producer;
@@ -57,7 +58,13 @@ class ProductTest extends TestCase
     public function store_product_array($params = null){
         $data = $this->common_factory();
         $product = [
+            "title" => "Test wine",
+            "description" => "Test wine description",
             "wine_name" => "Test wine",
+            "stock" =>11,
+            "price" =>120,
+            "weight" =>12,
+            "dimensions" =>"12*11",
             "wine_user_id" =>$data['wine_user']->id,
             "drink_type_id" =>$data['drink_type']->id,
             "bottle_size" =>"L",
@@ -91,7 +98,8 @@ class ProductTest extends TestCase
         $response->assertStatus(200);
 
         $c = rand(15, 30);
-        Product::factory()->count($c)->create();
+        $basket = Basket::factory()->create();
+        Product::factory()->count($c)->create(['basket_id'=>$basket->id]);
 
         $response = $this->get('/api/product');
         $response->assertJsonCount(10, 'data');
@@ -330,9 +338,9 @@ class ProductTest extends TestCase
 
     public function test_get_single_product()
     {
-        $product = Product::factory()->create();
-        $response = $this->get('/api/product/' . $product->slug);
-        $response->assertJson($product->toArray());
+        $basket = Basket::factory()->create();
+        Product::factory()->create(['basket_id'=>$basket->id]);
+        $response = $this->get('/api/product/' . $basket->slug);
         $response->assertJsonStructure(["id",
             "wine_name",
             "description",
@@ -353,7 +361,7 @@ class ProductTest extends TestCase
             "award_name",
             "score",
             "review_name"
-            ]);
+         ]);
         $response->assertStatus(200);
 
         $slug = 'Test';

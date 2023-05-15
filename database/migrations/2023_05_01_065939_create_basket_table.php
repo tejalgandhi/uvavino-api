@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('baskets', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('slug');
             $table->text('description')->nullable();
             $table->integer('stock')->default(0);
             $table->double('price', 8, 2)->default(0);

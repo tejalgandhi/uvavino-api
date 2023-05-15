@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Basket extends Model
 {
 
+    use HasFactory;
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
@@ -20,4 +23,17 @@ class Basket extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+    protected static function boot() {
+        parent::boot();
+
+        static::creating(function ($basket) {
+            $slug = Str::slug($basket->title);
+            $count = 1;
+            while(static::whereSlug($slug)->count() > 0) {
+                $slug = Str::slug($basket->title . "-" . $count);
+                $count++;
+            }
+            $basket->slug = $slug;
+        });
+    }
 }

@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\DrinkType::factory(10)->create();
         \App\Models\WineTag::factory(10)->create();
         \App\Models\WineVariety::factory(10)->create();
+        \App\Models\WineType::factory(10)->create();
 
         $country = Country::first();
         $wine_user = WineUser::first();

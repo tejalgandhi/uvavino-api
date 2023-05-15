@@ -6,7 +6,7 @@ use App\Http\Requests\ProductRequest;
 use App\Http\Resources\Fail;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\Success;
-use App\Models\DrinkType;
+use App\Models\Basket;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -33,15 +33,15 @@ class ProductController extends Controller
             'like' =>  function($q, $a, $v) { return $q->where($a,'LIKE','%'.$v.'%'); }
         ];
 
-        $query = Product::query()
+        $query = Basket::query()
+            ->leftJoin('products', 'baskets.id', '=', 'products.basket_id')
             ->leftJoin('wine_users', 'products.wine_user_id', '=', 'wine_users.id')
             ->leftJoin('drink_types', 'products.drink_type_id', '=', 'drink_types.id')
             ->leftJoin('countries', 'products.country_id', '=', 'countries.id')
             ->leftJoin('regions', 'products.region_id', '=', 'regions.id')
             ->leftJoin('producers', 'products.producer_id', '=', 'producers.id')
             ->leftJoin('wine_types', 'products.type_of_wine', '=', 'wine_types.id')
-            ->leftJoin('wine_tags', 'products.wine_tag_id', '=', 'wine_tags.id')
-            ->leftJoin('packaging', 'products.id', '=', 'packaging.product_id');
+            ->leftJoin('wine_tags', 'products.wine_tag_id', '=', 'wine_tags.id');
         foreach($filter_attrs as $tbl => $attrs) {
             foreach($attrs as $attr => $logic) {
                 if ($request->has($attr)) {
@@ -55,8 +55,8 @@ class ProductController extends Controller
             'descending' => $query->orderBy('products.wine_name', 'desc'),
             'recent' => $query->orderBy('products.created_at', 'desc'),
             'older' => $query->orderBy('products.created_at', 'asc'),
-            'expensive' => $query->orderBy('packaging.price', 'desc'),
-            'cheapest' => $query->orderBy('packaging.price', 'asc'),
+            'expensive' => $query->orderBy('baskets.price', 'desc'),
+            'cheapest' => $query->orderBy('baskets.price', 'asc'),
             default => $query
         };
 
@@ -69,7 +69,10 @@ class ProductController extends Controller
 
     public function show($slug)
     {
-        $product =  Product::whereSlug($slug)->first();
+        $product = Basket::query()
+            ->leftJoin('products', 'baskets.id', '=', 'products.basket_id')
+            ->where('baskets.slug',$slug)
+            ->first();
         if(!$product){
             return (new Fail(__('Product does not exist')))->json(404);
         }
@@ -78,7 +81,18 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request){
         try {
+           $basket = Basket::create(
+                $request->only([
+                    "title",
+                    "description",
+                    "stock",
+                    "price",
+                    "weight",
+                    "dimensions",
+            ]));
+            $request->request->add(['basket_id' => $basket->id]);
             Product::create($request->only([
+                "basket_id",
                 "wine_name",
                 "description",
                 "wine_user_id",
@@ -105,6 +119,7 @@ class ProductController extends Controller
         }
     }
 
+    //WIP: Product recommended Logic
     public function recommended($slug) {
         $product =  Product::whereSlug($slug)->first();
         if(!$product){

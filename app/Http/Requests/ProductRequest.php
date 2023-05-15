@@ -24,6 +24,11 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
+            "title" => ["required"],
+            "stock" => ["required"],
+            "price" => ["required"],
+            "weight" => ["required"],
+            "dimensions" => ["required"],
             "wine_name" => ["required"],
             "drink_type_id" => ["required"],
             "bottle_size" => ["required"],
