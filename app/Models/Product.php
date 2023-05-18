@@ -53,11 +53,6 @@ class Product extends Model
         return $this->morphMany(Review::class, 'reviewable');
     }
 
-    public function packaging()
-    {
-        return $this->hasOne(Packaging::class);
-    }
-
     protected static function boot() {
         parent::boot();
 
