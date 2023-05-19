@@ -66,7 +66,7 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
     public function getEmail(): string {
         return $this->email;
     }
-  
+
     public function orders()
     {
         return $this->hasMany(Order::class);
@@ -86,7 +86,7 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
     }
 
     public function wishlist() {
-        return $this->belongsToMany(Product::class, 'wishlist', 'wine_user_id', 'product_id');
+        return $this->belongsToMany(Basket::class, 'wishlist', 'wine_user_id', 'id');
     }
 
     public function reviews()

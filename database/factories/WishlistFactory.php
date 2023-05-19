@@ -2,8 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Basket;
 use App\Models\Product;
 use App\Models\WineUser;
+use App\Models\Wishlist;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +23,7 @@ class WishlistFactory extends Factory
     {
         return [
             'wine_user_id' => $this->randomize(WineUser::class),
-            'product_id' => $this->randomize(Product::class)
+            'basket_id' => $this->randomize(Basket::class)
         ];
     }
 }

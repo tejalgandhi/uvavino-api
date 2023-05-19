@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Basket;
 use App\Models\Country;
 use App\Models\DrinkType;
 use App\Models\Producer;
@@ -19,16 +20,16 @@ class WishlistTest extends TestCase
 
     public function common_factory(){
         $wine_user = WineUser::factory()->create();
-        $product = Product::factory()->create();
+        $basket = Basket::factory()->create();
 
-        return compact("wine_user","product");
+        return compact("wine_user","basket");
     }
 
     public function test_get_wishlist()
     {
         $data = $this->common_factory();
         $response = $this->actingAs($data['wine_user'])->post('/api/wishlist/products',[
-            'product_id' => $data['product']->id
+            'basket_id' => $data['basket']->id,
         ]);
         $response->assertStatus(201);
         $response = $this->actingAs($data['wine_user'])->get('/api/wishlist/products');
@@ -39,7 +40,7 @@ class WishlistTest extends TestCase
     {
         $data = $this->common_factory();
         $response =  $this->actingAs($data['wine_user'])->post('/api/wishlist/products',[
-            'product_id' => $data['product']->id
+            'basket_id' => $data['basket']->id
         ]);
         $response->assertStatus(201);
 
@@ -51,10 +52,10 @@ class WishlistTest extends TestCase
     {
         $data = $this->common_factory();
         $response =  $this->actingAs($data['wine_user'])->post('/api/wishlist/products', [
-            'product_id' => $data['product']->id
+            'basket_id' => $data['basket']->id
         ]);
         $response->assertStatus(201);
-        $response =  $this->actingAs($data['wine_user'])->delete('/api/wishlist/products/'.$data['product']->id);
+        $response =  $this->actingAs($data['wine_user'])->delete('/api/wishlist/products/'.$data['basket']->id);
         $response->assertStatus(200);
 
         $response =  $this->actingAs($data['wine_user'])->delete('/api/wishlist/products/100');
@@ -65,9 +66,9 @@ class WishlistTest extends TestCase
     {
         $user1 = WineUser::factory()->create();
         $user2 = WineUser::factory()->create();
-        $product = Product::factory()->create();
+        $product = Basket::factory()->create();
         $response =  $this->actingAs($user1)->post('/api/wishlist/products', [
-            'product_id' => $product->id
+            'basket_id' => $product->id
         ]);
         $response->assertStatus(201);
         $response = $this->actingAs($user1)->get('/api/wishlist/products');
@@ -80,12 +81,18 @@ class WishlistTest extends TestCase
 
     public function test_delete_product_from_wishlist_dont_affect_other_user_wishlist()
     {
-        $user1 = WineUser::factory()->create();
-        $user2 = WineUser::factory()->create();
-        $product = Product::factory()->create();
-        Wishlist::factory()->create(['wine_user_id' => $user1->id, 'product_id' => $product->id]);
-        Wishlist::factory()->create(['wine_user_id' => $user2->id, 'product_id' => $product->id]);
+        $data1 = $this->common_factory();
+        $data2 = $this->common_factory();
+        $user1 = $data1['wine_user'];
+        $user2 = $data2['wine_user'];
+        $product = $data1['product'];
 
+        Product::factory()->create(['wine_user_id' => $data1['wine_user']->id, 'basket_id' => $data1['product']->id]);
+        Product::factory()->create(['wine_user_id' => $data2['wine_user']->id, 'basket_id' =>$data1['product']->id]);
+
+        Wishlist::factory()->create(['wine_user_id' =>  $data1['wine_user']->id, 'basket_id' => $data1['product']->id]);
+        Wishlist::factory()->create(['wine_user_id' =>  $data2['wine_user']->id, 'basket_id' => $data1['product']->id]);
+        dd('dd');
         $response = $this->actingAs($user1)->get('/api/wishlist/products');
         $response->assertStatus(200);
         $response->assertJsonCount(1, "data");

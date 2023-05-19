@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Wishlist extends Model
 {
     use HasFactory;
-    protected $table = 'wishlist';
+    public $table = 'wishlist';
 
     protected $guarded = ['id'];
 
@@ -16,7 +16,7 @@ class Wishlist extends Model
         return $this->belongsTo(WineUser::class,'wine_user_id','id');
     }
 
-    public function product(){
-        return $this->belongsTo(Product::class,'product_id','id');
+    public function basket(){
+        return $this->belongsTo(Basket::class,'basket_id','id');
     }
 }
