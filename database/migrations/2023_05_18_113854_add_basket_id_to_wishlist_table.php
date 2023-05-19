@@ -14,15 +14,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('wishlist', function (Blueprint $table) {
-            if (DB::getDriverName() !== 'sqlite') {
-//                $table->dropForeign(['product_id']);
-            }
-//            $table->dropColumn('product_id');
-            $table->bigInteger('basket_id')->unsigned()->index()->nullable();
-            $table->foreign('basket_id')->references('id')->on('baskets');
-
-        });
+        Schema::dropIfExists('wishlist');
+        if (!Schema::hasTable('wishlist')) {
+            Schema::create('wishlist', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('wine_user_id')->constrained();
+                $table->foreignId('basket_id')->constrained();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -32,11 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('wishlist', function (Blueprint $table) {
-            if (DB::getDriverName() !== 'sqlite') {
-                $table->dropForeign(['basket_id']);
-            }
-            $table->dropColumn('basket_id');
-        });
+
     }
 };

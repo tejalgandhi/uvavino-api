@@ -27,10 +27,10 @@ class WishlistController extends Controller
             if ($wishlist > 0) {
                 return (new Success(__("Product already exists")))->json(200);
             }
-            UserWishlist::create([
-                'wine_user_id'=>$request->only('wine_user_id'),
-                'basket_id'=>$request->only('basket_id')
-            ]);
+            UserWishlist::create($request->only([
+                "wine_user_id",
+                "basket_id"
+            ]));
             return (new Success(__("Wishlist store successfully.")))->json(201);
         }catch (\Exception $e){
             Log::info($e->getMessage());

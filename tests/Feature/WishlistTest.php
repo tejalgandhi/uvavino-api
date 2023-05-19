@@ -85,14 +85,13 @@ class WishlistTest extends TestCase
         $data2 = $this->common_factory();
         $user1 = $data1['wine_user'];
         $user2 = $data2['wine_user'];
-        $product = $data1['product'];
+        $product = $data1['basket'];
 
-        Product::factory()->create(['wine_user_id' => $data1['wine_user']->id, 'basket_id' => $data1['product']->id]);
-        Product::factory()->create(['wine_user_id' => $data2['wine_user']->id, 'basket_id' =>$data1['product']->id]);
+        Product::factory()->create(['wine_user_id' => $data1['wine_user']->id, 'basket_id' => $data1['basket']->id]);
+        Product::factory()->create(['wine_user_id' => $data2['wine_user']->id, 'basket_id' =>$data1['basket']->id]);
 
-        Wishlist::factory()->create(['wine_user_id' =>  $data1['wine_user']->id, 'basket_id' => $data1['product']->id]);
-        Wishlist::factory()->create(['wine_user_id' =>  $data2['wine_user']->id, 'basket_id' => $data1['product']->id]);
-        dd('dd');
+        Wishlist::factory()->create(['wine_user_id' =>  $data1['wine_user']->id, 'basket_id' => $data1['basket']->id]);
+        Wishlist::factory()->create(['wine_user_id' =>  $data2['wine_user']->id, 'basket_id' => $data1['basket']->id]);
         $response = $this->actingAs($user1)->get('/api/wishlist/products');
         $response->assertStatus(200);
         $response->assertJsonCount(1, "data");
@@ -113,15 +112,20 @@ class WishlistTest extends TestCase
 
     public function test_wishlist_showing_only_logged_in_users_wishlist_data()
     {
-        $user1 = WineUser::factory()->create();
-        Wishlist::factory()->count(5)->create(['wine_user_id' => $user1]);
-        $user2 = WineUser::factory()->create();
-        Wishlist::factory()->count(3)->create(['wine_user_id' => $user2]);
+        $data1 = $this->common_factory();
+        $data2 = $this->common_factory();
+        $user1 = $data1['wine_user'];
+        $user2 = $data2['wine_user'];
+
+        Wishlist::factory()->count(2)->create(['wine_user_id' =>  $data1['wine_user']->id, 'basket_id' => $data1['basket']->id]);
+        Wishlist::factory()->count(5)->create(['wine_user_id' =>  $data2['wine_user']->id, 'basket_id' => $data1['basket']->id]);
+
         $response = $this->actingAs($user1)->get('/api/wishlist/products');
         $response->assertStatus(200);
-        $response->assertJsonCount(5, "data");
+
+        $response->assertJsonCount(2, "data");
         $response = $this->actingAs($user2)->get('/api/wishlist/products');
         $response->assertStatus(200);
-        $response->assertJsonCount(3, "data");
+        $response->assertJsonCount(0, "data");
     }
 }

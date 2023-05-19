@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Wishlist extends Model
 {
     use HasFactory;
-    public $table = 'wishlist';
+    protected $table = 'wishlist';
 
     protected $guarded = ['id'];
 
