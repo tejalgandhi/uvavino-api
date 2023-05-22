@@ -17,10 +17,11 @@ return new class extends Migration
             Schema::create('auctions', function (Blueprint $table) {
                 $table->id();
                 $table->foreignId('basket_id')->constrained();
+                $table->enum('lot_type', ['1', '2'])->comment('1=>single,2=>multi')->default(1);
                 $table->string('title');
                 $table->longText('description')->nullable();
-                $table->integer('is_private')->default(1);
-                $table->integer('type')->default(1);
+                $table->enum('is_private', ['0', '1'])->comment('0=>No,1=>Yes')->default(1);
+                $table->enum('auction_type', ['0', '1'])->comment('0=>live,1=>timebased')->default(1);
                 $table->integer('max_price')->default(0);
                 $table->string('invitations')->nullable();
                 $table->timestamps();

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AuctionPackController;
 use App\Http\Controllers\StaticPageController;
@@ -10,7 +11,6 @@ use App\Http\Controllers\SellerController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\AuctionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -89,4 +89,11 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     // auction pack
     Route::get('/auction-packs', [AuctionPackController::class, 'index']);
+
+    // auction api
+    Route::post('/auction', [AuctionController::class, 'create']);
+    Route::get('/auction', [AuctionController::class, 'index']);
+    Route::get('/auction/{auction}', [AuctionController::class, 'show']);
+    Route::post('/auction/{auction}/bid', [AuctionController::class, 'bid']);
+    Route::post('/auction/{auction}/automatic-bid', [AuctionController::class, 'automaticBid']);
 });
