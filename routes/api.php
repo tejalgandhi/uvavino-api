@@ -10,6 +10,7 @@ use App\Http\Controllers\SellerController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\AuctionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +46,9 @@ Route::get('/product', [ProductController::class, 'index']);
 Route::get('/product/{slug}', [ProductController::class, 'show']);
 Route::get('/product/{slug}/recommended', [ProductController::class, 'recommended']);
 
+//auction
+Route::get('/auction', [AuctionController::class, 'index']);
+
 //Article
 Route::get('/articles', [ArticleController::class, 'index']);
 Route::get('/article/{slug}', [ArticleController::class, 'show']);
@@ -69,6 +73,9 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     //product
     Route::post('/product', [ProductController::class, 'store']);
+
+    //Auction
+    Route::post('/auction', [AuctionController::class, 'store']);
 
     //Review
     Route::post('/reviews', [ReviewController::class, 'store']);
