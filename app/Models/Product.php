@@ -48,6 +48,11 @@ class Product extends Model
         return $this->belongsTo(WineTag::class);
     }
 
+    public function packaging()
+    {
+        return $this->hasOne(Basket::class);
+    }
+
     public function reviewable()
     {
         return $this->morphMany(Review::class, 'reviewable');
