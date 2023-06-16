@@ -26,7 +26,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'basket_id' => $this->randomize(Basket::class),
+            'basket_id' => Basket::factory(),
             'wine_user_id' => $this->randomize(WineUser::class),
             'country_id' => $this->randomize(Country::class),
             'region_id' => $this->randomize(Region::class),

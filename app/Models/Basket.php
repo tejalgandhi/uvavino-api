@@ -36,4 +36,8 @@ class Basket extends Model
             $basket->slug = $slug;
         });
     }
+
+    public function products(){
+        return $this->hasMany(Product::class,'basket_id','id');
+    }
 }
