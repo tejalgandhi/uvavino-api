@@ -8,16 +8,19 @@ use App\Http\Requests\UserRegistrationRequest;
 use App\Http\Resources\AuthToken;
 use App\Http\Resources\Fail;
 use App\Http\Resources\Success;
+use App\Http\Resources\WineUserResource;
 use App\Models\WineUser;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
 class WineAuthController extends Controller
 {
 
-    public function register(UserRegistrationRequest $request) {
+    public function register(UserRegistrationRequest $request)
+    {
         $user_attrs = [
             ...$request->only(['username', 'first_name', 'last_name', 'email']),
             "password" => Hash::make($request->password)
@@ -26,30 +29,38 @@ class WineAuthController extends Controller
         return $this->_login($request, 201);
     }
 
-    public function login(Request $request) {
+    protected function _login(Request $request, $status = 200)
+    {
+        $user = WineUser::whereEmail($request->email)->first();
+        if (!$user) {
+            return (new Fail(__('auth.not_found')))->json(404);
+        }
+        if (!Hash::check($request->password, $user->password)) {
+            return (new Fail(__('auth.incorrect_password')))->json();
+        }
+
+        $token = $user->createToken('login')->plainTextToken;
+        return response()->json([
+            'status' => $status,
+            'user' => new WineUserResource($user),
+            'token' => $token,
+        ]);
+    }
+
+    public function login(Request $request)
+    {
         return $this->_login($request);
     }
 
-    protected function _login(Request $request, $status = 200) {
-        $user = WineUser::whereEmail($request->email)->first();
-        if ( !$user ) {
-            return (new Fail(__('auth.not_found')))->json(404);
-        }
-        if ( !Hash::check($request->password, $user->password) ) {
-            return (new Fail(__('auth.incorrect_password')))->json();
-        }
-        $token = $user->createToken('login');
-        return (new AuthToken($token->plainTextToken))->json($status);
-    }
-
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         $user = $request->user();
         if (!$user) return (new Fail(__('auth.invalid_user')))->json(400);
         $user->tokens()->delete();
         return (new Success(__('auth.logout')))->json();
     }
 
-    public function forget (ForgotPasswordRequest $request)
+    public function forget(ForgotPasswordRequest $request)
     {
         $user = WineUser::whereEmail($request->email)->first();
         if (!$user) return (new Fail(__('auth.not_found')))->json(404);
@@ -58,7 +69,7 @@ class WineAuthController extends Controller
         return (new Success(__('passwords.sent')))->json();
     }
 
-    public function reset (Request $request)
+    public function reset(Request $request)
     {
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
@@ -70,10 +81,19 @@ class WineAuthController extends Controller
             }
         );
 
-        return (match ($status) {
-            Password::PASSWORD_RESET => new Success(__($status)),
+        return (match($status){
+        Password::PASSWORD_RESET => new Success(__($status)),
             default => new Fail(__($status))
         })->json();
-        
+
+    }
+
+    public function getUser(Request $request)
+    {
+        $user = Auth::user();
+        return response()->json([
+            'status' => 200,
+            'user' => new WineUserResource($user),
+        ]);
     }
 }

@@ -17,11 +17,11 @@ class WineUserResource extends JsonResource
         return [
             'id' => $this->id,
             'username' => $this->username,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
+            'first_name' => $this->first_name ?? '',
+            'last_name' => $this->last_name  ?? '',
             'email' => $this->email,
-            'stripe_customer_id' => $this->stripe_customer_id,
-            'connection_id' => $this->connection_id,
+            'stripe_customer_id' => $this->stripe_customer_id  ?? '',
+            'connection_id' => $this->connection_id  ?? '',
         ];
     }
 }
