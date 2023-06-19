@@ -15,6 +15,7 @@ use Laravel\Sanctum\HasApiTokens;
  *
  * @property mixed $id
  * @property string $name
+ * @property string $slug
  * @property mixed $wishlist
  */
 class WineUser extends Authenticatable implements ConnectableUser, PaymentUserContract
@@ -66,7 +67,7 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
     public function getEmail(): string {
         return $this->email;
     }
-  
+
     public function orders()
     {
         return $this->hasMany(Order::class);
