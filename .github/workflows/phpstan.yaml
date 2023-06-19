@@ -23,7 +23,7 @@ jobs:
           coverage: none
       - name: Install dependencies
         run: |
-          composer require "laravel/framework" --no-interaction --no-update
+          composer require "laravel/framework"  "~9.48" --no-interaction --no-update
           composer update --prefer-stable --prefer-dist --no-interaction
       - name: Run PHPStan
         run: ./vendor/bin/phpstan --error-format=github
