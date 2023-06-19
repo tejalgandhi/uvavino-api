@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -15,40 +18,52 @@ class Product extends Model
     protected $guarded = ['id'];
 
 
-    public function wine_user(){
+    public function wine_user(): BelongsTo
+    {
         return $this->belongsTo(WineUser::class,'wine_user_id','id');
     }
 
-    public function drink_type(){
+    public function drink_type(): BelongsTo
+    {
         return $this->belongsTo(DrinkType::class);
     }
 
-    public function country(){
+    public function country(): BelongsTo
+    {
         return $this->belongsTo(Country::class);
     }
 
-    public function region(){
+    public function region(): BelongsTo
+    {
         return $this->belongsTo(Region::class);
     }
 
-    public function producer(){
+    public function producer(): BelongsTo
+    {
         return $this->belongsTo(Producer::class);
     }
 
-    public function orders()
+    public function orders(): MorphMany
     {
         return $this->morphMany(OrderDetail::class, 'orderable');
     }
 
-    public function wine_type(){
+    public function wine_type(): BelongsTo
+    {
         return $this->belongsTo(WineType::class,'type_of_wine','id');
     }
 
-    public function wine_tag(){
+    public function wine_tag(): BelongsTo
+    {
         return $this->belongsTo(WineTag::class);
     }
 
-    public function reviewable()
+    public function packaging(): HasOne
+    {
+        return $this->hasOne(Basket::class);
+    }
+
+    public function reviewable(): MorphMany
     {
         return $this->morphMany(Review::class, 'reviewable');
     }

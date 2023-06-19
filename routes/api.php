@@ -61,7 +61,7 @@ Route::get('/reviews', [ReviewController::class, 'index']);
 
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
-    Route::get('/user', function() { return request()->user(); });
+    Route::get('/user', [WineAuthController::class, 'getUser']);
 
     // Routes for connect as seller of wine products
     Route::post('/connect-as-seller', [SellerController::class, 'connect']);
