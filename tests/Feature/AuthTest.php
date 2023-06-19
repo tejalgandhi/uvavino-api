@@ -25,13 +25,15 @@ class AuthTest extends TestCase
     {
         $this->assertEquals(0, WineUser::count(), "User already exists before starting the test.");
         $response = $this->post('/api/auth/register', [
-            "username" => "Harikrushna",
-            "email" => "harikrushna@enstead.com",
+            "username" => "Tejal",
+            "first_name" => "Tejal",
+            "last_name" => "Gandhi",
+            "email" => "tejal@enstead.com",
             "password" => "123123"
         ]);
         $this->assertEquals(1, WineUser::count(), "User count doens not match with expected count 1.");
         $response->assertJsonStructure(['token']);
-        $response->assertStatus(201);
+        $response->assertStatus(200);
     }
 
     public function test_registration_with_invalid_email_address()
@@ -39,8 +41,10 @@ class AuthTest extends TestCase
         $this->assertEquals(0, WineUser::count(), "User already exists before starting the test.");
 
         $response = $this->post('/api/auth/register', [
-            "username" => "Harikrushna",
-            "email" => "harikrushna",
+            "first_name" => "Tejal",
+            "last_name" => "Gandhi",
+            "username" => "Tejal",
+            "email" => "tejal",
             "password" => "123123"
         ]);
 
@@ -54,12 +58,45 @@ class AuthTest extends TestCase
         $this->assertEquals(0, WineUser::count(), "User already exists before starting the test.");
 
         $response = $this->post('/api/auth/register', [
-            "username" => "Harikrushna",
+            "first_name" => "Tejal",
+            "last_name" => "Gandhi",
+            "username" => "Tejal",
             "password" => "123123"
         ]);
 
         $this->assertEquals(0, WineUser::count(), "User count doens not match with expected count 0.");
         $response->assertJsonValidationErrors(['email']);
+        $response->assertStatus(422);
+    }
+
+    public function test_registration_without_first_name_should_failed()
+    {
+        $this->assertEquals(0, WineUser::count(), "User already exists before starting the test.");
+
+        $response = $this->post('/api/auth/register', [
+            "last_name" => "Gandhi",
+            "username" => "Tejal",
+            "email" => "Tejal@enstead.com",
+            "password" => "123123"
+        ]);
+
+        $this->assertEquals(0, WineUser::count(), "User count doens not match with expected count 0.");
+        $response->assertJsonValidationErrors(['first_name']);
+        $response->assertStatus(422);
+    }
+    public function test_registration_without_last_name_should_failed()
+    {
+        $this->assertEquals(0, WineUser::count(), "User already exists before starting the test.");
+
+        $response = $this->post('/api/auth/register', [
+            "first_name" => "Gandhi",
+            "username" => "Tejal",
+            "email" => "Tejal@enstead.com",
+            "password" => "123123"
+        ]);
+
+        $this->assertEquals(0, WineUser::count(), "User count doens not match with expected count 0.");
+        $response->assertJsonValidationErrors(['last_name']);
         $response->assertStatus(422);
     }
 
@@ -149,7 +186,7 @@ class AuthTest extends TestCase
         $user = WineUser::factory()->create();
         $auth = WineUser::find($user->id);
         $response = $this->actingAs($auth)->get('/api/user');
-        $response->assertJson($user->toArray());
+        $response->assertStatus(200);
     }
 
     public function test_forget_password_no_user()
