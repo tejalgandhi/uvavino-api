@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuctionBidRequest;
 use App\Http\Requests\AuctionCreateRequest;
 use App\Http\Requests\AutomaticBidRequest;
+use App\Http\Resources\AuctionResource;
 use App\Http\Resources\Fail;
 use App\Http\Resources\Success;
 use App\Models\Auction;
@@ -14,9 +15,14 @@ use Illuminate\Http\Request;
 
 class AuctionController extends Controller
 {
-    public function index()
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function index(Request $request)
     {
-        return Auction::paginate(10);
+        $auctions = Auction::paginate(10);
+        return AuctionResource::collection($auctions);
     }
 
     public function create(AuctionCreateRequest $request)
