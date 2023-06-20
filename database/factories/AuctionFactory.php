@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Basket;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,11 +18,11 @@ class AuctionFactory extends Factory
     public function definition()
     {
         return [
-            'lot_type' => 1 + (rand(1, 100) % 2),
+            'basket_id' => Basket::factory(),
             'title' => fake()->words(rand(5,10), true),
             'description' => fake()->paragraph,
             'is_private' => rand(1, 100) % 2,
-            'auction_type' => rand(1, 100) % 2,
+            'type' => rand(1, 100) % 2,
             'max_price' => rand(300,800)
         ];
     }

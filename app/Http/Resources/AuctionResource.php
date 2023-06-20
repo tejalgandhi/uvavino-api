@@ -16,14 +16,13 @@ class AuctionResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'lot_type' => $this->resource->lot_type,
             'title' => $this->resource->title,
             'description' => $this->resource->description,
             'is_private' => $this->resource->is_private,
             'type' => $this->resource->type,
             'max_price' => $this->resource->max_price,
-            'invitations' => $this->resource->invitations,
-            'basket' => new BasketResource($this->resource->basket_id),
+            'invitations' => $this->resource->invitations ?? '',
+            'basket' => new BasketResource($this->resource->baskets),
         ];
     }
 
@@ -36,6 +35,7 @@ class AuctionResource extends JsonResource
             'auctions.type',
             'auctions.max_price',
             'auctions.invitations',
+            'auctions.basket_id'
         ];
     }
 }

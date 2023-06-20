@@ -74,9 +74,6 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     //product
     Route::post('/product', [ProductController::class, 'store']);
 
-    //Auction
-    Route::post('/auction', [AuctionController::class, 'store']);
-
     //Review
     Route::post('/reviews', [ReviewController::class, 'store']);
 
@@ -91,7 +88,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::get('/auction-packs', [AuctionPackController::class, 'index']);
 
     // auction api
-    Route::post('/auction', [AuctionController::class, 'create']);
+    Route::post('/auction', [AuctionController::class, 'store']);
     Route::get('/auction', [AuctionController::class, 'index']);
     Route::get('/auction/{auction}', [AuctionController::class, 'show']);
     Route::post('/auction/{auction}/bid', [AuctionController::class, 'bid']);

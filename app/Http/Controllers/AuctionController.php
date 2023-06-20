@@ -11,7 +11,10 @@ use App\Http\Resources\Success;
 use App\Models\Auction;
 use App\Models\AuctionBid;
 use App\Models\AutomaticBid;
+use App\Models\Basket;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AuctionController extends Controller
 {
@@ -21,27 +24,168 @@ class AuctionController extends Controller
      */
     public function index(Request $request)
     {
-        $auctions = Auction::paginate(10);
-        return AuctionResource::collection($auctions);
+        $order_by = $request->order_by;
+        $filter_attrs = [
+            'auctions' => [
+                'title' => 'like',
+                'baskets' => [
+                    'slug' => 'like',
+                    'products' => [
+                        'wine_name' => 'like',
+                        'type_of_wine' => 'in',
+                        'drink_type_id' => 'in',
+                        'country_id' => 'in',
+                        'region_id' => 'in',
+                        'producer_id' => 'in',
+                        'wine_tag_id' => 'in',
+                    ]
+                ],
+           ]
+        ];
+
+        $relationshipLogics = [
+            'in' => function ($q, $a, $v) {
+                return $q->whereIn($a, is_array($v) ? $v : [$v]);
+            },
+            'like' => function ($q, $a, $v) {
+                return $q->where($a, 'LIKE', '%' . $v . '%');
+            }
+        ];
+        DB::enableQueryLog();
+        $query = Auction::query()
+            ->with([
+                'baskets',
+                'baskets.products',
+                'baskets.products.wine_user',
+                'baskets.products.drink_type',
+                'baskets.products.country',
+                'baskets.products.region',
+                'baskets.products.producer',
+                'baskets.products.wine_type',
+                'baskets.products.wine_tag',
+            ]);
+
+        /*
+         * Logic of table and relationships conditions
+         */
+        foreach ($filter_attrs as $masterTbl => $allAttrs) {
+            foreach ($allAttrs as $tbl => $attrs) {
+                if (is_array($attrs)) {
+                    foreach ($attrs as $attr => $relationshipLogic) {
+                        if ($request->has($attr) && !is_array($relationshipLogic)) {
+                            $query = $query->whereHas($tbl, function ($query) use ($attr, $request, $tbl, $relationshipLogics, $relationshipLogic) {
+                                $relationshipLogics[$relationshipLogic]($query, implode(".", [$tbl, $attr]), $request->$attr);
+                            });
+                        }
+                        if (is_array($relationshipLogic)) {
+                            foreach ($relationshipLogic as $a => $r) {
+                                if(!empty($request->$a)) {
+                                    $table = $tbl . '.' . $attr;
+                                    $query = $query->whereHas($table, function ($query) use ($a, $request, $table, $attr, $relationshipLogics, $r) {
+                                        $relationshipLogics[$r]($query, implode(".", [$attr, $a]), $request->$a);
+                                    });
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if(!empty($request->$tbl)) {
+                        $query = $relationshipLogics[$attrs]($query, implode(".", [$masterTbl, $tbl]), $request->$tbl);
+                    }
+                }
+            }
+        }
+
+        $query = match($order_by){
+        'ascending' => $query->orderBy('auctions.title', 'asc'),
+            'descending' => $query->orderBy('auctions.title', 'desc'),
+            'recent' => $query->orderBy('auctions.created_at', 'desc'),
+            'older' => $query->orderBy('auctions.created_at', 'asc'),
+            'expensive' => $query->orderBy('auctions.max_price', 'desc'),
+            'cheapest' => $query->orderBy('auctions.max_price', 'asc'),
+            default => $query
+        };
+        return AuctionResource::collection(
+            $query->select(
+                AuctionResource::selectLst()
+            )->paginate(10)
+        );
     }
 
-    public function create(AuctionCreateRequest $request)
+    /**
+     * @param $slug
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|object|null
+     */
+    public function show(Request $request,$id)
     {
-        $auction = Auction::create($request->only([
-            "lot_type",
-            "title",
-            "description",
-            "is_private",
-            "auction_type",
-            "max_price",
-            "invitations",
-        ]));
-        return (new Success(__('Auction Create Successfully')))->json(201);
+        $auction = Auction::query()
+            ->with(['baskets','baskets.products'])
+            ->where('id', $id)
+            ->first();
+        if (!$auction) {
+            return (new Fail(__('Auction does not exist')))->json(404);
+        }
+        return new AuctionResource($auction);
     }
 
-    public function show(Auction $auction)
+
+    public function store(AuctionCreateRequest $request)
     {
-        return $auction;
+        try {
+            $basket = Basket::create(
+                $request->only([
+                    "title",
+                    "description",
+                    "stock",
+                    "price",
+                    "weight",
+                    "dimensions",
+                ]));
+            $products = $request->products;
+            foreach ($products as $product) {
+                Product::create([
+                    "basket_id" => $basket->id,
+                    "wine_name" => $product["wine_name"],
+                    "description" => $product["description"],
+                    "wine_user_id" =>$request->wine_user_id,
+                    "drink_type_id" => $product["drink_type_id"],
+                    "bottle_size" => $product["bottle_size"],
+                    "country_id" => $product["country_id"],
+                    "region_id" => $product["region_id"],
+                    "producer_id" => $product["producer_id"],
+                    "wine_maker" => $product["wine_maker"],
+                    "type_of_wine" => $product["type_of_wine"],
+                    "year" => $product["year"],
+                    "grape_̥varieties" => $product["grape_̥varieties"],
+                    "wine_tag_id" => $product["wine_tag_id"],
+                    "storage_condition" => $product["storage_condition"],
+                    "review_and_rewards" => $product["review_and_rewards"],
+                    "medal" => $product["medal"],
+                    "award_name" => $product["award_name"],
+                    "score" => $product["score"],
+                    "review_name" => $product["review_name"],
+                    "basket_quantity" => $product["basket_quantity"],
+                    "unit_quantity" => $product["unit_quantity"],
+                    "unit" => $product["unit"],
+                ]);
+            }
+
+            $request->request->add(['basket_id' => $basket->id]);
+
+            Auction::create($request->only([
+                "basket_id",
+                "title",
+                "description",
+                "is_private",
+                "type",
+                "max_price",
+                "invitations",
+            ]));
+            return (new Success(__('Auction Create Successfully')))->json(201);
+
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json(500);
+        }
     }
 
     public function bid(AuctionBidRequest $request, Auction $auction)

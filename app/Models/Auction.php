@@ -12,7 +12,7 @@ class Auction extends Model
     use HasFactory;
 
     protected $fillable = [
-        'lot_type',
+        'basket_id',
         'title',
         'description',
         'is_private',
@@ -26,7 +26,7 @@ class Auction extends Model
         $this->hasMany(AuctionBid::class);
     }
 
-    public function basket(): BelongsTo
+    public function baskets(): BelongsTo
     {
         return $this->belongsTo(Basket::class,'basket_id','id');
     }

@@ -27,7 +27,11 @@ class AuctionCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            "title" => ["required"]
+            "title" => ["required"],
+            "description" => ["required"],
+            "is_private" => ["required"],
+            "type" => ["required"],
+            "max_price" => ["required"],
         ];
     }
 }
