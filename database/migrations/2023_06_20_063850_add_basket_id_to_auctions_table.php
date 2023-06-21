@@ -14,7 +14,6 @@ return new class extends Migration
     public function up()
     {
         Schema::table('auctions', function (Blueprint $table) {
-            $table->foreignId('basket_id')->after('id')->constrained();
             $table->dropColumn('lot_type');
         });
     }
@@ -27,8 +26,6 @@ return new class extends Migration
     public function down()
     {
         Schema::table('auctions', function (Blueprint $table) {
-            $table->dropForeign(['basket_id']);
-            $table->dropColumn('basket_id');
             $table->enum('lot_type', ['1', '2'])->comment('1=>single,2=>multi')->after('id')->default(1);
 
         });

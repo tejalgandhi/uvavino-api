@@ -81,7 +81,7 @@ class AuctionController extends Controller
                             foreach ($relationshipLogic as $a => $r) {
                                 if(!empty($request->$a)) {
                                     $table = $tbl . '.' . $attr;
-                                    $query = $query->whereHas($table, function ($query) use ($a, $request, $table, $attr, $relationshipLogics, $r) {
+                                    $query = $query->whereHas($table, function ($query) use ($a, $request, $attr, $relationshipLogics, $r) {
                                         $relationshipLogics[$r]($query, implode(".", [$attr, $a]), $request->$a);
                                     });
                                 }
