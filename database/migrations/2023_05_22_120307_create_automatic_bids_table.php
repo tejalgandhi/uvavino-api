@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -18,6 +19,7 @@ return new class extends Migration
             $table->foreignId('wine_user_id')->constrained();
             $table->foreignId('auction_id')->constrained();
             $table->double('max_amount');
+            $table->timestamp('timestamp')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
         });
     }
