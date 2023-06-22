@@ -44,6 +44,7 @@ class ReviewTest extends TestCase
 
     public function test_simple_review_listing()
     {
+
         $this->common_factory();
         $product = Product::latest()->first();
         $user = User::latest()->first();
