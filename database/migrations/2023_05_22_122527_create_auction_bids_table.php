@@ -14,14 +14,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('auction_bids', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('wine_user_id')->constrained();
-            $table->foreignId('auction_id')->constrained();
-            $table->double('value');
-            $table->timestamp('timestamp')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('auction_bids')) {
+
+            Schema::create('auction_bids', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('wine_user_id')->constrained();
+                $table->foreignId('auction_id')->constrained();
+                $table->double('value');
+                $table->timestamp('timestamp')->default(DB::raw('CURRENT_TIMESTAMP'));
+                $table->timestamps();
+            });
+        }
     }
 
     /**
