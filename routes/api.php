@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
+
 // Authentication Routes
 Route::prefix('auth')->group(function() {
     Route::post('/register', [WineAuthController::class, 'register']);
@@ -54,6 +55,9 @@ Route::get('/pages', [StaticPageController::class, 'index']);
 Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
 
 Route::get('/reviews', [ReviewController::class, 'index']);
+Route::get('/csrf-token', function (Request $request) {
+    return response()->json(['csrfToken' => $request->session()->token()]);
+})->middleware('web');
 
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
