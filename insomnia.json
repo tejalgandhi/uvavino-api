@@ -1,42 +1,9 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2023-06-26T06:23:03.994Z",
-  "__export_source": "insomnia.desktop.app:v2023.2.2",
+  "__export_date": "2023-07-05T06:07:59.702Z",
+  "__export_source": "insomnia.desktop.app:v2023.3.0",
   "resources": [
-    {
-      "_id": "req_228de254592d44faba064bd3f2ea8d7c",
-      "parentId": "wrk_4b6ece3c979c451d9604ad00b97eec0f",
-      "modified": 1687760568265,
-      "created": 1687758030257,
-      "url": "{{base}}/api/csrf-token",
-      "name": "csrf-token",
-      "description": "",
-      "method": "GET",
-      "body": {},
-      "parameters": [],
-      "headers": [],
-      "authentication": {},
-      "metaSortKey": -1687758030258,
-      "isPrivate": false,
-      "settingStoreCookies": true,
-      "settingSendCookies": true,
-      "settingDisableRenderRequestBody": false,
-      "settingEncodeUrl": true,
-      "settingRebuildPath": true,
-      "settingFollowRedirects": "global",
-      "_type": "request"
-    },
-    {
-      "_id": "wrk_4b6ece3c979c451d9604ad00b97eec0f",
-      "parentId": null,
-      "modified": 1673611055104,
-      "created": 1672643731870,
-      "name": "Wine-API",
-      "description": "",
-      "scope": "collection",
-      "_type": "workspace"
-    },
     {
       "_id": "req_058408df852b468aac4ba3b659538d6f",
       "parentId": "wrk_4b6ece3c979c451d9604ad00b97eec0f",
@@ -207,6 +174,16 @@
       "settingRebuildPath": true,
       "settingFollowRedirects": "global",
       "_type": "request"
+    },
+    {
+      "_id": "wrk_4b6ece3c979c451d9604ad00b97eec0f",
+      "parentId": null,
+      "modified": 1673611055104,
+      "created": 1672643731870,
+      "name": "Wine-API",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
     },
     {
       "_id": "req_081cd7cac6f44445b7f7997f26f80717",
@@ -1245,6 +1222,33 @@
       "_type": "request"
     },
     {
+      "_id": "req_a69e1827b5134a84b1484bd7372a535a",
+      "parentId": "fld_8b2eff06baa744c99bc315e8ad0af764",
+      "modified": 1688536910033,
+      "created": 1688536818121,
+      "url": "{{base}}/api/logout",
+      "name": "logout",
+      "description": "",
+      "method": "POST",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{token}}",
+        "prefix": ""
+      },
+      "metaSortKey": -1672829518946.75,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
       "_id": "req_13a3fc97fb294169a76730ef109fa9d4",
       "parentId": "fld_8b2eff06baa744c99bc315e8ad0af764",
       "modified": 1672916910828,
@@ -1326,42 +1330,10 @@
     {
       "_id": "jar_8289ab7d3b947cdfe40bd5ea6bbad8ddf3ef9724",
       "parentId": "wrk_4b6ece3c979c451d9604ad00b97eec0f",
-      "modified": 1687760514836,
+      "modified": 1672643731879,
       "created": 1672643731879,
       "name": "Default Jar",
-      "cookies": [
-        {
-          "key": "XSRF-TOKEN",
-          "value": "eyJpdiI6Ikd0QW8yTlhHcGpvTDU5NGs2OVpIZ0E9PSIsInZhbHVlIjoiR3gxZFBKRW1jdkE1NkVpTSszbTZyMlA2NjJSKzBWcG9ZTWoybVJ2Z3h3UGhMb1dyejZ4M1R6eHNXb0ZaWjVnamhEQXY0bS83L2h6ekF5M0Y1VGIrNUVCK1BFL0VKeGRvSU1KQ3hzdncxc3ZGTXFoTDQ4YUVTSE5yQVE1bU9TWkIiLCJtYWMiOiJmYjAxMjExODQ3OGZkMTM4ZTUwZDVlOGY5NWUzNDhkZWIyOWQxZDAxNzIyY2FmMTM5NWRiMmU1Njc2N2MzN2VmIiwidGFnIjoiIn0%3D",
-          "expires": "2023-06-26T08:21:54.000Z",
-          "maxAge": 7200,
-          "domain": "uvavino-api.test",
-          "path": "/",
-          "extensions": [
-            "samesite=lax"
-          ],
-          "hostOnly": true,
-          "creation": "2023-06-26T06:21:54.836Z",
-          "lastAccessed": "2023-06-26T06:21:54.836Z",
-          "id": "5605894926366681"
-        },
-        {
-          "key": "laravel_session",
-          "value": "iHTJ9Gn53UoYHIM3otWOdkzeBzDIAULZx5A1Ao7a",
-          "expires": "2023-06-26T08:21:54.000Z",
-          "maxAge": 7200,
-          "domain": "uvavino-api.test",
-          "path": "/",
-          "httpOnly": true,
-          "extensions": [
-            "samesite=lax"
-          ],
-          "hostOnly": true,
-          "creation": "2023-06-26T06:21:54.836Z",
-          "lastAccessed": "2023-06-26T06:21:54.836Z",
-          "id": "5903260141534217"
-        }
-      ],
+      "cookies": [],
       "_type": "cookie_jar"
     },
     {
@@ -1377,12 +1349,12 @@
     {
       "_id": "env_b1048d1e59e242dba9c365fbc2123fd1",
       "parentId": "env_8289ab7d3b947cdfe40bd5ea6bbad8ddf3ef9724",
-      "modified": 1687264982266,
+      "modified": 1688536779410,
       "created": 1673934423089,
       "name": "New Environment",
       "data": {
         "base": "http://uvavino-api.test",
-        "token": "2|zMaKTrDPSsaCuwPtrMDor7Vn0zeEk0QZAzIuByHw"
+        "token": "3|IYjKkb361bGmbKpterOQjubnGS9mSS95TQvlSrfo"
       },
       "dataPropertyOrder": {
         "&": [

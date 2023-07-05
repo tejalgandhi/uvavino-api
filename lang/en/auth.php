@@ -17,6 +17,7 @@ return [
     'not_found' => 'User not found',
     'incorrect_password' => 'Incorrect Password !',
     'logout' => 'Logged out.',
+    'invalid_user' => 'Invalid User',
 
     'failed' => 'These credentials do not match our records.',
     'password' => 'The provided password is incorrect.',
