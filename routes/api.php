@@ -34,7 +34,6 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function() {
     Route::post('/register', [WineAuthController::class, 'register']);
     Route::post('/login', [WineAuthController::class, 'login']);
-    Route::post('/logout', [WineAuthController::class, 'logout']);
     Route::post('/forget-password', [WineAuthController::class, 'forget']);
     Route::post('/reset-password', [WineAuthController::class, 'reset']);
 });
@@ -61,6 +60,8 @@ Route::get('/csrf-token', function (Request $request) {
 
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
+    Route::post('/logout', [WineAuthController::class, 'logout']);
+
     Route::get('/user', [WineAuthController::class, 'getUser']);
 
     // Routes for connect as seller of wine products
