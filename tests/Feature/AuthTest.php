@@ -176,7 +176,7 @@ class AuthTest extends TestCase
         $response->assertJsonStructure(['token']);
         $response->assertStatus(200);
         $authUser = WineUser::find($user->id);
-        $response = $this->actingAs($authUser)->post('/api/auth/logout');
+        $response = $this->actingAs($authUser)->post('/api/logout');
         $response->assertJson(["message" => "Logged out."]);
         $response->assertStatus(200);
     }
@@ -219,7 +219,7 @@ class AuthTest extends TestCase
         $response->assertJsonStructure(['token']);
         $response->assertStatus(200);
         $auth = WineUser::find($user->id);
-        $response = $this->actingAs($auth)->post('/api/auth/logout');
+        $response = $this->actingAs($auth)->post('/api/logout');
         $response->assertJson(["message" => "Logged out."]);
         $response->assertStatus(200);
         $token = Password::createToken($user);
@@ -243,7 +243,7 @@ class AuthTest extends TestCase
         ]);
         $response->assertJsonStructure(['token']);
         $response->assertStatus(200);
-        $response = $this->actingAs($auth)->post('/api/auth/logout');
+        $response = $this->actingAs($auth)->post('/api/logout');
         $response->assertJson(["message" => "Logged out."]);
         $response->assertStatus(200);
     }
