@@ -21,7 +21,6 @@ class AuctionResource extends JsonResource
             'is_private' => $this->resource->is_private,
             'type' => $this->resource->type,
             'max_price' => $this->resource->max_price,
-            'invitations' => $this->resource->invitations ?? '',
             'basket' => new BasketResource($this->resource->baskets),
         ];
     }
@@ -34,7 +33,6 @@ class AuctionResource extends JsonResource
             'auctions.is_private',
             'auctions.type',
             'auctions.max_price',
-            'auctions.invitations',
             'auctions.basket_id'
         ];
     }
