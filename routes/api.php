@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AuctionPackController;
 use App\Http\Controllers\StaticPageController;
@@ -45,6 +46,9 @@ Route::get('/product', [ProductController::class, 'index']);
 Route::get('/product/{slug}', [ProductController::class, 'show']);
 Route::get('/product/{slug}/recommended', [ProductController::class, 'recommended']);
 
+//auction
+Route::get('/auction', [AuctionController::class, 'index']);
+
 //Article
 Route::get('/articles', [ArticleController::class, 'index']);
 Route::get('/article/{slug}', [ArticleController::class, 'show']);
@@ -82,9 +86,16 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     //wishlist
     Route::post('/wishlist/products', [WishlistController::class, 'store']);
     Route::get('/wishlist/products', [WishlistController::class, 'index']);
-    Route::delete('/wishlist/products/{product_id}', [WishlistController::class, 'destroy']);
+    Route::delete('/wishlist/products/{basket_id}', [WishlistController::class, 'destroy']);
 
 
     // auction pack
     Route::get('/auction-packs', [AuctionPackController::class, 'index']);
+
+    // auction api
+    Route::post('/auction', [AuctionController::class, 'store']);
+    Route::get('/auction', [AuctionController::class, 'index']);
+    Route::get('/auction/{auction}', [AuctionController::class, 'show']);
+    Route::post('/auction/{auction}/bid', [AuctionController::class, 'bid']);
+    Route::post('/auction/{auction}/automatic-bid', [AuctionController::class, 'automaticBid']);
 });

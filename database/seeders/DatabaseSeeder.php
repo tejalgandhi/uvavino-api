@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\WineTag::factory(10)->create();
         \App\Models\WineVariety::factory(10)->create();
         \App\Models\WineType::factory(10)->create();
+        \App\Models\Basket::factory(1)->create();
 
         $country = Country::first();
         $wine_user = WineUser::first();
@@ -64,7 +65,7 @@ class DatabaseSeeder extends Seeder
             "drink_type_id"=>$drink_type->id,
             "wine_tag_id"=>$wine_tag->id,
             "type_of_wine" => $wine_type->id,
-            "grape_̥varieties" => "ddsfsdf",
+            "grape_varieties" => "ddsfsdf",
             "review_name" => "sffsdf",
             "basket_quantity" => "1",
             "unit_quantity" => "1",
@@ -72,6 +73,44 @@ class DatabaseSeeder extends Seeder
             "wine_user_id"=>$wine_user->id,
 
         ]);
+
+        //create auction data
+        \App\Models\Basket::factory(1)->create();
+
+        $basket = Basket::latest()->first();
+        \App\Models\Product::factory(10)->create([
+            "basket_id" => $basket->id,
+           ]);
+        \App\Models\Auction::factory(10)->create(["basket_id"=>$basket->id]);
+
+
+        //create auction data
+        \App\Models\Basket::factory(1)->create();
+
+        $basket = Basket::latest()->first();
+        \App\Models\Product::factory(10)->create([
+            "title" => "TESTTTT",
+            "description" => "TESTTTT",
+            "wine_name" => "TESTTTT",
+            "region_id" => $region->id,
+            "basket_id" => $basket->id,
+            "producer_id" => $producer->id,
+            "year" => "2023",
+            "wine_maker" => "TESTTT",
+            "country_id" => $country->id,
+            "bottle_size" => "L",
+            "drink_type_id"=>$drink_type->id,
+            "wine_tag_id"=>$wine_tag->id,
+            "type_of_wine" => $wine_type->id,
+            "grape_varieties" => "ddsfsdf",
+            "review_name" => "sffsdf",
+            "basket_quantity" => "1",
+            "unit_quantity" => "1",
+            "unit" => "1",
+            "wine_user_id"=>$wine_user->id,
+
+        ]);
+        \App\Models\Auction::factory(10)->create(["basket_id"=>$basket->id]);
 
     }
 }

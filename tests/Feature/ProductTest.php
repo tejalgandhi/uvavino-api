@@ -383,7 +383,7 @@ class ProductTest extends TestCase
         return compact('product', 'data');
     }
 
-    public function common_factory()
+    private function common_factory()
     {
         $wine_user = WineUser::factory()->create();
         $drink_type = DrinkType::factory()->create();
