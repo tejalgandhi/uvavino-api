@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2023-07-07T06:04:54.397Z",
+  "__export_date": "2023-07-07T15:32:07.368Z",
   "__export_source": "insomnia.desktop.app:v2023.4.0",
   "resources": [
     {
@@ -1300,7 +1300,7 @@
     {
       "_id": "req_268d3592ba91424588b36665aa1995e3",
       "parentId": "fld_8b2eff06baa744c99bc315e8ad0af764",
-      "modified": 1687152123349,
+      "modified": 1688743769825,
       "created": 1672644607343,
       "url": "{{base}}/api/auth/login",
       "name": "Login",
@@ -1317,8 +1317,45 @@
           "value": "application/json"
         }
       ],
-      "authentication": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "9|ziZQsePYOD3Pb0XMfxRe81pr9ltwm9u0jN0TywK6"
+      },
       "metaSortKey": -1672829518965.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_cd4c47f6781d4d1b84f7eaa9c2b3462b",
+      "parentId": "fld_8b2eff06baa744c99bc315e8ad0af764",
+      "modified": 1688743780522,
+      "created": 1688743736283,
+      "url": "{{base}}/api/logout",
+      "name": "Logout",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"email\": \"tejal@enstead.com\",\n\t\"password\": \"123123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "9|ziZQsePYOD3Pb0XMfxRe81pr9ltwm9u0jN0TywK6"
+      },
+      "metaSortKey": -1672829518959.25,
       "isPrivate": false,
       "settingStoreCookies": true,
       "settingSendCookies": true,
