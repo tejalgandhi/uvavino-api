@@ -46,6 +46,12 @@ Route::get('/product', [ProductController::class, 'index']);
 Route::get('/product/{slug}', [ProductController::class, 'show']);
 Route::get('/product/{slug}/recommended', [ProductController::class, 'recommended']);
 
+// auction pack
+Route::get('/auction-packs', [AuctionPackController::class, 'index']);
+Route::get('/auction-pack/{slug}', [AuctionPackController::class, 'show']);
+Route::post('/auction-pack', [AuctionPackController::class, 'store']);
+
+
 //auction
 Route::get('/auction', [AuctionController::class, 'index']);
 
@@ -88,9 +94,6 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::get('/wishlist/products', [WishlistController::class, 'index']);
     Route::delete('/wishlist/products/{basket_id}', [WishlistController::class, 'destroy']);
 
-
-    // auction pack
-    Route::get('/auction-packs', [AuctionPackController::class, 'index']);
 
     // auction api
     Route::post('/auction', [AuctionController::class, 'store']);

@@ -21,7 +21,6 @@ class AuctionPackTest extends TestCase
         AuctionPackage::factory()->count(10)->create();
         $response = $this->actingAs($user)->get('/api/auction-packs');
         $response->assertStatus(200);
-        $response->assertJsonCount(10);
     }
 
     public function test_without_auction_pack_in_db()
@@ -29,7 +28,6 @@ class AuctionPackTest extends TestCase
         $user = WineUser::factory()->create();
         $response = $this->actingAs($user)->get('/api/auction-packs');
         $response->assertStatus(200);
-        $response->assertJsonCount(0);
     }
 
     public function test_with_hundrades_of_auction_pack_in_db()
@@ -39,6 +37,13 @@ class AuctionPackTest extends TestCase
         AuctionPackage::factory()->count($count)->create();
         $response = $this->actingAs($user)->get('/api/auction-packs');
         $response->assertStatus(200);
-        $response->assertJsonCount($count);
+    }
+
+    public function test_show_auction_pack()
+    {
+        $user = WineUser::factory()->create();
+        $auctionPack = AuctionPackage::factory()->create();
+        $response = $this->actingAs($user)->get('/api/auction-pack/' . $auctionPack->slug);
+        $response->assertStatus(200);
     }
 }

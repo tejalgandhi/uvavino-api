@@ -1,9 +1,153 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2023-07-05T06:07:59.702Z",
-  "__export_source": "insomnia.desktop.app:v2023.3.0",
+  "__export_date": "2023-07-07T06:04:54.397Z",
+  "__export_source": "insomnia.desktop.app:v2023.4.0",
   "resources": [
+    {
+      "_id": "req_19eac4307f5a4a258c5975b97c287b04",
+      "parentId": "fld_62fca1bfc6614a92bc1e3752ad76bea4",
+      "modified": 1688709708437,
+      "created": 1688709582127,
+      "url": "{{base}}/api/auction-packs",
+      "name": "Get Auction Packs",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "id": "pair_c6f5ce4a1a524baeaa659056318bfbab",
+          "name": "wine_name",
+          "value": "Eveniet",
+          "description": "",
+          "disabled": true
+        },
+        {
+          "id": "pair_b7022b4f610b40f491000a90b0a156d5",
+          "name": "title",
+          "value": "111",
+          "description": "",
+          "disabled": true
+        },
+        {
+          "id": "pair_032b7080c12249f5adadf70f41a1b3a0",
+          "name": "order_by",
+          "value": "ascending",
+          "description": "",
+          "disabled": true
+        },
+        {
+          "id": "pair_6989bf17eb244e1c96cf9717cdd0b9e8",
+          "name": "slug",
+          "value": "dolor",
+          "description": "",
+          "disabled": true
+        },
+        {
+          "id": "pair_cac462cca5a84014ade4e11d67fafcc8",
+          "name": "drink_type_id",
+          "value": "1",
+          "description": ""
+        }
+      ],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{token}}"
+      },
+      "metaSortKey": -1684394751088.75,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_62fca1bfc6614a92bc1e3752ad76bea4",
+      "parentId": "wrk_4b6ece3c979c451d9604ad00b97eec0f",
+      "modified": 1688709596831,
+      "created": 1688709596831,
+      "name": "Auction Packs",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1688709596831,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_4b6ece3c979c451d9604ad00b97eec0f",
+      "parentId": null,
+      "modified": 1673611055104,
+      "created": 1672643731870,
+      "name": "Wine-API",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_bc5bbea5ac864bcf97440f2ebd8ea6ac",
+      "parentId": "fld_62fca1bfc6614a92bc1e3752ad76bea4",
+      "modified": 1688709734990,
+      "created": 1688709721500,
+      "url": "{{base}}/api/auction-pack/test",
+      "name": "show Auction Packs",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "id": "pair_c6f5ce4a1a524baeaa659056318bfbab",
+          "name": "wine_name",
+          "value": "Eveniet",
+          "description": "",
+          "disabled": true
+        },
+        {
+          "id": "pair_b7022b4f610b40f491000a90b0a156d5",
+          "name": "title",
+          "value": "111",
+          "description": "",
+          "disabled": true
+        },
+        {
+          "id": "pair_032b7080c12249f5adadf70f41a1b3a0",
+          "name": "order_by",
+          "value": "ascending",
+          "description": "",
+          "disabled": true
+        },
+        {
+          "id": "pair_6989bf17eb244e1c96cf9717cdd0b9e8",
+          "name": "slug",
+          "value": "dolor",
+          "description": "",
+          "disabled": true
+        },
+        {
+          "id": "pair_cac462cca5a84014ade4e11d67fafcc8",
+          "name": "drink_type_id",
+          "value": "1",
+          "description": ""
+        }
+      ],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{token}}"
+      },
+      "metaSortKey": -1684261486602.875,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
     {
       "_id": "req_058408df852b468aac4ba3b659538d6f",
       "parentId": "wrk_4b6ece3c979c451d9604ad00b97eec0f",
@@ -174,16 +318,6 @@
       "settingRebuildPath": true,
       "settingFollowRedirects": "global",
       "_type": "request"
-    },
-    {
-      "_id": "wrk_4b6ece3c979c451d9604ad00b97eec0f",
-      "parentId": null,
-      "modified": 1673611055104,
-      "created": 1672643731870,
-      "name": "Wine-API",
-      "description": "",
-      "scope": "collection",
-      "_type": "workspace"
     },
     {
       "_id": "req_081cd7cac6f44445b7f7997f26f80717",
@@ -1222,33 +1356,6 @@
       "_type": "request"
     },
     {
-      "_id": "req_a69e1827b5134a84b1484bd7372a535a",
-      "parentId": "fld_8b2eff06baa744c99bc315e8ad0af764",
-      "modified": 1688536910033,
-      "created": 1688536818121,
-      "url": "{{base}}/api/logout",
-      "name": "logout",
-      "description": "",
-      "method": "POST",
-      "body": {},
-      "parameters": [],
-      "headers": [],
-      "authentication": {
-        "type": "bearer",
-        "token": "{{token}}",
-        "prefix": ""
-      },
-      "metaSortKey": -1672829518946.75,
-      "isPrivate": false,
-      "settingStoreCookies": true,
-      "settingSendCookies": true,
-      "settingDisableRenderRequestBody": false,
-      "settingEncodeUrl": true,
-      "settingRebuildPath": true,
-      "settingFollowRedirects": "global",
-      "_type": "request"
-    },
-    {
       "_id": "req_13a3fc97fb294169a76730ef109fa9d4",
       "parentId": "fld_8b2eff06baa744c99bc315e8ad0af764",
       "modified": 1672916910828,
@@ -1349,12 +1456,12 @@
     {
       "_id": "env_b1048d1e59e242dba9c365fbc2123fd1",
       "parentId": "env_8289ab7d3b947cdfe40bd5ea6bbad8ddf3ef9724",
-      "modified": 1688536779410,
+      "modified": 1688709225790,
       "created": 1673934423089,
       "name": "New Environment",
       "data": {
         "base": "http://uvavino-api.test",
-        "token": "3|IYjKkb361bGmbKpterOQjubnGS9mSS95TQvlSrfo"
+        "token": "8|vbk9jqflx2JbpdsP1QuZJghowBXpoLVI6EsqobMO"
       },
       "dataPropertyOrder": {
         "&": [

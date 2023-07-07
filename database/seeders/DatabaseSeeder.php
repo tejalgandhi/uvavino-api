@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\WineVariety::factory(10)->create();
         \App\Models\WineType::factory(10)->create();
         \App\Models\Basket::factory(1)->create();
+        \App\Models\AuctionPackage::factory(10)->create();
 
         $country = Country::first();
         $wine_user = WineUser::first();
