@@ -100,7 +100,7 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
     }
 
     public function wishlist() {
-        return $this->belongsToMany(Basket::class, 'wishlist', 'wine_user_id', 'id');
+        return $this->hasMany(Wishlist::class);
     }
 
     public function reviews()

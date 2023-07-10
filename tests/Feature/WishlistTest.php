@@ -44,6 +44,11 @@ class WishlistTest extends TestCase
         ]);
         $response->assertStatus(201);
 
+        $response =  $this->actingAs($data['wine_user'])->post('/api/wishlist/products',[
+            'basket_id' => 400
+        ]);
+        $response->assertStatus(200);
+
         $response =  $this->actingAs($data['wine_user'])->post('/api/wishlist/products');
         $response->assertStatus(422);
     }
@@ -122,10 +127,10 @@ class WishlistTest extends TestCase
 
         $response = $this->actingAs($user1)->get('/api/wishlist/products');
         $response->assertStatus(200);
-
         $response->assertJsonCount(2, "data");
+
         $response = $this->actingAs($user2)->get('/api/wishlist/products');
         $response->assertStatus(200);
-        $response->assertJsonCount(0, "data");
+        $response->assertJsonCount(5, "data");
     }
 }
