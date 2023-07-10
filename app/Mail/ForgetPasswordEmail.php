@@ -28,7 +28,7 @@ class ForgetPasswordEmail extends Mailable
         //
         $this->user = $user;
         $this->token = $token;
-        $this->reset_url = env('RESET_URL');
+        $this->reset_url = config('constant.front_app_url');
     }
 
     /**

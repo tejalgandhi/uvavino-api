@@ -28,4 +28,6 @@ return [
         ],
         'permissions' => [],
     ],
+    'front_app_url' => env('FRONT_END_URL'),
+
 ];
