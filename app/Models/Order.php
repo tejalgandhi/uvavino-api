@@ -16,6 +16,10 @@ class Order extends Model
 {
     use HasFactory;
 
+    const AUCTION_PACK_TYPE = 1;
+    const AUCTION_TYPE = 2;
+    const PRODUCT_TYPE = 3;
+
     public function wine_user()
     {
         return $this->belongsTo(WineUser::class);
@@ -24,5 +28,9 @@ class Order extends Model
     public function items()
     {
         return $this->hasMany(OrderDetail::class);
+    }
+
+    public function getItemQtyAttribute(){
+        return $this->items()->sum('qty');
     }
 }

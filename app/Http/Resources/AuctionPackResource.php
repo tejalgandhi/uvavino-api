@@ -20,6 +20,7 @@ class AuctionPackResource extends JsonResource
             'name' => $this->resource->name,
             'qty' => $this->resource->qty,
             'amount' => $this->resource->amount,
+            'image' => $this->resource->image,
         ];
     }
 
