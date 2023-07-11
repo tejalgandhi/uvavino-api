@@ -61,10 +61,23 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
 
     public function canAuction(): bool
     {
+        $total_auction_packs = $this->orders()
+            ->where('type',Order::AUCTION_PACK_TYPE)
+            ->withCount(['items as itemQuantity' => function($query) {
+                $query->select(\DB::raw('SUM(qty)'));
+            }])
+            ->get()->sum('itemQuantity');
+
+        $total_auctions = $this->orders()
+            ->where('type',Order::AUCTION_TYPE)
+            ->withCount(['items as itemQuantity' => function($query) {
+                $query->select(\DB::raw('SUM(qty)'));
+            }])
+            ->get()->sum('itemQuantity');
         // get purchased auctions
         // $max = $this->auctionPacks()->sum('qty');
         // $present = $this->orders()->with('order')
-        return true;
+        return ($total_auction_packs -  $total_auctions > 0) ? true : false;
     }
 
     public function updateConnectId($id): void {
