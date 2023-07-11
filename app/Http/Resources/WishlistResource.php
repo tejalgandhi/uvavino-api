@@ -15,10 +15,11 @@ class WishlistResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'basket_id' => $this->resource->id,
-            'wine_name' => $this->resource->wine_name,
-            'slug' => $this->resource->slug,
-            'description' => $this->resource->description,
+            'id' => $this->resource->id,
+            'basket_id' => $this->resource->basket_id,
+            'title' => $this->resource->basket->title,
+            'slug' => $this->resource->basket->slug,
+            'description' => $this->resource->basket->description,
         ];
     }
 }

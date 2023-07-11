@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Wishlist extends Model
 {
@@ -12,11 +13,9 @@ class Wishlist extends Model
 
     protected $guarded = ['id'];
 
-    public function wine_user(){
-        return $this->belongsTo(WineUser::class,'wine_user_id','id');
-    }
-
-    public function basket(){
+    public function basket(): BelongsTo
+    {
         return $this->belongsTo(Basket::class,'basket_id','id');
     }
+
 }
