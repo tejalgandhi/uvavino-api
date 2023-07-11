@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Order;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Enums\OrderableType;
 
 class WineUserResource extends JsonResource
 {
@@ -14,6 +16,20 @@ class WineUserResource extends JsonResource
      */
     public function toArray($request)
     {
+        $total_auction_packs = $this->orders()
+            ->where('type',Order::AUCTION_PACK_TYPE)
+            ->withCount(['items as itemQuantity' => function($query) {
+                            $query->select(\DB::raw('SUM(qty)'));
+                }])
+            ->get()->sum('itemQuantity');
+
+        $total_auctions = $this->orders()
+            ->where('type',Order::AUCTION_TYPE)
+            ->withCount(['items as itemQuantity' => function($query) {
+                $query->select(\DB::raw('SUM(qty)'));
+            }])
+            ->get()->sum('itemQuantity');
+
         return [
             'id' => $this->id,
             'username' => $this->username,
@@ -22,7 +38,7 @@ class WineUserResource extends JsonResource
             'email' => $this->email,
             'stripe_customer_id' => $this->stripe_customer_id  ?? '',
             'connection_id' => $this->connection_id  ?? '',
-            'auction_pack_qty' => 0,
+            'remaining_auction_qty' => $total_auction_packs-$total_auctions,
         ];
     }
 }
