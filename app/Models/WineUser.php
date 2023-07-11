@@ -77,7 +77,8 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
         // get purchased auctions
         // $max = $this->auctionPacks()->sum('qty');
         // $present = $this->orders()->with('order')
-        return ($total_auction_packs -  $total_auctions > 0) ? true : false;
+//        return ($total_auction_packs -  $total_auctions > 0) ? true : false;
+        return true;
     }
 
     public function updateConnectId($id): void {
