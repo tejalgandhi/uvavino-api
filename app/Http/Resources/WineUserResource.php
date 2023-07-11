@@ -22,6 +22,7 @@ class WineUserResource extends JsonResource
             'email' => $this->email,
             'stripe_customer_id' => $this->stripe_customer_id  ?? '',
             'connection_id' => $this->connection_id  ?? '',
+            'auction_pack_qty' => 0,
         ];
     }
 }
