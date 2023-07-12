@@ -20,7 +20,12 @@ class WishlistController extends Controller
 {
     public function index(Request $request)
     {
-        $wishlist = Wishlist::where('wine_user_id',Auth::id())->get();
+
+        $wishlist = Wishlist::where('wine_user_id',Auth::id());
+        if($request->type){
+            $wishlist = $wishlist->where('type',$request->type);
+        }
+        $wishlist = $wishlist->get();
         return WishlistResource::collection($wishlist);
     }
 
