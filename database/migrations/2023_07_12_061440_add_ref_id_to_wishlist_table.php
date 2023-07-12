@@ -18,8 +18,8 @@ return new class extends Migration
             Schema::create('wishlist', function (Blueprint $table) {
                 $table->id();
                 $table->foreignId('wine_user_id')->constrained();
-                $table->enum('type', ['1', '2','3'])->after('wine_user_id')->comment('1=>auction_package,2=>auction,3=>product')->default(3);
-                $table->bigInteger('ref_id')->after('type');
+                $table->enum('type', ['1', '2','3'])->comment('1=>auction_package,2=>auction,3=>product')->default(3);
+                $table->bigInteger('ref_id');
                 $table->timestamps();
             });
         }
