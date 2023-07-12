@@ -23,7 +23,8 @@ class WishlistFactory extends Factory
     {
         return [
             'wine_user_id' => $this->randomize(WineUser::class),
-            'basket_id' => $this->randomize(Basket::class)
+            'ref_id' => $this->randomize(Basket::class),
+            'type' => Wishlist::PRODUCT_TYPE
         ];
     }
 }

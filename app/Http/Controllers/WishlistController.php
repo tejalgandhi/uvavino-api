@@ -6,6 +6,7 @@ use App\Http\Requests\WishlistRequest;
 use App\Http\Resources\Fail;
 use App\Http\Resources\Success;
 use App\Http\Resources\WishlistResource;
+use App\Models\Auction;
 use App\Models\Basket;
 use App\Models\WineUser;
 use App\Models\Wishlist as UserWishlist;
@@ -25,17 +26,26 @@ class WishlistController extends Controller
     public function store(WishlistRequest $request)
     {
         try {
-            $wishlist = UserWishlist::where($request->only(['wine_user_id', 'basket_id']))->count();
+            $wishlist = UserWishlist::where($request->only(['wine_user_id', 'ref_id','type']))->count();
             if ($wishlist > 0) {
                 return response()->json(['data'=>[],'status'=>200 ,'message'=>__('Product already exists')],200) ;
             }
-            $basket = Basket::where('id',$request->basket_id)->count();
-            if ($basket == 0) {
-                return response()->json(['data'=>[],'status'=>200 ,'message'=>__('Product not found.')],200) ;
+            if($request->type == Wishlist::PRODUCT_TYPE) {
+                $basket = Basket::where('id', $request->ref_id)->count();
+                if ($basket == 0) {
+                    return response()->json(['data' => [], 'status' => 200, 'message' => __('Product not found.')], 200);
+                }
+            }
+            if($request->type == Wishlist::AUCTION_TYPE) {
+                $auction = Auction::where('id', $request->ref_id)->count();
+                if ($auction == 0) {
+                    return response()->json(['data' => [], 'status' => 200, 'message' => __('Auction not found.')], 200);
+                }
             }
             UserWishlist::create($request->only([
                 "wine_user_id",
-                "basket_id"
+                "ref_id",
+                "type"
             ]));
             return response()->json(['data'=>[],'status'=>201 ,'message'=>__('Wishlist store successfully.')],201) ;
 
@@ -45,11 +55,11 @@ class WishlistController extends Controller
         }
     }
 
-    public function destroy(Request $request,$basket_id)
+    public function destroy(Request $request)
     {
         try {
 
-            UserWishlist::where($request->only(['wine_user_id','basket_id']))->delete();
+            UserWishlist::where($request->only(['wine_user_id','ref_id','type']))->delete();
             return response()->json(['data'=>[],'status'=>200 ,'message'=>__("Wishlist delete successfully.")],200) ;
 
         }catch (\Exception $e){

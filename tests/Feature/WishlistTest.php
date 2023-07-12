@@ -29,8 +29,10 @@ class WishlistTest extends TestCase
     {
         $data = $this->common_factory();
         $response = $this->actingAs($data['wine_user'])->post('/api/wishlist/products',[
-            'basket_id' => $data['basket']->id,
+            'ref_id' => $data['basket']->id,
+            'type' => Wishlist::PRODUCT_TYPE,
         ]);
+        dd($response);
         $response->assertStatus(201);
         $response = $this->actingAs($data['wine_user'])->get('/api/wishlist/products');
         $response->assertStatus(200);
@@ -40,12 +42,14 @@ class WishlistTest extends TestCase
     {
         $data = $this->common_factory();
         $response =  $this->actingAs($data['wine_user'])->post('/api/wishlist/products',[
-            'basket_id' => $data['basket']->id
+            'ref_id' => $data['basket']->id,
+            'type' => Wishlist::PRODUCT_TYPE,
         ]);
         $response->assertStatus(201);
 
         $response =  $this->actingAs($data['wine_user'])->post('/api/wishlist/products',[
-            'basket_id' => 400
+            'ref_id' => 400,
+            'type' => Wishlist::PRODUCT_TYPE,
         ]);
         $response->assertStatus(200);
 
@@ -57,13 +61,20 @@ class WishlistTest extends TestCase
     {
         $data = $this->common_factory();
         $response =  $this->actingAs($data['wine_user'])->post('/api/wishlist/products', [
-            'basket_id' => $data['basket']->id
+            'ref_id' => $data['basket']->id,
+            'type' => Wishlist::PRODUCT_TYPE,
         ]);
         $response->assertStatus(201);
-        $response =  $this->actingAs($data['wine_user'])->delete('/api/wishlist/products/'.$data['basket']->id);
+        $response =  $this->actingAs($data['wine_user'])->delete('/api/wishlist/products/', [
+            'ref_id' => $data['basket']->id,
+            'type' => Wishlist::PRODUCT_TYPE,
+        ]);
         $response->assertStatus(200);
 
-        $response =  $this->actingAs($data['wine_user'])->delete('/api/wishlist/products/100');
+        $response =  $this->actingAs($data['wine_user'])->delete('/api/wishlist/products/', [
+            'ref_id' => 100,
+            'type' => Wishlist::PRODUCT_TYPE,
+        ]);
         $response->assertStatus(200);
     }
 
@@ -73,7 +84,8 @@ class WishlistTest extends TestCase
         $user2 = WineUser::factory()->create();
         $product = Basket::factory()->create();
         $response =  $this->actingAs($user1)->post('/api/wishlist/products', [
-            'basket_id' => $product->id
+            'ref_id' => $product->id,
+            'type' => Wishlist::PRODUCT_TYPE,
         ]);
         $response->assertStatus(201);
         $response = $this->actingAs($user1)->get('/api/wishlist/products');
@@ -95,8 +107,8 @@ class WishlistTest extends TestCase
         Product::factory()->create(['wine_user_id' => $data1['wine_user']->id, 'basket_id' => $data1['basket']->id]);
         Product::factory()->create(['wine_user_id' => $data2['wine_user']->id, 'basket_id' =>$data1['basket']->id]);
 
-        Wishlist::factory()->create(['wine_user_id' =>  $data1['wine_user']->id, 'basket_id' => $data1['basket']->id]);
-        Wishlist::factory()->create(['wine_user_id' =>  $data2['wine_user']->id, 'basket_id' => $data1['basket']->id]);
+        Wishlist::factory()->create(['wine_user_id' =>  $data1['wine_user']->id, 'ref_id' => $data1['basket']->id]);
+        Wishlist::factory()->create(['wine_user_id' =>  $data2['wine_user']->id, 'ref_id' => $data1['basket']->id]);
         $response = $this->actingAs($user1)->get('/api/wishlist/products');
         $response->assertStatus(200);
         $response->assertJsonCount(1, "data");
@@ -104,7 +116,10 @@ class WishlistTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonCount(1, "data");
 
-        $response =  $this->actingAs($user1)->delete('/api/wishlist/products/' . $product->id);
+        $response =  $this->actingAs($user1)->delete('/api/wishlist/products/' , [
+            'ref_id' => $product->id,
+            'type' => Wishlist::PRODUCT_TYPE,
+        ]);
         $response->assertStatus(200);
 
         $response = $this->actingAs($user1)->get('/api/wishlist/products');
@@ -122,8 +137,8 @@ class WishlistTest extends TestCase
         $user1 = $data1['wine_user'];
         $user2 = $data2['wine_user'];
 
-        Wishlist::factory()->count(2)->create(['wine_user_id' =>  $data1['wine_user']->id, 'basket_id' => $data1['basket']->id]);
-        Wishlist::factory()->count(5)->create(['wine_user_id' =>  $data2['wine_user']->id, 'basket_id' => $data1['basket']->id]);
+        Wishlist::factory()->count(2)->create(['wine_user_id' =>  $data1['wine_user']->id, 'ref_id' => $data1['basket']->id]);
+        Wishlist::factory()->count(5)->create(['wine_user_id' =>  $data2['wine_user']->id, 'ref_id' => $data1['basket']->id]);
 
         $response = $this->actingAs($user1)->get('/api/wishlist/products');
         $response->assertStatus(200);

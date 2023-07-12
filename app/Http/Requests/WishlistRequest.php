@@ -25,7 +25,8 @@ class WishlistRequest extends FormRequest
     public function rules()
     {
         return [
-            "basket_id" => ["required"],
+            "ref_id" => ["required"],
+            "type" => ["required"],
 
         ];
     }

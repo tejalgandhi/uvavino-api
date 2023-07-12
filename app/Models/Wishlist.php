@@ -13,9 +13,17 @@ class Wishlist extends Model
 
     protected $guarded = ['id'];
 
+    const AUCTION_TYPE = 2;
+    const PRODUCT_TYPE = 3;
+
     public function basket(): BelongsTo
     {
-        return $this->belongsTo(Basket::class,'basket_id','id');
+        return $this->belongsTo(Basket::class,'ref_id','id');
+    }
+
+    public function auction(): BelongsTo
+    {
+        return $this->belongsTo(Auction::class,'ref_id','id');
     }
 
 }
