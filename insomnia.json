@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2023-07-10T08:10:12.416Z",
+  "__export_date": "2023-07-12T11:51:23.693Z",
   "__export_source": "insomnia.desktop.app:v2023.4.0",
   "resources": [
     {
@@ -689,7 +689,7 @@
     {
       "_id": "req_f35ac8d60f7647d2879d6f45d1240152",
       "parentId": "fld_f018e44a55494c71bba231d9c2e75754",
-      "modified": 1688972745093,
+      "modified": 1689162449554,
       "created": 1675226898656,
       "url": "{{base}}/api/wishlist/products",
       "name": "wishlist store",
@@ -698,8 +698,15 @@
       "body": {},
       "parameters": [
         {
-          "name": "basket_id",
-          "value": "400"
+          "name": "ref_id",
+          "value": "1",
+          "id": "pair_3343880b06bb4946a57693c51ec00381"
+        },
+        {
+          "id": "pair_d08d82fe9714459abcf96d7b2671eef6",
+          "name": "type",
+          "value": "3",
+          "description": ""
         }
       ],
       "headers": [],
@@ -720,9 +727,9 @@
     {
       "_id": "req_85be73eb65424bb0a883f10bd24f8258",
       "parentId": "fld_f018e44a55494c71bba231d9c2e75754",
-      "modified": 1675852215507,
+      "modified": 1689162474646,
       "created": 1675228556147,
-      "url": "http://uvavino-api.test/api/wishlist/products/3",
+      "url": "http://uvavino-api.test/api/wishlist/products",
       "name": "wishlist delete",
       "description": "",
       "method": "DELETE",
@@ -730,10 +737,16 @@
       "parameters": [
         {
           "id": "pair_0e79ea0057854a8ea572878cdd7be7f8",
-          "name": "product_id",
+          "name": "ref_id",
           "value": "1",
           "description": "",
-          "disabled": true
+          "disabled": false
+        },
+        {
+          "id": "pair_6b022ab8f09f49ab8fc78aa10c4e9a05",
+          "name": "type",
+          "value": "3",
+          "description": ""
         }
       ],
       "headers": [],
@@ -1310,7 +1323,7 @@
     {
       "_id": "req_268d3592ba91424588b36665aa1995e3",
       "parentId": "fld_8b2eff06baa744c99bc315e8ad0af764",
-      "modified": 1688743769825,
+      "modified": 1689084158260,
       "created": 1672644607343,
       "url": "{{base}}/api/auth/login",
       "name": "Login",
@@ -1318,7 +1331,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"email\": \"tejal@enstead.com\",\n\t\"password\": \"123123\"\n}"
+        "text": "{\n\t\"email\": \"tate.bernhard@example.com\",\n\t\"password\": \"123123\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -1503,12 +1516,12 @@
     {
       "_id": "env_b1048d1e59e242dba9c365fbc2123fd1",
       "parentId": "env_8289ab7d3b947cdfe40bd5ea6bbad8ddf3ef9724",
-      "modified": 1688970899424,
+      "modified": 1689162405263,
       "created": 1673934423089,
       "name": "New Environment",
       "data": {
         "base": "http://uvavino-api.test",
-        "token": "11|oi2aLjqqlPEH7cZGtmj22VxdfOIvfGaP8W1oqCo1"
+        "token": "1|BobO7Ic53IoIbObVgP5Mn1k5j8cxLtCXMaa775RL"
       },
       "dataPropertyOrder": {
         "&": [

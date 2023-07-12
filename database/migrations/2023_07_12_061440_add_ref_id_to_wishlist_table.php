@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('wishlist', function (Blueprint $table) {
-            $table->enum('type', ['1', '2','3'])->after('wine_user_id')->comment('1=>auction_package,2=>auction,3=>product')->default(3);
-            if (\DB::getDriverName() !== 'sqlite') {
+        Schema::dropIfExists('wishlist');
+        if (!Schema::hasTable('wishlist')) {
+            Schema::create('wishlist', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('wine_user_id')->constrained();
+                $table->enum('type', ['1', '2','3'])->after('wine_user_id')->comment('1=>auction_package,2=>auction,3=>product')->default(3);
+                $table->bigInteger('ref_id')->after('type');
+                $table->timestamps();
+            });
+        }
 
-                $table->dropForeign(['basket_id']);
-                $table->dropColumn('basket_id');
-            }
-            $table->bigInteger('ref_id')->after('type');
-        });
     }
 
     /**
@@ -31,11 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('wishlist', function (Blueprint $table) {
-            $table->dropColumn('type');
-            $table->dropColumn('ref_id');
-            $table->foreignId('basket_id')->constrained();
-
-        });
+        Schema::dropIfExists('wishlist');
     }
 };

@@ -32,7 +32,6 @@ class WishlistTest extends TestCase
             'ref_id' => $data['basket']->id,
             'type' => Wishlist::PRODUCT_TYPE,
         ]);
-        dd($response);
         $response->assertStatus(201);
         $response = $this->actingAs($data['wine_user'])->get('/api/wishlist/products');
         $response->assertStatus(200);

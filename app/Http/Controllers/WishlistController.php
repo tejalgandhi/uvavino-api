@@ -13,6 +13,7 @@ use App\Models\Wishlist as UserWishlist;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class WishlistController extends Controller
@@ -42,6 +43,7 @@ class WishlistController extends Controller
                     return response()->json(['data' => [], 'status' => 200, 'message' => __('Auction not found.')], 200);
                 }
             }
+            DB::enableQueryLog();
             UserWishlist::create($request->only([
                 "wine_user_id",
                 "ref_id",
@@ -50,6 +52,7 @@ class WishlistController extends Controller
             return response()->json(['data'=>[],'status'=>201 ,'message'=>__('Wishlist store successfully.')],201) ;
 
         }catch (\Exception $e){
+
             Log::info($e->getMessage());
             return response()->json(['data'=>[],'status'=>500 ,'message'=>$e->getMessage()],500) ;
         }

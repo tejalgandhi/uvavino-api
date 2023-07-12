@@ -11,7 +11,7 @@ class Wishlist extends Model
     use HasFactory;
     protected $table = 'wishlist';
 
-    protected $guarded = ['id'];
+    protected $fillable = ['ref_id','type','wine_user_id'];
 
     const AUCTION_TYPE = 2;
     const PRODUCT_TYPE = 3;
