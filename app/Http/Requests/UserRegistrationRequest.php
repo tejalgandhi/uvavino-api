@@ -27,7 +27,7 @@ class UserRegistrationRequest extends FormRequest
             "username" => ["required"],
             "first_name" => ["required"],
             "last_name" => ["required"],
-            "email" => ["required", "email"],
+            "email" => ["required", "email","unique:wine_users,email"],
             "password" => ["required"]
         ];
     }
