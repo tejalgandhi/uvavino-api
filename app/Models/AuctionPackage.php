@@ -18,11 +18,6 @@ class AuctionPackage extends Model
     public static function getBestSellersPackage()
     {
         $query = self::where('bestsellers', AuctionPackage::IS_BESTSELLER);
-        $paginate = request()->query('paginate') ?? 1;
-        if ($paginate != 0)
-        {
-            return $query->paginate(self::NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE);
-        }
-        return $query;
+        return $query->paginate(self::NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE);
     }
 }
