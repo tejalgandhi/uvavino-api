@@ -28,6 +28,7 @@ return [
         ],
         'permissions' => [],
     ],
-    'front_app_url' => env('FRONT_END_URL'),
+    'front_app_url' => env('FRONT_END_URL')??'http://165.22.72.229/',
+    'upload_url' => env('UPLOAD_URL') ?? 'http://165.22.72.229/uploads/',
 
 ];

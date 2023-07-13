@@ -5,14 +5,34 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuctionPackRequest;
 use App\Http\Resources\AuctionPackResource;
 use App\Models\AuctionPackage;
+use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class AuctionPackController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $order_by = $request->order_by;
+        $query = AuctionPackage::query();
+        if($order_by == 'bestseller'){
+            $query->where('bestsellers',AuctionPackage::IS_BESTSELLER);
+        }
+        $query = match($order_by){
+        'ascending' => $query->orderBy('auction_packages.name', 'asc'),
+            'descending' => $query->orderBy('auction_packages.name', 'desc'),
+            'recent' => $query->orderBy('auction_packages.created_at', 'desc'),
+            'older' => $query->orderBy('auction_packages.created_at', 'asc'),
+            'expensive' => $query->orderBy('auction_packages.amount', 'desc'),
+            'cheapest' => $query->orderBy('auction_packages.amount', 'asc'),
+            'discount' => $query->orderBy('auction_packages.discount_amount', 'desc'),
+            'bestseller' => $query->orderBy('bestsellers_order', 'asc'),
+            default => $query
+        };
         return AuctionPackResource::collection(
-            AuctionPackage::latest()->paginate(10)
+            $query->select(
+                AuctionPackResource::selectLst()
+            )->paginate(AuctionPackage::NUMBER_OF_ITEMS_PER_PAGE)
         );
     }
 
