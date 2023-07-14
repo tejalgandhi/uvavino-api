@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuctionPackRequest;
 use App\Http\Resources\AuctionPackResource;
+use App\Http\Resources\AuctionResource;
 use App\Models\AuctionPackage;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -48,7 +49,8 @@ class AuctionPackController extends Controller
         if (!$auctionPack) {
             return response()->json(['data'=>[],'status'=>400 ,'message'=> __('Auction Pack does not exist')],400) ;
         }
-        return response()->json(['data'=>$auctionPack,'status'=>200 ,'message'=> 'Auction get successfully.']) ;
+
+        return response()->json(['data'=>new AuctionResource($auctionPack),'status'=>200 ,'message'=> 'Auction get successfully.']) ;
     }
 
 
