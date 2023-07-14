@@ -50,7 +50,7 @@ class AuctionPackController extends Controller
             return response()->json(['data'=>[],'status'=>400 ,'message'=> __('Auction Pack does not exist')],400) ;
         }
 
-        return response()->json(['data'=>new AuctionResource($auctionPack),'status'=>200 ,'message'=> 'Auction get successfully.']) ;
+        return response()->json(['data'=>new AuctionPackResource($auctionPack),'status'=>200 ,'message'=> 'Auction get successfully.']) ;
     }
 
 
