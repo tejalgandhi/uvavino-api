@@ -218,4 +218,18 @@ class AuctionController extends Controller
             'max_amount' => $request->max_amount
         ]);
     }
+
+    public function getBestSellers()
+    {
+        $product = Auction::getBestSellersProduct();
+        $collections =  AuctionResource::collection($product)->additional(['meta' => []]);
+        return $collections;
+    }
+
+    public function getNewProducts()
+    {
+        $product = Auction::getNewProduct();
+        $collections =  AuctionResource::collection($product)->additional(['meta' => []]);
+        return $collections;
+    }
 }

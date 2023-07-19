@@ -1,9 +1,109 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2023-07-13T12:52:01.501Z",
+  "__export_date": "2023-07-14T11:40:28.779Z",
   "__export_source": "insomnia.desktop.app:v2023.4.0",
   "resources": [
+    {
+      "_id": "req_94260e60afc8444f9be58c3cb0e427fa",
+      "parentId": "fld_9b15f31d9a6b4eb887bc5e8709f52955",
+      "modified": 1689320001685,
+      "created": 1689319858276,
+      "url": "{{base}}/api/auctions/bestsellers",
+      "name": "recommended auction",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{token}}"
+      },
+      "metaSortKey": -1689319858276,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_9b15f31d9a6b4eb887bc5e8709f52955",
+      "parentId": "wrk_4b6ece3c979c451d9604ad00b97eec0f",
+      "modified": 1689319856325,
+      "created": 1689319856325,
+      "name": "Home Page",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1689319856325,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_4b6ece3c979c451d9604ad00b97eec0f",
+      "parentId": null,
+      "modified": 1673611055104,
+      "created": 1672643731870,
+      "name": "Wine-API",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_c6cbbcf725f6479ea57a8861a0aec65c",
+      "parentId": "fld_9b15f31d9a6b4eb887bc5e8709f52955",
+      "modified": 1689333780125,
+      "created": 1689333769370,
+      "url": "{{base}}/api/products/bestsellers",
+      "name": "recommended product",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{token}}"
+      },
+      "metaSortKey": -1688389728954.75,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_4c9c9c4f92a1455bbb26ab5046ee7087",
+      "parentId": "fld_9b15f31d9a6b4eb887bc5e8709f52955",
+      "modified": 1689320034857,
+      "created": 1689320019143,
+      "url": "{{base}}/api/auctions/new-release",
+      "name": "newest auction",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{token}}"
+      },
+      "metaSortKey": -1687459599633.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
     {
       "_id": "req_19eac4307f5a4a258c5975b97c287b04",
       "parentId": "fld_62fca1bfc6614a92bc1e3752ad76bea4",
@@ -49,16 +149,6 @@
       "environmentPropertyOrder": null,
       "metaSortKey": -1688709596831,
       "_type": "request_group"
-    },
-    {
-      "_id": "wrk_4b6ece3c979c451d9604ad00b97eec0f",
-      "parentId": null,
-      "modified": 1673611055104,
-      "created": 1672643731870,
-      "name": "Wine-API",
-      "description": "",
-      "scope": "collection",
-      "_type": "workspace"
     },
     {
       "_id": "req_bc5bbea5ac864bcf97440f2ebd8ea6ac",

@@ -30,7 +30,8 @@ class Order extends Model
         return $this->hasMany(OrderDetail::class);
     }
 
-    public function getItemQtyAttribute(){
+    public function getItemQtyAttribute()
+    {
         return $this->items()->sum('qty');
     }
 }

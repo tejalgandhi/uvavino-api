@@ -11,6 +11,13 @@ class Auction extends Model
 {
     use HasFactory;
 
+    const IS_BESTSELLER = '1';
+    const IS_NEW = '1';
+    const NUMBER_OF_ITEMS_PER_PAGE = 12;
+    const NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE = 4;
+    const NUMBER_OF_NEW_ITEMS_PER_PAGE = 4;
+    const RECENT_VIEW_LIMIT = 4;
+
     protected $fillable = [
         'basket_id',
         'title',
@@ -41,5 +48,16 @@ class Auction extends Model
     {
         // Need to write correct logic
         return 0;
+    }
+    public static function getBestSellersProduct()
+    {
+        $query = self::where('bestsellers', Auction::IS_BESTSELLER)->orderBy('bestsellers_order', 'ASC');
+        return $query->paginate(self::NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE);
+    }
+
+    public static function getNewProduct()
+    {
+        $query = self::where('new_release', Auction::IS_NEW)->orderBy('new_release_order', 'ASC');
+        return $query->paginate(self::NUMBER_OF_NEW_ITEMS_PER_PAGE);
     }
 }
