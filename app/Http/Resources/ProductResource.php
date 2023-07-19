@@ -47,7 +47,8 @@ class ProductResource extends JsonResource
         ];
     }
 
-    public static function selectLst() {
+    public static function selectLst()
+    {
         return [
             'products.id',
             'products.wine_name',

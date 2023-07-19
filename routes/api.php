@@ -49,11 +49,17 @@ Route::get('/product/{slug}/recommended', [ProductController::class, 'recommende
 // auction pack
 Route::get('/auction-packs', [AuctionPackController::class, 'index']);
 Route::get('/auction-pack/{slug}', [AuctionPackController::class, 'show']);
-Route::post('/auction-pack', [AuctionPackController::class, 'store']);
 
 
 //auction
 Route::get('/auction', [AuctionController::class, 'index']);
+
+//home page best seller and new release auction api
+Route::get('/auctions/bestsellers', [AuctionController::class, 'getBestSellers']);
+Route::get('/auctions/new-release', [AuctionController::class, 'getNewProducts']);
+
+//home page recommended product api
+Route::get('/products/bestsellers', [ProductController::class, 'getBestSellers']);
 
 //Article
 Route::get('/articles', [ArticleController::class, 'index']);
@@ -68,9 +74,11 @@ Route::get('/csrf-token', function (Request $request) {
     return response()->json(['csrfToken' => $request->session()->token()]);
 })->middleware('web');
 
+
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::post('/logout', [WineAuthController::class, 'logout']);
+    Route::post('/auction-pack', [AuctionPackController::class, 'store']);
 
     Route::get('/user', [WineAuthController::class, 'getUser']);
 

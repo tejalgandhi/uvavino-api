@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Contracts\ConnectableUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Immera\Payment\Contracts\PaymentUserContract;
@@ -54,10 +56,13 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
         'email_verified_at' => 'datetime',
     ];
 
-    public function auctionPacks()
-    {
-        return $this->hasOne(AuctionPackage::class);
-    }
+//    /**
+//     * @return HasOne
+//     */
+//    public function auctionPacks() : HasOne
+//    {
+//        return $this->hasOne(AuctionPackage::class,'wine_user_id','id');
+//    }
 
     public function canAuction(): bool
     {
@@ -108,12 +113,11 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
 
     public function getName()
     {
-        return $this->first_name && $this->last_name ?
-            implode(" ", [$this->first_name, $this->last_name]):
-            $this->username;
+        return $this->username;
     }
 
-    public function wishlist() {
+    public function wishlist() : HasMany
+    {
         return $this->hasMany(Wishlist::class);
     }
 

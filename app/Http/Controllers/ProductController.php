@@ -176,4 +176,11 @@ class ProductController extends Controller
         }
         return ProductResource::collection($product->recommended());
     }
+    public function getBestSellers()
+    {
+        $product = Basket::getBestSellersProduct();
+        $collections =  BasketResource::collection($product)->additional(['meta' => []]);
+        return $collections;
+    }
+
 }
