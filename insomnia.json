@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2023-07-14T11:40:28.779Z",
+  "__export_date": "2023-07-19T11:39:27.008Z",
   "__export_source": "insomnia.desktop.app:v2023.4.0",
   "resources": [
     {
@@ -214,160 +214,257 @@
     {
       "_id": "req_058408df852b468aac4ba3b659538d6f",
       "parentId": "fld_fb7a7244fc75480e963d1ebc48626179",
-      "modified": 1688970801244,
+      "modified": 1689766722169,
       "created": 1687264928174,
       "url": "{{base}}/api/auction",
       "name": "Store Auction",
       "description": "",
       "method": "POST",
-      "body": {},
-      "parameters": [
+      "body": {
+        "mimeType": "application/x-www-form-urlencoded",
+        "params": [
+          {
+            "name": "title",
+            "value": "hyuuutut",
+            "id": "pair_8a9749249ff54f979082b55c62033b8d"
+          },
+          {
+            "id": "pair_13c4f0296856416d84b21bc9d10f8f4d",
+            "name": "description",
+            "value": "jggjgyu",
+            "description": ""
+          },
+          {
+            "id": "pair_d9d45629e32a4b309cc548a269d3faf1",
+            "name": "is_private",
+            "value": "1",
+            "description": ""
+          },
+          {
+            "id": "pair_4b8fab221e61428393c9cbf482f6bcac",
+            "name": "type",
+            "value": "1",
+            "description": ""
+          },
+          {
+            "id": "pair_a39b46ad5c4a4504b1e3e7987e3b8a8a",
+            "name": "max_price",
+            "value": "250",
+            "description": ""
+          },
+          {
+            "id": "pair_d470c69c22a84832a3caeb35cc198e6a",
+            "name": "basket[title]",
+            "value": "test333",
+            "description": ""
+          },
+          {
+            "id": "pair_624164dbc88340d4b6bed0e0c805f713",
+            "name": "basket[description]",
+            "value": "tutuug",
+            "description": ""
+          },
+          {
+            "id": "pair_b32f758ebe7b47c280b0ad8a1c06053a",
+            "name": "basket[stock]",
+            "value": "12",
+            "description": ""
+          },
+          {
+            "id": "pair_677f940191684fdea0a5f051e0a1f422",
+            "name": "basket[price]",
+            "value": "12",
+            "description": ""
+          },
+          {
+            "id": "pair_e1a1998d1fee4e929c8201536b7a8066",
+            "name": "basket[weight]",
+            "value": "12",
+            "description": ""
+          },
+          {
+            "id": "pair_e79cef1c19bd4a31be3e1d053e7c6254",
+            "name": "basket[dimensions]",
+            "value": "11*12",
+            "description": ""
+          },
+          {
+            "id": "pair_c8bb170d975049cdbc6a38c1aead0314",
+            "name": "products[0][title]",
+            "value": "Testjhjjh",
+            "description": ""
+          },
+          {
+            "id": "pair_4a92315c9c974f61841da1bc5379a962",
+            "name": "products[0][description]",
+            "value": "test3kgugu",
+            "description": ""
+          },
+          {
+            "id": "pair_b0c1383f443044318ef33057a0f87ca4",
+            "name": "products[0][basket_quantity]",
+            "value": "1",
+            "description": ""
+          },
+          {
+            "id": "pair_e4d7c1ac39a14538a99f4eeed8ea70e2",
+            "name": "products[0][unit_quantity]",
+            "value": "1",
+            "description": ""
+          },
+          {
+            "id": "pair_70413ee4fe3a4fa58fdbd5d5d456c043",
+            "name": "products[0][unit]",
+            "value": "L",
+            "description": ""
+          },
+          {
+            "id": "pair_dc91968b5fba4c389bfcb9e885bedacc",
+            "name": "products[0][is_private]",
+            "value": "1",
+            "description": ""
+          },
+          {
+            "id": "pair_36a199aa71794ee5a6390077953db77f",
+            "name": "products[0][type]",
+            "value": "1",
+            "description": ""
+          },
+          {
+            "id": "pair_b7d7a2687f4e4fdbb8aa305b9d44be5f",
+            "name": "products[0][max_price]",
+            "value": "120",
+            "description": ""
+          },
+          {
+            "id": "pair_047d70db6a144ebeb09c61eee988f6ee",
+            "name": "products[0][drink_type_id]",
+            "value": "20",
+            "description": ""
+          },
+          {
+            "id": "pair_27e5d2594b8e4270b148b8e76513cebf",
+            "name": "products[0][wine_name]",
+            "value": "yutfjj",
+            "description": ""
+          },
+          {
+            "id": "pair_cada6b61b66a43bbb40259e57df15a8b",
+            "name": "products[0][bottle_size]",
+            "value": "L",
+            "description": ""
+          },
+          {
+            "id": "pair_8e0aff1e3d054f42bce34afc9bda5a2e",
+            "name": "products[0][country_id]",
+            "value": "20",
+            "description": ""
+          },
+          {
+            "id": "pair_1137c3c0fbdc42ab8c37195d9be42c6b",
+            "name": "products[0][region_id]",
+            "value": "10",
+            "description": ""
+          },
+          {
+            "id": "pair_158113af5a264f86861b787100fee9e7",
+            "name": "products[0][producer_id]",
+            "value": "10",
+            "description": ""
+          },
+          {
+            "id": "pair_ea83d3e37f9148339393a467ed5b5924",
+            "name": "products[0][wine_maker]",
+            "value": "rwrwreer",
+            "description": ""
+          },
+          {
+            "id": "pair_bd35dd80d38c403e8d4b960e33aaed04",
+            "name": "products[0][type_of_wine]",
+            "value": "10",
+            "description": ""
+          },
+          {
+            "id": "pair_f381ebdc6967483c8be18e60cc9b34b8",
+            "name": "products[0][year]",
+            "value": "23",
+            "description": ""
+          },
+          {
+            "id": "pair_ffb27a41eadd4474b488ca9e05e78672",
+            "name": "products[0][grape_̥varieties]",
+            "value": "tesst",
+            "description": ""
+          },
+          {
+            "id": "pair_77fbba1b73e5427ebefacb6dd4e617b2",
+            "name": "products[0][wine_tag_id]",
+            "value": "10",
+            "description": ""
+          },
+          {
+            "id": "pair_d2a85349024042d6a8fca0dd2277f063",
+            "name": "products[0][storage_condition]",
+            "value": "test11",
+            "description": ""
+          },
+          {
+            "id": "pair_1a25d8db7bee462096c131ed59d41f39",
+            "name": "products[0][review_and_rewards]",
+            "value": "test11",
+            "description": ""
+          },
+          {
+            "id": "pair_e51cee3403b2447891c32ee4f7364cf1",
+            "name": "products[0][medal]",
+            "value": "jhhhhjj",
+            "description": ""
+          },
+          {
+            "id": "pair_293d353868004bb0b1ec40790ff82aaa",
+            "name": "products[0][award_name]",
+            "value": "hjgjg",
+            "description": ""
+          },
+          {
+            "id": "pair_7ae43c64bc8d4ab7985abfada7a3c21c",
+            "name": "products[0][score]",
+            "value": "111",
+            "description": ""
+          },
+          {
+            "id": "pair_3899310e10a542dba75b2fe5a4e75160",
+            "name": "products[0][review_name]",
+            "value": "dwerswr",
+            "description": ""
+          },
+          {
+            "id": "pair_f4d59324dbef4500ac66f8bd4aad8a9c",
+            "name": "",
+            "value": "",
+            "description": ""
+          },
+          {
+            "id": "pair_f51e1310de164b87bd53029e1018a062",
+            "name": "",
+            "value": "",
+            "description": ""
+          },
+          {
+            "id": "pair_d449e9a491684fb3adca23a2e0a55911",
+            "name": "",
+            "value": "",
+            "description": ""
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [
         {
-          "name": "title",
-          "value": "test333"
-        },
-        {
-          "name": "description",
-          "value": "test"
-        },
-        {
-          "name": "is_private",
-          "value": "1"
-        },
-        {
-          "name": "type",
-          "value": "1"
-        },
-        {
-          "name": "max_price",
-          "value": "250"
-        },
-        {
-          "name": "basket[title]",
-          "value": "test333"
-        },
-        {
-          "name": "basket[description]",
-          "value": "test"
-        },
-        {
-          "name": "basket[stock]",
-          "value": "12"
-        },
-        {
-          "name": "basket[price]",
-          "value": "12"
-        },
-        {
-          "name": "basket[weight]",
-          "value": "12"
-        },
-        {
-          "name": "basket[dimensions]",
-          "value": "11*12"
-        },
-        {
-          "name": "products[0][title]",
-          "value": "test333"
-        },
-        {
-          "name": "products[0][description]",
-          "value": "test333"
-        },
-        {
-          "name": "products[0][basket_quantity]",
-          "value": "1"
-        },
-        {
-          "name": "products[0][unit_quantity]",
-          "value": "1"
-        },
-        {
-          "name": "products[0][unit]",
-          "value": "L"
-        },
-        {
-          "name": "products[0][is_private]",
-          "value": "1"
-        },
-        {
-          "name": "products[0][type]",
-          "value": "1"
-        },
-        {
-          "name": "products[0][max_price]",
-          "value": "120"
-        },
-        {
-          "name": "products[0][drink_type_id]",
-          "value": "20"
-        },
-        {
-          "name": "products[0][wine_name]",
-          "value": "testwww"
-        },
-        {
-          "name": "products[0][bottle_size]",
-          "value": "l"
-        },
-        {
-          "name": "products[0][country_id]",
-          "value": "33"
-        },
-        {
-          "name": "products[0][region_id]",
-          "value": "29"
-        },
-        {
-          "name": "products[0][producer_id]",
-          "value": "29"
-        },
-        {
-          "name": "products[0][wine_maker]",
-          "value": "eqwe"
-        },
-        {
-          "name": "products[0][type_of_wine]",
-          "value": "29"
-        },
-        {
-          "name": "products[0][year]",
-          "value": "2023"
-        },
-        {
-          "name": "products[0][grape_̥varieties]",
-          "value": "test"
-        },
-        {
-          "name": "products[0][wine_tag_id]",
-          "value": "29"
-        },
-        {
-          "name": "products[0][storage_condition]",
-          "value": "test11"
-        },
-        {
-          "name": "products[0][review_and_rewards]",
-          "value": "test12"
-        },
-        {
-          "name": "products[0][medal]",
-          "value": "wewe"
-        },
-        {
-          "name": "products[0][award_name]",
-          "value": "swewe"
-        },
-        {
-          "name": "products[0][score]",
-          "value": "111"
-        },
-        {
-          "name": "products[0][review_name]",
-          "value": "dwejjwjh"
+          "name": "Content-Type",
+          "value": "application/x-www-form-urlencoded"
         }
       ],
-      "headers": [],
       "authentication": {
         "type": "bearer",
         "token": "{{token}}"
