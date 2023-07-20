@@ -25,7 +25,7 @@ class ReviewRequest extends FormRequest
     public function rules()
     {
         return [
-            "type" => ["required", 'in:product'],
+            "type" => ["required", 'in:product,auction,auction_package'],
             "id" => ["required"],
             "rating" => ["required","numeric","min:1","max:10"],
         ];

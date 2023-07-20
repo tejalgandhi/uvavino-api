@@ -53,4 +53,8 @@ class Basket extends Model
         return self::where('bestsellers', Basket::IS_BESTSELLER)->orderBy('bestsellers_order', 'ASC')->paginate(self::NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE);
     }
 
+//    public function reviews()
+//    {
+//        return $this->hasMany(Review::class,'reviewable_id','id')->where('reviewable_type',ReviewType::Product);
+//    }
 }

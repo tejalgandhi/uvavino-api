@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2023-07-19T11:39:27.008Z",
+  "__export_date": "2023-07-19T12:05:35.714Z",
   "__export_source": "insomnia.desktop.app:v2023.4.0",
   "resources": [
     {
@@ -1006,9 +1006,9 @@
     {
       "_id": "req_67102ad86761457c8a3f2e6c79d22180",
       "parentId": "fld_dd12df93dd3c4fbf8665f52eb7afcdf8",
-      "modified": 1675322668544,
+      "modified": 1689767493126,
       "created": 1674638618070,
-      "url": "http://uvavino-api.test/api/reviews",
+      "url": "{{base}}/api/reviews",
       "name": "get reviews",
       "description": "",
       "method": "GET",
@@ -1057,40 +1057,54 @@
     {
       "_id": "req_4a0dbf82677f41c193050a7c7ae1b398",
       "parentId": "fld_dd12df93dd3c4fbf8665f52eb7afcdf8",
-      "modified": 1675322033627,
+      "modified": 1689768295741,
       "created": 1674638632777,
       "url": "http://uvavino-api.test/api/reviews",
       "name": "review store",
       "description": "",
       "method": "POST",
-      "body": {},
-      "parameters": [
+      "body": {
+        "mimeType": "application/x-www-form-urlencoded",
+        "params": [
+          {
+            "id": "pair_426e4482e107426189d79eb9b721c6e8",
+            "name": "type",
+            "value": "auction",
+            "description": "you can pass product,auction,auction_package"
+          },
+          {
+            "id": "pair_a319a7c436f746f3bc104d0b5c695e20",
+            "name": "id",
+            "value": "35",
+            "description": ""
+          },
+          {
+            "id": "pair_11245ed89fc242b7a21582fc82b3eda6",
+            "name": "rating",
+            "value": "5",
+            "description": ""
+          },
+          {
+            "id": "pair_95b2c8eed75345cc9275146bfd86b9ae",
+            "name": "review_content",
+            "value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+            "description": ""
+          },
+          {
+            "id": "pair_6ad95df0329a44aa8f98e26df9775bf9",
+            "name": "",
+            "value": "",
+            "description": ""
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [
         {
-          "id": "pair_706339f1cd274cd9a577ed01252cc492",
-          "name": "type",
-          "value": "product",
-          "description": ""
-        },
-        {
-          "id": "pair_016a6e0892014c85a2546ca567259310",
-          "name": "id",
-          "value": "1",
-          "description": ""
-        },
-        {
-          "id": "pair_15cbfa1b250b491aa34f68414879abec",
-          "name": "rating",
-          "value": "5",
-          "description": ""
-        },
-        {
-          "id": "pair_0e79ea0057854a8ea572878cdd7be7f8",
-          "name": "review_content",
-          "value": "11213sdasda",
-          "description": ""
+          "name": "Content-Type",
+          "value": "application/x-www-form-urlencoded"
         }
       ],
-      "headers": [],
       "authentication": {
         "type": "bearer",
         "token": "{{token}}"

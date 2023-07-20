@@ -9,6 +9,7 @@ use App\Http\Resources\Success;
 use App\Models\Review;
 use App\Enums\ReviewType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReviewController extends Controller
 {
@@ -22,6 +23,8 @@ class ReviewController extends Controller
         if(!empty($category) && !empty($category_id)) {
             $cat = match($request->type){
                 'product' => ReviewType::Product,
+                'auction' => ReviewType::Auction,
+                'auction_package' => ReviewType::AuctionPack,
                 default => ReviewType::Product
             };
             $review = $review->where('reviewable_type', $cat)
@@ -34,10 +37,22 @@ class ReviewController extends Controller
     public function store(ReviewRequest $request)
     {
         try {
+            $type =  match($request->type){
+            'product' => ReviewType::Product,
+                'auction' => ReviewType::Auction,
+                'auction_package' => ReviewType::AuctionPack,
+                default => ReviewType::Product
+                };
+            $check = $this->checkValueExist($type->value,$request->id);
+            if(!$check){
+                return (new Fail("Data not found in the DB."))->json();
+            }
             Review::create([
                "reviewable_type" => match($request->type){
-                    'product' => ReviewType::Product,
-                    default =>  ReviewType::Product
+               'product' => ReviewType::Product,
+                'auction' => ReviewType::Auction,
+                'auction_package' => ReviewType::AuctionPack,
+                default => ReviewType::Product
                 },
                 "reviewable_id" => $request->id,
                 "wine_user_id" => $request->wine_user_id,
@@ -49,6 +64,10 @@ class ReviewController extends Controller
             return (new Fail($e->getMessage()))->json();
         }
 
+    }
+
+    public function checkValueExist($model,$id){
+        return ($model::where('id',$id)->count()) > 0 ? true : false;
     }
 
 }
