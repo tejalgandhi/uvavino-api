@@ -11,6 +11,7 @@ use App\Http\Controllers\SellerController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,10 @@ Route::prefix('auth')->group(function() {
     Route::post('/forget-password', [WineAuthController::class, 'forget']);
     Route::post('/reset-password', [WineAuthController::class, 'reset']);
 });
+
+//static page
+Route::get('/app-variables', [StaticPageController::class, 'getAppVariables']);
+
 
 Route::get('/product-attribute/{attribute_name}', [ProductAttributeController::class, 'attribute_list']);
 
@@ -105,7 +110,6 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     // auction api
     Route::post('/auction', [AuctionController::class, 'store']);
-    Route::get('/auction', [AuctionController::class, 'index']);
     Route::get('/auction/{auction}', [AuctionController::class, 'show']);
     Route::post('/auction/{auction}/bid', [AuctionController::class, 'bid']);
     Route::post('/auction/{auction}/automatic-bid', [AuctionController::class, 'automaticBid']);
