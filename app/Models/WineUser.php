@@ -106,7 +106,7 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
     }
 
     // This will be used in the payment to get stripe ID
-    public function getId()
+    public function getId() : string
     {
         return $this->stripe_customer_id;
     }
@@ -121,9 +121,9 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
         return $this->hasMany(Wishlist::class);
     }
 
-    public function reviews()
-    {
-        return $this->hasMany(Review::class);
-    }
+//    public function reviews()
+//    {
+//        return $this->hasMany(Review::class);
+//    }
 
 }
