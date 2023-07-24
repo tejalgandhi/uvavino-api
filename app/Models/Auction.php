@@ -28,10 +28,10 @@ class Auction extends Model
         'invitations',
     ];
 
-    public function bids()
-    {
-        $this->hasMany(AuctionBid::class);
-    }
+//    public function bids() :HasMany
+//    {
+//        $this->hasMany(AuctionBid::class);
+//    }
 
     public function baskets(): BelongsTo
     {

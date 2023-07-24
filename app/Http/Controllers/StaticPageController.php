@@ -21,7 +21,7 @@ class StaticPageController extends Controller
 
     public function getAppVariables(Request $request)
     {
-        $app_varibles = AppVariable::query('key','value');
+        $app_varibles = AppVariable::select('key','value');
         if($request->key){
             $app_varibles = $app_varibles->where('key',$request->key);
         }
