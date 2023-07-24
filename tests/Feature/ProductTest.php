@@ -314,6 +314,8 @@ class ProductTest extends TestCase
         $product = [
             "title" => "Test wine",
             "description" => "Test wine description",
+            "bestsellers" => Basket::IS_BESTSELLER,
+            "bestsellers_order" => Basket::IS_BESTSELLER,
             "stock" => rand(1, 10) * 10,
             "price" => rand(1, 80) * 10,
             "weight" => rand(10, 300),
@@ -478,6 +480,15 @@ class ProductTest extends TestCase
         $data = $this->store_product_array('wine_tag_id');
         $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertStatus(422);
+    }
+
+    public function test_get_best_sellers_product()
+    {
+        $data = $this->store_product_array();
+        $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
+        $response = $this->get('/api/products/bestsellers');
+        $response->assertJsonCount(0, 'data');
+        $response->assertStatus(200);
     }
 
 
