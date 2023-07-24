@@ -11,7 +11,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Immera\Payment\Contracts\PaymentUserContract;
 use Laravel\Sanctum\HasApiTokens;
-
+/**
+ * @codeCoverageIgnore
+ */
 /**
  * App\Models\WineUser
  *

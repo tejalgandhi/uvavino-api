@@ -20,9 +20,9 @@ class Review extends Model
         return $this->belongsTo(WineUser::class,'wine_user_id','id');
     }
 
-    public function reviewable()
-    {
-        return $this->morphTo();
-    }
+//    public function reviewable()
+//    {
+//        return $this->morphTo();
+//    }
 
 }
