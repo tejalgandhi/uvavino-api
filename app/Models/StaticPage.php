@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class StaticPage extends Model
 {
     use HasFactory;
-    protected $table = 'pages';
+    protected $table = 'static_pages';
 }

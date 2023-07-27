@@ -27,4 +27,10 @@ class StaticPageController extends Controller
         }
         return $app_varibles->get();
     }
+
+
+    public function showStaticPages(Request $request,$key)
+    {
+        return AppVariable::whereKey($key)->first();
+    }
 }
