@@ -42,6 +42,11 @@ Route::prefix('auth')->group(function() {
 
 //static page
 Route::get('/app-variables', [StaticPageController::class, 'getAppVariables']);
+Route::get('/app-variables/{key}', [StaticPageController::class, 'showAppVariables']);
+
+// Static page
+Route::get('/pages', [StaticPageController::class, 'index']);
+Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
 
 
 Route::get('/product-attribute/{attribute_name}', [ProductAttributeController::class, 'attribute_list']);
@@ -69,10 +74,6 @@ Route::get('/products/bestsellers', [ProductController::class, 'getBestSellers']
 //Article
 Route::get('/articles', [ArticleController::class, 'index']);
 Route::get('/article/{slug}', [ArticleController::class, 'show']);
-
-// Static page
-Route::get('/pages', [StaticPageController::class, 'index']);
-Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
 
 Route::get('/reviews', [ReviewController::class, 'index']);
 Route::get('/csrf-token', function (Request $request) {

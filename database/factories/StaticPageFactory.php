@@ -19,8 +19,6 @@ class StaticPageFactory extends Factory
     {
         $title = fake()->sentence();
         return [
-            'template' => Str::lower(fake()->word()),
-            'name' => implode(" ", fake()->words()),
             'title' => $title,
             'slug' => Str::slug($title),
             'content' => fake()->paragraph(50)
