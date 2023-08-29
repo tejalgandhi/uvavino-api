@@ -35,7 +35,8 @@ class OrderController extends Controller
             $orderableClass =  match($item['orderable_type']){
                 'product' => Product::class,
                 'auction' => Auction::class,
-                'auction_package' => AuctionPackage::class
+                'auction_package' => AuctionPackage::class,
+                default => Product::class,
             };
             $orderFor = $orderableClass::find($item['orderable_id']);
             if(!$orderFor){

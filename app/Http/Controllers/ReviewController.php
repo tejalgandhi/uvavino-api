@@ -43,6 +43,7 @@ class ReviewController extends Controller
                 'product' => Product::class,
                 'auction' => Auction::class,
                 'auction_package' => AuctionPackage::class,
+                default => Product::class,
             };
 
             $reviewFor = $reviewableClass::find($request->reviewable_id);

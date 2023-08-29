@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 
+use App\Models\Auction;
+use App\Models\AuctionPackage;
 use App\Models\Product;
 use App\Models\Review;
 use App\Models\WineUser as User;
@@ -37,7 +39,7 @@ class ReviewTest extends TestCase
     /**
      * A basic feature test example.
      *
-     * @return id
+     * @return void
      */
 
     public function test_simple_review_listing()
@@ -52,13 +54,8 @@ class ReviewTest extends TestCase
         $response->assertStatus(200);
 
         $c = rand(15, 30);
-        $reviewable_type = 'product';
-        $reviewableClass =  match($reviewable_type){
-                     'product' => Product::class,
-                        'auction' => Auction::class,
-                        'auction_package' => AuctionPackage::class,
-                };
-        Review::factory()->count($c)->create(['reviewable_type' => $reviewableClass,'reviewable_id'=>$product->id,'wine_user_id'=>$user->id]);
+
+        Review::factory()->count($c)->create(['reviewable_type' => Product::class,'reviewable_id'=>$product->id,'wine_user_id'=>$user->id]);
 
         $response = $this->get('/api/reviews');
         $response->assertJsonCount(10, 'data');
