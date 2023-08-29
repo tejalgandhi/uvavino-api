@@ -6,10 +6,11 @@ use App\Http\Requests\ReviewRequest;
 use App\Http\Resources\Fail;
 use App\Http\Resources\ReviewResource;
 use App\Http\Resources\Success;
+use App\Models\Auction;
+use App\Models\AuctionPackage;
+use App\Models\Product;
 use App\Models\Review;
-use App\Enums\ReviewType;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ReviewController extends Controller
 {
@@ -17,18 +18,19 @@ class ReviewController extends Controller
     {
         //category => product
         //category_id => product_id
-        $category = $request->type;
-        $category_id = $request->id;
+        $reviewable_type = $request->reviewable_type;
+        $reviewable_id = $request->reviewable_id;
         $review =  Review::with('wineUser');
-        if(!empty($category) && !empty($category_id)) {
-            $cat = match($request->type){
-                'product' => ReviewType::Product,
-                'auction' => ReviewType::Auction,
-                'auction_package' => ReviewType::AuctionPack,
-                default => ReviewType::Product
+        if(!empty($reviewable_type) && !empty($reviewable_id)) {
+            $reviewableClass =  match($request->reviewable_type){
+                'product' => Product::class,
+                'auction' => Auction::class,
+                'auction_package' => AuctionPackage::class,
+                default => Product::class,
             };
-            $review = $review->where('reviewable_type', $cat)
-                ->where('reviewable_id', $category_id);
+
+            $review = $review->where('reviewable_type', $reviewableClass)
+                ->where('reviewable_id', $reviewable_id);
         }
         $review = $review->paginate(10);
         return ReviewResource::collection($review);
@@ -37,37 +39,27 @@ class ReviewController extends Controller
     public function store(ReviewRequest $request)
     {
         try {
-            $type =  match($request->type){
-            'product' => ReviewType::Product,
-                'auction' => ReviewType::Auction,
-                'auction_package' => ReviewType::AuctionPack,
-                default => ReviewType::Product
-                };
-            $check = $this->checkValueExist($type->value,$request->id);
-            if(!$check){
+            $reviewableClass =  match($request->reviewable_type){
+                'product' => Product::class,
+                'auction' => Auction::class,
+                'auction_package' => AuctionPackage::class,
+            };
+
+            $reviewFor = $reviewableClass::find($request->reviewable_id);
+            if(!$reviewFor){
                 return (new Fail("Data not found in the DB."))->json();
             }
-            Review::create([
-               "reviewable_type" => match($request->type){
-               'product' => ReviewType::Product,
-                'auction' => ReviewType::Auction,
-                'auction_package' => ReviewType::AuctionPack,
-                default => ReviewType::Product
-                },
-                "reviewable_id" => $request->id,
+            $reviewFor->reviews()->create([
                 "wine_user_id" => $request->wine_user_id,
                 "rating" => $request->rating,
-                "review_content" => $request->review_content,
+                "review_content" => $request->review_content
             ]);
+
             return (new Success(__("Review store successfully.")))->json();
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
 
-    }
-
-    public function checkValueExist($model,$id){
-        return ($model::where('id',$id)->count()) > 0 ? true : false;
     }
 
 }

@@ -5,9 +5,7 @@ namespace Tests\Feature;
 
 use App\Models\Product;
 use App\Models\Review;
-use App\Models\User;
-use App\Enums\ReviewType;
-use App\Models\WineUser;
+use App\Models\WineUser as User;
 use Tests\TestCase;
 
 class ReviewTest extends TestCase
@@ -39,7 +37,7 @@ class ReviewTest extends TestCase
     /**
      * A basic feature test example.
      *
-     * @return void
+     * @return id
      */
 
     public function test_simple_review_listing()
@@ -54,7 +52,13 @@ class ReviewTest extends TestCase
         $response->assertStatus(200);
 
         $c = rand(15, 30);
-        Review::factory()->count($c)->create(['reviewable_type' => ReviewType::Product,'reviewable_id'=>$product->id,'wine_user_id'=>$user->id]);
+        $reviewable_type = 'product';
+        $reviewableClass =  match($reviewable_type){
+                     'product' => Product::class,
+                        'auction' => Auction::class,
+                        'auction_package' => AuctionPackage::class,
+                };
+        Review::factory()->count($c)->create(['reviewable_type' => $reviewableClass,'reviewable_id'=>$product->id,'wine_user_id'=>$user->id]);
 
         $response = $this->get('/api/reviews');
         $response->assertJsonCount(10, 'data');
@@ -67,7 +71,7 @@ class ReviewTest extends TestCase
         $response->assertStatus(200);
 
         $response = $this->get('/api/reviews?reviewable_type=product&reviewable_id=1000');
-        $response->assertJsonCount(10, 'data');
+        $response->assertJsonCount(0, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
     }
@@ -78,15 +82,14 @@ class ReviewTest extends TestCase
         $response =  $this->post('/api/reviews', $data['review']);
         $response->assertStatus(200);
 
-
-        $data = $this->store_review_array('type');
+        $data = $this->store_review_array('reviewable_type');
         $response =  $this->post('/api/reviews', $data['review']);
-        $response->assertJsonValidationErrors(['type']);
+        $response->assertJsonValidationErrors(['reviewable_type']);
         $response->assertStatus(422);
 
-        $data = $this->store_review_array('id');
+        $data = $this->store_review_array('reviewable_id');
         $response =  $this->post('/api/reviews', $data['review']);
-        $response->assertJsonValidationErrors(['id']);
+        $response->assertJsonValidationErrors(['reviewable_id']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('rating');
@@ -109,8 +112,8 @@ class ReviewTest extends TestCase
         $data = $this->common_factory();
         $c =rand(1,10);
         $review = [
-            "type"=>"product",
-            "id"=>$data['product']->id,
+            "reviewable_type"=>"product",
+            "reviewable_id"=>$data['product']->id,
             "rating"=>$c,
             "review_content"=>'Test rating',
         ];
