@@ -12,20 +12,20 @@ use App\Models\WineVariety;
 return [
     "bottle_size" => [
         "data"=> [
-            '10ml'=>'10ml',
-            '20ml'=>'20ml'
+            '0'=>'10ml',
+            '1'=>'20ml'
         ]
     ],
     "capacity" => [
         "data"=> [
-            'ml'=>'ml',
-            'liters'=>'liters',
+            '0'=>'ml',
+            '1'=>'liters',
         ]
     ],
     "price" => [
         "data"=> [
-            'min_value'=>'1',
-            'max_value'=>'1000',
+            '0'=>'1',
+            '1'=>'1000',
         ],
     ],
     "auction_type" => [
