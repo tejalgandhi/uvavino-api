@@ -17,9 +17,13 @@ class AuctionResource extends JsonResource
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,
+            'country' => '',
+            'start_time'=>'',
+            'end_time'=>'',
+            'is_wishlist'=>'',
             'description' => $this->resource->description,
             'is_private' => $this->resource->is_private,
-            'type' => $this->resource->type,
+            'auction_type' => $this->resource->type,
             'max_price' => $this->resource->max_price,
             'basket' => new BasketResource($this->resource->baskets),
         ];
