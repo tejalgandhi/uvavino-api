@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 
 class Auction extends Model
 {
@@ -17,21 +18,30 @@ class Auction extends Model
     const NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE = 4;
     const NUMBER_OF_NEW_ITEMS_PER_PAGE = 4;
     const RECENT_VIEW_LIMIT = 4;
+    const IS_LIVE_AUCTION_TYPE = 0;
+    const IS_TIMEBASED_AUCTION_TYPE = 1;
 
-    protected $fillable = [
-        'basket_id',
-        'title',
-        'description',
-        'is_private',
-        'auction_type',
-        'max_price',
-        'invitations',
-    ];
+    protected $guarded = ['id'];
 
-//    public function bids() :HasMany
-//    {
-//        $this->hasMany(AuctionBid::class);
-//    }
+    public static function boot() {
+        parent::boot();
+
+        // create a event to happen on deleting
+        static::deleting(function($table)  {
+            $table->deleted_by = Auth::user()->id ?? NULL;
+        });
+
+        // create a event to happen on saving
+        static::saving(function($table)  {
+            $table->created_by = Auth::user()->id ?? NULL;
+        });
+    }
+
+    public function bids()
+    {
+        return  $this->hasMany(AuctionBid::class);
+    }
+
 
     public function baskets(): BelongsTo
     {

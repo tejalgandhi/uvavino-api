@@ -61,9 +61,6 @@ Route::get('/auction-packs', [AuctionPackController::class, 'index']);
 Route::get('/auction-pack/{slug}', [AuctionPackController::class, 'show']);
 
 
-//auction
-Route::get('/auction', [AuctionController::class, 'index']);
-
 //home page best seller and new release auction api
 Route::get('/auctions/bestsellers', [AuctionController::class, 'getBestSellers']);
 Route::get('/auctions/new-release', [AuctionController::class, 'getNewProducts']);
@@ -110,6 +107,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
 
     // auction api
+    Route::get('/auction', [AuctionController::class, 'index']);
     Route::post('/auction', [AuctionController::class, 'store']);
     Route::get('/auction/{auction}', [AuctionController::class, 'show']);
     Route::post('/auction/{auction}/bid', [AuctionController::class, 'bid']);

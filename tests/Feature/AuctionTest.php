@@ -19,6 +19,7 @@ use Tests\TestCase;
 class AuctionTest extends TestCase
 {
 
+
     private function common_factory()
     {
         $wine_user = WineUser::factory()->create();
