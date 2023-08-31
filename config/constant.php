@@ -30,5 +30,21 @@ return [
     ],
     'front_app_url' => env('FRONT_END_URL')??'http://165.22.72.229/',
     'upload_url' => env('UPLOAD_URL') ?? 'https://dev.admin.uvavino.immera.io/uploads/',
+    'bottle_size'=>[
+        '10ml'=>'10ml',
+        '20ml'=>'20ml'
+    ],
+    'unit'=>[
+        'ml'=>'ml',
+        'liters'=>'liters',
+    ],
+    'auction_type'=>[
+        '0'=>'live',
+        '1'=>'timebased',
+    ],
+    'price'=>[
+        'min_value'=>'1',
+        'max_value'=>'1000',
+    ],
 
 ];
