@@ -36,31 +36,45 @@ class ReviewController extends Controller
         return ReviewResource::collection($review);
     }
 
-    public function store(ReviewRequest $request,$reviewable_type,$reviewable_id)
+    public function storeProductReview(ReviewRequest $request,Product $product)
     {
         try {
-            $reviewableClass =  match($reviewable_type){
-                'product' => Product::class,
-                'auction' => Auction::class,
-                'auction_package' => AuctionPackage::class,
-                default => Product::class,
-            };
 
-            $reviewFor = $reviewableClass::find($reviewable_id);
-            if(!$reviewFor){
-                return (new Fail("Data not found in the DB."))->json();
-            }
-            $reviewFor->reviews()->create([
-                "wine_user_id" => $request->wine_user_id,
-                "rating" => $request->rating,
-                "review_content" => $request->review_content
-            ]);
+            $this->storeReview($product,$request);
 
-            return (new Success(__("Review store successfully.")))->json();
+            return (new Success(__("Product Review store successfully.")))->json();
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
-
     }
 
+    public function storeAuctionReview(ReviewRequest $request,Auction $auction)
+    {
+        try {
+
+            $this->storeReview($auction,$request);
+
+            return (new Success(__("Auction Review store successfully.")))->json();
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
+
+    public function storeAuctionPackageReview(ReviewRequest $request,AuctionPackage $auctionPackage)
+    {
+        try {
+
+            $this->storeReview($auctionPackage,$request);
+
+            return (new Success(__("Auction Package Review store successfully.")))->json();
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
+
+    private function storeReview($reviewable, Request $request)
+    {
+        return $reviewable->reviews()->create($request->only("wine_user_id","rating","review_content"));
+
+    }
 }

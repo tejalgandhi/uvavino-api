@@ -29,11 +29,15 @@ class ReviewTest extends TestCase
     public function common_factory(){
         $c = rand(1, 15);
         Product::factory($c)->create();
+        Auction::factory($c)->create();
+        AuctionPackage::factory($c)->create();
         User::factory($c)->create();
         $product = Product::latest()->first();
+        $auction = Auction::latest()->first();
+        $auction_package = AuctionPackage::latest()->first();
         $wine_user = User::latest()->first();
 
-        return compact('wine_user','product');
+        return compact('wine_user','product','auction','auction_package');
     }
 
     /**
@@ -76,21 +80,59 @@ class ReviewTest extends TestCase
     public function test_store_review(){
         $data = $this->store_review_array();
         $this->actingAs($data['data']['wine_user']);
-        $response =  $this->post('/api/'.$data['review']['reviewable_type'].'/'.$data['review']['reviewable_id'].'/reviews', $data['review']);
+        $response =  $this->post('/api/product/'. $data['data']['product']->id.'/reviews', $data['review']);
         $response->assertStatus(200);
 
         $data = $this->store_review_array('rating');
-        $response =  $this->post('/api/'.$data['review']['reviewable_type'].'/'.$data['review']['reviewable_id'].'/reviews', $data['review']);
+        $response =  $this->post('/api/product/'.$data['data']['product']->id.'/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('rating',15);
-        $response =  $this->post('/api/'.$data['review']['reviewable_type'].'/'.$data['review']['reviewable_id'].'/reviews', $data['review']);
+        $response =  $this->post('/api/product/'.$data['data']['product']->id.'/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('rating',0);
-        $response =  $this->post('/api/'.$data['review']['reviewable_type'].'/'.$data['review']['reviewable_id'].'/reviews', $data['review']);
+        $response =  $this->post('/api/product/'.$data['data']['product']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
+        $data = $this->store_review_array();
+        $response =  $this->post('/api/auction/'.$data['data']['auction']->id.'/reviews', $data['review']);
+        $response->assertStatus(200);
+
+        $data = $this->store_review_array('rating');
+        $response =  $this->post('/api/auction/'.$data['data']['auction']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
+        $data = $this->store_review_array('rating',15);
+        $response =  $this->post('/api/auction/'.$data['data']['auction']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
+        $data = $this->store_review_array('rating',0);
+        $response =  $this->post('/api/auction/'.$data['data']['auction']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
+        $data = $this->store_review_array();
+        $response =  $this->post('/api/auction_package/'.$data['data']['auction_package']->id.'/reviews', $data['review']);
+        $response->assertStatus(200);
+
+        $data = $this->store_review_array('rating');
+        $response =  $this->post('/api/auction_package/'.$data['data']['auction_package']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
+        $data = $this->store_review_array('rating',15);
+        $response =  $this->post('/api/auction_package/'.$data['data']['auction_package']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
+        $data = $this->store_review_array('rating',0);
+        $response =  $this->post('/api/auction_package/'.$data['data']['auction_package']->id.'/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
     }
@@ -99,8 +141,6 @@ class ReviewTest extends TestCase
         $data = $this->common_factory();
         $c =rand(1,10);
         $review = [
-            "reviewable_type"=>"product",
-            "reviewable_id"=>$data['product']->id,
             "rating"=>$c,
             "review_content"=>'Test rating',
         ];
