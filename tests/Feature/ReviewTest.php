@@ -76,31 +76,21 @@ class ReviewTest extends TestCase
     public function test_store_review(){
         $data = $this->store_review_array();
         $this->actingAs($data['data']['wine_user']);
-        $response =  $this->post('/api/reviews', $data['review']);
+        $response =  $this->post('/api/'.$data['review']['reviewable_type'].'/'.$data['review']['reviewable_id'].'/reviews', $data['review']);
         $response->assertStatus(200);
 
-        $data = $this->store_review_array('reviewable_type');
-        $response =  $this->post('/api/reviews', $data['review']);
-        $response->assertJsonValidationErrors(['reviewable_type']);
-        $response->assertStatus(422);
-
-        $data = $this->store_review_array('reviewable_id');
-        $response =  $this->post('/api/reviews', $data['review']);
-        $response->assertJsonValidationErrors(['reviewable_id']);
-        $response->assertStatus(422);
-
         $data = $this->store_review_array('rating');
-        $response =  $this->post('/api/reviews', $data['review']);
+        $response =  $this->post('/api/'.$data['review']['reviewable_type'].'/'.$data['review']['reviewable_id'].'/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('rating',15);
-        $response =  $this->post('/api/reviews', $data['review']);
+        $response =  $this->post('/api/'.$data['review']['reviewable_type'].'/'.$data['review']['reviewable_id'].'/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('rating',0);
-        $response =  $this->post('/api/reviews', $data['review']);
+        $response =  $this->post('/api/'.$data['review']['reviewable_type'].'/'.$data['review']['reviewable_id'].'/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
     }

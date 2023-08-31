@@ -36,17 +36,17 @@ class ReviewController extends Controller
         return ReviewResource::collection($review);
     }
 
-    public function store(ReviewRequest $request)
+    public function store(ReviewRequest $request,$reviewable_type,$reviewable_id)
     {
         try {
-            $reviewableClass =  match($request->reviewable_type){
+            $reviewableClass =  match($reviewable_type){
                 'product' => Product::class,
                 'auction' => Auction::class,
                 'auction_package' => AuctionPackage::class,
                 default => Product::class,
             };
 
-            $reviewFor = $reviewableClass::find($request->reviewable_id);
+            $reviewFor = $reviewableClass::find($reviewable_id);
             if(!$reviewFor){
                 return (new Fail("Data not found in the DB."))->json();
             }

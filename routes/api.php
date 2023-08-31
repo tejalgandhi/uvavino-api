@@ -100,7 +100,8 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::post('/product', [ProductController::class, 'store']);
 
     //Review
-    Route::post('/reviews', [ReviewController::class, 'store']);
+    Route::post('/{reviewable_type}/{reviewable_id}/reviews', [ReviewController::class, 'store']);
+
 
 
     //wishlist
