@@ -13,6 +13,7 @@ use App\Models\AuctionBid;
 use App\Models\AutomaticBid;
 use App\Models\Basket;
 use App\Models\Product;
+use App\Services\Attribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -257,19 +258,12 @@ class AuctionController extends Controller
         return AuctionResource::collection($product)->additional(['meta' => []]);
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
-     */
-    public function attribute_list(Request $request)
+    public function attribute_list(Request $request,Attribute $attribute)
     {
         $conf = config('auction_attributes');
         if(!empty($conf)){
             foreach ($conf as $k=>$c){
-                if(Arr::get($c,'model')) {
-                    $query = $c['model']::query()->select($c['list_attrs']);
-                    $conf[$k]['data'] = $query->get();
-                }
+                $conf[$k]['data'] = $attribute->setAttribute($c);
             }
         }
 
