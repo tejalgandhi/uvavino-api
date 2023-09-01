@@ -76,10 +76,10 @@ Route::get('/reviews', [ReviewController::class, 'index']);
 Route::get('/csrf-token', function (Request $request) {
     return response()->json(['csrfToken' => $request->session()->token()]);
 })->middleware('web');
+Route::get('/auction', [AuctionController::class, 'index']);
 
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
-    Route::get('/auction', [AuctionController::class, 'index']);
 
     Route::post('/logout', [WineAuthController::class, 'logout']);
     Route::post('/auction-pack', [AuctionPackController::class, 'store']);
