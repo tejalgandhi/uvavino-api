@@ -18,17 +18,18 @@ class AuctionResource extends JsonResource
      */
     public function toArray($request)
     {
+        $user_id = $request->user_id;
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,
-            'total_bids' => count($this->resource->bids) ?? 0,
+            'total_bids' => !empty($this->resource->bids) ? count($this->resource->bids) : 0,
             'country_id' => !empty($this->resource->baskets) && !empty($this->resource->baskets->products) && !empty($this->resource->baskets->products[0]) ?$this->resource->baskets->products[0]->country_id: '',
             'country_name' => !empty($this->resource->baskets) && !empty($this->resource->baskets->products) && !empty($this->resource->baskets->products[0]) && $this->resource->baskets->products[0]->country ?$this->resource->baskets->products[0]->country->name: '',
             'start_date' => $this->resource->start_date ?? '',
             'start_time' => $this->resource->start_date ? Carbon::parse($this->resource->start_date)->format('D, d M Y | h:i a ') : '',
             'end_date' =>  $this->resource->end_date ??'',
             'end_time' =>  $this->resource->end_date ? Carbon::parse($this->resource->end_date)->format('D, d M Y | h:i a ') : '',
-            'is_wishlist'=> Auth::check()? Wishlist::where(['type'=>Wishlist::AUCTION_TYPE, 'ref_id'=>$this->resource->id, 'wine_user_id'=>Auth::user()->id])->count():0,
+            'is_wishlist'=> !empty($user_id)? Wishlist::where(['type'=>Wishlist::AUCTION_TYPE, 'ref_id'=>$this->resource->id, 'wine_user_id'=>$user_id])->count():0,
             'description' => $this->resource->description,
             'is_private' => $this->resource->is_private,
             'auction_type' => $this->resource->type,
