@@ -18,6 +18,7 @@ use Tests\TestCase;
 
 class AuctionTest extends TestCase
 {
+    use DatabaseTransactions;
 
 
     private function common_factory()

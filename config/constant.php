@@ -30,5 +30,5 @@ return [
     ],
     'front_app_url' => env('FRONT_END_URL')??'http://165.22.72.229/',
     'upload_url' => env('UPLOAD_URL') ?? 'https://dev.admin.uvavino.immera.io/uploads/',
-
+    'date_format'=>'D, d M Y | h:i a '
 ];

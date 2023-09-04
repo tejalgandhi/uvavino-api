@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
+use App\Enums\AuctionType;
 
 class Auction extends Model
 {
@@ -18,8 +18,7 @@ class Auction extends Model
     const NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE = 4;
     const NUMBER_OF_NEW_ITEMS_PER_PAGE = 4;
     const RECENT_VIEW_LIMIT = 4;
-    const IS_LIVE_AUCTION_TYPE = 0;
-    const IS_TIMEBASED_AUCTION_TYPE = 1;
+    public $timestamps = false;
 
     protected $guarded = ['id'];
 
