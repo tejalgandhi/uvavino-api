@@ -262,8 +262,8 @@ class AuctionController extends Controller
     {
         $conf = config('auction_attributes');
         if(!empty($conf)){
-            foreach ($conf as $k=>$c){
-                $conf[$k]['data'] = $attribute->setAttribute($c);
+            foreach ($conf as $key => $data){
+                $conf[$key] = is_array($data) ? $data: app($data)->getData();
             }
         }
 
