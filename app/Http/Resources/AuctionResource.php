@@ -32,7 +32,7 @@ class AuctionResource extends JsonResource
             'auction_type' => $this->resource->type,
             'max_price' => $this->resource->max_price,
             'basket' => new BasketResource($this->resource->baskets),
-            'auction_type_name' => AuctionType::tryFrom($this->resource->type)?->label(),
+//            'auction_type_name' => AuctionType::tryFrom($this->resource->type)?->label(),
         ];
     }
 

@@ -21,6 +21,9 @@ class Auction extends Model
     public $timestamps = false;
 
     protected $guarded = ['id'];
+    protected $casts = [
+        'type'=>AuctionType::class
+    ];
 
     public static function boot() {
         parent::boot();
