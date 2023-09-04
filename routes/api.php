@@ -63,6 +63,8 @@ Route::get('/auction-pack/{slug}', [AuctionPackController::class, 'show']);
 
 //auction
 Route::get('/auction', [AuctionController::class, 'index']);
+Route::get('/auction-attribute', [AuctionController::class, 'attribute_list']);
+
 
 //home page best seller and new release auction api
 Route::get('/auctions/bestsellers', [AuctionController::class, 'getBestSellers']);

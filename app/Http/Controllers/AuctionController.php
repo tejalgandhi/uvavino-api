@@ -13,9 +13,15 @@ use App\Models\AuctionBid;
 use App\Models\AutomaticBid;
 use App\Models\Basket;
 use App\Models\Product;
+use App\Services\Attribute;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class AuctionController
+ * @package App\Http\Controllers
+ */
 class AuctionController extends Controller
 {
     /**
@@ -129,6 +135,10 @@ class AuctionController extends Controller
     }
 
 
+    /**
+     * @param AuctionCreateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(AuctionCreateRequest $request)
     {
         try {
@@ -188,6 +198,11 @@ class AuctionController extends Controller
         }
     }
 
+    /**
+     * @param AuctionBidRequest $request
+     * @param Auction $auction
+     * @return Fail|\Illuminate\Http\JsonResponse
+     */
     public function bid(AuctionBidRequest $request, Auction $auction)
     {
         // Check if value is valid or not.
@@ -203,6 +218,11 @@ class AuctionController extends Controller
         return (new Success(__('Auction Bit Create Successfully')))->json(201);
     }
 
+    /**
+     * @param AutomaticBidRequest $request
+     * @param Auction $auction
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function automaticBid(AutomaticBidRequest $request, Auction $auction)
     {
         $max = $request->max_amount;
@@ -217,19 +237,37 @@ class AuctionController extends Controller
             'wine_user_id' => $request->wine_user_id,
             'max_amount' => $request->max_amount
         ]);
+        return (new Success(__('Auction Bit Create Successfully')))->json(201);
     }
 
+    /**
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function getBestSellers()
     {
         $product = Auction::getBestSellersProduct();
-        $collections =  AuctionResource::collection($product)->additional(['meta' => []]);
-        return $collections;
+        return  AuctionResource::collection($product)->additional(['meta' => []]);
     }
 
+    /**
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function getNewProducts()
     {
         $product = Auction::getNewProduct();
-        $collections =  AuctionResource::collection($product)->additional(['meta' => []]);
-        return $collections;
+        return AuctionResource::collection($product)->additional(['meta' => []]);
+    }
+
+    public function attribute_list(Request $request,Attribute $attribute)
+    {
+        $conf = config('auction_attributes');
+        if(!empty($conf)){
+            foreach ($conf as $key => $data){
+                $conf[$key] = is_array($data) ? $data: app($data)->getData();
+            }
+        }
+
+        return $conf;
+
     }
 }
