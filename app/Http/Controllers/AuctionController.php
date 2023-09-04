@@ -25,8 +25,7 @@ class AuctionController extends Controller
     public function index(Request $request)
     {
         $order_by = $request->order_by;
-        $user_id = $request->user_id;
-        $request->merge(['user_id' =>$user_id]);
+        $request->merge(['user_id' =>$request->user_id]);
         $filter_attrs = [
             'auctions' => [
                 'title' => 'like',
