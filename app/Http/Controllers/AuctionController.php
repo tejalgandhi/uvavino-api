@@ -54,6 +54,7 @@ class AuctionController extends Controller
         ];
         DB::enableQueryLog();
         $query = Auction::query()
+            ->withCount('bids')
             ->with([
                 'baskets',
                 'baskets.products',
