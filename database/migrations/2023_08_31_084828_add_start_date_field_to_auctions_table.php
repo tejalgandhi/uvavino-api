@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('deleted_by')->nullable();
         });
+
     }
 
     /**
