@@ -96,7 +96,7 @@ class Product extends Model
             return __($template, compact('attribute', 'expected', 'score'));
         })), " + ");
 
-        $select = Arr::join(config('relavent_product.select', ["*"]),",") . ", ($rank) as rank";
+        $select = Arr::join(config('relavent_product.select', ["*"]),",") . ", ($rank) as `rank`";
 
         return static::selectRaw($select)
             ->orderBy('rank', 'desc')

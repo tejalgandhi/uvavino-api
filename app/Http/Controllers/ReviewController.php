@@ -15,7 +15,6 @@ class ReviewController extends Controller
 {
     public function index(Request $request)
     {
-        try {
             //category => product
             //category_id => product_id
             $category = $request->type;
@@ -33,10 +32,6 @@ class ReviewController extends Controller
         }
             $review = $review->paginate(10);
             return ReviewResource::collection($review);
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-            return (new Fail($e->getMessage()))->json();
-        }
     }
 
     public function store(ReviewRequest $request)

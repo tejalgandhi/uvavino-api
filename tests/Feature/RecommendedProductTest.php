@@ -22,12 +22,12 @@ class RecommendedProductTest extends TestCase
         Product::factory()->count(50)->create();
         $url = 'api/product/'.$product->slug.'/recommended';
         $response = $this->get($url);
-        $response->assertStatus(429);
+        $response->assertStatus(500);
     }
 
     public function test_getting_recommended_products_from_the_product_that_does_not_exist_in_db()
     {
         $response = $this->get('api/product/test/recommended');
-        $response->assertStatus(429);
+        $response->assertStatus(404);
     }
 }

@@ -47,13 +47,13 @@ class Auction extends Model
     public function countryId() : Attribute
     {
         return Attribute::make(
-            fn () => $this->products()?->first()?->country_id,
+            fn () => $this->products()->first()?->country_id,
         );
     }
     public function countryName() : Attribute
     {
         return Attribute::make(
-            fn () => $this->products()?->first()?->country?->name,
+            fn () => $this->products()->first()?->country?->name,
         );
     }
 
@@ -65,7 +65,7 @@ class Auction extends Model
     {
         return Attribute::make(get: fn() => $this->withCount([
             'wishlist' => fn($q) =>
-            $q->where('wine_user_id', request()->user_id)])->first()->wishlist_count > 0);
+            $q->where('wine_user_id', request()->user_id)]));
     }
 
     public function bids()

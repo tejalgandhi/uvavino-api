@@ -28,7 +28,7 @@ class AuctionResource extends JsonResource
             'total_bids' => $this->bids_count,
             'start_date' => $this->start_date ?? '',
             'end_date' =>  $this->end_date ??'',
-            'is_wishlist'=> !empty($user_id)? $this->in_wishlist:false,
+            'is_wishlist'=> !empty($user_id)? $this->in_wishlist:0,
             'description' => $this->description,
             'is_private' => $this->is_private,
             'auction_type' => $this->type,

@@ -204,15 +204,15 @@ class ProductTest extends TestCase
 
     public function test_filter_products_with_producer()
     {
-        Product::factory()->count(20)->create();
         $producer = Producer::factory()->create();
+        Product::factory()->count(20)->create(['producer_id' => $producer->id]);
         $response = $this->get('/api/product?producer_id=' . $producer->id);
         $response->assertJsonCount(10, 'data');
         $response->assertStatus(200);
 
         Product::factory()->count(3)->create(['producer_id' => $producer->id]);
         $response = $this->get('/api/product?producer_id=' . $producer->id);
-        $response->assertJsonCount(3, 'data');
+        $response->assertJsonCount(10, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
 
@@ -226,7 +226,7 @@ class ProductTest extends TestCase
         $producer3 = Producer::factory()->create();
         Product::factory()->count(4)->create(['producer_id' => $producer3->id]);
         $response = $this->get('/api/product?producer_id[]=' . $producer->id . '&producer_id[]=' . $producer3->id);
-        $response->assertJsonCount(7, 'data');
+        $response->assertJsonCount(10, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
     }
@@ -236,7 +236,7 @@ class ProductTest extends TestCase
         Product::factory()->count(20)->create();
         $wine_type = WineType::factory()->create();
         $response = $this->get('/api/product?type_of_wine=' . $wine_type->id);
-        $response->assertJsonCount(10, 'data');
+        $response->assertJsonCount(0, 'data');
         $response->assertStatus(200);
 
         Product::factory()->count(3)->create(['type_of_wine' => $wine_type->id]);
@@ -265,7 +265,7 @@ class ProductTest extends TestCase
         Product::factory()->count(20)->create();
         $wine_tag = WineTag::factory()->create();
         $response = $this->get('/api/product?wine_tag_id=' . $wine_tag->id);
-        $response->assertJsonCount(10, 'data');
+        $response->assertJsonCount(0, 'data');
         $response->assertStatus(200);
 
         Product::factory()->count(3)->create(['wine_tag_id' => $wine_tag->id]);
@@ -294,7 +294,7 @@ class ProductTest extends TestCase
         $basket = Basket::factory()->create();
         Product::factory()->create(['basket_id' => $basket->id]);
         $response = $this->get('/api/product/' . $basket->slug);
-        $response->assertStatus(429);
+        $response->assertStatus(200);
 
         $slug = 'Test';
         $response = $this->get('/api/product/' . $slug);

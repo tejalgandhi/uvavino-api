@@ -5,12 +5,10 @@ namespace Tests\Feature;
 use App\Models\Article;
 use App\Models\Category;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 
 class ArticleTest extends TestCase
 {
-    use RefreshDatabase;
 
     private function check_structure($response) {
         $response->assertJsonStructure([

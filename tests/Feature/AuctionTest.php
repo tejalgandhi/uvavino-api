@@ -12,14 +12,10 @@ use App\Models\Region;
 use App\Models\WineTag;
 use App\Models\WineType;
 use App\Models\WineUser;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AuctionTest extends TestCase
 {
-    use RefreshDatabase;
-
 
     private function common_factory()
     {
