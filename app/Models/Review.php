@@ -9,7 +9,13 @@ class Review extends Model
 {
     use HasFactory;
 
-    public $fillable = ['reviewable_type','reviewable_id','wine_user_id','rating','review_content'];
+    public $fillable = [
+        'reviewable_type',
+        'reviewable_id',
+        'wine_user_id',
+        'rating',
+        'review_content'
+    ];
 
     /**
      * Return relationship of belongs to.
@@ -24,5 +30,8 @@ class Review extends Model
 //    {
 //        return $this->morphTo();
 //    }
+
+
+
 
 }

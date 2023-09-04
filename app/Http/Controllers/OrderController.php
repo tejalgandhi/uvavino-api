@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\OrderableType;
 use App\Http\Requests\OrderRequest;
 use App\Http\Requests\OrderShowRequest;
 use App\Http\Resources\Fail;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\Success;
+use App\Models\Auction;
+use App\Models\AuctionPackage;
 use App\Models\Order;
-use App\Models\OrderDetail;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
 class OrderController extends Controller
 {
@@ -32,17 +32,23 @@ class OrderController extends Controller
         $user = $request->user();
         $order = $user->orders()->create();
         foreach($request->items as $item) {
-            $order->items()->create([
-                'orderable_type' => match($item['type']) {
-                    'product' => OrderableType::Product,
-                    'auction' =>  OrderableType::Auction,
-                    'auction_package' => OrderableType::AuctionPack,
-                    default => OrderableType::Product,
-                },
-                'orderable_id' => $item['id'],
-                'amount' => $item['amount'],
+            $orderableClass =  match($item['orderable_type']){
+                'product' => Product::class,
+                'auction' => Auction::class,
+                'auction_package' => AuctionPackage::class,
+                default => Product::class,
+            };
+            $orderFor = $orderableClass::find($item['orderable_id']);
+            if(!$orderFor){
+                continue;
+            }
+             $order->items()->create([
+                 'orderable_type' => $orderableClass,
+                 'orderable_id' => $orderFor->id,
+                 'amount' => $item['amount'],
                 'qty' => $item['qty'],
             ]);
+
         }
         return (new Success(__('order.placed')))->json(201);
     }
