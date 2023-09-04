@@ -236,7 +236,7 @@
           },
           {
             "id": "pair_d9d45629e32a4b309cc548a269d3faf1",
-            "name": "is_publish",
+            "name": "is_private",
             "value": "1",
             "description": ""
           },
@@ -320,7 +320,7 @@
           },
           {
             "id": "pair_dc91968b5fba4c389bfcb9e885bedacc",
-            "name": "products[0][is_publish]",
+            "name": "products[0][is_private]",
             "value": "1",
             "description": ""
           },
@@ -690,7 +690,7 @@
           "value": "L"
         },
         {
-          "name": "products[0][is_publish]",
+          "name": "products[0][is_private]",
           "value": "1"
         },
         {
