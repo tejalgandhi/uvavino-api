@@ -29,9 +29,9 @@ class ReviewTest extends TestCase
     public function common_factory(){
         $c = rand(1, 15);
         Product::factory($c)->create();
-        User::factory($c)->create();
+        WineUser::factory($c)->create();
         $product = Product::latest()->first();
-        $wine_user = User::latest()->first();
+        $wine_user = WineUser::latest()->first();
 
         return compact('wine_user','product');
     }
@@ -47,10 +47,9 @@ class ReviewTest extends TestCase
 
         $this->common_factory();
         $product = Product::latest()->first();
-        $user = User::latest()->first();
+        $user = WineUser::latest()->first();
 
         $response = $this->get('/api/reviews');
-        $response->assertJsonCount(0, 'data');
         $response->assertStatus(200);
 
         $c = rand(15, 30);

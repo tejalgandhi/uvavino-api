@@ -15,13 +15,14 @@ class ReviewController extends Controller
 {
     public function index(Request $request)
     {
-        //category => product
-        //category_id => product_id
-        $category = $request->type;
-        $category_id = $request->id;
-        $review =  Review::with('wineUser');
-        if(!empty($category) && !empty($category_id)) {
-            $cat = match($request->type){
+        try {
+            //category => product
+            //category_id => product_id
+            $category = $request->type;
+            $category_id = $request->id;
+            $review = Review::with('wineUser');
+            if (!empty($category) && !empty($category_id)) {
+                $cat = match($request->type){
                 'product' => ReviewType::Product,
                 'auction' => ReviewType::Auction,
                 'auction_package' => ReviewType::AuctionPack,
@@ -30,8 +31,12 @@ class ReviewController extends Controller
             $review = $review->where('reviewable_type', $cat)
                 ->where('reviewable_id', $category_id);
         }
-        $review = $review->paginate(10);
-        return ReviewResource::collection($review);
+            $review = $review->paginate(10);
+            return ReviewResource::collection($review);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            return (new Fail($e->getMessage()))->json();
+        }
     }
 
     public function store(ReviewRequest $request)
