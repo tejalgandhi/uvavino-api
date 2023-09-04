@@ -15,7 +15,7 @@ class AuctionCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        $user = Auth::id()? WineUser::find(Auth::id()): null;
+        $user = Auth::id()? WineUser::find(Auth::id()): 0;
         return $user && $user->canAuction();
     }
 
@@ -29,9 +29,11 @@ class AuctionCreateRequest extends FormRequest
         return [
             "title" => ["required"],
             "description" => ["required"],
-            "is_private" => ["required"],
+            "is_publish" => ["required"],
             "type" => ["required"],
             "max_price" => ["required"],
+            "start_date" => ["required","date_format:Y-m-d H:i:s"],
+            "end_date" => ["required_if:type,1","date_format:Y-m-d H:i:s"],
             'basket.title' => 'required|min:5|max:255',
             'basket.stock' => 'required',
             'basket.price' => 'required',
