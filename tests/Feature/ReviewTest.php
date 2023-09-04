@@ -3,11 +3,11 @@
 namespace Tests\Feature;
 
 
+use App\Models\Auction;
+use App\Models\AuctionPackage;
 use App\Models\Product;
 use App\Models\Review;
-use App\Models\User;
-use App\Enums\ReviewType;
-use App\Models\WineUser;
+use App\Models\WineUser as User;
 use Tests\TestCase;
 
 class ReviewTest extends TestCase
@@ -29,11 +29,15 @@ class ReviewTest extends TestCase
     public function common_factory(){
         $c = rand(1, 15);
         Product::factory($c)->create();
-        WineUser::factory($c)->create();
+        Auction::factory($c)->create();
+        AuctionPackage::factory($c)->create();
+        User::factory($c)->create();
         $product = Product::latest()->first();
-        $wine_user = WineUser::latest()->first();
+        $auction = Auction::latest()->first();
+        $auction_package = AuctionPackage::latest()->first();
+        $wine_user = User::latest()->first();
 
-        return compact('wine_user','product');
+        return compact('wine_user','product','auction','auction_package');
     }
 
     /**
@@ -47,13 +51,15 @@ class ReviewTest extends TestCase
 
         $this->common_factory();
         $product = Product::latest()->first();
-        $user = WineUser::latest()->first();
+        $user = User::latest()->first();
 
         $response = $this->get('/api/reviews');
+        $response->assertJsonCount(0, 'data');
         $response->assertStatus(200);
 
         $c = rand(15, 30);
-        Review::factory()->count($c)->create(['reviewable_type' => ReviewType::Product,'reviewable_id'=>$product->id,'wine_user_id'=>$user->id]);
+
+        Review::factory()->count($c)->create(['reviewable_type' => Product::class,'reviewable_id'=>$product->id,'wine_user_id'=>$user->id]);
 
         $response = $this->get('/api/reviews');
         $response->assertJsonCount(10, 'data');
@@ -66,7 +72,7 @@ class ReviewTest extends TestCase
         $response->assertStatus(200);
 
         $response = $this->get('/api/reviews?reviewable_type=product&reviewable_id=1000');
-        $response->assertJsonCount(10, 'data');
+        $response->assertJsonCount(0, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
     }
@@ -74,32 +80,59 @@ class ReviewTest extends TestCase
     public function test_store_review(){
         $data = $this->store_review_array();
         $this->actingAs($data['data']['wine_user']);
-        $response =  $this->post('/api/reviews', $data['review']);
+        $response =  $this->post('/api/product/'. $data['data']['product']->id.'/reviews', $data['review']);
         $response->assertStatus(200);
 
-
-        $data = $this->store_review_array('type');
-        $response =  $this->post('/api/reviews', $data['review']);
-        $response->assertJsonValidationErrors(['type']);
-        $response->assertStatus(422);
-
-        $data = $this->store_review_array('id');
-        $response =  $this->post('/api/reviews', $data['review']);
-        $response->assertJsonValidationErrors(['id']);
-        $response->assertStatus(422);
-
         $data = $this->store_review_array('rating');
-        $response =  $this->post('/api/reviews', $data['review']);
+        $response =  $this->post('/api/product/'.$data['data']['product']->id.'/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('rating',15);
-        $response =  $this->post('/api/reviews', $data['review']);
+        $response =  $this->post('/api/product/'.$data['data']['product']->id.'/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
 
         $data = $this->store_review_array('rating',0);
-        $response =  $this->post('/api/reviews', $data['review']);
+        $response =  $this->post('/api/product/'.$data['data']['product']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
+        $data = $this->store_review_array();
+        $response =  $this->post('/api/auction/'.$data['data']['auction']->id.'/reviews', $data['review']);
+        $response->assertStatus(200);
+
+        $data = $this->store_review_array('rating');
+        $response =  $this->post('/api/auction/'.$data['data']['auction']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
+        $data = $this->store_review_array('rating',15);
+        $response =  $this->post('/api/auction/'.$data['data']['auction']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
+        $data = $this->store_review_array('rating',0);
+        $response =  $this->post('/api/auction/'.$data['data']['auction']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
+        $data = $this->store_review_array();
+        $response =  $this->post('/api/auction_package/'.$data['data']['auction_package']->id.'/reviews', $data['review']);
+        $response->assertStatus(200);
+
+        $data = $this->store_review_array('rating');
+        $response =  $this->post('/api/auction_package/'.$data['data']['auction_package']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
+        $data = $this->store_review_array('rating',15);
+        $response =  $this->post('/api/auction_package/'.$data['data']['auction_package']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
+        $data = $this->store_review_array('rating',0);
+        $response =  $this->post('/api/auction_package/'.$data['data']['auction_package']->id.'/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
     }
@@ -108,8 +141,6 @@ class ReviewTest extends TestCase
         $data = $this->common_factory();
         $c =rand(1,10);
         $review = [
-            "type"=>"product",
-            "id"=>$data['product']->id,
             "rating"=>$c,
             "review_content"=>'Test rating',
         ];

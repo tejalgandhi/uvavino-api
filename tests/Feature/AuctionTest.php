@@ -333,5 +333,23 @@ class AuctionTest extends TestCase
         $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertStatus(422);
     }
+    public function test_get_auction_attributes()
+    {
+        $response = $this->get('/api/auction-attribute');
+        $response->assertStatus(200);
+
+    }
+    public function test_get_best_sellers()
+    {
+        $response = $this->get('/api/auctions/bestsellers');
+        $response->assertStatus(200);
+
+    }
+    public function test_get_new_release()
+    {
+        $response = $this->get('/api/auctions/new-release');
+        $response->assertStatus(200);
+
+    }
 
 }

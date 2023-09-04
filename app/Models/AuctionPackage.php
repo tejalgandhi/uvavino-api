@@ -20,4 +20,13 @@ class AuctionPackage extends Model
         $query = self::where('bestsellers', AuctionPackage::IS_BESTSELLER);
         return $query->paginate(self::NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE);
     }
+
+    public function reviews()
+    {
+        return $this->morphMany(Review::class,'reviewable');
+    }
+    public function items()
+    {
+        return $this->morphMany(OrderDetail::class,'orderable');
+    }
 }

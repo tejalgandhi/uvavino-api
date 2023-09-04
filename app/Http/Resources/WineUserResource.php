@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use App\Models\Order;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Enums\OrderableType;
 
 class WineUserResource extends JsonResource
 {

@@ -101,4 +101,14 @@ class Auction extends Model
         $query = self::where('new_release', Auction::IS_NEW)->orderBy('new_release_order', 'ASC');
         return $query->paginate(self::NUMBER_OF_NEW_ITEMS_PER_PAGE);
     }
+
+    public function reviews()
+    {
+        return $this->morphMany(Review::class,'reviewable');
+    }
+
+    public function items()
+    {
+        return $this->morphMany(OrderDetail::class,'orderable');
+    }
 }
