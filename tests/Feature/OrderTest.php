@@ -22,8 +22,8 @@ class OrderTest extends TestCase
         $product = Product::factory()->create();
         $response = $this->actingAs($user)->post('/api/orders', [
             "items" => [[
-                "type" => "product",
-                "id" => $product->id,
+                "orderable_type" => "product",
+                "orderable_id" => $product->id,
                 "amount" => 12.55,
                 "qty" => 2
             ]]
@@ -38,8 +38,8 @@ class OrderTest extends TestCase
         $product = Product::factory()->create();
         $response = $this->actingAs($user)->post('/api/orders', [
             "items" => [[
-                "type" => "random",
-                "id" => $product->id,
+                "orderable_type" => "random",
+                "orderable_id" => $product->id,
                 "amount" => 12.55,
                 "qty" => 2
             ]]
@@ -163,6 +163,6 @@ class OrderTest extends TestCase
         // Tring to get order details as anonymous
         $response = $this->get('/api/orders/' . $order1->id);
         $response->assertStatus(403);
-        
+
     }
 }
