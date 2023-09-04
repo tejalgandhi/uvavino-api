@@ -53,8 +53,8 @@ class AuctionController extends Controller
             }
         ];
         DB::enableQueryLog();
-        $query = Auction::query()
-            ->withCount('bids')
+        $query = Auction::select(AuctionResource::selectLst())
+            ->withCount(['bids'])
             ->with([
                 'baskets',
                 'baskets.products',
@@ -98,6 +98,8 @@ class AuctionController extends Controller
             }
         }
 
+
+
         $query = match($order_by){
         'ascending' => $query->orderBy('auctions.title', 'asc'),
             'descending' => $query->orderBy('auctions.title', 'desc'),
@@ -107,10 +109,9 @@ class AuctionController extends Controller
             'cheapest' => $query->orderBy('auctions.max_price', 'asc'),
             default => $query
         };
+
         return AuctionResource::collection(
-            $query->select(
-                AuctionResource::selectLst()
-            )->paginate(10)
+            $query->paginate(10)
         );
     }
 

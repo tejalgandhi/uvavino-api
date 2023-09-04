@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\AuctionType;
 
@@ -21,9 +23,7 @@ class Auction extends Model
     public $timestamps = false;
 
     protected $guarded = ['id'];
-    protected $casts = [
-        'type'=>AuctionType::class
-    ];
+
 
     public static function boot() {
         parent::boot();
@@ -37,6 +37,35 @@ class Auction extends Model
         static::saving(function($table)  {
             $table->created_by = Auth::user()->id ?? NULL;
         });
+    }
+
+    public function products(): HasManyThrough
+    {
+        return $this->hasManyThrough(Product::class,Basket::class ,'id','basket_id');
+    }
+
+    public function countryId() : Attribute
+    {
+        return Attribute::make(
+            fn () => $this->products()?->first()?->country_id,
+        );
+    }
+    public function countryName() : Attribute
+    {
+        return Attribute::make(
+            fn () => $this->products()?->first()?->country?->name,
+        );
+    }
+
+    public function wishlist(){
+        return $this->hasMany(Wishlist::class,'ref_id','id')->where('type',Wishlist::AUCTION_TYPE);
+    }
+
+    public function inWishlist() : Attribute
+    {
+        return Attribute::make(get: fn() => $this->withCount([
+            'wishlist' => fn($q) =>
+            $q->where('wine_user_id', request()->user_id)])->first()->wishlist_count > 0);
     }
 
     public function bids()

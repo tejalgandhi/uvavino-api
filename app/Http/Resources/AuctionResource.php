@@ -18,21 +18,23 @@ class AuctionResource extends JsonResource
     public function toArray($request)
     {
         $user_id = $request->user_id;
+
         return [
-            'id' => $this->resource->id,
-            'title' => $this->resource->title,
-            'total_bids' => $this->resource->bids_count,
-            'country_id' => !empty($this->resource->baskets) && !empty($this->resource->baskets->products) && !empty($this->resource->baskets->products[0]) ?$this->resource->baskets->products[0]->country_id: '',
-            'country_name' => !empty($this->resource->baskets) && !empty($this->resource->baskets->products) && !empty($this->resource->baskets->products[0]) && $this->resource->baskets->products[0]->country ?$this->resource->baskets->products[0]->country->name: '',
-            'start_date' => $this->resource->start_date ?? '',
-            'end_date' =>  $this->resource->end_date ??'',
-            'is_wishlist'=> !empty($user_id)? Wishlist::where(['type'=>Wishlist::AUCTION_TYPE, 'ref_id'=>$this->resource->id, 'wine_user_id'=>$user_id])->count():0,
-            'description' => $this->resource->description,
-            'is_private' => $this->resource->is_private,
-            'auction_type' => $this->resource->type,
-            'max_price' => $this->resource->max_price,
-            'basket' => new BasketResource($this->resource->baskets),
-//            'auction_type_name' => AuctionType::tryFrom($this->resource->type)?->label(),
+            'id' => $this->id,
+            'user_id' => $user_id,
+            'country_id' => $this->country_id,
+            'country_name' => $this->country_name,
+            'title' => $this->title,
+            'total_bids' => $this->bids_count,
+            'start_date' => $this->start_date ?? '',
+            'end_date' =>  $this->end_date ??'',
+            'is_wishlist'=> !empty($user_id)? $this->in_wishlist:false,
+            'description' => $this->description,
+            'is_private' => $this->is_private,
+            'auction_type' => $this->type,
+            'max_price' => $this->max_price,
+            'basket' => new BasketResource($this->baskets),
+            'auction_type_name' => AuctionType::tryFrom($this->type)?->label(),
         ];
     }
 
