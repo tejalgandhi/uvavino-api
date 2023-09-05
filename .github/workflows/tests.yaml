@@ -41,6 +41,11 @@ jobs:
           composer require laravel/framework "~9.48" --no-interaction --no-update
           composer update --prefer-stable --prefer-dist --no-interaction
 
+      - name: Set Testing Environment
+        run: |
+          set -e
+          sed -i "s|^\(DB_PORT=\s*\).*$|\1${{ job.services.mysql.ports['3306'] }}|" .env.testing
+
       - name: Key Generate
         run: set -e && php artisan key:generate --env=testing
 
