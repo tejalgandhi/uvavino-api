@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->longText('product_images')->nullable();
+            $table->json('product_images')->nullable();
         });
     }
 
