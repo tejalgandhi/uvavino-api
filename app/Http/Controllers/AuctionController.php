@@ -182,9 +182,7 @@ class AuctionController extends Controller
                     "unit_quantity" => $product["unit_quantity"],
                     "unit" => $product["unit"],
                 ]);
-                if(isset($product['product_images'])) {
-                    $this->storeProductImages($p, $product['product_images']);
-                }
+
             }
             $request->request->add(['basket_id' => $basket->id]);
 
@@ -204,22 +202,6 @@ class AuctionController extends Controller
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json(500);
         }
-    }
-
-    public function storeProductImages($p,$images=null)
-    {
-        if(!empty($images)){
-            $files = [];
-            foreach ($images as $image){
-                $name = time().rand(1,100).'.'.$image->extension();
-                $image->move(public_path('product_images'), $name);
-                $files[] = $name;
-            }
-            $p->product_images = $files;
-            $p->save();
-        }
-
-        return ;
     }
 
     /**
