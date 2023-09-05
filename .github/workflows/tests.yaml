@@ -8,25 +8,63 @@ jobs:
   run-tests:
     runs-on: ubuntu-latest
     name: run test and check coverage
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: uvavino_test_db
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
+
+
     steps:
       - uses: actions/checkout@v2
+
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
           path: ~/.composer/cache/files
           key: dependencies-uvavino-composer-${{ hashFiles('composer.json') }}
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.1
           extensions: mbstring, pdo, pdo_sqlite
           coverage: xdebug
+
       - name: Install dependencies
         run: |
           composer require laravel/framework "~9.48" --no-interaction --no-update
           composer update --prefer-stable --prefer-dist --no-interaction
+
+      - name: Set Testing Environment
+        run: |
+          set -e
+          sed -i "s|^\(DB_PORT=\s*\).*$|\1${{ job.services.mysql.ports['3306'] }}|" .env.testing
+
+      - name: Key Generate
+        run: set -e && php artisan key:generate --env=testing
+
+      - name: Comlplete Testing Env File
+        run: |
+          printf "The complete `.env.testing` ... \n\n"
+          cat .env.testing
+
+      - name: Optimize Stuffs
+        run: set -e && php artisan optimize:clear --env=testing
+
+      - name: Migrate Database
+        run: set -e && php artisan migrate --env=testing
+
+      - name: Seed Database
+        run: set -e && php artisan db:seed --env=testing
+
       - name: Execute tests
         env:
           XDEBUG_MODE: coverage
           APP_KEY: base64:Y1WR7iq6v9BIQFqGIK32cN2IHGabXWh+EAmWmEloves=
-        run: php artisan test --coverage --min=80
+        run: php artisan test --env=testing --coverage --min=80
