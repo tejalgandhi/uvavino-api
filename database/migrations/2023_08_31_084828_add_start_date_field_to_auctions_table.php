@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('deleted_by')->nullable();
             $table->renameColumn('is_private','is_publish');
+            $table->integer('type')->change();
         });
 
     }
@@ -31,6 +32,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('auctions', function (Blueprint $table) {
+            $table->enum('type', ['0', '1'])->comment('0=>live,1=>timebased')->default(1)->change();
             $table->renameColumn('is_publish','is_private');
 
             $table->dropColumn(['start_date','end_date','created_by','deleted_by']);
