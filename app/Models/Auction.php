@@ -61,13 +61,6 @@ class Auction extends Model
         return $this->hasMany(Wishlist::class,'ref_id','id')->where('type',Wishlist::AUCTION_TYPE);
     }
 
-    public function inWishlist() : Attribute
-    {
-        return Attribute::make(get: fn() => $this->withCount([
-            'wishlist' => fn($q) =>
-            $q->where('wine_user_id', request()->user_id)]));
-    }
-
     public function bids()
     {
         return  $this->hasMany(AuctionBid::class);

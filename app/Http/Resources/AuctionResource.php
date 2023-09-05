@@ -18,7 +18,6 @@ class AuctionResource extends JsonResource
     public function toArray($request)
     {
         $user_id = $request->user_id;
-
         return [
             'id' => $this->id,
             'user_id' => $user_id,
@@ -28,12 +27,12 @@ class AuctionResource extends JsonResource
             'total_bids' => $this->bids_count,
             'start_date' => $this->start_date ?? '',
             'end_date' =>  $this->end_date ??'',
-            'is_wishlist'=> !empty($user_id)? $this->in_wishlist:0,
+            'is_wishlist'=> $this->wishlist_count,
             'description' => $this->description,
             'is_publish' => $this->is_publish,
             'auction_type' => $this->type,
             'max_price' => $this->max_price,
-            'basket' => new BasketResource($this->baskets),
+//            'basket' => new BasketResource($this->baskets),
             'auction_type_name' => AuctionType::tryFrom($this->type)?->label(),
         ];
     }

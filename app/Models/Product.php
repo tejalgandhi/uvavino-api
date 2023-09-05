@@ -103,8 +103,7 @@ class Product extends Model
             ->limit($count)
             ->get();
     }
-
-    public function reviews()
+     public function reviews()
     {
         return $this->morphMany(Review::class,'reviewable');
     }

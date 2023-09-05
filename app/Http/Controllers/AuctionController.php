@@ -60,7 +60,9 @@ class AuctionController extends Controller
         ];
         DB::enableQueryLog();
         $query = Auction::select(AuctionResource::selectLst())
-            ->withCount(['bids'])
+            ->withCount(['bids','wishlist'=> function ($q)  {
+                    $q->where('wine_user_id',request()->user_id);
+            } ])
             ->with([
                 'baskets',
                 'baskets.products',
@@ -156,11 +158,11 @@ class AuctionController extends Controller
                 ]));
             $products = $request->products;
             foreach ($products as $product) {
-                Product::create([
+                $p = Product::create([
                     "basket_id" => $basket->id,
                     "wine_name" => $product["wine_name"],
                     "description" => $product["description"],
-                    "wine_user_id" =>$request->wine_user_id,
+                    "wine_user_id" => $request->wine_user_id,
                     "drink_type_id" => $product["drink_type_id"],
                     "bottle_size" => $product["bottle_size"],
                     "country_id" => $product["country_id"],
@@ -181,8 +183,10 @@ class AuctionController extends Controller
                     "unit_quantity" => $product["unit_quantity"],
                     "unit" => $product["unit"],
                 ]);
+                if(isset($product['product_images'])) {
+                    $this->storeProductImages($p, $product['product_images']);
+                }
             }
-
             $request->request->add(['basket_id' => $basket->id]);
 
             Auction::create($request->only([
@@ -201,6 +205,22 @@ class AuctionController extends Controller
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json(500);
         }
+    }
+
+    public function storeProductImages($p,$images=null)
+    {
+        if(!empty($images)){
+            $files = [];
+            foreach ($images as $image){
+                $name = time().rand(1,100).'.'.$image->extension();
+                $image->move(public_path('product_images'), $name);
+                $files[] = $name;
+            }
+            $p->product_images = $files;
+            $p->save();
+        }
+
+        return ;
     }
 
     /**
