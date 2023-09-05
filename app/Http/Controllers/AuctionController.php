@@ -31,7 +31,6 @@ class AuctionController extends Controller
     public function index(Request $request)
     {
         $order_by = $request->order_by;
-        $request->merge(['user_id' =>$request->user_id]);
         $filter_attrs = [
             'auctions' => [
                 'title' => 'like',
@@ -60,8 +59,8 @@ class AuctionController extends Controller
         ];
         DB::enableQueryLog();
         $query = Auction::select(AuctionResource::selectLst())
-            ->withCount(['bids','wishlist'=> function ($q)  {
-                    $q->where('wine_user_id',request()->user_id);
+            ->withCount(['bids','wishlist'=> function($q) use($request)  {
+                    $q->where('wine_user_id',$request->user_id);
             } ])
             ->with([
                 'baskets',
