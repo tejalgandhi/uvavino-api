@@ -9,7 +9,5 @@ class BrandFilter extends BaseFilter
     protected $fields = [
         "id",
         "name",
-        "slug",
-        "is_approved",
     ];
 }
