@@ -9,8 +9,5 @@ class WineTagFilter extends BaseFilter
     protected $fields = [
         "id",
         "name",
-        "slug",
-        "status",
-        "is_approved",
     ];
 }

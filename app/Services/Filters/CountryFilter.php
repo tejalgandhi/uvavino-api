@@ -9,7 +9,5 @@ class CountryFilter extends BaseFilter
     protected $fields = [
         "id",
         "name",
-        "slug",
-        "status",
     ];
 }

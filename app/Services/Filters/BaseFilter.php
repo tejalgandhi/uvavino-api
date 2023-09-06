@@ -21,6 +21,6 @@ class BaseFilter
             });
         }
 
-        return $query->paginate()->toArray();
+        return $query->get()->toArray();
     }
 }

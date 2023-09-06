@@ -10,7 +10,5 @@ class RegionFilter extends BaseFilter
         "id",
         "country_id",
         "name",
-        "slug",
-        "status",
-    ];
+     ];
 }
