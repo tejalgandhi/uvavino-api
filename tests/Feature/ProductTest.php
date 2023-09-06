@@ -123,6 +123,7 @@ class ProductTest extends TestCase
         $response->assertJsonCount(0, 'data');
         $response->assertStatus(200);
 
+        $drink_type = DrinkType::factory()->create();
         Product::factory()->count(3)->create(['drink_type_id' => $drink_type->id]);
         $response = $this->get('/api/product?drink_type_id=' . $drink_type->id);
         $response->assertJsonCount(3, 'data');
@@ -175,14 +176,15 @@ class ProductTest extends TestCase
 
     public function test_filter_products_with_region()
     {
-        Product::factory()->count(20)->create();
         $region = Region::factory()->create();
+        Product::factory()->count(20)->create(['region_id'=>$region->id]);
         $response = $this->get('/api/product?region_id=' . $region->id);
-        $response->assertJsonCount(0, 'data');
+        $response->assertJsonCount(10, 'data');
         $response->assertStatus(200);
 
-        Product::factory()->count(3)->create(['region_id' => $region->id]);
-        $response = $this->get('/api/product?region_id=' . $region->id);
+        $region1 = Region::factory()->create();
+        Product::factory()->count(3)->create(['region_id' => $region1->id]);
+        $response = $this->get('/api/product?region_id=' . $region1->id);
         $response->assertJsonCount(3, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
@@ -197,7 +199,7 @@ class ProductTest extends TestCase
         $region3 = Region::factory()->create();
         Product::factory()->count(4)->create(['region_id' => $region3->id]);
         $response = $this->get('/api/product?region_id[]=' . $region->id . '&region_id[]=' . $region3->id);
-        $response->assertJsonCount(7, 'data');
+        $response->assertJsonCount(10, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
     }
