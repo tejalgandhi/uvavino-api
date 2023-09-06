@@ -16,6 +16,13 @@ use Tests\TestCase;
 
 class ProductAttributeTest extends TestCase
 {
+    public function common_factory()
+    {
+        $data = [
+            'name'=>"Test attribute"
+        ];
+        return $data;
+    }
     public function test_drink_type_attribute_listing()
     {
         $response = $this->get('/api/product-attribute/drink-type');
@@ -157,5 +164,38 @@ class ProductAttributeTest extends TestCase
         $response = $this->get('/api/product-attribute/random');
         $response->assertJson(["message" => "Attribute 'random' not present or not configured."]);
         $response->assertStatus(404);
+    }
+
+    public function test_store_wine_variety()
+    {
+        $data = $this->common_factory();
+        $response = $this->post('/api/product-attribute/wine-variety',$data);
+        $response->assertStatus(201);
+    }
+    public function test_store_wine_variety_without_field()
+    {
+        $response = $this->post('/api/product-attribute/wine-variety');
+        $response->assertStatus(422);
+    }
+    public function test_store_wine_variety_with_name_field_less_letter()
+    {
+        $response = $this->post('/api/product-attribute/wine-variety',['name'=>'test']);
+        $response->assertStatus(422);
+    }
+    public function test_store_wine_tag()
+    {
+        $data = $this->common_factory();
+        $response = $this->post('/api/product-attribute/wine-tag',$data);
+        $response->assertStatus(201);
+    }
+    public function test_store_wine_tag_without_field()
+    {
+        $response = $this->post('/api/product-attribute/wine-tag');
+        $response->assertStatus(422);
+    }
+    public function test_store_wine_tag_with_name_field_less_letter()
+    {
+        $response = $this->post('/api/product-attribute/wine-tag',['name'=>'test']);
+        $response->assertStatus(422);
     }
 }
