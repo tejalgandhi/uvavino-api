@@ -52,7 +52,7 @@ Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
 Route::get('/product-attribute/{attribute_name}', [ProductAttributeController::class, 'attribute_list']);
 
 //product
-Route::get('/product', [ProductController::class, 'index']);
+Route::get('/product', [ProductController::class, 'index'])->withoutMiddleware('throttle:api');
 Route::get('/product/{slug}', [ProductController::class, 'show']);
 Route::get('/product/{slug}/recommended', [ProductController::class, 'recommended']);
 
@@ -81,10 +81,11 @@ Route::get('/reviews', [ReviewController::class, 'index']);
 Route::get('/csrf-token', function (Request $request) {
     return response()->json(['csrfToken' => $request->session()->token()]);
 })->middleware('web');
-
+Route::get('/auction', [AuctionController::class, 'index'])->withoutMiddleware('throttle:api');
 
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
+
     Route::post('/logout', [WineAuthController::class, 'logout']);
     Route::post('/auction-pack', [AuctionPackController::class, 'store']);
 
@@ -115,6 +116,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
 
     // auction api
+
     Route::post('/auction', [AuctionController::class, 'store']);
     Route::get('/auction/{auction}', [AuctionController::class, 'show']);
     Route::post('/auction/{auction}/bid', [AuctionController::class, 'bid']);

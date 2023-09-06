@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\Auth;
+use App\Enums\AuctionType;
 
 class Auction extends Model
 {
@@ -17,21 +20,56 @@ class Auction extends Model
     const NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE = 4;
     const NUMBER_OF_NEW_ITEMS_PER_PAGE = 4;
     const RECENT_VIEW_LIMIT = 4;
+    public $timestamps = false;
 
-    protected $fillable = [
-        'basket_id',
-        'title',
-        'description',
-        'is_private',
-        'auction_type',
-        'max_price',
-        'invitations',
+    protected $guarded = ['id'];
+
+    public $casts =[
+      'type'=>AuctionType::class,
     ];
 
-//    public function bids() :HasMany
-//    {
-//        $this->hasMany(AuctionBid::class);
-//    }
+
+    public static function boot() {
+        parent::boot();
+
+        // create a event to happen on deleting
+        static::deleting(function($model)  {
+            $model->deleted_by = Auth::user()->id ?? NULL;
+        });
+
+        // create a event to happen on saving
+        static::saving(function($model)  {
+            $model->created_by = Auth::user()->id ?? NULL;
+        });
+    }
+
+    public function products(): HasManyThrough
+    {
+        return $this->hasManyThrough(Product::class,Basket::class ,'id','basket_id');
+    }
+
+    public function countryId() : Attribute
+    {
+        return Attribute::make(
+            fn () => $this->products()->first()?->country_id,
+        );
+    }
+    public function countryName() : Attribute
+    {
+        return Attribute::make(
+            fn () => $this->products()->first()?->country?->name,
+        );
+    }
+
+    public function wishlist(){
+        return $this->hasMany(Wishlist::class,'ref_id','id')->where('type',Wishlist::AUCTION_TYPE);
+    }
+
+    public function bids()
+    {
+        return  $this->hasMany(AuctionBid::class);
+    }
+
 
     public function baskets(): BelongsTo
     {

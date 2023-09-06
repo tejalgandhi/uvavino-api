@@ -9,6 +9,7 @@ use Tests\TestCase;
 
 class RecommendedProductTest extends TestCase
 {
+
     /**
      * A basic feature test example.
      *
@@ -22,7 +23,7 @@ class RecommendedProductTest extends TestCase
         Product::factory()->count(50)->create();
         $url = 'api/product/'.$product->slug.'/recommended';
         $response = $this->get($url);
-        $response->assertStatus(500);
+        $response->assertStatus(200);
     }
 
     public function test_getting_recommended_products_from_the_product_that_does_not_exist_in_db()

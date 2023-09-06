@@ -12,8 +12,6 @@ use App\Models\Region;
 use App\Models\WineTag;
 use App\Models\WineType;
 use App\Models\WineUser;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AuctionTest extends TestCase
@@ -39,9 +37,11 @@ class AuctionTest extends TestCase
         $product = [
             'title' => fake()->words(rand(5,10), true),
             'description' => fake()->paragraph,
-            'is_private' => 1,
+            'is_publish' => 1,
             'type' => 1,
-            'max_price' => rand(300,800)
+            'max_price' => rand(300,800),
+            "start_date"=>now()->format('Y-m-d H:i:s'),
+            "end_date"=>now()->format('Y-m-d H:i:s')
         ];
         $product["basket"] = [
             "title" => "Test wine",
@@ -77,6 +77,8 @@ class AuctionTest extends TestCase
             "basket_quantity" => 1,
             "unit_quantity" => 1,
             "unit" => 1,
+            "start_date"=>now()->format('Y-m-d H:i:s'),
+            "end_date"=>now()->format('Y-m-d H:i:s')
         ];
         $product["products"][] = [
             "title" => "Test wine2",
@@ -104,7 +106,8 @@ class AuctionTest extends TestCase
             "basket_quantity" => 2,
             "unit_quantity" => 2,
             "unit" => 1,
-
+            "start_date"=>now()->format('Y-m-d H:i:s'),
+            "end_date"=>now()->format('Y-m-d H:i:s')
         ];
         if(!empty($params)){
             if(!empty($array_key) &&$array_key =='basket')
@@ -310,9 +313,9 @@ class AuctionTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_store_auction_without_auction_is_private_required_field_failed()
+    public function test_store_auction_without_auction_is_publish_required_field_failed()
     {
-        $data = $this->store_auction_array('is_private','auction');
+        $data = $this->store_auction_array('is_publish','auction');
         $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertStatus(422);
     }

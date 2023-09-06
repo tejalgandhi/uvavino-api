@@ -58,7 +58,10 @@ class AuctionController extends Controller
             }
         ];
         DB::enableQueryLog();
-        $query = Auction::query()
+        $query = Auction::select(AuctionResource::selectLst())
+            ->withCount(['bids','wishlist'=> function($q) use($request)  {
+                    $q->where('wine_user_id',$request->user_id);
+            } ])
             ->with([
                 'baskets',
                 'baskets.products',
@@ -102,6 +105,8 @@ class AuctionController extends Controller
             }
         }
 
+
+
         $query = match($order_by){
         'ascending' => $query->orderBy('auctions.title', 'asc'),
             'descending' => $query->orderBy('auctions.title', 'desc'),
@@ -111,10 +116,9 @@ class AuctionController extends Controller
             'cheapest' => $query->orderBy('auctions.max_price', 'asc'),
             default => $query
         };
+
         return AuctionResource::collection(
-            $query->select(
-                AuctionResource::selectLst()
-            )->paginate(10)
+            $query->paginate(10)
         );
     }
 
@@ -153,11 +157,11 @@ class AuctionController extends Controller
                 ]));
             $products = $request->products;
             foreach ($products as $product) {
-                Product::create([
+                $p = Product::create([
                     "basket_id" => $basket->id,
                     "wine_name" => $product["wine_name"],
                     "description" => $product["description"],
-                    "wine_user_id" =>$request->wine_user_id,
+                    "wine_user_id" => $request->wine_user_id,
                     "drink_type_id" => $product["drink_type_id"],
                     "bottle_size" => $product["bottle_size"],
                     "country_id" => $product["country_id"],
@@ -178,15 +182,17 @@ class AuctionController extends Controller
                     "unit_quantity" => $product["unit_quantity"],
                     "unit" => $product["unit"],
                 ]);
-            }
 
+            }
             $request->request->add(['basket_id' => $basket->id]);
 
             Auction::create($request->only([
                 "basket_id",
                 "title",
                 "description",
-                "is_private",
+                "is_publish",
+                "start_date",
+                "end_date",
                 "type",
                 "max_price",
                 "invitations",

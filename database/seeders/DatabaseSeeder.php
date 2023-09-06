@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Auction;
 use App\Models\Basket;
 use App\Models\Brand;
 use App\Models\Country;
@@ -13,6 +14,7 @@ use App\Models\WineTag;
 use App\Models\WineType;
 use App\Models\WineUser;
 use App\Models\WineVariety;
+use App\Models\Wishlist;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -37,7 +39,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\AuctionPackage::factory(10)->create();
 
         $country = Country::first();
-        $wine_user = WineUser::first();
+        $wine_user = WineUser::latest()->first();
 
         \App\Models\Region::factory(10)->create(["country_id"=>$country->id]);
         \App\Models\Brand::factory(10)->create(["country_id"=>$country->id,"wine_user_id"=>$wine_user->id]);
@@ -82,8 +84,16 @@ class DatabaseSeeder extends Seeder
         \App\Models\Product::factory(10)->create([
             "basket_id" => $basket->id,
            ]);
-        \App\Models\Auction::factory(10)->create(["basket_id"=>$basket->id]);
-
+        \App\Models\Auction::factory(10)->create([
+            "basket_id"=>$basket->id,
+            "created_by"=>$wine_user->id,
+        ]);
+        $auction = Auction::latest()->first();
+        \App\Models\Wishlist::factory(1)->create([
+            'wine_user_id' => $wine_user->id,
+            'ref_id' => $auction->id,
+            'type' => Wishlist::AUCTION_TYPE
+        ]);
 
         //create auction data
         \App\Models\Basket::factory(1)->create();

@@ -21,9 +21,9 @@ class AuctionFactory extends Factory
             'basket_id' => Basket::factory(),
             'title' => fake()->words(rand(5,10), true),
             'description' => fake()->paragraph,
-            'is_private' => 1,
+            'is_publish' => 1,
             'type' => 1,
-            'max_price' => rand(300,800)
+            'max_price' => rand(300,800),
         ];
     }
 }

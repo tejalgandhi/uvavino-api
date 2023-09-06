@@ -47,4 +47,5 @@ return [
         'max_value'=>'1000',
     ],
 
+    'date_format'=>'D, d M Y | h:i a '
 ];

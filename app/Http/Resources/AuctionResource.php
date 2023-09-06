@@ -2,7 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Wishlist;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Enums\AuctionType;
 
 class AuctionResource extends JsonResource
 {
@@ -14,14 +17,22 @@ class AuctionResource extends JsonResource
      */
     public function toArray($request)
     {
+        $user_id = $request->user_id;
         return [
-            'id' => $this->resource->id,
-            'title' => $this->resource->title,
-            'description' => $this->resource->description,
-            'is_private' => $this->resource->is_private,
-            'type' => $this->resource->type,
-            'max_price' => $this->resource->max_price,
-            'basket' => new BasketResource($this->resource->baskets),
+            'id' => $this->id,
+            'user_id' => $user_id,
+            'country_id' => $this->country_id,
+            'country_name' => $this->country_name,
+            'title' => $this->title,
+            'total_bids' => $this->bids_count,
+            'start_date' => $this->start_date ?? '',
+            'end_date' =>  $this->end_date ??'',
+            'is_wishlist'=> $this->wishlist_count,
+            'description' => $this->description,
+            'is_publish' => $this->is_publish,
+            'auction_type' => $this->type->name,
+            'max_price' => $this->max_price,
+            'basket' => new BasketResource($this->baskets),
         ];
     }
 
@@ -30,10 +41,12 @@ class AuctionResource extends JsonResource
             'auctions.id',
             'auctions.title',
             'auctions.description',
-            'auctions.is_private',
+            'auctions.is_publish',
             'auctions.type',
             'auctions.max_price',
-            'auctions.basket_id'
+            'auctions.basket_id',
+            'auctions.start_date',
+            'auctions.end_date',
         ];
     }
 }
