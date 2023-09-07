@@ -30,7 +30,7 @@ return [
         '1',
         '1000',
     ],
-    "auction_type" => [
+    "type" => [
         'live',
         'timebased',
     ],
