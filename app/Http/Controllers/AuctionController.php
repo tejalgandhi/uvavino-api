@@ -68,7 +68,6 @@ class AuctionController extends Controller
                 return $q->where($a, '<',  $v);
             }
         ];
-        DB::enableQueryLog();
         $query = Auction::select(AuctionResource::selectLst())
             ->withCount(['bids','wishlist'=> function($q) use($request)  {
                     $q->where('wine_user_id',$request->user_id);
@@ -110,7 +109,7 @@ class AuctionController extends Controller
                     }
                 } else {
                     if($request->$tbl != '') {
-                        if($attrs == 'price_greater_than' && $attrs == 'price_less_than'){
+                        if($tbl == 'price_greater_than' || $tbl == 'price_less_than'){
                             $field = 'max_price';
                             $query = $relationshipLogics[$attrs]($query, implode(".", [$masterTbl, $field]), $request->$tbl);
                          }
@@ -133,8 +132,6 @@ class AuctionController extends Controller
             'cheapest' => $query->orderBy('auctions.max_price', 'asc'),
             default => $query
         };
-//        $query->get();
-//        dd( DB::getQueryLog());
 
         return AuctionResource::collection(
             $query->paginate(10)
