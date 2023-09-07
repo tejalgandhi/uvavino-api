@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\FileUploadTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +14,7 @@ use Illuminate\Support\Str;
 class Product extends Model
 {
     use HasFactory;
+    use FileUploadTrait;
     protected $table = 'products';
 
     protected $guarded = ['id'];

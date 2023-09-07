@@ -173,7 +173,7 @@ class AuctionController extends Controller
                 ]));
             $products = $request->products;
             foreach ($products as $product) {
-                $p = Product::create([
+                $createdProduct = Product::create([
                     "basket_id" => $basket->id,
                     "wine_name" => $product["wine_name"],
                     "description" => $product["description"],
@@ -198,7 +198,9 @@ class AuctionController extends Controller
                     "unit_quantity" => $product["unit_quantity"],
                     "unit" => $product["unit"],
                 ]);
-
+                if(isset($product['product_images'])){
+                    $createdProduct->uploadProductImages('product_images',$product['product_images'],['products']);
+                }
             }
             $request->request->add(['basket_id' => $basket->id]);
 
