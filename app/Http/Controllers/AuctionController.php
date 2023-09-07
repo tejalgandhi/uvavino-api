@@ -33,7 +33,10 @@ class AuctionController extends Controller
         $order_by = $request->order_by;
         $filter_attrs = [
             'auctions' => [
-                'title' => 'like',
+//                'title' => 'like',
+                'type' => 'in',
+                'price_greater_than' => 'greater',
+                'price_less_than' => 'less',
                 'baskets' => [
                     'slug' => 'like',
                     'products' => [
@@ -44,7 +47,9 @@ class AuctionController extends Controller
                         'region_id' => 'in',
                         'producer_id' => 'in',
                         'wine_tag_id' => 'in',
-                    ]
+                        'bottle_size' => 'in',
+                        'year' => 'in',
+                     ]
                 ],
            ]
         ];
@@ -55,6 +60,12 @@ class AuctionController extends Controller
             },
             'like' => function ($q, $a, $v) {
                 return $q->where($a, 'LIKE', '%' . $v . '%');
+            },
+            'greater' => function ($q, $a, $v) {
+                return $q->where($a, '>',  $v);
+            },
+            'less' => function ($q, $a, $v) {
+                return $q->where($a, '<',  $v);
             }
         ];
         DB::enableQueryLog();
@@ -98,8 +109,14 @@ class AuctionController extends Controller
                         }
                     }
                 } else {
-                    if(!empty($request->$tbl)) {
-                        $query = $relationshipLogics[$attrs]($query, implode(".", [$masterTbl, $tbl]), $request->$tbl);
+                    if($request->$tbl != '') {
+                        if($attrs == 'price_greater_than' && $attrs == 'price_less_than'){
+                            $field = 'max_price';
+                            $query = $relationshipLogics[$attrs]($query, implode(".", [$masterTbl, $field]), $request->$tbl);
+                         }
+                        else{
+                            $query = $relationshipLogics[$attrs]($query, implode(".", [$masterTbl, $tbl]), $request->$tbl);
+                        }
                     }
                 }
             }
@@ -116,6 +133,8 @@ class AuctionController extends Controller
             'cheapest' => $query->orderBy('auctions.max_price', 'asc'),
             default => $query
         };
+//        $query->get();
+//        dd( DB::getQueryLog());
 
         return AuctionResource::collection(
             $query->paginate(10)
