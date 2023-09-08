@@ -10,6 +10,8 @@ use App\Models\Auction;
 use App\Models\AuctionPackage;
 use App\Models\Product;
 use App\Models\Review;
+use App\Models\User;
+use App\Models\WineUser;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -23,6 +25,7 @@ class ReviewController extends Controller
         $review =  Review::with('wineUser');
         if(!empty($reviewable_type) && !empty($reviewable_id)) {
             $reviewableClass =  match($request->reviewable_type){
+                'wine_user' => WineUser::class,
                 'product' => Product::class,
                 'auction' => Auction::class,
                 'auction_package' => AuctionPackage::class,
@@ -36,6 +39,17 @@ class ReviewController extends Controller
         return ReviewResource::collection($review);
     }
 
+    public function storeWineUserReview(ReviewRequest $request,WineUser $wineUser)
+    {
+        try {
+
+            $this->storeReview($wineUser,$request);
+
+            return (new Success(__("User Review store successfully.")))->json();
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
     public function storeProductReview(ReviewRequest $request,Product $product)
     {
         try {

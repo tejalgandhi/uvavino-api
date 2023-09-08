@@ -108,4 +108,8 @@ class Auction extends Model
     {
         return $this->morphMany(OrderDetail::class,'orderable');
     }
+    public function wine_user(): BelongsTo
+    {
+        return $this->belongsTo(WineUser::class,'created_by','id');
+    }
 }

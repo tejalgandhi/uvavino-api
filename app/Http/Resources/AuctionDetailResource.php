@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Http\Resources;
+
+use App\Models\Wishlist;
+use Carbon\Carbon;
+use Illuminate\Http\Resources\Json\JsonResource;
+use App\Enums\AuctionType;
+
+class AuctionDetailResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     */
+    public function toArray($request)
+    {
+        return [
+            'id' => $this->id,
+            'seller_id' => $this->created_by ?? '',
+            'seller_name' => $this->wine_user ?$this->wine_user->username :'',
+            'seller_created_at' => $this->wine_user ?$this->wine_user->created_at :'',
+            'seller_reviews_count' => $this->wine_user ? count($this->wine_user->reviews) :'',
+            'seller_ratings' => $this->wine_user ? $this->wine_user->reviews()->avg('rating') :'',
+            'country_id' => $this->country_id,
+            'country_name' => $this->country_name,
+            'title' => $this->title,
+            'total_bids' => $this->bids_count,
+            'start_date' => $this->start_date ?? '',
+            'end_date' =>  $this->end_date ??'',
+            'is_wishlist'=> $this->wishlist_count,
+            'description' => $this->description,
+            'is_publish' => $this->is_publish,
+            'auction_type' => $this->type->name,
+            'type' => $this->type->value,
+            'max_price' => $this->max_price,
+            'basket' => new BasketResource($this->baskets),
+            'auction_history' => new BasketResource($this->baskets),
+        ];
+    }
+
+    public static function selectLst() {
+        return [
+            'auctions.id',
+            'auctions.title',
+            'auctions.description',
+            'auctions.is_publish',
+            'auctions.type',
+            'auctions.max_price',
+            'auctions.basket_id',
+            'auctions.start_date',
+            'auctions.end_date',
+        ];
+    }
+}

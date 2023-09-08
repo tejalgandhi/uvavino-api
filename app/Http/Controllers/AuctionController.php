@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuctionBidRequest;
 use App\Http\Requests\AuctionCreateRequest;
 use App\Http\Requests\AutomaticBidRequest;
+use App\Http\Resources\AuctionDetailResource;
 use App\Http\Resources\AuctionResource;
 use App\Http\Resources\Fail;
 use App\Http\Resources\Success;
@@ -15,8 +16,6 @@ use App\Models\Basket;
 use App\Models\Product;
 use App\Services\Attribute;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class AuctionController
@@ -145,13 +144,12 @@ class AuctionController extends Controller
     public function show(Request $request,$id)
     {
         $auction = Auction::query()
-            ->with(['baskets','baskets.products'])
             ->where('id', $id)
             ->first();
         if (!$auction) {
             return (new Fail(__('Auction does not exist')))->json(404);
         }
-        return new AuctionResource($auction);
+        return new AuctionDetailResource($auction);
     }
 
 
