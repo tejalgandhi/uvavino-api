@@ -151,6 +151,25 @@ class AuctionController extends Controller
         }
         return new AuctionDetailResource($auction);
     }
+    /**
+     * @param $slug
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|object|null
+     */
+    public function destory(Request $request,$id)
+    {
+        try {
+            $auction = Auction::query()
+                ->where('id', $id)
+                ->first();
+            if (!$auction) {
+                return (new Fail(__('Auction does not exist')))->json(404);
+            }
+            Auction::find($id)->delete();
+            return (new Success(__('Auction delete Successfully')))->json(201);
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json(500);
+        }
+    }
 
 
     /**
@@ -248,7 +267,7 @@ class AuctionController extends Controller
     public function automaticBid(AutomaticBidRequest $request, Auction $auction)
     {
         $max = $request->max_amount;
-        if ($auction->max_price != null && $max > $auction->max_price) {
+        if ($auction->max_price != null && $max < $auction->max_price) {
             return (new Fail(__('You should buy without auction in that price.')))->json(400);
         }
         if ($max < $auction->nextMinBid()) {

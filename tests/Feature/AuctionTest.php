@@ -186,7 +186,16 @@ class AuctionTest extends TestCase
         $response->assertStatus(201);
     }
 
+    public function test_next_automatic_bid_auction()
+    {
+        $user = WineUser::factory()->create();
+        $auction = Auction::factory()->create();
+        $response = $this->actingAs($user)->post('/api/auction/' . $auction->id . '/automatic-bid',[
+            'max_amount' => 1000
+        ]);
+        $response->assertStatus(201);
 
+    }
     public function test_store_auction_without_drink_type_required_field_failed()
     {
         $data = $this->store_auction_array('drink_type_id');
@@ -350,6 +359,14 @@ class AuctionTest extends TestCase
         $response = $this->get('/api/auctions/new-release');
         $response->assertStatus(200);
 
+    }
+    public function test_delete_auction()
+    {
+        $user = WineUser::factory()->create();
+        $auction = Auction::factory()->create();
+
+        $response = $this->actingAs($user)->delete('/api/auction/'.$auction->id);
+        $response->assertStatus(201);
     }
 
 }

@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\AuctionType;
 
 class Auction extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     const IS_BESTSELLER = '1';
     const IS_NEW = '1';
@@ -35,6 +37,7 @@ class Auction extends Model
         // create a event to happen on deleting
         static::deleting(function($model)  {
             $model->deleted_by = Auth::user()->id ?? NULL;
+            $model->save();
         });
 
         // create a event to happen on saving
@@ -104,10 +107,11 @@ class Auction extends Model
         return $this->morphMany(Review::class,'reviewable');
     }
 
-    public function items()
-    {
-        return $this->morphMany(OrderDetail::class,'orderable');
-    }
+//    public function items()
+//    {
+//        return $this->morphMany(OrderDetail::class,'orderable');
+//    }
+
     public function wine_user(): BelongsTo
     {
         return $this->belongsTo(WineUser::class,'created_by','id');
