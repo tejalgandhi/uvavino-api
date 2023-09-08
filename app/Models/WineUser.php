@@ -127,5 +127,13 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
     {
         return $this->morphMany(Review::class,'reviewable');
     }
+    public function averageRating()
+    {
+        return number_format($this->reviews()->avg('rating'), 1);
+    }
+    public function countRating()
+    {
+        return $this->reviews()->count('rating');
+    }
 
 }

@@ -106,6 +106,25 @@ class Auction extends Model
     {
         return $this->morphMany(Review::class,'reviewable');
     }
+    public function rating_order_count()
+    {
+        return $this->reviews()
+            ->selectRaw('count(rating) as rating_count, rating')
+            ->groupBy('rating');
+
+    }
+    public function countEachReview()
+    {
+        return $this->morphMany(Review::class,'reviewable');
+    }
+    public function averageRating()
+    {
+        return number_format($this->reviews()->avg('rating'), 1);
+    }
+    public function countRating()
+    {
+        return $this->reviews()->count('rating');
+    }
 
 //    public function items()
 //    {

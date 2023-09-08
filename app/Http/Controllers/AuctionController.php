@@ -144,6 +144,9 @@ class AuctionController extends Controller
     public function show(Request $request,$id)
     {
         $auction = Auction::query()
+            ->withCount(['bids','wishlist'=> function($q) use($request)  {
+                $q->where('wine_user_id',$request->user_id);
+            } ])
             ->where('id', $id)
             ->first();
         if (!$auction) {
