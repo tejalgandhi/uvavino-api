@@ -11,6 +11,7 @@ use App\Http\Controllers\SellerController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\AuctionBidController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -69,6 +70,7 @@ Route::get('/auction', [AuctionController::class, 'index']);
 Route::get('/auction/{auction}', [AuctionController::class, 'show']);
 Route::get('/auction/{auction}/product/{product}', [AuctionController::class, 'showSingleAuction']);
 Route::get('/product/{product}/reviews', [ReviewController::class, 'getProductReview']);
+Route::get('/auction/{auction}/history', [AuctionBidController::class, 'getAuctionHistory']);
 Route::get('/auction-attribute', [AuctionController::class, 'attribute_list']);
 
 

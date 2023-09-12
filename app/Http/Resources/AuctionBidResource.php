@@ -17,12 +17,13 @@ class AuctionBidResource extends JsonResource
      */
     public function toArray($request)
     {
+
         return [
             'id' => $this->id,
             'wine_user_id' => $this->wine_user_id,
             'username' => $this->wine_user ?$this->wine_user->username:'' ,
             'auction_id' => $this->auction_id,
-            'value' => $this->value,
+            'price' => $this->value,
             'timestamp' => $this->timestamp,
 
         ];
