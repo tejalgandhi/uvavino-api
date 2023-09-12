@@ -50,6 +50,9 @@ Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
 
 
 Route::get('/product-attribute/{attribute_name}', [ProductAttributeController::class, 'attribute_list']);
+Route::post('/product-attribute/wine-variety', [ProductAttributeController::class, 'storeWineVarietyAttribute']);
+Route::post('/product-attribute/wine-tag', [ProductAttributeController::class, 'storeWineTagsAttribute']);
+
 
 //product
 Route::get('/product', [ProductController::class, 'index'])->withoutMiddleware('throttle:api');

@@ -45,6 +45,11 @@ return [
         '2023',
         '2024',
     ],
+    "medal" => [
+        'Platinum',
+        'Gold',
+        'Silver',
+    ],
     "producer" => ProducerFilter::class,
     "wine-type" => WineTypeFilter::class,
     "country" => CountryFilter::class,

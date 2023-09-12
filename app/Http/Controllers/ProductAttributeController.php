@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductAttributeRequest;
 use App\Http\Resources\Fail;
 use App\Http\Resources\ProductAttributeResource;
+use App\Http\Resources\Success;
+use App\Models\WineTag;
+use App\Models\WineVariety;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +21,7 @@ class ProductAttributeController extends Controller
             return (new Fail(__('product_attributes.invalid', compact('attribute_name'))))->json(404);
         }
         $query = $conf['model']::query();
-            
+
         if (Arr::has($conf, 'with')) {
             $query->with(Arr::get($conf, 'with', []));
         }
@@ -26,6 +30,31 @@ class ProductAttributeController extends Controller
         $request->merge(['list_attrs' => $conf['list_attrs']]);
 
         return ProductAttributeResource::collection($query->get());
-        
+
     }
+
+    public function storeWineVarietyAttribute(ProductAttributeRequest $request)
+    {
+        try {
+
+            WineVariety::create($request->only("name"));
+
+            return (new Success(__("Product Attribute store successfully.")))->json(201);
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
+
+    public function storeWineTagsAttribute(ProductAttributeRequest $request)
+    {
+        try {
+
+            WineTag::create($request->only("name"));
+
+            return (new Success(__("Product Attribute store successfully.")))->json(201);
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
+
 }
