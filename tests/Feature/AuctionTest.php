@@ -12,6 +12,7 @@ use App\Models\Region;
 use App\Models\WineTag;
 use App\Models\WineType;
 use App\Models\WineUser;
+use App\Models\Wishlist;
 use Tests\TestCase;
 
 class AuctionTest extends TestCase
@@ -176,6 +177,40 @@ class AuctionTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_get_auctions_with_user_id()
+    {
+        $user = WineUser::factory()->create();
+        $auction = Auction::factory()->create(['created_by'=>$user->id]);
+        $response = $this->actingAs($user)->post('/api/wishlist/products',[
+            'ref_id' => $auction->id,
+            'type' => Wishlist::AUCTION_TYPE,
+        ]);
+
+        $response = $this->get('/api/auction/?user_id='.$user->id);
+        $response->assertStatus(200);
+    }
+    public function test_show_auctions_with_user_id()
+    {
+        $user = WineUser::factory()->create();
+        $auction = Auction::factory()->create(['created_by'=>$user->id]);
+        $response = $this->actingAs($user)->post('/api/wishlist/products',[
+            'ref_id' => $auction->id,
+            'type' => Wishlist::AUCTION_TYPE,
+        ]);
+
+        $response = $this->get('/api/auction/'.$auction->id.'?user_id='.$user->id);
+        $response->assertStatus(200);
+
+        $basket = Basket::factory()->create();
+        Product::factory()->count(3)->create(['basket_id' => $basket->id]);
+        $auction = Auction::factory()
+            ->recycle([$user, $basket])
+            ->create();
+        $product = Product::where('basket_id',$basket->id)->latest()->first();
+        $response = $this->get('/api/auction/'.$auction->id.'/product/'.$product->id.'?user_id='.$user->id);
+        $response->assertStatus(200);
+
+    }
     public function test_make_bid_on_auction()
     {
         $user = WineUser::factory()->create();

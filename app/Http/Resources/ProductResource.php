@@ -47,23 +47,4 @@ class ProductResource extends JsonResource
         ];
     }
 
-    public static function selectLst()
-    {
-        return [
-            'products.id',
-            'products.wine_name',
-            'products.description',
-            'products.bottle_size',
-            'producers.name AS producer_name',
-            'products.wine_maker',
-            'products.year',
-            'products.grape_varieties',
-            'products.storage_condition',
-            'products.review_and_rewards',
-            'products.medal',
-            'products.award_name',
-            'products.score',
-            'products.review_name',
-        ];
-    }
 }
