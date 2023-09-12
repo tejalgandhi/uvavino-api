@@ -16,10 +16,10 @@ class ProductResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'title' => $this->resource->title,
+            'title' => $this->resource->title ?? '',
             'slug' => $this->resource->slug,
             'wine_name' => $this->resource->wine_name,
-            'price' => $this->resource->price,
+            'price' => $this->resource->price ?? '',
             'description' => $this->resource->description,
             'wine_user_id' => $this->resource->wine_user_id,
             'wine_user' => $this->resource->wine_user->username,

@@ -7,6 +7,7 @@ use App\Http\Requests\AuctionCreateRequest;
 use App\Http\Requests\AutomaticBidRequest;
 use App\Http\Resources\AuctionDetailResource;
 use App\Http\Resources\AuctionResource;
+use App\Http\Resources\AuctionSingleProductDetailResource;
 use App\Http\Resources\Fail;
 use App\Http\Resources\Success;
 use App\Models\Auction;
@@ -143,16 +144,33 @@ class AuctionController extends Controller
      */
     public function show(Request $request,$id)
     {
+        $request->merge(['order_by' =>$request->order_by]);
         $auction = Auction::query()
             ->withCount(['bids','wishlist'=> function($q) use($request)  {
                 $q->where('wine_user_id',$request->user_id);
             } ])
-            ->where('id', $id)
-            ->first();
+            ->where('id', $id);
+
+          $auction = $auction->first();
         if (!$auction) {
             return (new Fail(__('Auction does not exist')))->json(404);
         }
         return new AuctionDetailResource($auction);
+    }
+
+    public function showSingleAuction(Request $request,$auction_id,Product $product)
+    {
+        $request->merge(['product' =>$product]);
+        $auction = Auction::query()
+            ->withCount(['bids','wishlist'=> function($q) use($request)  {
+                $q->where('wine_user_id',$request->user_id);
+            } ])
+            ->where('id', $auction_id)
+            ->first();
+        if (!$auction) {
+            return (new Fail(__('Auction does not exist')))->json(404);
+        }
+        return new AuctionSingleProductDetailResource($auction);
     }
     /**
      * @param $slug

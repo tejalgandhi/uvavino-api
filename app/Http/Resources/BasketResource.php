@@ -14,6 +14,18 @@ class BasketResource extends JsonResource
      */
     public function toArray($request)
     {
+        $order_by =$request->order_by;
+        $products =  $this->resource->products();
+        $products = match($order_by){
+        'ascending' => $products->orderBy('wine_name', 'asc'),
+            'descending' => $products->orderBy('wine_name', 'desc'),
+            'recent' => $products->orderBy('created_at', 'desc'),
+            'older' => $products->orderBy('created_at', 'asc'),
+//            'expensive' => $products->orderBy('price', 'desc'),
+//            'cheapest' => $products->orderBy('price', 'asc'),
+            default => $products
+        };
+        $products = $products->get();
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,
@@ -23,7 +35,7 @@ class BasketResource extends JsonResource
             'price' => $this->resource->price,
             'weight' => $this->resource->weight,
             'dimensions' => $this->resource->dimensions,
-            'products' => ProductResource::collection($this->resource->products),
+            'products' => ProductResource::collection($products),
         ];
     }
 
