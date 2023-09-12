@@ -176,16 +176,10 @@ class AuctionController extends Controller
      * @param $slug
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|object|null
      */
-    public function destory(Request $request,$id)
+    public function destory(Request $request,Auction $auction)
     {
         try {
-            $auction = Auction::query()
-                ->where('id', $id)
-                ->first();
-            if (!$auction) {
-                return (new Fail(__('Auction does not exist')))->json(404);
-            }
-            Auction::find($id)->delete();
+            $auction->delete();
             return (new Success(__('Auction delete Successfully')))->json(201);
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json(500);

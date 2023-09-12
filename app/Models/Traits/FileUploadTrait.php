@@ -51,7 +51,6 @@ trait FileUploadTrait
     private function destinationPath(array $args): string
     {
         return join('/', [
-            request()->organization_id,
             ...$args,
         ]);
     }
