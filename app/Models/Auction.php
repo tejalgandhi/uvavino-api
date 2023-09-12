@@ -93,7 +93,7 @@ class Auction extends Model
     }
     public static function getBestSellersProduct()
     {
-        $query = self::where('bestsellers', Auction::IS_BESTSELLER)->orderBy('bestsellers_order', 'ASC');
+        $query = self::withCount('bids')->orderBy('bids_count', 'desc');
         return $query->paginate(self::NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE);
     }
 
