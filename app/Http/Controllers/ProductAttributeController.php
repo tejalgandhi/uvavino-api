@@ -37,7 +37,7 @@ class ProductAttributeController extends Controller
     {
         try {
 
-            $this->storeAttribute(WineVariety::class,$request);
+            WineVariety::create($request->only("name"));
 
             return (new Success(__("Product Attribute store successfully.")))->json(201);
         }catch (\Exception $e) {
@@ -49,18 +49,12 @@ class ProductAttributeController extends Controller
     {
         try {
 
-            $this->storeAttribute(WineTag::class,$request);
+            WineTag::create($request->only("name"));
 
             return (new Success(__("Product Attribute store successfully.")))->json(201);
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
-    }
-
-    private function storeAttribute($attribute, Request $request)
-    {
-        return $attribute::create($request->only("name"));
-
     }
 
 }

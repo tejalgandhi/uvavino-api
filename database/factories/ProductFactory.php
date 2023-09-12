@@ -43,7 +43,7 @@ class ProductFactory extends Factory
             'storage_condition' => fake()->text(),
             'review_and_rewards' => fake()->text(),
             'review_name' => fake()->text(),
-            'medal' => fake()->word(),
+            'medal' => 0,
             'award_name' => fake()->word(),
             'score' => fake()->numberBetween(11,50),
         ];
