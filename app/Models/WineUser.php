@@ -123,9 +123,17 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
         return $this->hasMany(Wishlist::class);
     }
 
-//    public function reviews()
-//    {
-//        return $this->hasMany(Review::class);
-//    }
+    public function reviews()
+    {
+        return $this->morphMany(Review::class,'reviewable');
+    }
+    public function averageRating()
+    {
+        return number_format($this->reviews()->avg('rating'), 1);
+    }
+    public function countRating()
+    {
+        return $this->reviews()->count('rating');
+    }
 
 }

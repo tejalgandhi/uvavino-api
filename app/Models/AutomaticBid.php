@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class AutomaticBid extends Model
 {
     use HasFactory;
+
+    public $guarded = ['id'];
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\SellerController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\AuctionBidController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -65,7 +66,11 @@ Route::get('/auction-pack/{slug}', [AuctionPackController::class, 'show']);
 
 
 //auction
-Route::get('/auction', [AuctionController::class, 'index']);
+Route::get('/auction', [AuctionController::class, 'index'])->withoutMiddleware('throttle:api');
+Route::get('/auction/{auction}', [AuctionController::class, 'show']);
+Route::get('/auction/{auction}/product/{product}', [AuctionController::class, 'showSingleAuction']);
+Route::get('/product/{product}/reviews', [ReviewController::class, 'getProductReview']);
+Route::get('/auction/{auction}/history', [AuctionBidController::class, 'getAuctionHistory']);
 Route::get('/auction-attribute', [AuctionController::class, 'attribute_list']);
 
 
@@ -84,7 +89,6 @@ Route::get('/reviews', [ReviewController::class, 'index']);
 Route::get('/csrf-token', function (Request $request) {
     return response()->json(['csrfToken' => $request->session()->token()]);
 })->middleware('web');
-Route::get('/auction', [AuctionController::class, 'index'])->withoutMiddleware('throttle:api');
 
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
@@ -106,6 +110,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::post('/product', [ProductController::class, 'store']);
 
     //Review
+    Route::post('/wine_user/{wine_user}/reviews', [ReviewController::class, 'storeWineUserReview']);
     Route::post('/product/{product}/reviews', [ReviewController::class, 'storeProductReview']);
     Route::post('/auction/{auction}/reviews', [ReviewController::class, 'storeAuctionReview']);
     Route::post('/auction_package/{auction_package}/reviews', [ReviewController::class, 'storeAuctionPackageReview']);
@@ -121,7 +126,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     // auction api
 
     Route::post('/auction', [AuctionController::class, 'store']);
-    Route::get('/auction/{auction}', [AuctionController::class, 'show']);
+    Route::delete('/auction/{auction}', [AuctionController::class, 'destory']);
     Route::post('/auction/{auction}/bid', [AuctionController::class, 'bid']);
     Route::post('/auction/{auction}/automatic-bid', [AuctionController::class, 'automaticBid']);
 });

@@ -15,18 +15,12 @@ class AuctionPackage extends Model
     const NUMBER_OF_ITEMS_PER_PAGE = 10;
     const NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE = 4;
 
-    public static function getBestSellersPackage()
-    {
-        $query = self::where('bestsellers', AuctionPackage::IS_BESTSELLER);
-        return $query->paginate(self::NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE);
-    }
-
     public function reviews()
     {
         return $this->morphMany(Review::class,'reviewable');
     }
-    public function items()
-    {
-        return $this->morphMany(OrderDetail::class,'orderable');
-    }
+//    public function items()
+//    {
+//        return $this->morphMany(OrderDetail::class,'orderable');
+//    }
 }

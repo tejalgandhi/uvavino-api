@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ReviewRequest;
 use App\Http\Resources\Fail;
+use App\Http\Resources\ProductReviewResource;
 use App\Http\Resources\ReviewResource;
 use App\Http\Resources\Success;
 use App\Models\Auction;
 use App\Models\AuctionPackage;
 use App\Models\Product;
 use App\Models\Review;
+use App\Models\User;
+use App\Models\WineUser;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -23,6 +26,7 @@ class ReviewController extends Controller
         $review =  Review::with('wineUser');
         if(!empty($reviewable_type) && !empty($reviewable_id)) {
             $reviewableClass =  match($request->reviewable_type){
+                'wine_user' => WineUser::class,
                 'product' => Product::class,
                 'auction' => Auction::class,
                 'auction_package' => AuctionPackage::class,
@@ -36,6 +40,17 @@ class ReviewController extends Controller
         return ReviewResource::collection($review);
     }
 
+    public function storeWineUserReview(ReviewRequest $request,WineUser $wineUser)
+    {
+        try {
+
+            $this->storeReview($wineUser,$request);
+
+            return (new Success(__("User Review store successfully.")))->json();
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
     public function storeProductReview(ReviewRequest $request,Product $product)
     {
         try {
@@ -76,5 +91,15 @@ class ReviewController extends Controller
     {
         return $reviewable->reviews()->create($request->only("wine_user_id","rating","review_content"));
 
+    }
+
+    public function getProductReview(Request $request,Product $product)
+    {
+        try {
+            return new ProductReviewResource($product);
+
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
     }
 }

@@ -16,10 +16,10 @@ class ProductResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'title' => $this->resource->title,
+            'title' => $this->resource->title ?? '',
             'slug' => $this->resource->slug,
             'wine_name' => $this->resource->wine_name,
-            'price' => $this->resource->price,
+            'price' => $this->resource->price ?? '',
             'description' => $this->resource->description,
             'wine_user_id' => $this->resource->wine_user_id,
             'wine_user' => $this->resource->wine_user->username,
@@ -47,23 +47,4 @@ class ProductResource extends JsonResource
         ];
     }
 
-    public static function selectLst()
-    {
-        return [
-            'products.id',
-            'products.wine_name',
-            'products.description',
-            'products.bottle_size',
-            'producers.name AS producer_name',
-            'products.wine_maker',
-            'products.year',
-            'products.grape_varieties',
-            'products.storage_condition',
-            'products.review_and_rewards',
-            'products.medal',
-            'products.award_name',
-            'products.score',
-            'products.review_name',
-        ];
-    }
 }

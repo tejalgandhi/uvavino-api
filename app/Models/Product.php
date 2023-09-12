@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\FileUploadTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +14,7 @@ use Illuminate\Support\Str;
 class Product extends Model
 {
     use HasFactory;
+    use FileUploadTrait;
     protected $table = 'products';
 
     protected $guarded = ['id'];
@@ -57,16 +59,10 @@ class Product extends Model
     {
         return $this->belongsTo(WineTag::class);
     }
-
-    public function packaging(): HasOne
-    {
-        return $this->hasOne(Basket::class);
-    }
-
-    public function reviewable(): MorphMany
+/*    public function reviewable(): MorphMany
     {
         return $this->morphMany(Review::class, 'reviewable');
-    }
+    }*/
 
     protected static function boot() {
         parent::boot();
@@ -107,9 +103,19 @@ class Product extends Model
     {
         return $this->morphMany(Review::class,'reviewable');
     }
-
-    public function items()
+    public function rating_order_count()
     {
-        return $this->morphMany(OrderDetail::class,'orderable');
+        return $this->reviews()
+            ->selectRaw('count(rating) as rating_count, rating')
+            ->groupBy('rating');
+
+    }
+    public function averageRating()
+    {
+        return number_format($this->reviews()->avg('rating'), 1);
+    }
+    public function countRating()
+    {
+        return $this->reviews()->count('rating');
     }
 }

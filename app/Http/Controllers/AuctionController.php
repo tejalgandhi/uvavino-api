@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuctionBidRequest;
 use App\Http\Requests\AuctionCreateRequest;
 use App\Http\Requests\AutomaticBidRequest;
+use App\Http\Resources\AuctionDetailResource;
 use App\Http\Resources\AuctionResource;
+use App\Http\Resources\AuctionSingleProductDetailResource;
 use App\Http\Resources\Fail;
 use App\Http\Resources\Success;
 use App\Models\Auction;
@@ -15,8 +17,6 @@ use App\Models\Basket;
 use App\Models\Product;
 use App\Services\Attribute;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class AuctionController
@@ -144,14 +144,46 @@ class AuctionController extends Controller
      */
     public function show(Request $request,$id)
     {
+        $request->merge(['order_by' =>$request->order_by]);
         $auction = Auction::query()
-            ->with(['baskets','baskets.products'])
-            ->where('id', $id)
+            ->withCount(['bids','wishlist'=> function($q) use($request)  {
+                $q->where('wine_user_id',$request->user_id);
+            } ])
+            ->where('id', $id);
+
+          $auction = $auction->first();
+        if (!$auction) {
+            return (new Fail(__('Auction does not exist')))->json(404);
+        }
+        return new AuctionDetailResource($auction);
+    }
+
+    public function showSingleAuction(Request $request,$auction_id,Product $product)
+    {
+        $request->merge(['product' =>$product]);
+        $auction = Auction::query()
+            ->withCount(['bids','wishlist'=> function($q) use($request)  {
+                $q->where('wine_user_id',$request->user_id);
+            } ])
+            ->where('id', $auction_id)
             ->first();
         if (!$auction) {
             return (new Fail(__('Auction does not exist')))->json(404);
         }
-        return new AuctionResource($auction);
+        return new AuctionSingleProductDetailResource($auction);
+    }
+    /**
+     * @param $slug
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|object|null
+     */
+    public function destory(Request $request,Auction $auction)
+    {
+        try {
+            $auction->delete();
+            return (new Success(__('Auction delete Successfully')))->json(201);
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json(500);
+        }
     }
 
 
@@ -173,7 +205,7 @@ class AuctionController extends Controller
                 ]));
             $products = $request->products;
             foreach ($products as $product) {
-                $p = Product::create([
+                $createdProduct = Product::create([
                     "basket_id" => $basket->id,
                     "wine_name" => $product["wine_name"],
                     "description" => $product["description"],
@@ -198,7 +230,9 @@ class AuctionController extends Controller
                     "unit_quantity" => $product["unit_quantity"],
                     "unit" => $product["unit"],
                 ]);
-
+                if(isset($product['product_images'])){
+                    $createdProduct->uploadProductImages('product_images',$product['product_images'],['products']);
+                }
             }
             $request->request->add(['basket_id' => $basket->id]);
 
@@ -248,7 +282,7 @@ class AuctionController extends Controller
     public function automaticBid(AutomaticBidRequest $request, Auction $auction)
     {
         $max = $request->max_amount;
-        if ($auction->max_price != null && $max > $auction->max_price) {
+        if ($auction->max_price != null && $max < $auction->max_price) {
             return (new Fail(__('You should buy without auction in that price.')))->json(400);
         }
         if ($max < $auction->nextMinBid()) {

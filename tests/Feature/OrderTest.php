@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Auction;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\WineUser;
@@ -24,6 +25,39 @@ class OrderTest extends TestCase
             "items" => [[
                 "orderable_type" => "product",
                 "orderable_id" => $product->id,
+                "amount" => 12.55,
+                "qty" => 2
+            ]]
+        ]);
+        $response->assertExactJson(["message" => "Order has been placed successfully."]);
+        $response->assertStatus(201);
+
+        $user = WineUser::factory()->create();
+        $auction = Auction::factory()->create();
+        $response = $this->actingAs($user)->post('/api/orders', [
+            "items" => [[
+                "orderable_type" => "auction",
+                "orderable_id" => $auction->id,
+                "amount" => 19.55,
+                "qty" => 1
+            ]]
+        ]);
+        $response->assertExactJson(["message" => "Order has been placed successfully."]);
+        $response->assertStatus(201);
+    }
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     */
+    public function test_create_new_order_for_auction()
+    {
+        $user = WineUser::factory()->create();
+        $auction = Auction::factory()->create();
+        $response = $this->actingAs($user)->post('/api/orders', [
+            "items" => [[
+                "orderable_type" => "auction",
+                "orderable_id" => $auction->id,
                 "amount" => 12.55,
                 "qty" => 2
             ]]

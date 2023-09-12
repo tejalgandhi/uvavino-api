@@ -135,6 +135,26 @@ class ReviewTest extends TestCase
         $response =  $this->post('/api/auction_package/'.$data['data']['auction_package']->id.'/reviews', $data['review']);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertStatus(422);
+
+        $data = $this->store_review_array();
+        $response =  $this->post('/api/wine_user/'.$data['data']['wine_user']->id.'/reviews', $data['review']);
+        $response->assertStatus(200);
+
+        $data = $this->store_review_array('rating');
+        $response =  $this->post('/api/wine_user/'.$data['data']['wine_user']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
+        $data = $this->store_review_array('rating',15);
+        $response =  $this->post('/api/wine_user/'.$data['data']['wine_user']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
+        $data = $this->store_review_array('rating',0);
+        $response =  $this->post('/api/wine_user/'.$data['data']['wine_user']->id.'/reviews', $data['review']);
+        $response->assertJsonValidationErrors(['rating']);
+        $response->assertStatus(422);
+
     }
 
     public function store_review_array($params = null ,$param_value = null){
@@ -142,7 +162,7 @@ class ReviewTest extends TestCase
         $c =rand(1,10);
         $review = [
             "rating"=>$c,
-            "review_content"=>'Test rating',
+            "review_content"=>fake()->text(35),
         ];
 
         if(!empty($params) && empty($param_value)){
@@ -154,6 +174,22 @@ class ReviewTest extends TestCase
             $review[$params] = $param_value;
         }
         return compact('review','data');
+    }
+
+    public function test_get_product_reviews()
+    {
+        $data = $this->store_review_array();
+        $this->actingAs($data['data']['wine_user']);
+        $response =  $this->post('/api/product/'. $data['data']['product']->id.'/reviews', $data['review']);
+        $response->assertStatus(200);
+
+        $data = $this->store_review_array();
+        $this->actingAs($data['data']['wine_user']);
+        $response =  $this->post('/api/product/'. $data['data']['product']->id.'/reviews', $data['review']);
+        $response->assertStatus(200);
+
+        $response =  $this->get('/api/product/'.$data['data']['product']->id.'/reviews', $data['review']);
+        $response->assertStatus(200);
     }
 
 
