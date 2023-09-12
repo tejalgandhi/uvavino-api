@@ -19,3 +19,5 @@ Route::get('/', function () {
 Route::get('/reports/coverage', function () {
     return \File::get(base_path('reports/Console/Kernel.php.html'));
 });
+
+Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
