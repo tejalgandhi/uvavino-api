@@ -16,9 +16,6 @@ return new class extends Migration
         Schema::table('products', function (Blueprint $table) {
             $table->json('product_images')->nullable();
         });
-        Schema::table('auctions', function (Blueprint $table) {
-            $table->softDeletes();
-        });
     }
 
     /**
@@ -30,9 +27,6 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->dropColumn(['product_images']);
-        });
-        Schema::table('auctions', function (Blueprint $table) {
-            $table->dropSoftDeletes();
         });
     }
 };
