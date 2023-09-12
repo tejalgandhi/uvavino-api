@@ -68,6 +68,7 @@ Route::get('/auction-pack/{slug}', [AuctionPackController::class, 'show']);
 Route::get('/auction', [AuctionController::class, 'index']);
 Route::get('/auction/{auction}', [AuctionController::class, 'show']);
 Route::get('/auction/{auction}/product/{product}', [AuctionController::class, 'showSingleAuction']);
+Route::get('/product/{product}/reviews', [ReviewController::class, 'getProductReview']);
 Route::get('/auction-attribute', [AuctionController::class, 'attribute_list']);
 
 

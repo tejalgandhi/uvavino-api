@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ReviewRequest;
 use App\Http\Resources\Fail;
+use App\Http\Resources\ProductReviewResource;
 use App\Http\Resources\ReviewResource;
 use App\Http\Resources\Success;
 use App\Models\Auction;
@@ -90,5 +91,15 @@ class ReviewController extends Controller
     {
         return $reviewable->reviews()->create($request->only("wine_user_id","rating","review_content"));
 
+    }
+
+    public function getProductReview(Request $request,Product $product)
+    {
+        try {
+            return new ProductReviewResource($product);
+
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
     }
 }

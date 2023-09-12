@@ -31,6 +31,19 @@ class OrderTest extends TestCase
         ]);
         $response->assertExactJson(["message" => "Order has been placed successfully."]);
         $response->assertStatus(201);
+
+        $user = WineUser::factory()->create();
+        $auction = Auction::factory()->create();
+        $response = $this->actingAs($user)->post('/api/orders', [
+            "items" => [[
+                "orderable_type" => "auction",
+                "orderable_id" => $auction->id,
+                "amount" => 19.55,
+                "qty" => 1
+            ]]
+        ]);
+        $response->assertExactJson(["message" => "Order has been placed successfully."]);
+        $response->assertStatus(201);
     }
     /**
      * A basic feature test example.

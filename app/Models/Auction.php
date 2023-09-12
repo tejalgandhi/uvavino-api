@@ -113,10 +113,6 @@ class Auction extends Model
             ->groupBy('rating');
 
     }
-    public function countEachReview()
-    {
-        return $this->morphMany(Review::class,'reviewable');
-    }
     public function averageRating()
     {
         return number_format($this->reviews()->avg('rating'), 1);
