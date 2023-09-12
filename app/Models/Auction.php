@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\AuctionType;
+use Illuminate\Support\Facades\Config;
 
 class Auction extends Model
 {
@@ -94,7 +95,7 @@ class Auction extends Model
     public static function getBestSellersProduct()
     {
         $query = self::withCount('bids')->orderBy('bids_count', 'desc');
-        return $query->paginate(self::NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE);
+        return $query->take(Config('constant.recommended_items_per_page'))->get();
     }
 
     public static function getNewProduct()

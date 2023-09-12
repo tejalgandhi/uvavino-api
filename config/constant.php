@@ -47,5 +47,6 @@ return [
         'max_value'=>'1000',
     ],
 
-    'date_format'=>'D, d M Y | h:i a '
+    'date_format'=>'D, d M Y | h:i a ',
+    'recommended_items_per_page'=>4
 ];
