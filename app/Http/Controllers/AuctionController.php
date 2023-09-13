@@ -17,6 +17,7 @@ use App\Models\Basket;
 use App\Models\Product;
 use App\Services\Attribute;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 
 /**
  * Class AuctionController
@@ -197,17 +198,19 @@ class AuctionController extends Controller
             $basket = Basket::create(
                 $request->only([
                     "title",
-                    "description",
-                    "stock",
                     "price",
-                    "weight",
-                    "dimensions",
                 ]));
             $products = $request->products;
             foreach ($products as $product) {
+
+                $size = Config::get('auction_attributes.bottle_size.'.$product["bottle_size"]) ;
+                $unit = Config::get('bottle_size.'.$size.'.unit');
+                $unit_qty = Config::get('bottle_size.'.$size.'.unit_quantity');
+
                 $createdProduct = Product::create([
                     "basket_id" => $basket->id,
-                    "wine_name" => $product["wine_name"],
+                    "wine_name" => $product["title"],
+                    "title" => $product["title"],
                     "description" => $product["description"],
                     "wine_user_id" => $request->wine_user_id,
                     "drink_type_id" => $product["drink_type_id"],
@@ -226,9 +229,11 @@ class AuctionController extends Controller
                     "award_name" => $product["award_name"],
                     "score" => $product["score"],
                     "review_name" => $product["review_name"],
-                    "basket_quantity" => $product["basket_quantity"],
-                    "unit_quantity" => $product["unit_quantity"],
-                    "unit" => $product["unit"],
+                    "basket_quantity" => $product["stock"],
+                    "unit_quantity" => $unit_qty,
+                    "unit" => $unit,
+                    "volume" => $product["volume"],
+                    "price" => $product["price"],
                 ]);
                 if(isset($product['product_images'])){
                     $createdProduct->uploadProductImages('product_images',$product['product_images'],['products']);
@@ -239,7 +244,6 @@ class AuctionController extends Controller
             Auction::create($request->only([
                 "basket_id",
                 "title",
-                "description",
                 "is_publish",
                 "start_date",
                 "end_date",

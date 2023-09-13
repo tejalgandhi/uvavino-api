@@ -2,10 +2,16 @@
 
 
 if (!function_exists('getFileUploadPath')) {
-    function getFileUploadPath($file)
+    function getFileUploadPath($files = [])
     {
-        if (!empty($file)) {
-            return config('constant.upload_url').$file;
+        $images = [];
+        if (!empty($files)) {
+            $f = json_decode($files);
+            foreach ($f as $file){
+                $images[] =  storage_path('app/'.$file);
+            }
         }
+        return $images;
     }
 }
+

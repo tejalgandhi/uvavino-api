@@ -44,6 +44,11 @@ class ProductResource extends JsonResource
             'award_name' => $this->resource->award_name,
             'score' => $this->resource->score,
             'review_name' => $this->resource->review_name,
+            'volume' => $this->resource->volume ?? '',
+            'unit' => $this->resource->unit ?? '',
+            'unit_quantity' => $this->resource->unit_quantity ?? '',
+            'basket_quantity' => $this->resource->basket_quantity ?? '',
+            'product_images' => getFileUploadPath($this->resource->product_images),
         ];
     }
 
