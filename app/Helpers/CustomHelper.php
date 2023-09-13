@@ -1,17 +1,12 @@
 <?php
 
 
-if (!function_exists('getFileUploadPath')) {
-    function getFileUploadPath($files = [])
+use Illuminate\Support\Facades\Config;
+
+if (!function_exists('getBottleSize')) {
+    function getBottleSize($key,$field)
     {
-        $images = [];
-        if (!empty($files)) {
-            $f = json_decode($files);
-            foreach ($f as $file){
-                $images[] =  storage_path('app/'.$file);
-            }
-        }
-        return $images;
+        return Config::get('bottle_size.'.$key.'.'.$field);
     }
 }
 

@@ -203,10 +203,6 @@ class AuctionController extends Controller
             $products = $request->products;
             foreach ($products as $product) {
 
-                $size = Config::get('auction_attributes.bottle_size.'.$product["bottle_size"]) ;
-                $unit = Config::get('bottle_size.'.$size.'.unit');
-                $unit_qty = Config::get('bottle_size.'.$size.'.unit_quantity');
-
                 $createdProduct = Product::create([
                     "basket_id" => $basket->id,
                     "wine_name" => $product["title"],
@@ -230,8 +226,8 @@ class AuctionController extends Controller
                     "score" => $product["score"],
                     "review_name" => $product["review_name"],
                     "basket_quantity" => $product["stock"],
-                    "unit_quantity" => $unit_qty,
-                    "unit" => $unit,
+                    "unit_quantity" => getBottleSize($product["bottle_size"],"unit_quantity"),
+                    "unit" => getBottleSize($product["bottle_size"],"unit"),
                     "volume" => $product["volume"],
                     "price" => $product["price"],
                 ]);

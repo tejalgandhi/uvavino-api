@@ -48,7 +48,7 @@ class ProductResource extends JsonResource
             'unit' => $this->resource->unit ?? '',
             'unit_quantity' => $this->resource->unit_quantity ?? '',
             'basket_quantity' => $this->resource->basket_quantity ?? '',
-            'product_images' => getFileUploadPath($this->resource->product_images),
+            'product_images' => $this->resource->product_images,
         ];
     }
 
