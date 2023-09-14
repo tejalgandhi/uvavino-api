@@ -54,6 +54,10 @@ class DatabaseSeeder extends Seeder
         $producer = Producer::first();
         $brand = Brand::first();
         $basket = Basket::first();
+        WineTag::factory()->count(10)->create();
+        WineVariety::factory()->count(10)->create();
+        $wine_tags = WineTag::pluck('id')->toArray();
+        $wine_variety = WineVariety::pluck('id')->toArray();
         \App\Models\Product::factory(10)->create([
             "title" => "TESTTTT",
             "description" => "TESTTTT",
@@ -66,15 +70,14 @@ class DatabaseSeeder extends Seeder
             "country_id" => $country->id,
             "bottle_size" => "L",
             "drink_type_id"=>$drink_type->id,
-            "wine_tag_id"=>$wine_tag->id,
             "type_of_wine" => $wine_type->id,
-            "grape_varieties" => "ddsfsdf",
             "review_name" => "sffsdf",
             "basket_quantity" => "1",
             "unit_quantity" => "1",
             "unit" => "1",
             "wine_user_id"=>$wine_user->id,
-
+            'wine_variety' => implode(',',$wine_variety),
+            'wine_tag' => implode(',',$wine_tags),
         ]);
 
         //create auction data
@@ -111,15 +114,14 @@ class DatabaseSeeder extends Seeder
             "country_id" => $country->id,
             "bottle_size" => "L",
             "drink_type_id"=>$drink_type->id,
-            "wine_tag_id"=>$wine_tag->id,
             "type_of_wine" => $wine_type->id,
-            "grape_varieties" => "ddsfsdf",
             "review_name" => "sffsdf",
             "basket_quantity" => "1",
             "unit_quantity" => "1",
             "unit" => "1",
             "wine_user_id"=>$wine_user->id,
-
+            'wine_variety' => implode(',',$wine_variety),
+            'wine_tag' => implode(',',$wine_tags),
         ]);
         \App\Models\Auction::factory(10)->create(["basket_id"=>$basket->id]);
 

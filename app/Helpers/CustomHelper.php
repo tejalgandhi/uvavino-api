@@ -1,11 +1,12 @@
 <?php
 
 
-if (!function_exists('getFileUploadPath')) {
-    function getFileUploadPath($file)
+use Illuminate\Support\Facades\Config;
+
+if (!function_exists('getBottleSize')) {
+    function getBottleSize($key,$field)
     {
-        if (!empty($file)) {
-            return config('constant.upload_url').$file;
-        }
+        return Config::get('bottle_size.'.$key.'.'.$field);
     }
 }
+

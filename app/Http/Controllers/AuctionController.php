@@ -10,13 +10,19 @@ use App\Http\Resources\AuctionResource;
 use App\Http\Resources\AuctionSingleProductDetailResource;
 use App\Http\Resources\Fail;
 use App\Http\Resources\Success;
+use App\Mail\InvitationMail;
+use App\Mail\InvitePeopleMail;
 use App\Models\Auction;
 use App\Models\AuctionBid;
+use App\Models\AuctionInvite;
 use App\Models\AutomaticBid;
 use App\Models\Basket;
 use App\Models\Product;
 use App\Services\Attribute;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class AuctionController
@@ -197,17 +203,14 @@ class AuctionController extends Controller
             $basket = Basket::create(
                 $request->only([
                     "title",
-                    "description",
-                    "stock",
                     "price",
-                    "weight",
-                    "dimensions",
                 ]));
             $products = $request->products;
             foreach ($products as $product) {
                 $createdProduct = Product::create([
                     "basket_id" => $basket->id,
-                    "wine_name" => $product["wine_name"],
+                    "wine_name" => $product["title"],
+                    "title" => $product["title"],
                     "description" => $product["description"],
                     "wine_user_id" => $request->wine_user_id,
                     "drink_type_id" => $product["drink_type_id"],
@@ -218,17 +221,19 @@ class AuctionController extends Controller
                     "wine_maker" => $product["wine_maker"],
                     "type_of_wine" => $product["type_of_wine"],
                     "year" => $product["year"],
-                    "grape_̥varieties" => $product["grape_̥varieties"],
-                    "wine_tag_id" => $product["wine_tag_id"],
+                    "wine_variety" =>implode(",",$product["wine_variety"]),
+                    "wine_tag" => implode(",",$product["wine_tag"]),
                     "storage_condition" => $product["storage_condition"],
                     "review_and_rewards" => $product["review_and_rewards"],
                     "medal" => $product["medal"],
                     "award_name" => $product["award_name"],
                     "score" => $product["score"],
                     "review_name" => $product["review_name"],
-                    "basket_quantity" => $product["basket_quantity"],
-                    "unit_quantity" => $product["unit_quantity"],
-                    "unit" => $product["unit"],
+                    "basket_quantity" => $product["stock"],
+                    "unit_quantity" => getBottleSize($product["bottle_size"],"unit_quantity"),
+                    "unit" => getBottleSize($product["bottle_size"],"unit"),
+                    "volume" => $product["volume"],
+                    "price" => $product["price"],
                 ]);
                 if(isset($product['product_images'])){
                     $createdProduct->uploadProductImages('product_images',$product['product_images'],['products']);
@@ -236,17 +241,25 @@ class AuctionController extends Controller
             }
             $request->request->add(['basket_id' => $basket->id]);
 
-            Auction::create($request->only([
+            $auction = Auction::create($request->only([
                 "basket_id",
                 "title",
-                "description",
                 "is_publish",
                 "start_date",
                 "end_date",
                 "type",
                 "max_price",
-                "invitations",
             ]));
+            $invite_peoples = $request->invite_peoples;
+            if($invite_peoples){
+                foreach ($invite_peoples as $invite_people){
+                    Mail::to($invite_people)->queue(new InvitationMail(Auth::User()));
+                    AuctionInvite::create([
+                        "auction_id" => $auction->id,
+                        "email" => $invite_people,
+                    ]);
+                }
+            }
             return (new Success(__('Auction Create Successfully')))->json(201);
 
         } catch (\Exception $e) {

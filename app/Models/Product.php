@@ -6,9 +6,9 @@ use App\Models\Traits\FileUploadTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -18,7 +18,6 @@ class Product extends Model
     protected $table = 'products';
 
     protected $guarded = ['id'];
-
 
     public function wine_user(): BelongsTo
     {
@@ -117,5 +116,11 @@ class Product extends Model
     public function countRating()
     {
         return $this->reviews()->count('rating');
+    }
+    public function productImages(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $value ? collect(json_decode($value))->map(fn($path) => Storage::url($path))->toArray() : null
+        );
     }
 }

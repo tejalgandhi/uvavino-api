@@ -40,6 +40,7 @@ class AuctionSingleProductDetailResource extends JsonResource
             'auction_reviews_count' => $this->countRating(),
             'auction_ratings' => $this->averageRating(),
             'auction_rating_order' => $this->rating_order_count,
+            'is_multilot' => $this->baskets->products()->count() > 1,
             'product'=>new ProductResource($product),
         ];
     }

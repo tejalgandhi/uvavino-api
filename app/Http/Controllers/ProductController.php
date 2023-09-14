@@ -36,7 +36,7 @@ class ProductController extends Controller
                     'country_id' => 'in',
                     'region_id' => 'in',
                     'producer_id' => 'in',
-                    'wine_tag_id' => 'in',
+                    'wine_tag' => 'json_decode_in',
                 ]
             ],
         ];
@@ -44,6 +44,9 @@ class ProductController extends Controller
         $relationshipLogics = [
             'in' => function ($q, $a, $v) {
                 return $q->whereIn($a, is_array($v) ? $v : [$v]);
+            },
+            'json_decode_in' => function ($q, $a, $v) {
+                return $q->whereRaw('FIND_IN_SET('.$v.','. $a.')');
             },
             'like' => function ($q, $a, $v) {
                 return $q->where($a, 'LIKE', '%' . $v . '%');
@@ -143,8 +146,8 @@ class ProductController extends Controller
                     "wine_maker" => $product["wine_maker"],
                     "type_of_wine" => $product["type_of_wine"],
                     "year" => $product["year"],
-                    "grape_̥varieties" => $product["grape_̥varieties"],
-                    "wine_tag_id" => $product["wine_tag_id"],
+                    "wine_variety" =>implode(",",$product["wine_variety"]),
+                    "wine_tag" => implode(",",$product["wine_tag"]),
                     "storage_condition" => $product["storage_condition"],
                     "review_and_rewards" => $product["review_and_rewards"],
                     "medal" => $product["medal"],

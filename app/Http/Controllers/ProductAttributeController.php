@@ -37,9 +37,9 @@ class ProductAttributeController extends Controller
     {
         try {
 
-            WineVariety::create($request->only("name"));
+            $data = WineVariety::create($request->only("name"));
 
-            return (new Success(__("Product Attribute store successfully.")))->json(201);
+            return response()->json(['message'=>"Product Attribute store successfully.","data"=>$data],201);
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
@@ -49,9 +49,9 @@ class ProductAttributeController extends Controller
     {
         try {
 
-            WineTag::create($request->only("name"));
+            $data = WineTag::create($request->only("name"));
 
-            return (new Success(__("Product Attribute store successfully.")))->json(201);
+            return response()->json(['message'=>"Product Attribute store successfully.","data"=>$data],201);
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }

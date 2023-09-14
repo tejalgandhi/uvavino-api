@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\WineUser;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AuctionCreateRequest extends FormRequest
 {
@@ -26,18 +27,15 @@ class AuctionCreateRequest extends FormRequest
      */
     public function rules()
     {
+        $bottle_size = config('auction_attributes.bottle_size');
         return [
-            "title" => ["required"],
+            "title" => ["required","min:5","max:255"],
             "description" => ["required"],
+            "price" => ["required"],
             "is_publish" => ["required"],
             "type" => ["required"],
-            "max_price" => ["required"],
             "start_date" => ["required","date_format:Y-m-d H:i:s"],
             "end_date" => ["required_if:type,1","date_format:Y-m-d H:i:s"],
-            'basket.title' => 'required|min:5|max:255',
-            'basket.stock' => 'required',
-            'basket.price' => 'required',
-            'basket.weight' => 'required',
             'products' => 'required|array',
             "products.*.title" => 'required|string',
             "products.*.description" => 'required|string',
@@ -47,15 +45,14 @@ class AuctionCreateRequest extends FormRequest
             "products.*.year" => 'required',
             "products.*.wine_maker" => 'required',
             "products.*.country_id" => 'required',
-            "products.*.bottle_size" => 'required',
+            "products.*.bottle_size" => ['required', Rule::in($bottle_size)],
             "products.*.drink_type_id" => 'required',
             "products.*.type_of_wine" => 'required',
-            "products.*.wine_tag_id" => 'required',
-            "products.*.grape_̥varieties" => 'required',
+            "products.*.wine_tag" => 'required|array',
+            "products.*.wine_variety" =>'required|array',
             "products.*.review_name" => 'required',
-            "products.*.basket_quantity" => 'required',
-            "products.*.unit_quantity" => 'required',
-            "products.*.unit" => 'required',
+            "products.*.stock" => 'required',
+            "products.*.volume" => 'required',
         ];
     }
 }

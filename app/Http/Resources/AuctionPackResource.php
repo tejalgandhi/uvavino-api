@@ -21,7 +21,7 @@ class AuctionPackResource extends JsonResource
             'qty' => $this->resource->qty,
             'amount' => $this->resource->amount,
             'discount_price' => $this->resource->discount_amount,
-            'image' => getFileUploadPath($this->resource->image),
+            'image' => $this->resource->image,
         ];
     }
 

@@ -12,6 +12,7 @@ use App\Models\Region;
 use App\Models\WineTag;
 use App\Models\WineType;
 use App\Models\WineUser;
+use App\Models\WineVariety;
 use App\Models\Wishlist;
 use Tests\TestCase;
 
@@ -35,10 +36,15 @@ class AuctionTest extends TestCase
     public function store_auction_array($params = null,$array_key = null)
     {
         $data = $this->common_factory();
+        WineTag::factory()->count(10)->create();
+        WineVariety::factory()->count(10)->create();
+        $wine_tags = WineTag::pluck('id')->toArray();
+        $wine_variety = WineVariety::pluck('id')->toArray();
         $product = [
             'title' => fake()->words(rand(5,10), true),
             'description' => fake()->paragraph,
             'is_publish' => 1,
+            "price" => rand(1, 80) * 10,
             'type' => 1,
             'max_price' => rand(300,800),
             "start_date"=>now()->format('Y-m-d H:i:s'),
@@ -66,18 +72,18 @@ class AuctionTest extends TestCase
             "quantity" => rand(1, 5),
             "wine_user_id" => $data['wine_user']->id,
             "drink_type_id" => $data['drink_type']->id,
-            "bottle_size" => "L",
+            "bottle_size" => "20ml",
             "country_id" => $data["country"]->id,
             "region_id" => $data["region"]->id,
             "producer_id" => $data["producer"]->id,
             "wine_maker" => "Wine maker",
             "type_of_wine" => $data['type_of_wine']->id,
             "year" => "2022",
-            "grape_varieties" => "Wine maker",
-            "wine_tag_id" => $data['wine_tag']->id,
-            "basket_quantity" => 1,
-            "unit_quantity" => 1,
-            "unit" => 1,
+            "wine_variety" => $wine_variety,
+            "wine_tag" => $wine_tags,
+            "price" => 100,
+            "stock" => 1,
+            "volume" => "14%",
             "start_date"=>now()->format('Y-m-d H:i:s'),
             "end_date"=>now()->format('Y-m-d H:i:s')
         ];
@@ -95,18 +101,18 @@ class AuctionTest extends TestCase
             "quantity" => rand(1, 5),
             "wine_user_id" => $data['wine_user']->id,
             "drink_type_id" => $data['drink_type']->id,
-            "bottle_size" => "L",
+            "bottle_size" => "10ml",
             "country_id" => $data["country"]->id,
             "region_id" => $data["region"]->id,
             "producer_id" => $data["producer"]->id,
             "wine_maker" => "Wine maker2",
             "type_of_wine" => $data['type_of_wine']->id,
             "year" => "2023",
-            "grape_varieties" => "Wine maker2",
-            "wine_tag_id" => $data['wine_tag']->id,
-            "basket_quantity" => 2,
-            "unit_quantity" => 2,
-            "unit" => 1,
+            "wine_variety" => $wine_variety,
+            "wine_tag" => $wine_tags,
+            "price" => 200,
+            "stock" => 2,
+            "volume" => "25%",
             "start_date"=>now()->format('Y-m-d H:i:s'),
             "end_date"=>now()->format('Y-m-d H:i:s')
         ];
