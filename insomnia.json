@@ -1,7 +1,7 @@
 {
     "_type": "export",
     "__export_format": 4,
-    "__export_date": "2023-09-13T12:27:53.826Z",
+    "__export_date": "2023-09-14T09:12:19.284Z",
     "__export_source": "insomnia.desktop.app:v2023.5.8",
     "resources": [
         {
@@ -134,44 +134,6 @@
             "_type": "request"
         },
         {
-            "_id": "req_b88ea9b7a7d14c6897a5968b55e1afc0",
-            "parentId": "fld_0ed183cee5ba4896aced2369a1942016",
-            "modified": 1689320001685,
-            "created": 1689319858276,
-            "url": "{{base}}/api/auctions/bestsellers",
-            "name": "recommended auction",
-            "description": "",
-            "method": "GET",
-            "body": {},
-            "parameters": [],
-            "headers": [],
-            "authentication": {
-                "type": "bearer",
-                "token": "{{token}}"
-            },
-            "metaSortKey": -1689319858276,
-            "isPrivate": false,
-            "settingStoreCookies": true,
-            "settingSendCookies": true,
-            "settingDisableRenderRequestBody": false,
-            "settingEncodeUrl": true,
-            "settingRebuildPath": true,
-            "settingFollowRedirects": "global",
-            "_type": "request"
-        },
-        {
-            "_id": "fld_0ed183cee5ba4896aced2369a1942016",
-            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
-            "modified": 1689319856325,
-            "created": 1689319856325,
-            "name": "Home Page",
-            "description": "",
-            "environment": {},
-            "environmentPropertyOrder": null,
-            "metaSortKey": -1689319856325,
-            "_type": "request_group"
-        },
-        {
             "_id": "req_0d6813deba2b420684b16362c502c31f",
             "parentId": "fld_0ed183cee5ba4896aced2369a1942016",
             "modified": 1689333780125,
@@ -196,6 +158,18 @@
             "settingRebuildPath": true,
             "settingFollowRedirects": "global",
             "_type": "request"
+        },
+        {
+            "_id": "fld_0ed183cee5ba4896aced2369a1942016",
+            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
+            "modified": 1689319856325,
+            "created": 1689319856325,
+            "name": "Home Page",
+            "description": "",
+            "environment": {},
+            "environmentPropertyOrder": null,
+            "metaSortKey": -1689319856325,
+            "_type": "request_group"
         },
         {
             "_id": "req_8868386567bf42a396ac00d90ea38031",
@@ -315,28 +289,21 @@
         {
             "_id": "req_6e93161241f7471f854a145d535b54cb",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1693982034710,
+            "modified": 1694674728379,
             "created": 1693981238708,
             "url": "{{base}}/api/product-attribute/wine-variety",
             "name": "product-attribute/wine-variety",
             "description": "",
             "method": "POST",
             "body": {
-                "mimeType": "multipart/form-data",
-                "params": [
-                    {
-                        "id": "pair_70d49f44c5ee43af8342865cad1a3760",
-                        "name": "name",
-                        "value": "Testttt11",
-                        "description": ""
-                    }
-                ]
+                "mimeType": "application/json",
+                "text": "{\n\t\"name\":\"test1111\"\n}\n"
             },
             "parameters": [],
             "headers": [
                 {
                     "name": "Content-Type",
-                    "value": "multipart/form-data"
+                    "value": "application/json"
                 },
                 {
                     "name": "User-Agent",
@@ -357,29 +324,21 @@
         {
             "_id": "req_855e83bff3a24f19ba1954b5d9e2b151",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1693983001087,
+            "modified": 1694674772301,
             "created": 1693982053229,
             "url": "{{base}}/api/product-attribute/wine-tag",
             "name": "product-attribute/wine-tag",
             "description": "",
             "method": "POST",
             "body": {
-                "mimeType": "multipart/form-data",
-                "params": [
-                    {
-                        "id": "pair_70d49f44c5ee43af8342865cad1a3760",
-                        "name": "name",
-                        "value": "Tes",
-                        "description": "",
-                        "disabled": false
-                    }
-                ]
+                "mimeType": "application/json",
+                "text": "{\n\t\"name\":\"test11112\"\n}"
             },
             "parameters": [],
             "headers": [
                 {
                     "name": "Content-Type",
-                    "value": "multipart/form-data"
+                    "value": "application/json"
                 },
                 {
                     "name": "User-Agent",
@@ -439,9 +398,35 @@
             "_type": "request"
         },
         {
+            "_id": "req_b88ea9b7a7d14c6897a5968b55e1afc0",
+            "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
+            "modified": 1694667038276,
+            "created": 1689319858276,
+            "url": "{{base}}/api/auctions/bestsellers",
+            "name": "recommended auction",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
+            "metaSortKey": -1684736244252.9766,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
             "_id": "req_2306e0166520438480e96c80814912a9",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1694605524956,
+            "modified": 1694673389626,
             "created": 1687264928174,
             "url": "{{base}}/api/auction",
             "name": "Store Auction",
@@ -477,7 +462,8 @@
                         "id": "pair_a39b46ad5c4a4504b1e3e7987e3b8a8a",
                         "name": "max_price",
                         "value": "250",
-                        "description": ""
+                        "description": "",
+                        "disabled": true
                     },
                     {
                         "id": "pair_c8bb170d975049cdbc6a38c1aead0314",
@@ -512,7 +498,7 @@
                     {
                         "id": "pair_cada6b61b66a43bbb40259e57df15a8b",
                         "name": "products[0][bottle_size]",
-                        "value": "1",
+                        "value": "10ml",
                         "description": ""
                     },
                     {
@@ -548,18 +534,6 @@
                     {
                         "id": "pair_f381ebdc6967483c8be18e60cc9b34b8",
                         "name": "products[0][year]",
-                        "value": "1",
-                        "description": ""
-                    },
-                    {
-                        "id": "pair_ffb27a41eadd4474b488ca9e05e78672",
-                        "name": "products[0][grape_̥varieties]",
-                        "value": "tesst",
-                        "description": ""
-                    },
-                    {
-                        "id": "pair_77fbba1b73e5427ebefacb6dd4e617b2",
-                        "name": "products[0][wine_tag_id]",
                         "value": "1",
                         "description": ""
                     },
@@ -653,6 +627,56 @@
                         "id": "pair_3cf295bce67f4e04af37f9445b39acf9",
                         "name": "price",
                         "value": "100",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_6d0ce35715164e07a2edf1cb6543e4d1",
+                        "name": "invite_peoples[0]",
+                        "value": "tejal@yopmail.com",
+                        "description": "",
+                        "disabled": false
+                    },
+                    {
+                        "id": "pair_f2cb320256884e7fb152a85f01f68fea",
+                        "name": "invite_peoples[1]",
+                        "value": "tejal1@yopmail.com",
+                        "description": "",
+                        "disabled": false
+                    },
+                    {
+                        "id": "pair_b780caf47276438ba4c8f31e1a8a565c",
+                        "name": "products[0][wine_variety][]",
+                        "value": "1",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_023f08b5dd304116850c46c2456eb5c6",
+                        "name": "products[0][wine_variety][]",
+                        "value": "2",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_6d89e467713546ea8ef28eb41e90a0af",
+                        "name": "products[0][wine_tag][]",
+                        "value": "1",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_95ea69ea9c954ab3932e560430ee4cdc",
+                        "name": "products[0][wine_tag][]",
+                        "value": "2",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_ab2b722a91884659bf676b2af7ebf45c",
+                        "name": "",
+                        "value": "",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_2426d32d61dc4f4a980bc370546037c7",
+                        "name": "",
+                        "value": "",
                         "description": ""
                     }
                 ]
@@ -1001,7 +1025,7 @@
         {
             "_id": "req_bded4178976f45b4bf57ab9f3f865d24",
             "parentId": "fld_7a48803fca734ff7ad543059b44f6c1d",
-            "modified": 1693823863039,
+            "modified": 1694680756488,
             "created": 1684128222117,
             "url": "http://uvavino-api.test/api/product",
             "name": "Get Product",
@@ -1029,6 +1053,12 @@
                     "value": "ascending",
                     "description": "",
                     "disabled": true
+                },
+                {
+                    "id": "pair_e7ac73a35f7b44ed8a92f323be972c0f",
+                    "name": "wine_tag[]",
+                    "value": "1",
+                    "description": ""
                 }
             ],
             "headers": [],
@@ -2331,7 +2361,7 @@
         {
             "_id": "env_a30ada3ecc2a4ac89da5ab94c1505cc9",
             "parentId": "env_2a655e6350247e920858a5dfc90144e8670af491",
-            "modified": 1694582308650,
+            "modified": 1694675618984,
             "created": 1673934423089,
             "name": "New Environment",
             "data": {
