@@ -71,7 +71,6 @@ class DatabaseSeeder extends Seeder
             "bottle_size" => "L",
             "drink_type_id"=>$drink_type->id,
             "type_of_wine" => $wine_type->id,
-            "grape_varieties" => "ddsfsdf",
             "review_name" => "sffsdf",
             "basket_quantity" => "1",
             "unit_quantity" => "1",
