@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\AuctionBidRequest;
 use App\Http\Resources\AuctionBidResource;
 use App\Http\Resources\Fail;
+use App\Http\Resources\Success;
 use App\Models\Auction;
+use App\Models\AuctionBid;
 use Illuminate\Support\Facades\Request;
 
 /**
@@ -24,6 +27,31 @@ class AuctionBidController extends Controller
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
+    }
+
+
+    /**
+     * @param AuctionBidRequest $request
+     * @param Auction $auction
+     * @return Fail|\Illuminate\Http\JsonResponse
+     */
+    public function storeAuctionBid(AuctionBidRequest $request, Auction $auction)
+    {
+        try {
+        // Check if value is valid or not.
+        $value = $request->price;
+        if(!$auction->canBid($value)) {
+            return (new Fail(__('Could not bid with ' . $value)));
+        }
+        $data = AuctionBid::create([
+            'auction_id' => $auction->id,
+            'wine_user_id' => $request->wine_user_id,
+            'value' => $value
+        ]);
+        return response()->json(['message'=>"Auction Bid Create Successfully","data"=>$data],201);
+    }catch (\Exception $e) {
+return (new Fail($e->getMessage()))->json();
+}
     }
 
 }

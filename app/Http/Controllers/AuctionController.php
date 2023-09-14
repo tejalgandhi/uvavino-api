@@ -267,25 +267,6 @@ class AuctionController extends Controller
         }
     }
 
-    /**
-     * @param AuctionBidRequest $request
-     * @param Auction $auction
-     * @return Fail|\Illuminate\Http\JsonResponse
-     */
-    public function bid(AuctionBidRequest $request, Auction $auction)
-    {
-        // Check if value is valid or not.
-        $value = $request->value;
-        if(!$auction->canBid($value)) {
-            return (new Fail(__('Could not bid with ' . $value)));
-        }
-        AuctionBid::create([
-            'auction_id' => $auction->id,
-            'wine_user_id' => $request->wine_user_id,
-            'value' => $request->value
-        ]);
-        return (new Success(__('Auction Bit Create Successfully')))->json(201);
-    }
 
     /**
      * @param AutomaticBidRequest $request

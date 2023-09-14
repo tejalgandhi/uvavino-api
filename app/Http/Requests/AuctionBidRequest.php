@@ -25,7 +25,7 @@ class AuctionBidRequest extends FormRequest
     public function rules()
     {
         return [
-            'value' => ['required']
+            'price' => ['required']
         ];
     }
 }

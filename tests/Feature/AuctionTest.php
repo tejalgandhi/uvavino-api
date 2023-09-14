@@ -222,7 +222,7 @@ class AuctionTest extends TestCase
         $user = WineUser::factory()->create();
         $auction = Auction::factory()->create();
         $response = $this->actingAs($user)->post('/api/auction/' . $auction->id . '/bid',[
-            'value' => 100
+            'price' => 100
         ]);
         $response->assertStatus(201);
     }
