@@ -10,6 +10,7 @@ use App\Models\WineTag;
 use App\Models\WineType;
 use App\Models\WineUser;
 use App\Models\DrinkType;
+use App\Models\WineVariety;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -25,6 +26,10 @@ class ProductFactory extends Factory
      */
     public function definition()
     {
+        WineTag::factory()->count(10)->create();
+        WineVariety::factory()->count(10)->create();
+        $wine_tags = WineTag::pluck('id')->toArray();
+        $wine_variety = WineVariety::pluck('id')->toArray();
         return [
             'basket_id' => Basket::factory(),
             'wine_user_id' => $this->randomize(WineUser::class),
@@ -33,13 +38,13 @@ class ProductFactory extends Factory
             'producer_id' => $this->randomize(Producer::class),
             'type_of_wine' => $this->randomize(WineType::class),
             'drink_type_id' => $this->randomize(DrinkType::class),
-            'wine_tag_id' => $this->randomize(WineTag::class),
             'wine_name' => ucfirst(fake()->word()),
             'description' => fake()->paragraph(50),
             'bottle_size' => ucfirst(fake()->word()),
             'wine_maker' => ucfirst(fake()->word()),
             'year' => fake()->year(),
-            'grape_varieties' => fake()->text(),
+            'wine_variety' => implode(',',$wine_variety),
+            'wine_tag' => implode(',',$wine_tags),
             'storage_condition' => fake()->text(),
             'review_and_rewards' => fake()->text(),
             'review_name' => fake()->text(),

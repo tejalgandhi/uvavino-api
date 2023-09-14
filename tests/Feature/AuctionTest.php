@@ -12,6 +12,7 @@ use App\Models\Region;
 use App\Models\WineTag;
 use App\Models\WineType;
 use App\Models\WineUser;
+use App\Models\WineVariety;
 use App\Models\Wishlist;
 use Tests\TestCase;
 
@@ -35,6 +36,10 @@ class AuctionTest extends TestCase
     public function store_auction_array($params = null,$array_key = null)
     {
         $data = $this->common_factory();
+        WineTag::factory()->count(10)->create();
+        WineVariety::factory()->count(10)->create();
+        $wine_tags = WineTag::pluck('id')->toArray();
+        $wine_variety = WineVariety::pluck('id')->toArray();
         $product = [
             'title' => fake()->words(rand(5,10), true),
             'description' => fake()->paragraph,
@@ -74,8 +79,8 @@ class AuctionTest extends TestCase
             "wine_maker" => "Wine maker",
             "type_of_wine" => $data['type_of_wine']->id,
             "year" => "2022",
-            "grape_varieties" => "Wine maker",
-            "wine_tag_id" => $data['wine_tag']->id,
+            "wine_variety" => $wine_variety,
+            "wine_tag" => $wine_tags,
             "price" => 100,
             "stock" => 1,
             "volume" => "14%",
@@ -103,8 +108,8 @@ class AuctionTest extends TestCase
             "wine_maker" => "Wine maker2",
             "type_of_wine" => $data['type_of_wine']->id,
             "year" => "2023",
-            "grape_varieties" => "Wine maker2",
-            "wine_tag_id" => $data['wine_tag']->id,
+            "wine_variety" => $wine_variety,
+            "wine_tag" => $wine_tags,
             "price" => 200,
             "stock" => 2,
             "volume" => "25%",

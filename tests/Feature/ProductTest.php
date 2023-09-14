@@ -11,6 +11,7 @@ use App\Models\Region;
 use App\Models\WineTag;
 use App\Models\WineType;
 use App\Models\WineUser;
+use App\Models\WineVariety;
 use Tests\TestCase;
 
 class ProductTest extends TestCase
@@ -266,27 +267,27 @@ class ProductTest extends TestCase
     {
         Product::factory()->count(20)->create();
         $wine_tag = WineTag::factory()->create();
-        $response = $this->get('/api/product?wine_tag_id=' . $wine_tag->id);
+        $response = $this->get('/api/product?wine_tag=' . $wine_tag->id);
         $response->assertJsonCount(0, 'data');
         $response->assertStatus(200);
 
-        Product::factory()->count(3)->create(['wine_tag_id' => $wine_tag->id]);
-        $response = $this->get('/api/product?wine_tag_id=' . $wine_tag->id);
+        Product::factory()->count(3)->create(['wine_tag' => $wine_tag->id]);
+        $response = $this->get('/api/product?wine_tag=' . $wine_tag->id);
         $response->assertJsonCount(3, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
 
         $wine_tag2 = WineTag::factory()->create();
-        Product::factory()->count(9)->create(['wine_tag_id' => $wine_tag2->id]);
-        $response = $this->get('/api/product?wine_tag_id[]=' . $wine_tag->id . '&wine_tag_id[]=' . $wine_tag2->id);
-        $response->assertJsonCount(10, 'data');
+        Product::factory()->count(9)->create(['wine_tag' => $wine_tag2->id]);
+        $response = $this->get('/api/product?wine_tag=' . $wine_tag->id);
+        $response->assertJsonCount(3, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
 
         $wine_tag3 = WineTag::factory()->create();
-        Product::factory()->count(4)->create(['wine_tag_id' => $wine_tag3->id]);
-        $response = $this->get('/api/product?wine_tag_id[]=' . $wine_tag->id . '&wine_tag_id[]=' . $wine_tag3->id);
-        $response->assertJsonCount(7, 'data');
+        Product::factory()->count(4)->create(['wine_tag' => $wine_tag3->id]);
+        $response = $this->get('/api/product?wine_tag=' . $wine_tag3->id);
+        $response->assertJsonCount(4, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
     }
@@ -313,6 +314,10 @@ class ProductTest extends TestCase
     public function store_product_array($params = null)
     {
         $data = $this->common_factory();
+       WineTag::factory()->count(10)->create();
+       WineVariety::factory()->count(10)->create();
+       $wine_tags = WineTag::pluck('id')->toArray();
+       $wine_variety = WineVariety::pluck('id')->toArray();
         $product = [
             "title" => "Test wine",
             "description" => "Test wine description",
@@ -344,8 +349,8 @@ class ProductTest extends TestCase
             "wine_maker" => "Wine maker",
             "type_of_wine" => $data['type_of_wine']->id,
             "year" => "2022",
-            "grape_varieties" => "Wine maker",
-            "wine_tag_id" => $data['wine_tag']->id,
+            "wine_variety" => $wine_variety,
+            "wine_tag" => $wine_tags,
             "basket_quantity" => 1,
             "unit_quantity" => 1,
             "unit" => 1,
@@ -371,8 +376,8 @@ class ProductTest extends TestCase
             "wine_maker" => "Wine maker2",
             "type_of_wine" => $data['type_of_wine']->id,
             "year" => "2023",
-            "grape_varieties" => "Wine maker2",
-            "wine_tag_id" => $data['wine_tag']->id,
+            "wine_variety" => $wine_variety,
+            "wine_tag" => $wine_tags,
             "basket_quantity" => 2,
             "unit_quantity" => 2,
             "unit" => 1,
@@ -396,8 +401,9 @@ class ProductTest extends TestCase
         $producer = Producer::factory()->create();
         $type_of_wine = WineType::factory()->create();
         $wine_tag = WineTag::factory()->create();
+        $wine_variety = WineVariety::factory()->create();
 
-        return compact("wine_user", "drink_type", "country", "region", "producer", "type_of_wine", "wine_tag");
+        return compact("wine_user", "drink_type", "country", "region", "producer", "type_of_wine", "wine_tag","wine_variety");
     }
 
     public function test_store_product_without_drink_type_required_field_failed()
@@ -470,16 +476,16 @@ class ProductTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_store_product_without_grape_varieties_required_field_failed()
+    public function test_store_product_without_wine_variety_required_field_failed()
     {
-        $data = $this->store_product_array('grape_̥varieties');
+        $data = $this->store_product_array('wine_variety');
         $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertStatus(422);
     }
 
     public function test_store_product_without_wine_tag_required_field_failed()
     {
-        $data = $this->store_product_array('wine_tag_id');
+        $data = $this->store_product_array('wine_tag');
         $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertStatus(422);
     }
