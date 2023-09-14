@@ -81,7 +81,6 @@ class AuctionController extends Controller
                 'baskets',
                 'baskets.products',
                 'baskets.products.wine_user',
-                'baskets.products.drink_type',
                 'baskets.products.country',
                 'baskets.products.region',
                 'baskets.products.producer',
