@@ -45,17 +45,4 @@ class AuctionSingleProductDetailResource extends JsonResource
         ];
     }
 
-    public static function selectLst() {
-        return [
-            'auctions.id',
-            'auctions.title',
-            'auctions.description',
-            'auctions.is_publish',
-            'auctions.type',
-            'auctions.max_price',
-            'auctions.basket_id',
-            'auctions.start_date',
-            'auctions.end_date',
-        ];
-    }
 }

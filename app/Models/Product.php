@@ -24,11 +24,6 @@ class Product extends Model
         return $this->belongsTo(WineUser::class,'wine_user_id','id');
     }
 
-    public function drink_type(): BelongsTo
-    {
-        return $this->belongsTo(DrinkType::class);
-    }
-
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
@@ -49,9 +44,9 @@ class Product extends Model
 //        return $this->morphMany(OrderDetail::class, 'orderable');
 //    }
 
-    public function wine_type(): BelongsTo
+    public function wine_types(): BelongsTo
     {
-        return $this->belongsTo(WineType::class,'type_of_wine','id');
+        return $this->belongsTo(WineType::class,'wine_type','id');
     }
 
     public function wine_tag(): BelongsTo

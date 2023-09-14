@@ -31,8 +31,7 @@ class ProductController extends Controller
                 'slug' => 'like',
                 'products' => [
                     'wine_name' => 'like',
-                    'type_of_wine' => 'in',
-                    'drink_type_id' => 'in',
+                    'wine_type' => 'in',
                     'country_id' => 'in',
                     'region_id' => 'in',
                     'producer_id' => 'in',
@@ -55,11 +54,10 @@ class ProductController extends Controller
         $query = Basket::query()
             ->with(['products',
                 'products.wine_user',
-                'products.drink_type',
                 'products.country',
                 'products.region',
                 'products.producer',
-                'products.wine_type',
+                'products.wine_types',
                 'products.wine_tag',
             ]);
 
@@ -138,13 +136,12 @@ class ProductController extends Controller
                     "wine_name" => $product["wine_name"],
                     "description" => $product["description"],
                     "wine_user_id" =>$request->wine_user_id,
-                    "drink_type_id" => $product["drink_type_id"],
                     "bottle_size" => $product["bottle_size"],
                     "country_id" => $product["country_id"],
                     "region_id" => $product["region_id"],
                     "producer_id" => $product["producer_id"],
                     "wine_maker" => $product["wine_maker"],
-                    "type_of_wine" => $product["type_of_wine"],
+                    "wine_type" => $product["wine_type"],
                     "year" => $product["year"],
                     "wine_variety" =>implode(",",$product["wine_variety"]),
                     "wine_tag" => implode(",",$product["wine_tag"]),

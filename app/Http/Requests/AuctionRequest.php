@@ -37,7 +37,7 @@ class AuctionRequest extends FormRequest
             "region_id" => ["required"],
             "producer_id" => ["required"],
             "wine_maker" => ["required"],
-            "type_of_wine" => ["required"],
+            "wine_type" => ["required"],
             "year" => ["required"],
             "grape_varieties" => ["required"],
             "wine_tag_id" => ["required"]

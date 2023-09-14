@@ -26,10 +26,10 @@ class AuctionTest extends TestCase
         $country = Country::factory()->create();
         $region = Region::factory()->create();
         $producer = Producer::factory()->create();
-        $type_of_wine = WineType::factory()->create();
+        $wine_type = WineType::factory()->create();
         $wine_tag = WineTag::factory()->create();
 
-        return compact("wine_user", "drink_type", "country", "region", "producer", "type_of_wine", "wine_tag");
+        return compact("wine_user", "drink_type", "country", "region", "producer", "wine_type", "wine_tag");
     }
 
 
@@ -59,7 +59,6 @@ class AuctionTest extends TestCase
             "dimensions" => rand(10, 50) * 10,
         ];
         $product["products"][] = [
-            "title" => "Test wine",
             "description" => "Test wine description1",
             "grape_̥varieties" => "Test wine grape varaieties",
             "storage_condition" => "Test wine storage_condition1",
@@ -71,13 +70,12 @@ class AuctionTest extends TestCase
             "wine_name" => "Test wine",
             "quantity" => rand(1, 5),
             "wine_user_id" => $data['wine_user']->id,
-            "drink_type_id" => $data['drink_type']->id,
             "bottle_size" => "20ml",
             "country_id" => $data["country"]->id,
             "region_id" => $data["region"]->id,
             "producer_id" => $data["producer"]->id,
             "wine_maker" => "Wine maker",
-            "type_of_wine" => $data['type_of_wine']->id,
+            "wine_type" => $data['wine_type']->id,
             "year" => "2022",
             "wine_variety" => $wine_variety,
             "wine_tag" => $wine_tags,
@@ -100,13 +98,12 @@ class AuctionTest extends TestCase
             "wine_name" => "Test wine2",
             "quantity" => rand(1, 5),
             "wine_user_id" => $data['wine_user']->id,
-            "drink_type_id" => $data['drink_type']->id,
             "bottle_size" => "10ml",
             "country_id" => $data["country"]->id,
             "region_id" => $data["region"]->id,
             "producer_id" => $data["producer"]->id,
             "wine_maker" => "Wine maker2",
-            "type_of_wine" => $data['type_of_wine']->id,
+            "wine_type" => $data['wine_type']->id,
             "year" => "2023",
             "wine_variety" => $wine_variety,
             "wine_tag" => $wine_tags,
@@ -237,12 +234,6 @@ class AuctionTest extends TestCase
         $response->assertStatus(201);
 
     }
-    public function test_store_auction_without_drink_type_required_field_failed()
-    {
-        $data = $this->store_auction_array('drink_type_id');
-        $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
-        $response->assertStatus(422);
-    }
 
     public function test_store_auction_without_wine_name_required_field_failed()
     {
@@ -293,9 +284,9 @@ class AuctionTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_store_auction_without_type_of_wine_required_field_failed()
+    public function test_store_auction_without_wine_type_required_field_failed()
     {
-        $data = $this->store_auction_array('type_of_wine');
+        $data = $this->store_auction_array('wine_type');
         $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertStatus(422);
     }
@@ -321,12 +312,6 @@ class AuctionTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_store_auction_without_basket_title_required_field_failed()
-    {
-        $data = $this->store_auction_array('title','basket');
-        $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
-        $response->assertStatus(422);
-    }
 
     public function test_store_auction_without_basket_stock_required_field_failed()
     {
