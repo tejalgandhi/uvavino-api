@@ -47,8 +47,7 @@ class AuctionController extends Controller
                     'slug' => 'like',
                     'products' => [
                         'wine_name' => 'like',
-                        'type_of_wine' => 'in',
-                        'drink_type_id' => 'in',
+                        'wine_type' => 'in',
                         'country_id' => 'in',
                         'region_id' => 'in',
                         'producer_id' => 'in',
@@ -86,7 +85,7 @@ class AuctionController extends Controller
                 'baskets.products.country',
                 'baskets.products.region',
                 'baskets.products.producer',
-                'baskets.products.wine_type',
+                'baskets.products.wine_types',
                 'baskets.products.wine_tag',
             ]);
 
@@ -209,17 +208,16 @@ class AuctionController extends Controller
             foreach ($products as $product) {
                 $createdProduct = Product::create([
                     "basket_id" => $basket->id,
-                    "wine_name" => $product["title"],
-                    "title" => $product["title"],
+                    "wine_name" => $product["wine_name"],
+                    "title" => $product["wine_name"],
                     "description" => $product["description"],
                     "wine_user_id" => $request->wine_user_id,
-                    "drink_type_id" => $product["drink_type_id"],
                     "bottle_size" => $product["bottle_size"],
                     "country_id" => $product["country_id"],
                     "region_id" => $product["region_id"],
                     "producer_id" => $product["producer_id"],
                     "wine_maker" => $product["wine_maker"],
-                    "type_of_wine" => $product["type_of_wine"],
+                    "wine_type" => $product["wine_type"],
                     "year" => $product["year"],
                     "wine_variety" =>implode(",",$product["wine_variety"]),
                     "wine_tag" => implode(",",$product["wine_tag"]),
@@ -267,25 +265,6 @@ class AuctionController extends Controller
         }
     }
 
-    /**
-     * @param AuctionBidRequest $request
-     * @param Auction $auction
-     * @return Fail|\Illuminate\Http\JsonResponse
-     */
-    public function bid(AuctionBidRequest $request, Auction $auction)
-    {
-        // Check if value is valid or not.
-        $value = $request->value;
-        if(!$auction->canBid($value)) {
-            return (new Fail(__('Could not bid with ' . $value)));
-        }
-        AuctionBid::create([
-            'auction_id' => $auction->id,
-            'wine_user_id' => $request->wine_user_id,
-            'value' => $request->value
-        ]);
-        return (new Success(__('Auction Bit Create Successfully')))->json(201);
-    }
 
     /**
      * @param AutomaticBidRequest $request

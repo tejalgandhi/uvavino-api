@@ -116,36 +116,6 @@ class ProductTest extends TestCase
         ]);
     }
 
-    public function test_filter_products_with_drink_type()
-    {
-        Product::factory()->count(20)->create();
-        $drink_type = DrinkType::factory()->create();
-        $response = $this->get('/api/product?drink_type_id=' . $drink_type->id);
-        $response->assertJsonCount(0, 'data');
-        $response->assertStatus(200);
-
-        $drink_type = DrinkType::factory()->create();
-        Product::factory()->count(3)->create(['drink_type_id' => $drink_type->id]);
-        $response = $this->get('/api/product?drink_type_id=' . $drink_type->id);
-        $response->assertJsonCount(3, 'data');
-        $this->check_structure($response);
-        $response->assertStatus(200);
-
-        $drink_type2 = DrinkType::factory()->create();
-        Product::factory()->count(9)->create(['drink_type_id' => $drink_type2->id]);
-        $response = $this->get('/api/product?drink_type_id[]=' . $drink_type->id . '&drink_type_id[]=' . $drink_type2->id);
-        $response->assertJsonCount(10, 'data');
-        $this->check_structure($response);
-        $response->assertStatus(200);
-
-        $drink_type3 = DrinkType::factory()->create();
-        Product::factory()->count(4)->create(['drink_type_id' => $drink_type3->id]);
-        $response = $this->get('/api/product?drink_type_id[]=' . $drink_type->id . '&drink_type_id[]=' . $drink_type3->id);
-        $response->assertJsonCount(7, 'data');
-        $this->check_structure($response);
-        $response->assertStatus(200);
-    }
-
     public function test_filter_products_with_country()
     {
         Product::factory()->count(20)->create();
@@ -238,26 +208,26 @@ class ProductTest extends TestCase
     {
         Product::factory()->count(20)->create();
         $wine_type = WineType::factory()->create();
-        $response = $this->get('/api/product?type_of_wine=' . $wine_type->id);
+        $response = $this->get('/api/product?wine_type=' . $wine_type->id);
         $response->assertJsonCount(0, 'data');
         $response->assertStatus(200);
 
-        Product::factory()->count(3)->create(['type_of_wine' => $wine_type->id]);
-        $response = $this->get('/api/product?type_of_wine=' . $wine_type->id);
+        Product::factory()->count(3)->create(['wine_type' => $wine_type->id]);
+        $response = $this->get('/api/product?wine_type=' . $wine_type->id);
         $response->assertJsonCount(3, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
 
         $wine_type2 = WineType::factory()->create();
-        Product::factory()->count(9)->create(['type_of_wine' => $wine_type2->id]);
-        $response = $this->get('/api/product?type_of_wine[]=' . $wine_type->id . '&type_of_wine[]=' . $wine_type2->id);
+        Product::factory()->count(9)->create(['wine_type' => $wine_type2->id]);
+        $response = $this->get('/api/product?wine_type[]=' . $wine_type->id . '&wine_type[]=' . $wine_type2->id);
         $response->assertJsonCount(10, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
 
         $wine_type3 = WineType::factory()->create();
-        Product::factory()->count(4)->create(['type_of_wine' => $wine_type3->id]);
-        $response = $this->get('/api/product?type_of_wine[]=' . $wine_type->id . '&type_of_wine[]=' . $wine_type3->id);
+        Product::factory()->count(4)->create(['wine_type' => $wine_type3->id]);
+        $response = $this->get('/api/product?wine_type[]=' . $wine_type->id . '&wine_type[]=' . $wine_type3->id);
         $response->assertJsonCount(7, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
@@ -347,7 +317,7 @@ class ProductTest extends TestCase
             "region_id" => $data["region"]->id,
             "producer_id" => $data["producer"]->id,
             "wine_maker" => "Wine maker",
-            "type_of_wine" => $data['type_of_wine']->id,
+            "wine_type" => $data['wine_type']->id,
             "year" => "2022",
             "wine_variety" => $wine_variety,
             "wine_tag" => $wine_tags,
@@ -374,7 +344,7 @@ class ProductTest extends TestCase
             "region_id" => $data["region"]->id,
             "producer_id" => $data["producer"]->id,
             "wine_maker" => "Wine maker2",
-            "type_of_wine" => $data['type_of_wine']->id,
+            "wine_type" => $data['wine_type']->id,
             "year" => "2023",
             "wine_variety" => $wine_variety,
             "wine_tag" => $wine_tags,
@@ -399,19 +369,13 @@ class ProductTest extends TestCase
         $country = Country::factory()->create();
         $region = Region::factory()->create();
         $producer = Producer::factory()->create();
-        $type_of_wine = WineType::factory()->create();
+        $wine_type = WineType::factory()->create();
         $wine_tag = WineTag::factory()->create();
         $wine_variety = WineVariety::factory()->create();
 
-        return compact("wine_user", "drink_type", "country", "region", "producer", "type_of_wine", "wine_tag","wine_variety");
+        return compact("wine_user", "drink_type", "country", "region", "producer", "wine_type", "wine_tag","wine_variety");
     }
 
-    public function test_store_product_without_drink_type_required_field_failed()
-    {
-        $data = $this->store_product_array('drink_type_id');
-        $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
-        $response->assertStatus(422);
-    }
 
     public function test_store_product_without_wine_name_required_field_failed()
     {
@@ -462,9 +426,9 @@ class ProductTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_store_product_without_type_of_wine_required_field_failed()
+    public function test_store_product_without_wine_type_required_field_failed()
     {
-        $data = $this->store_product_array('type_of_wine');
+        $data = $this->store_product_array('wine_type');
         $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertStatus(422);
     }

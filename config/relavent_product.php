@@ -7,11 +7,9 @@ return [
   "attributes" => [
 
     // Numberic values to compare.
-    "drink_type_id" => ["score" => 1],
     "country_id" => ["score" => 1],
     "region_id" => ["score" => 1],
     "producer_id" => ["score" => 1],
-    "type_of_wine" => ["score" => 1],
     "year" => ["score" => 1],
     "score" => ["score" => 1],
 
