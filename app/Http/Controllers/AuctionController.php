@@ -41,6 +41,7 @@ class AuctionController extends Controller
             'auctions' => [
 //                'title' => 'like',
                 'type' => 'in',
+                'created_by' => 'in',
                 'price_greater_than' => 'greater',
                 'price_less_than' => 'less',
                 'baskets' => [
@@ -198,11 +199,11 @@ class AuctionController extends Controller
     public function store(AuctionCreateRequest $request)
     {
         try {
-            $basket = Basket::create(
-                $request->only([
-                    "title",
-                    "price",
-                ]));
+            $basket = Basket::create([
+                "title" => $request->title,
+                "price" => $request->price,
+                "is_auction_product" => 1,
+            ]);
             $products = $request->products;
             foreach ($products as $product) {
                 $createdProduct = Product::create([

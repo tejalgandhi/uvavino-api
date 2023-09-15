@@ -10,6 +10,7 @@ use App\Http\Resources\Success;
 use App\Models\Basket;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class ProductController
@@ -24,11 +25,13 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $order_by = $request->order_by;
+        $is_auction_product = 0;
 
         $filter_attrs = [
             'baskets' => [
                 'title' => 'like',
                 'slug' => 'like',
+                'created_by' => 'in',
                 'products' => [
                     'wine_name' => 'like',
                     'wine_type_id' => 'in',
@@ -51,7 +54,8 @@ class ProductController extends Controller
                 return $q->where($a, 'LIKE', '%' . $v . '%');
             }
         ];
-        $query = Basket::query()
+        DB::enableQueryLog();
+        $query = Basket::select(BasketResource::selectLst())
             ->with(['products',
                 'products.wine_user',
                 'products.country',
@@ -68,18 +72,37 @@ class ProductController extends Controller
             foreach ($allAttrs as $tbl => $attrs) {
                 if (is_array($attrs)) {
                     foreach ($attrs as $attr => $relationshipLogic) {
-                        if ($request->has($attr)) {
+                        if ($request->has($attr) && !is_array($relationshipLogic)) {
                             $query = $query->whereHas($tbl, function ($query) use ($attr, $request, $tbl, $relationshipLogics, $relationshipLogic) {
                                 $relationshipLogics[$relationshipLogic]($query, implode(".", [$tbl, $attr]), $request->$attr);
                             });
-
+                        }
+                        if (is_array($relationshipLogic)) {
+                            foreach ($relationshipLogic as $a => $r) {
+                                if(!empty($request->$a)) {
+                                    $table = $tbl . '.' . $attr;
+                                    $query = $query->whereHas($table, function ($query) use ($a, $request, $attr, $relationshipLogics, $r) {
+                                        $relationshipLogics[$r]($query, implode(".", [$attr, $a]), $request->$a);
+                                    });
+                                }
+                            }
                         }
                     }
                 } else {
-                    $query = $relationshipLogics[$attrs]($query, implode(".", [$masterTbl, $tbl]), $request->$tbl);
+                    if($request->$tbl != '') {
+                        if($tbl == 'price_greater_than' || $tbl == 'price_less_than'){
+                            $field = 'max_price';
+                            $query = $relationshipLogics[$attrs]($query, implode(".", [$masterTbl, $field]), $request->$tbl);
+                        }
+                        else{
+                            $query = $relationshipLogics[$attrs]($query, implode(".", [$masterTbl, $tbl]), $request->$tbl);
+                        }
+                    }
                 }
             }
         }
+
+        $query->where('is_auction_product',$is_auction_product);
 
         $query = match($order_by){
             'ascending' => $query->orderBy('baskets.title', 'asc'),
@@ -90,10 +113,9 @@ class ProductController extends Controller
             'cheapest' => $query->orderBy('baskets.price', 'asc'),
             default => $query
         };
+
         return BasketResource::collection(
-            $query->select(
-                BasketResource::selectLst()
-            )->paginate(10)
+            $query->paginate(10)
         );
     }
 

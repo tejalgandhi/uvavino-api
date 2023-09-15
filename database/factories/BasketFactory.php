@@ -24,6 +24,7 @@ class BasketFactory extends Factory
             'price' => fake()->numberBetween(11,300),
             'weight' => fake()->numberBetween(1,12),
             'dimensions' => fake()->numberBetween(1,12),
+            'is_auction_product' => 0,
         ];
     }
 }

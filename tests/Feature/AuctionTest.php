@@ -52,6 +52,7 @@ class AuctionTest extends TestCase
         ];
         $product["basket"] = [
             "title" => "Test wine",
+            "is_auction_product" => 1,
             "description" => "Test wine description",
             "stock" => rand(1, 10) * 10,
             "price" => rand(1, 80) * 10,
