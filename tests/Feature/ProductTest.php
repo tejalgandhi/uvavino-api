@@ -208,26 +208,26 @@ class ProductTest extends TestCase
     {
         Product::factory()->count(20)->create();
         $wine_type = WineType::factory()->create();
-        $response = $this->get('/api/product?wine_type=' . $wine_type->id);
+        $response = $this->get('/api/product?wine_type_id=' . $wine_type->id);
         $response->assertJsonCount(0, 'data');
         $response->assertStatus(200);
 
-        Product::factory()->count(3)->create(['wine_type' => $wine_type->id]);
-        $response = $this->get('/api/product?wine_type=' . $wine_type->id);
+        Product::factory()->count(3)->create(['wine_type_id' => $wine_type->id]);
+        $response = $this->get('/api/product?wine_type_id=' . $wine_type->id);
         $response->assertJsonCount(3, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
 
         $wine_type2 = WineType::factory()->create();
-        Product::factory()->count(9)->create(['wine_type' => $wine_type2->id]);
-        $response = $this->get('/api/product?wine_type[]=' . $wine_type->id . '&wine_type[]=' . $wine_type2->id);
+        Product::factory()->count(9)->create(['wine_type_id' => $wine_type2->id]);
+        $response = $this->get('/api/product?wine_type_id[]=' . $wine_type->id . '&wine_type_id[]=' . $wine_type2->id);
         $response->assertJsonCount(10, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
 
         $wine_type3 = WineType::factory()->create();
-        Product::factory()->count(4)->create(['wine_type' => $wine_type3->id]);
-        $response = $this->get('/api/product?wine_type[]=' . $wine_type->id . '&wine_type[]=' . $wine_type3->id);
+        Product::factory()->count(4)->create(['wine_type_id' => $wine_type3->id]);
+        $response = $this->get('/api/product?wine_type_id[]=' . $wine_type->id . '&wine_type_id[]=' . $wine_type3->id);
         $response->assertJsonCount(7, 'data');
         $this->check_structure($response);
         $response->assertStatus(200);
@@ -317,7 +317,7 @@ class ProductTest extends TestCase
             "region_id" => $data["region"]->id,
             "producer_id" => $data["producer"]->id,
             "wine_maker" => "Wine maker",
-            "wine_type" => $data['wine_type']->id,
+            "wine_type_id" => $data['wine_type']->id,
             "year" => "2022",
             "wine_variety" => $wine_variety,
             "wine_tag" => $wine_tags,
@@ -344,7 +344,7 @@ class ProductTest extends TestCase
             "region_id" => $data["region"]->id,
             "producer_id" => $data["producer"]->id,
             "wine_maker" => "Wine maker2",
-            "wine_type" => $data['wine_type']->id,
+            "wine_type_id" => $data['wine_type']->id,
             "year" => "2023",
             "wine_variety" => $wine_variety,
             "wine_tag" => $wine_tags,
@@ -428,7 +428,7 @@ class ProductTest extends TestCase
 
     public function test_store_product_without_wine_type_required_field_failed()
     {
-        $data = $this->store_product_array('wine_type');
+        $data = $this->store_product_array('wine_type_id');
         $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertStatus(422);
     }
@@ -459,7 +459,7 @@ class ProductTest extends TestCase
         $data = $this->store_product_array();
         $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response = $this->get('/api/products/bestsellers');
-        $response->assertJsonCount(0, 'data');
+        $response->assertJsonCount(1, 'data');
         $response->assertStatus(200);
     }
 

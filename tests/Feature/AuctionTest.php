@@ -75,12 +75,12 @@ class AuctionTest extends TestCase
             "region_id" => $data["region"]->id,
             "producer_id" => $data["producer"]->id,
             "wine_maker" => "Wine maker",
-            "wine_type" => $data['wine_type']->id,
+            "wine_type_id" => $data['wine_type']->id,
             "year" => "2022",
             "wine_variety" => $wine_variety,
             "wine_tag" => $wine_tags,
             "price" => 100,
-            "stock" => 1,
+            "basket_quantity" => 1,
             "volume" => "14%",
             "start_date"=>now()->format('Y-m-d H:i:s'),
             "end_date"=>now()->format('Y-m-d H:i:s')
@@ -103,12 +103,12 @@ class AuctionTest extends TestCase
             "region_id" => $data["region"]->id,
             "producer_id" => $data["producer"]->id,
             "wine_maker" => "Wine maker2",
-            "wine_type" => $data['wine_type']->id,
+            "wine_type_id" => $data['wine_type']->id,
             "year" => "2023",
             "wine_variety" => $wine_variety,
             "wine_tag" => $wine_tags,
             "price" => 200,
-            "stock" => 2,
+            "basket_quantity" => 2,
             "volume" => "25%",
             "start_date"=>now()->format('Y-m-d H:i:s'),
             "end_date"=>now()->format('Y-m-d H:i:s')
@@ -286,7 +286,7 @@ class AuctionTest extends TestCase
 
     public function test_store_auction_without_wine_type_required_field_failed()
     {
-        $data = $this->store_auction_array('wine_type');
+        $data = $this->store_auction_array('wine_type_id');
         $response = $this->actingAs($data['data']['wine_user'])->post('/api/product', $data['product']);
         $response->assertStatus(422);
     }

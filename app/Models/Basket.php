@@ -50,7 +50,8 @@ class Basket extends Model
     }
     public static function getBestSellersProduct()
     {
-        return self::where('bestsellers', Basket::IS_BESTSELLER)->orderBy('bestsellers_order', 'ASC')->paginate(self::NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE);
+        $query = self::orderBy('id', 'desc');
+        return $query->take(Config('constant.recommended_items_per_page'))->get();
     }
 
 //    public function reviews()

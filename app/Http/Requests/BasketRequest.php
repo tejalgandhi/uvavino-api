@@ -38,7 +38,7 @@ class BasketRequest extends FormRequest
             "products.*.wine_maker" => 'required',
             "products.*.country_id" => 'required',
             "products.*.bottle_size" => 'required',
-            "products.*.wine_type" => 'required',
+            "products.*.wine_type_id" => 'required',
             "products.*.wine_tag" => 'required|array',
             "products.*.wine_variety" =>'required|array',
             "products.*.review_name" => 'required',

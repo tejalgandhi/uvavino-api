@@ -75,6 +75,11 @@ class Auction extends Model
         return  $this->hasMany(AuctionBid::class);
     }
 
+    public function invites() :HasMany
+    {
+        return  $this->hasMany(AuctionInvite::class);
+    }
+
 
     public function baskets(): BelongsTo
     {
@@ -100,8 +105,8 @@ class Auction extends Model
 
     public static function getNewProduct()
     {
-        $query = self::where('new_release', Auction::IS_NEW)->orderBy('new_release_order', 'ASC');
-        return $query->paginate(self::NUMBER_OF_NEW_ITEMS_PER_PAGE);
+        $query = self::where('is_publish',1)->orderbyDesc('id');
+        return $query->paginate(Config('constant.new_items_per_page'));
     }
 
     public function reviews()

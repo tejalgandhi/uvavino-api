@@ -31,7 +31,7 @@ class ProductController extends Controller
                 'slug' => 'like',
                 'products' => [
                     'wine_name' => 'like',
-                    'wine_type' => 'in',
+                    'wine_type_id' => 'in',
                     'country_id' => 'in',
                     'region_id' => 'in',
                     'producer_id' => 'in',
@@ -57,7 +57,7 @@ class ProductController extends Controller
                 'products.country',
                 'products.region',
                 'products.producer',
-                'products.wine_types',
+                'products.wine_type',
                 'products.wine_tag',
             ]);
 
@@ -141,7 +141,7 @@ class ProductController extends Controller
                     "region_id" => $product["region_id"],
                     "producer_id" => $product["producer_id"],
                     "wine_maker" => $product["wine_maker"],
-                    "wine_type" => $product["wine_type"],
+                    "wine_type_id" => $product["wine_type_id"],
                     "year" => $product["year"],
                     "wine_variety" =>implode(",",$product["wine_variety"]),
                     "wine_tag" => implode(",",$product["wine_tag"]),
