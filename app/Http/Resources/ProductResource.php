@@ -31,8 +31,8 @@ class ProductResource extends JsonResource
             'producer_id' => $this->resource->producer_id,
             'producer_name' => $this->resource->producer->name,
             'wine_maker' => $this->resource->wine_maker,
-            'wine_type_id' => $this->resource->wine_types,
-            'wine_type' => $this->resource->wine_type ? $this->resource->wine_types->name:'',
+            'wine_type_id' => $this->resource->wine_type_id,
+            'wine_type_name' => $this->resource->wine_type ? $this->resource->wine_type->name:'',
             'year' => $this->resource->year,
             'wine_variety' => $this->resource->wine_variety,
             'wine_tag' => $this->resource->wine_tag,
@@ -45,7 +45,7 @@ class ProductResource extends JsonResource
             'volume' => $this->resource->volume ?? '',
             'unit' => $this->resource->unit ?? '',
             'unit_quantity' => $this->resource->unit_quantity ?? '',
-            'stock' => $this->resource->basket_quantity ?? '',
+            'basket_quantity' => $this->resource->basket_quantity ?? '',
             'product_images' => $this->resource->product_images,
         ];
     }

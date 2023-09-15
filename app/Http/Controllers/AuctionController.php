@@ -47,7 +47,7 @@ class AuctionController extends Controller
                     'slug' => 'like',
                     'products' => [
                         'wine_name' => 'like',
-                        'wine_type' => 'in',
+                        'wine_type_id' => 'in',
                         'country_id' => 'in',
                         'region_id' => 'in',
                         'producer_id' => 'in',
@@ -84,7 +84,7 @@ class AuctionController extends Controller
                 'baskets.products.country',
                 'baskets.products.region',
                 'baskets.products.producer',
-                'baskets.products.wine_types',
+                'baskets.products.wine_type',
                 'baskets.products.wine_tag',
             ]);
 
@@ -216,7 +216,7 @@ class AuctionController extends Controller
                     "region_id" => $product["region_id"],
                     "producer_id" => $product["producer_id"],
                     "wine_maker" => $product["wine_maker"],
-                    "wine_type" => $product["wine_type"],
+                    "wine_type_id" => $product["wine_type_id"],
                     "year" => $product["year"],
                     "wine_variety" =>implode(",",$product["wine_variety"]),
                     "wine_tag" => implode(",",$product["wine_tag"]),
@@ -226,7 +226,7 @@ class AuctionController extends Controller
                     "award_name" => $product["award_name"],
                     "score" => $product["score"],
                     "review_name" => $product["review_name"],
-                    "basket_quantity" => $product["stock"],
+                    "basket_quantity" => $product["basket_quantity"],
                     "unit_quantity" => getBottleSize($product["bottle_size"],"unit_quantity"),
                     "unit" => getBottleSize($product["bottle_size"],"unit"),
                     "volume" => $product["volume"],

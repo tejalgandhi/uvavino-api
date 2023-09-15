@@ -45,11 +45,11 @@ class AuctionCreateRequest extends FormRequest
             "products.*.wine_maker" => 'required',
             "products.*.country_id" => 'required',
             "products.*.bottle_size" => ['required', Rule::in($bottle_size)],
-            "products.*.wine_type" => 'required',
+            "products.*.wine_type_id" => 'required',
             "products.*.wine_tag" => 'required|array',
             "products.*.wine_variety" =>'required|array',
             "products.*.review_name" => 'required',
-            "products.*.stock" => 'required',
+            "products.*.basket_quantity" => 'required',
             "products.*.volume" => 'required',
         ];
     }
