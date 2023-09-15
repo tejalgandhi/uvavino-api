@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BottleSize;
 use App\Http\Requests\AuctionBidRequest;
 use App\Http\Requests\AuctionCreateRequest;
 use App\Http\Requests\AutomaticBidRequest;
@@ -19,6 +20,7 @@ use App\Models\AutomaticBid;
 use App\Models\Basket;
 use App\Models\Product;
 use App\Services\Attribute;
+use App\Services\Filters\StaticFilter\BottleSizeFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -58,7 +60,6 @@ class AuctionController extends Controller
                 ],
            ]
         ];
-
         $relationshipLogics = [
             'in' => function ($q, $a, $v) {
                 return $q->whereIn($a, is_array($v) ? $v : [$v]);
@@ -205,6 +206,7 @@ class AuctionController extends Controller
                 ]));
             $products = $request->products;
             foreach ($products as $product) {
+                dd(BottleSize::from($product["bottle_size"]));
                 $createdProduct = Product::create([
                     "basket_id" => $basket->id,
                     "wine_name" => $product["wine_name"],

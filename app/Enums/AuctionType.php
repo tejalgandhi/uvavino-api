@@ -12,7 +12,14 @@ Enum AuctionType: int {
             self::TIMEBASED => 'Timebased'
         };
     }
+    public function value()
+    {
+        return match($this) {
+        self::LIVE => 0,
+        self::TIMEBASED => 0,
 
+        };
+    }
 }
 
 
