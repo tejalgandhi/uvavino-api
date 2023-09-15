@@ -41,6 +41,8 @@ class AuctionDetailResource extends JsonResource
             'auction_rating_order' => $this->rating_order_count,
             'auction_reviews' => ReviewResource::collection($this->reviews),
             'is_multilot' => $this->baskets->products()->count() > 1 ,
+            'invite_peoples' => $this->invites,
+            'price' => $this->baskets ? $this->baskets->price:'',
             'basket' => new BasketResource($this->baskets),
             'auction_history' => AuctionBidResource::collection($this->bids),
         ];

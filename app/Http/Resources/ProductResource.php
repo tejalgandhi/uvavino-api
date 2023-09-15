@@ -45,7 +45,7 @@ class ProductResource extends JsonResource
             'volume' => $this->resource->volume ?? '',
             'unit' => $this->resource->unit ?? '',
             'unit_quantity' => $this->resource->unit_quantity ?? '',
-            'basket_quantity' => $this->resource->basket_quantity ?? '',
+            'stock' => $this->resource->basket_quantity ?? '',
             'product_images' => $this->resource->product_images,
         ];
     }

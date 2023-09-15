@@ -34,6 +34,8 @@ class AuctionResource extends JsonResource
             'type' => $this->type->value,
             'max_price' => $this->max_price,
             'is_multilot' => $this->baskets->products()->count() > 1,
+            'invite_peoples' => $this->invites,
+            'price' => $this->baskets ? $this->baskets->price:'',
             'basket' => new BasketResource($this->baskets),
         ];
     }
