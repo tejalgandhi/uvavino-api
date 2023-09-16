@@ -12,6 +12,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuctionBidController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,13 @@ Route::prefix('auth')->group(function() {
     Route::post('/forget-password', [WineAuthController::class, 'forget']);
     Route::post('/reset-password', [WineAuthController::class, 'reset']);
 });
+//auction product update
+Route::get('/update-auction-product', function (){
+    $auctions = \App\Models\Auction::pluck('basket_id')->toArray();
+    \App\Models\Basket::whereIn('id',$auctions)->update(['is_auction_product'=> '1']);
+    dd('update auction product run successfully.');
+});
+
 
 //static page
 Route::get('/app-variables', [StaticPageController::class, 'getAppVariables']);
@@ -100,6 +108,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     // Routes for connect as seller of wine products
     Route::post('/connect-as-seller', [SellerController::class, 'connect']);
+    Route::get('/user/product-count', [UserController::class, 'allProductCount']);
 
     // Order API
     Route::get('/orders', [OrderController::class, 'index']);
@@ -124,7 +133,6 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
 
     // auction api
-
     Route::post('/auction', [AuctionController::class, 'store']);
     Route::delete('/auction/{auction}', [AuctionController::class, 'destory']);
     Route::post('/auction/{auction}/bid', [AuctionBidController::class, 'storeAuctionBid']);

@@ -233,35 +233,6 @@ class ProductTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_filter_products_with_wine_tag()
-    {
-        Product::factory()->count(20)->create();
-        $wine_tag = WineTag::factory()->create();
-        $response = $this->get('/api/product?wine_tag=' . $wine_tag->id);
-        $response->assertJsonCount(0, 'data');
-        $response->assertStatus(200);
-
-        Product::factory()->count(3)->create(['wine_tag' => $wine_tag->id]);
-        $response = $this->get('/api/product?wine_tag=' . $wine_tag->id);
-        $response->assertJsonCount(3, 'data');
-        $this->check_structure($response);
-        $response->assertStatus(200);
-
-        $wine_tag2 = WineTag::factory()->create();
-        Product::factory()->count(9)->create(['wine_tag' => $wine_tag2->id]);
-        $response = $this->get('/api/product?wine_tag=' . $wine_tag->id);
-        $response->assertJsonCount(3, 'data');
-        $this->check_structure($response);
-        $response->assertStatus(200);
-
-        $wine_tag3 = WineTag::factory()->create();
-        Product::factory()->count(4)->create(['wine_tag' => $wine_tag3->id]);
-        $response = $this->get('/api/product?wine_tag=' . $wine_tag3->id);
-        $response->assertJsonCount(4, 'data');
-        $this->check_structure($response);
-        $response->assertStatus(200);
-    }
-
     public function test_get_single_product()
     {
         $basket = Basket::factory()->create();

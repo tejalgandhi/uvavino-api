@@ -80,7 +80,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         //create auction data
-        \App\Models\Basket::factory(1)->create();
+        \App\Models\Basket::factory(1)->create(['is_auction_product'=>1]);
 
         $basket = Basket::latest()->first();
         \App\Models\Product::factory(10)->create([
