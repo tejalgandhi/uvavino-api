@@ -202,7 +202,7 @@ class AuctionController extends Controller
             $basket = Basket::create([
                 "title" => $request->title,
                 "price" => $request->price,
-                "is_auction_product" => 1,
+                "is_auction_product" => Basket::IS_AUCTION_PRODUCT,
             ]);
             $products = $request->products;
             foreach ($products as $product) {

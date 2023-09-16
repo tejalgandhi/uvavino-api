@@ -32,6 +32,7 @@ class Basket extends Model
     const NUMBER_OF_NEW_ITEMS_PER_PAGE = 4;
     const RECENT_VIEW_LIMIT = 4;
     const IS_NOT_AUCTION_PRODUCT = '0';
+    const IS_AUCTION_PRODUCT = '1';
     public function products(): HasMany
     {
         return $this->hasMany(Product::class,'basket_id','id');
