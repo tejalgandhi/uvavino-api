@@ -44,7 +44,7 @@ Route::prefix('auth')->group(function() {
 //auction product update
 Route::get('/update-auction-product', function (){
     $auctions = \App\Models\Auction::pluck('basket_id')->toArray();
-    \App\Models\Basket::whereIn('id',$auctions)->update(['is_auction_product'=> 1]);
+    \App\Models\Basket::whereIn('id',$auctions)->update(['is_auction_product'=> '1']);
     dd('update auction product run successfully.');
 });
 

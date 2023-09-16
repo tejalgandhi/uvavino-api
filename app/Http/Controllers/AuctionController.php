@@ -242,6 +242,7 @@ class AuctionController extends Controller
             $auction = Auction::create($request->only([
                 "basket_id",
                 "title",
+                "description",
                 "is_publish",
                 "start_date",
                 "end_date",

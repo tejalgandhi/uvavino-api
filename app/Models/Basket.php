@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class Basket extends Model
@@ -30,7 +31,7 @@ class Basket extends Model
     const NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE = 4;
     const NUMBER_OF_NEW_ITEMS_PER_PAGE = 4;
     const RECENT_VIEW_LIMIT = 4;
-    const IS_NOT_AUCTION_PRODUCT = 1;
+    const IS_NOT_AUCTION_PRODUCT = '0';
     public function products(): HasMany
     {
         return $this->hasMany(Product::class,'basket_id','id');
@@ -47,6 +48,16 @@ class Basket extends Model
                 $count++;
             }
             $basket->slug = $slug;
+        });
+        // create a event to happen on deleting
+        static::deleting(function($model)  {
+            $model->deleted_by = Auth::user()->id ?? NULL;
+            $model->save();
+        });
+
+        // create a event to happen on saving
+        static::saving(function($model)  {
+            $model->created_by = Auth::user()->id ?? NULL;
         });
     }
     public static function getBestSellersProduct()
