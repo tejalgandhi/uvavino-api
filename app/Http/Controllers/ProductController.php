@@ -25,6 +25,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $order_by = $request->order_by;
+        $in_wishlist = $request->is_wishlist ?? '';
 
         $filter_attrs = [
             'baskets' => [
@@ -54,6 +55,9 @@ class ProductController extends Controller
             }
         ];
         $query = Basket::select(BasketResource::selectLst())
+            ->withCount(['wishlist'=> function($q) use($request)  {
+                $q->where('wine_user_id',$request->user_id);
+            } ])
             ->with(['products',
                 'products.wine_user',
                 'products.country',
@@ -62,7 +66,11 @@ class ProductController extends Controller
                 'products.wine_type',
                 'products.wine_tag',
             ]);
-
+        if($in_wishlist){
+            $query = $query->whereHas('wishlist',function($q) use($request)  {
+                $q->where('wine_user_id',$request->user_id);
+            });
+        }
         /*
          * Logic of table and relationships conditions
          */

@@ -133,6 +133,105 @@ class AuctionTest extends TestCase
         return compact('product', 'data');
     }
 
+    public function update_auction_array()
+    {
+        $data = $this->common_factory();
+        $auction = Auction::with([ 'baskets', 'baskets.products'])->latest('id')->first();
+        WineTag::factory()->count(10)->create();
+        WineVariety::factory()->count(10)->create();
+        $wine_tags = WineTag::pluck('id')->toArray();
+        $wine_variety = WineVariety::pluck('id')->toArray();
+        $product = [
+            'title' => fake()->words(rand(5,10), true),
+            'description' => fake()->paragraph,
+            'is_publish' => 1,
+            "price" => rand(1, 80) * 10,
+            'type' => 1,
+            'max_price' => rand(300,800),
+            "start_date"=>now()->format('Y-m-d H:i:s'),
+            "end_date"=>now()->format('Y-m-d H:i:s')
+        ];
+        $product["basket"] = [
+            "title" => "Test wine",
+            "is_auction_product" => 1,
+            "description" => "Test wine description",
+            "stock" => rand(1, 10) * 10,
+            "price" => rand(1, 80) * 10,
+            "weight" => rand(10, 300),
+            "dimensions" => rand(10, 50) * 10,
+        ];
+        $product["products"][] = [
+            "id"=>$auction->baskets->products[0]->id,
+            "description" => "Test wine description1",
+            "grape_̥varieties" => "Test wine grape varaieties",
+            "storage_condition" => "Test wine storage_condition1",
+            "review_and_rewards" => "Test wine review_and_rewards1",
+            "medal" => "Test medal1",
+            "award_name" => "Test award_name1",
+            "review_name" => "Test review_name1",
+            "score" => "11",
+            "wine_name" => "Test wine",
+            "quantity" => rand(1, 5),
+            "wine_user_id" => $data['wine_user']->id,
+            "bottle_size" => "20ml",
+            "country_id" => $data["country"]->id,
+            "region_id" => $data["region"]->id,
+            "producer_id" => $data["producer"]->id,
+            "wine_maker" => "Wine maker",
+            "wine_type_id" => $data['wine_type']->id,
+            "year" => "2022",
+            "wine_variety" => $wine_variety,
+            "wine_tag" => $wine_tags,
+            "price" => 100,
+            "basket_quantity" => 1,
+            "volume" => "14%",
+            "start_date"=>now()->format('Y-m-d H:i:s'),
+            "end_date"=>now()->format('Y-m-d H:i:s')
+        ];
+        $product["products"][] = [
+            "id"=>$auction->baskets->products[1]->id,
+            "title" => "Test wine2",
+            "description" => "Test wine description2",
+            "grape_̥varieties" => "Test wine grape varaieties2",
+            "storage_condition" => "Test wine storage_condition2",
+            "review_and_rewards" => "Test wine review_and_rewards",
+            "award_name" => "Test wine award_name2",
+            "medal" => "Test wine medal2",
+            "review_name" => "Test wine review_name2",
+            "score" => "12",
+            "wine_name" => "Test wine2",
+            "quantity" => rand(1, 5),
+            "wine_user_id" => $data['wine_user']->id,
+            "bottle_size" => "10ml",
+            "country_id" => $data["country"]->id,
+            "region_id" => $data["region"]->id,
+            "producer_id" => $data["producer"]->id,
+            "wine_maker" => "Wine maker2",
+            "wine_type_id" => $data['wine_type']->id,
+            "year" => "2023",
+            "wine_variety" => $wine_variety,
+            "wine_tag" => $wine_tags,
+            "price" => 200,
+            "basket_quantity" => 2,
+            "volume" => "25%",
+            "start_date"=>now()->format('Y-m-d H:i:s'),
+            "end_date"=>now()->format('Y-m-d H:i:s')
+        ];
+
+        return compact('product', 'data','auction');
+    }
+
+    public function test_auction_update()
+    {
+        $user = WineUser::factory()->create();
+        $this->assertEquals(0, Auction::count(), "There should not be any auction present in the db.");
+        $data = $this->store_auction_array();
+        $response = $this->actingAs($user)->post('/api/auction', $data['product']);
+        $this->assertEquals(1, Auction::count(), "There should not be only one auction present in the db.");
+        $data = $this->update_auction_array($user);
+        $response = $this->actingAs($user)->put('/api/auction/'.$data['auction']->id, $data['product']);
+        $response->assertStatus(201);
+    }
 
     public function test_auction_listing_without_any_auction()
     {

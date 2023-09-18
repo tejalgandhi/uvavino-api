@@ -37,6 +37,7 @@ class AuctionController extends Controller
     public function index(Request $request)
     {
         $order_by = $request->order_by;
+        $in_wishlist = $request->is_wishlist ?? '';
         $limit = $request->limit ?? config('constant.number_of_items_per_page') ;
         $filter_attrs = [
             'auctions' => [
@@ -89,7 +90,11 @@ class AuctionController extends Controller
                 'baskets.products.wine_type',
                 'baskets.products.wine_tag',
             ]);
-
+        if($in_wishlist){
+            $query = $query->whereHas('wishlist',function($q) use($request)  {
+                $q->where('wine_user_id',$request->user_id);
+            });
+        }
         /*
          * Logic of table and relationships conditions
          */
@@ -216,25 +221,6 @@ class AuctionController extends Controller
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json(500);
         }
-    }
-
-    /**
-     * @param $slug
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|object|null
-     */
-    public function edit(Request $request,$id)
-    {
-        $auction = Auction::query()
-            ->withCount(['bids','wishlist'=> function($q) use($request)  {
-                $q->where('wine_user_id',$request->user_id);
-            } ])
-            ->where('id', $id);
-
-        $auction = $auction->first();
-        if (!$auction) {
-            return (new Fail(__('Auction does not exist')))->json(404);
-        }
-        return new AuctionDetailResource($auction);
     }
 
     /**

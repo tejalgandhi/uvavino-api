@@ -109,6 +109,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     // Routes for connect as seller of wine products
     Route::post('/connect-as-seller', [SellerController::class, 'connect']);
     Route::get('/user/product-count', [UserController::class, 'allProductCount']);
+    Route::get('/user/wishlist-count', [UserController::class, 'allWishlistCount']);
 
     // Order API
     Route::get('/orders', [OrderController::class, 'index']);
@@ -133,7 +134,6 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     // auction api
     Route::post('/auction', [AuctionController::class, 'store']);
-    Route::get('/auction/{auction}/edit', [AuctionController::class, 'edit']);
     Route::put('/auction/{auction}', [AuctionController::class, 'update']);
     Route::delete('/auction/{auction}', [AuctionController::class, 'destory']);
     Route::post('/auction/{auction}/bid', [AuctionBidController::class, 'storeAuctionBid']);

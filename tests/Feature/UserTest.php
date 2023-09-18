@@ -32,6 +32,17 @@ class UserTest extends TestCase
         $response->assertStatus(201);
     }
 
+    public function test_user_product_wishlist_count_listing()
+    {
+        $c = rand(15, 30);
+        $basket = Basket::factory()->create();
+        Product::factory()->count($c)->create(['basket_id' => $basket->id]);
+        $user = WineUser::factory()->create();
+        Auction::factory()->count(7)->create();
+        $response = $this->actingAs($user)->get('/api/user/wishlist-count');
+        $response->assertStatus(201);
+    }
+
 
 
 }

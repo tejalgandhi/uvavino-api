@@ -66,7 +66,9 @@ class Basket extends Model
         $query = self::orderBy('id', 'desc');
         return $query->take(Config('constant.recommended_items_per_page'))->get();
     }
-
+    public function wishlist(){
+        return $this->hasMany(Wishlist::class,'ref_id','id')->where('type',Wishlist::PRODUCT_TYPE);
+    }
 //    public function reviews()
 //    {
 //        return $this->hasMany(Review::class,'reviewable_id','id')->where('reviewable_type',ReviewType::Product);
