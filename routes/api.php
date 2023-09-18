@@ -125,7 +125,6 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::post('/auction_package/{auction_package}/reviews', [ReviewController::class, 'storeAuctionPackageReview']);
 
 
-
     //wishlist
     Route::post('/wishlist/products', [WishlistController::class, 'store']);
     Route::get('/wishlist/products', [WishlistController::class, 'index']);
