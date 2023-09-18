@@ -1,6 +1,7 @@
 <?php
 namespace App\Models\Traits;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -53,5 +54,26 @@ trait FileUploadTrait
         return join('/', [
             ...$args,
         ]);
+    }
+
+    /**
+     * Remove Old Images from the field and disk trait
+     *
+     * @param string $field
+
+     */
+    public function removeProductImages($field)
+    {
+        $file_paths = $this->{$field};
+        if(!empty($file_paths)){
+            foreach ($file_paths as $file_path) {
+                $storagePath = str_replace(env('APP_URL') . '/storage', '', $file_path);
+                if (Storage::exists($storagePath)) {
+                    Storage::delete($storagePath);
+                }
+            }
+        }
+        $this->{$field} = [];
+        $this->save();
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\WineUser;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\Rule;
 
 class AuctionCreateRequest extends FormRequest
@@ -27,7 +28,8 @@ class AuctionCreateRequest extends FormRequest
      */
     public function rules()
     {
-        $bottle_size = config('auction_attributes.bottle_size');
+        $bottle_size =Config::get('bottle_size');
+        $bottle = array_keys($bottle_size);
         return [
             "title" => ["required","min:5","max:255"],
             "description" => ["required"],
@@ -44,7 +46,7 @@ class AuctionCreateRequest extends FormRequest
             "products.*.year" => 'required',
             "products.*.wine_maker" => 'required',
             "products.*.country_id" => 'required',
-            "products.*.bottle_size" => ['required', Rule::in($bottle_size)],
+            "products.*.bottle_size" => ['required', Rule::in($bottle)],
             "products.*.wine_type_id" => 'required',
             "products.*.wine_tag" => 'required|array',
             "products.*.wine_variety" =>'required|array',

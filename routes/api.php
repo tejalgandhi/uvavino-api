@@ -134,6 +134,8 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     // auction api
     Route::post('/auction', [AuctionController::class, 'store']);
+    Route::get('/auction/{auction}/edit', [AuctionController::class, 'edit']);
+    Route::put('/auction/{auction}', [AuctionController::class, 'update']);
     Route::delete('/auction/{auction}', [AuctionController::class, 'destory']);
     Route::post('/auction/{auction}/bid', [AuctionBidController::class, 'storeAuctionBid']);
     Route::post('/auction/{auction}/automatic-bid', [AuctionController::class, 'automaticBid']);
