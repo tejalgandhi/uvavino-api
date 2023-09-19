@@ -49,5 +49,6 @@ return [
 
     'date_format'=>'D, d M Y | h:i a ',
     'recommended_items_per_page'=>4,
-    'new_items_per_page'=>4
+    'new_items_per_page'=>4,
+    'number_of_items_per_page'=>10,
 ];

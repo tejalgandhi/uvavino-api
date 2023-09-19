@@ -10,6 +10,7 @@ use App\Http\Resources\Success;
 use App\Models\Basket;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class ProductController
@@ -24,18 +25,20 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $order_by = $request->order_by;
-
+        $in_wishlist = $request->is_wishlist ?? '';
+        $limit = $request->limit ?? config('constant.number_of_items_per_page') ;
         $filter_attrs = [
             'baskets' => [
                 'title' => 'like',
                 'slug' => 'like',
+                'created_by' => 'in',
                 'products' => [
                     'wine_name' => 'like',
                     'wine_type_id' => 'in',
                     'country_id' => 'in',
                     'region_id' => 'in',
                     'producer_id' => 'in',
-                    'wine_tag' => 'json_decode_in',
+//                    'wine_tag' => 'json_decode_in',
                 ]
             ],
         ];
@@ -44,14 +47,17 @@ class ProductController extends Controller
             'in' => function ($q, $a, $v) {
                 return $q->whereIn($a, is_array($v) ? $v : [$v]);
             },
-            'json_decode_in' => function ($q, $a, $v) {
-                return $q->whereRaw('FIND_IN_SET('.$v.','. $a.')');
-            },
+//            'json_decode_in' => function ($q, $a, $v) {
+//                return $q->whereRaw('FIND_IN_SET('.$v.','. $a.')');
+//            },
             'like' => function ($q, $a, $v) {
                 return $q->where($a, 'LIKE', '%' . $v . '%');
             }
         ];
-        $query = Basket::query()
+        $query = Basket::select(BasketResource::selectLst())
+            ->withCount(['wishlist'=> function($q) use($request)  {
+                $q->where('wine_user_id',$request->user_id);
+            } ])
             ->with(['products',
                 'products.wine_user',
                 'products.country',
@@ -60,7 +66,11 @@ class ProductController extends Controller
                 'products.wine_type',
                 'products.wine_tag',
             ]);
-
+        if($in_wishlist){
+            $query = $query->whereHas('wishlist',function($q) use($request)  {
+                $q->where('wine_user_id',$request->user_id);
+            });
+        }
         /*
          * Logic of table and relationships conditions
          */
@@ -72,14 +82,16 @@ class ProductController extends Controller
                             $query = $query->whereHas($tbl, function ($query) use ($attr, $request, $tbl, $relationshipLogics, $relationshipLogic) {
                                 $relationshipLogics[$relationshipLogic]($query, implode(".", [$tbl, $attr]), $request->$attr);
                             });
-
                         }
                     }
                 } else {
-                    $query = $relationshipLogics[$attrs]($query, implode(".", [$masterTbl, $tbl]), $request->$tbl);
+                    if($request->$tbl != '') {
+                            $query = $relationshipLogics[$attrs]($query, implode(".", [$masterTbl, $tbl]), $request->$tbl);
+                    }
                 }
             }
         }
+        $query->where('baskets.is_auction_product',Basket::IS_NOT_AUCTION_PRODUCT);
 
         $query = match($order_by){
             'ascending' => $query->orderBy('baskets.title', 'asc'),
@@ -90,10 +102,10 @@ class ProductController extends Controller
             'cheapest' => $query->orderBy('baskets.price', 'asc'),
             default => $query
         };
+
+//        dd($query->toSql());
         return BasketResource::collection(
-            $query->select(
-                BasketResource::selectLst()
-            )->paginate(10)
+            $query->paginate($limit)
         );
     }
 
