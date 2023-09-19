@@ -294,7 +294,6 @@ class AuctionController extends Controller
                     "price" => $product["price"],
                 ];
                 $updateProduct = Product::updateOrCreate(['id'=>$product['id']],$createdProduct);
-                $updateProduct->removeProductImages('product_images');
                 if(isset($product['product_images'])){
                     $updateProduct->uploadProductImages('product_images',$product['product_images'],['products']);
                 }

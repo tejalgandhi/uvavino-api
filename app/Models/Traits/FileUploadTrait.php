@@ -26,6 +26,17 @@ trait FileUploadTrait
         if (! Storage::exists($path)) {
             Storage::makeDirectory($path);
         }
+
+        //remove Old Files
+        $file_paths = $this->{$field};
+        if(!empty($file_paths)){
+            foreach ($file_paths as $file_path) {
+                $storagePath = str_replace(env('APP_URL') . '/storage', '', $file_path);
+                if (Storage::exists($storagePath)) {
+                    Storage::delete($storagePath);
+                }
+            }
+        }
         // Store file to the storage and save path to database
         $files = [];
         if(is_array($params)){
@@ -56,24 +67,4 @@ trait FileUploadTrait
         ]);
     }
 
-    /**
-     * Remove Old Images from the field and disk trait
-     *
-     * @param string $field
-
-     */
-    public function removeProductImages($field)
-    {
-        $file_paths = $this->{$field};
-        if(!empty($file_paths)){
-            foreach ($file_paths as $file_path) {
-                $storagePath = str_replace(env('APP_URL') . '/storage', '', $file_path);
-                if (Storage::exists($storagePath)) {
-                    Storage::delete($storagePath);
-                }
-            }
-        }
-        $this->{$field} = [];
-        $this->save();
-    }
 }
