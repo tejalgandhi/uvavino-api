@@ -1,15 +1,15 @@
 <?php
 namespace App\Enums;
 
-Enum Capacity: string {
-    case ML = 'ml';
-    case LITER = 'liters';
+Enum Capacity: int {
+    case ML = 0;
+    case LITER = 1;
 
-    public function value()
+    public function label()
     {
         return match($this) {
-            self::ML => 0,
-            self::LITER => 1,
+            self::ML => 'ML',
+            self::LITER => 'L',
         };
     }
 

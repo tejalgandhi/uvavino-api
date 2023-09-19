@@ -12,27 +12,12 @@ class BaseFilter
         $values = collect($this->enum::cases())
             ->map(function ($enum) {
                 return [
-                    'id' => $enum->value($enum),
-                    'name' => $enum->value,
+                    'id' => $enum->value,
+                    'name' => $enum->label($enum),
                 ];
             })->toArray();
 
         return $values;
     }
-
-
-    public function getFilter($filter = []): array
-    {
-        $values = collect($this->enum::cases())
-            ->map(function ($enum) {
-                return [
-                    'name' => $enum->value,
-                    'value' => $enum->value($enum),
-                ];
-            })->toArray();
-        dd($values);
-//       dd('dd');
-    }
-
 
 }

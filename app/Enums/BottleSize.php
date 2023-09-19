@@ -1,15 +1,15 @@
 <?php
 namespace App\Enums;
 
-Enum BottleSize: string {
-    case TEN_ML = '10ml';
-    case TWENTY_ML = '20ml';
+Enum BottleSize: int {
+    case TEN_ML = 0;
+    case TWENTY_ML = 1;
 
-    public function value()
+    public function label()
     {
         return match($this) {
-            self::TEN_ML => 0,
-            self::TWENTY_ML => 1,
+            self::TEN_ML => '10ml',
+            self::TWENTY_ML => '20ml',
         };
     }
 

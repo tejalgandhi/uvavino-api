@@ -1,17 +1,17 @@
 <?php
 namespace App\Enums;
 
-Enum Medal: string {
-    case PLATINUM = 'Platinum';
-    case GOLD = 'Gold';
-    case SILVER = 'Silver';
+Enum Medal: int {
+    case PLATINUM = 0;
+    case GOLD = 1;
+    case SILVER = 2;
 
-    public function value()
+    public function label()
     {
         return match($this) {
-            self::PLATINUM => 0,
-            self::GOLD => 1,
-            self::SILVER => 2,
+            self::PLATINUM => 'Platinum',
+            self::GOLD => 'Gold',
+            self::SILVER => 'Silver',
         };
     }
 
