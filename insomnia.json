@@ -1,9 +1,211 @@
 {
     "_type": "export",
     "__export_format": 4,
-    "__export_date": "2023-09-14T09:12:19.284Z",
+    "__export_date": "2023-09-19T08:01:53.998Z",
     "__export_source": "insomnia.desktop.app:v2023.5.8",
     "resources": [
+        {
+            "_id": "req_8c61ef95a8f6436eb76334ac8468762c",
+            "parentId": "fld_83188ffe5497425c9e615d2904660903",
+            "modified": 1695017159320,
+            "created": 1694779392877,
+            "url": "{{base}}/api/user/product-count",
+            "name": "User auction/product count",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "authority",
+                    "value": "dev.api.uvavino.immera.io",
+                    "id": "pair_8833e16099d643e797638f0ebca07fde",
+                    "disabled": true
+                },
+                {
+                    "name": "accept",
+                    "value": "application/json, text/plain, */*",
+                    "id": "pair_935571381ce44d48a5bf7cc9f09e7719"
+                },
+                {
+                    "name": "accept-language",
+                    "value": "en-GB,en-US;q=0.9,en;q=0.8",
+                    "id": "pair_76269ed47e0840518d023ac44c7d59eb"
+                },
+                {
+                    "name": "origin",
+                    "value": "http://165.22.72.229",
+                    "id": "pair_d57a7f221e4c4ebba0cbcd8c518887f1",
+                    "disabled": true
+                },
+                {
+                    "name": "referer",
+                    "value": "http://165.22.72.229/",
+                    "id": "pair_4e2886fb3f6e41848eef0a8c6cce9dfa",
+                    "disabled": true
+                },
+                {
+                    "name": "sec-ch-ua",
+                    "value": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+                    "id": "pair_df666bbfd0fd40c4b15768accc4d7317"
+                },
+                {
+                    "name": "sec-ch-ua-mobile",
+                    "value": "?0",
+                    "id": "pair_7cbd72cfaeff48988021fe5db2422305"
+                },
+                {
+                    "name": "sec-ch-ua-platform",
+                    "value": "\"Windows\"",
+                    "id": "pair_125df8040980400ead0ca407c73d4267"
+                },
+                {
+                    "name": "sec-fetch-dest",
+                    "value": "empty",
+                    "id": "pair_e23a250a4c354e689c66e33830fe4154"
+                },
+                {
+                    "name": "sec-fetch-mode",
+                    "value": "cors",
+                    "id": "pair_cc2029e7b1d64dc09dea1a930f8b041f"
+                },
+                {
+                    "name": "sec-fetch-site",
+                    "value": "cross-site",
+                    "id": "pair_ccc4299ff44243dd96009c8786c42815"
+                },
+                {
+                    "name": "user-agent",
+                    "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+                    "id": "pair_5fa5922776cf4a89812312db6478e05e"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": ""
+            },
+            "metaSortKey": -1694779396993,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "fld_83188ffe5497425c9e615d2904660903",
+            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
+            "modified": 1694779382979,
+            "created": 1694779374982,
+            "name": "User",
+            "description": "",
+            "environment": {},
+            "environmentPropertyOrder": null,
+            "metaSortKey": -1693210031652,
+            "_type": "request_group"
+        },
+        {
+            "_id": "wrk_f2074d8fe23e48eba1eca85c76387f32",
+            "parentId": null,
+            "modified": 1692861313677,
+            "created": 1692861313677,
+            "name": "uv",
+            "description": "",
+            "scope": "collection",
+            "_type": "workspace"
+        },
+        {
+            "_id": "req_d86e3e415a2f4371a1dba3fb2a03ef0f",
+            "parentId": "fld_83188ffe5497425c9e615d2904660903",
+            "modified": 1695047326544,
+            "created": 1695047313217,
+            "url": "{{base}}/api/user/wishlist-count",
+            "name": "User wishlist count",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "authority",
+                    "value": "dev.api.uvavino.immera.io",
+                    "id": "pair_8833e16099d643e797638f0ebca07fde",
+                    "disabled": true
+                },
+                {
+                    "name": "accept",
+                    "value": "application/json, text/plain, */*",
+                    "id": "pair_935571381ce44d48a5bf7cc9f09e7719"
+                },
+                {
+                    "name": "accept-language",
+                    "value": "en-GB,en-US;q=0.9,en;q=0.8",
+                    "id": "pair_76269ed47e0840518d023ac44c7d59eb"
+                },
+                {
+                    "name": "origin",
+                    "value": "http://165.22.72.229",
+                    "id": "pair_d57a7f221e4c4ebba0cbcd8c518887f1",
+                    "disabled": true
+                },
+                {
+                    "name": "referer",
+                    "value": "http://165.22.72.229/",
+                    "id": "pair_4e2886fb3f6e41848eef0a8c6cce9dfa",
+                    "disabled": true
+                },
+                {
+                    "name": "sec-ch-ua",
+                    "value": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+                    "id": "pair_df666bbfd0fd40c4b15768accc4d7317"
+                },
+                {
+                    "name": "sec-ch-ua-mobile",
+                    "value": "?0",
+                    "id": "pair_7cbd72cfaeff48988021fe5db2422305"
+                },
+                {
+                    "name": "sec-ch-ua-platform",
+                    "value": "\"Windows\"",
+                    "id": "pair_125df8040980400ead0ca407c73d4267"
+                },
+                {
+                    "name": "sec-fetch-dest",
+                    "value": "empty",
+                    "id": "pair_e23a250a4c354e689c66e33830fe4154"
+                },
+                {
+                    "name": "sec-fetch-mode",
+                    "value": "cors",
+                    "id": "pair_cc2029e7b1d64dc09dea1a930f8b041f"
+                },
+                {
+                    "name": "sec-fetch-site",
+                    "value": "cross-site",
+                    "id": "pair_ccc4299ff44243dd96009c8786c42815"
+                },
+                {
+                    "name": "user-agent",
+                    "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+                    "id": "pair_5fa5922776cf4a89812312db6478e05e"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
+            "metaSortKey": -1694523014140.5,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
         {
             "_id": "req_2494ebefe3894f579eaef82e538fecb8",
             "parentId": "fld_e7093d48e7bb402c9c750303c98afdb1",
@@ -84,16 +286,6 @@
             "environmentPropertyOrder": null,
             "metaSortKey": -1693210031552,
             "_type": "request_group"
-        },
-        {
-            "_id": "wrk_f2074d8fe23e48eba1eca85c76387f32",
-            "parentId": null,
-            "modified": 1692861313677,
-            "created": 1692861313677,
-            "name": "uv",
-            "description": "",
-            "scope": "collection",
-            "_type": "workspace"
         },
         {
             "_id": "req_e97d7eb3c7344b8f8a9c809119f0a44e",
@@ -244,6 +436,556 @@
             "_type": "request_group"
         },
         {
+            "_id": "req_553372d95f9346bf83ed0b300d5d6181",
+            "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
+            "modified": 1695022065176,
+            "created": 1695017972168,
+            "url": "{{base}}/api/auction/53/edit",
+            "name": "edit Auction",
+            "description": "",
+            "method": "GET",
+            "body": {
+                "mimeType": "multipart/form-data",
+                "params": []
+            },
+            "parameters": [
+                {
+                    "id": "pair_1e313f4e736d49909f1e9d82b41c1631",
+                    "name": "order_by",
+                    "value": "expensive",
+                    "description": ""
+                },
+                {
+                    "id": "pair_6a1f707d3f8a43c79346ee85298d510c",
+                    "name": "user_id",
+                    "value": "",
+                    "description": ""
+                }
+            ],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "multipart/form-data",
+                    "id": "pair_85e4a889cded479f8bfd7a9efc239924"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
+            "metaSortKey": -1695020947668,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "fld_608546664b5e4df4829e39a19ba62a49",
+            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
+            "modified": 1684737434110,
+            "created": 1684737434110,
+            "name": "Auction",
+            "description": "",
+            "environment": {},
+            "environmentPropertyOrder": null,
+            "metaSortKey": -1684737434110,
+            "_type": "request_group"
+        },
+        {
+            "_id": "req_df2ddf97757046b7a1ce721a4c6de0eb",
+            "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
+            "modified": 1695108277267,
+            "created": 1695020947568,
+            "url": "http://uvavino-api.test/api/auction/78",
+            "name": "Update auction",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "multipart/form-data",
+                "params": [
+                    {
+                        "name": "title",
+                        "value": "Test auction 15-09",
+                        "type": "text",
+                        "id": "pair_6482900e5db7471ca0862dd3e6a63853"
+                    },
+                    {
+                        "name": "description",
+                        "value": "jggjgyu",
+                        "type": "text",
+                        "id": "pair_73e26fc387d440d58545ff7233f6c5cf"
+                    },
+                    {
+                        "name": "is_publish",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_87fa4016aa414f4e9c0408f515a4afc6"
+                    },
+                    {
+                        "name": "type",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_21a5f5de10f7466a83cbeb81a2dfaedd"
+                    },
+                    {
+                        "name": "price",
+                        "value": "100",
+                        "type": "text",
+                        "id": "pair_0297a0a2240a470f92a828714b81330f"
+                    },
+                    {
+                        "name": "start_date",
+                        "value": "2023-02-12 12:02:03",
+                        "type": "text",
+                        "id": "pair_aa20a320983f44549cb4f96c7f3254c4"
+                    },
+                    {
+                        "name": "end_date",
+                        "value": "2023-03-12 12:02:03",
+                        "type": "text",
+                        "id": "pair_88abee47ad9e4e1bba99cef7af6e7d9b"
+                    },
+                    {
+                        "name": "is_publish",
+                        "value": "0",
+                        "type": "text",
+                        "id": "pair_1cbc34d1ab414411b2d830e2838b3a1b"
+                    },
+                    {
+                        "name": "invite_peoples[0]",
+                        "value": "tejal4@yopmail.com",
+                        "type": "text",
+                        "id": "pair_31ae120a73ff455e958885098994ffe1"
+                    },
+                    {
+                        "name": "invite_peoples[1]",
+                        "value": "tejal1@yopmail.com",
+                        "type": "text",
+                        "id": "pair_d3b7645ff9274fa68f94a4dd40f41d5c"
+                    },
+                    {
+                        "name": "products[0][id]",
+                        "value": "138",
+                        "type": "text",
+                        "id": "pair_82b8138c92964bdd8c6c39f2292c573a"
+                    },
+                    {
+                        "name": "products[0][title]",
+                        "value": "Testjhjjh",
+                        "type": "text",
+                        "id": "pair_7c24f795513f46e58566e38039947ae7"
+                    },
+                    {
+                        "name": "products[0][description]",
+                        "value": "test3kgugu",
+                        "type": "text",
+                        "id": "pair_3b11598f190a44c3aaf55d958fff3de6"
+                    },
+                    {
+                        "name": "products[0][basket_quantity]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_1f72a5a73fb342f691f9925830e6c071"
+                    },
+                    {
+                        "name": "products[0][drink_type_id]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_947c712eb4814e2f8703501698415dd4"
+                    },
+                    {
+                        "name": "products[0][wine_name]",
+                        "value": "yutfjj",
+                        "type": "text",
+                        "id": "pair_3bbb983838334bf5834952ca75dff9ef"
+                    },
+                    {
+                        "name": "products[0][bottle_size]",
+                        "value": "10ml",
+                        "type": "text",
+                        "id": "pair_13765212c1f3439f9ceefc0b9464c428"
+                    },
+                    {
+                        "name": "products[0][country_id]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_c4670bc9cc42462abe48da97f16234ca"
+                    },
+                    {
+                        "name": "products[0][region_id]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_bb3f7951505040f3b5989c60a7046996"
+                    },
+                    {
+                        "name": "products[0][producer_id]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_cee5b6c6fbee49f98488aaff9065077a"
+                    },
+                    {
+                        "name": "products[0][wine_maker]",
+                        "value": "rwrwreer",
+                        "type": "text",
+                        "id": "pair_43f3af9c3d334066b2d8cee8d435cac3"
+                    },
+                    {
+                        "name": "products[0][wine_type_id]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_d69bd62e353242eb80e1befcceed903c"
+                    },
+                    {
+                        "name": "products[0][year]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_2d748a82813b47dd9d7beb1f58a63d51"
+                    },
+                    {
+                        "name": "products[0][storage_condition]",
+                        "value": "test11",
+                        "type": "text",
+                        "id": "pair_d47caf8a3b4a4d05be584ab218398841"
+                    },
+                    {
+                        "name": "products[0][review_and_rewards]",
+                        "value": "test11",
+                        "type": "text",
+                        "id": "pair_079dbe2e8f5b465d97ea3fe2e91b5c0f"
+                    },
+                    {
+                        "name": "products[0][medal]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_2c2c06bdd731451babb9e9868721d48b"
+                    },
+                    {
+                        "name": "products[0][award_name]",
+                        "value": "hjgjg",
+                        "type": "text",
+                        "id": "pair_df7a563de9b9401da996f07bb87fb31f"
+                    },
+                    {
+                        "name": "products[0][score]",
+                        "value": "111",
+                        "type": "text",
+                        "id": "pair_c30d83c7ed884ddd9071da4d5b5650de"
+                    },
+                    {
+                        "name": "products[0][review_name]",
+                        "value": "dwerswr",
+                        "type": "text",
+                        "id": "pair_e0c65a7de7c949018ab13ea876ed9f59"
+                    },
+                    {
+                        "name": "products[0][product_images][]",
+                        "fileName": "C:\\Users\\tejal\\Downloads\\download (1).jpg",
+                        "type": "file",
+                        "id": "pair_ec31906262a34d72a9147a65b2f98196"
+                    },
+                    {
+                        "name": "products[0][product_images][]",
+                        "fileName": "C:\\Users\\tejal\\Downloads\\download.jpg",
+                        "type": "file",
+                        "id": "pair_1403cd194edc4fa29dbfce0f31ecade5",
+                        "disabled": true
+                    },
+                    {
+                        "name": "products[0][volume]",
+                        "value": "ml",
+                        "type": "text",
+                        "id": "pair_4bc53196eb0242ef8b74f66d25c0593b"
+                    },
+                    {
+                        "name": "products[0][price]",
+                        "value": "120.12",
+                        "type": "text",
+                        "id": "pair_72e7cc7be93948d58278da95748b04e6"
+                    },
+                    {
+                        "name": "products[0][wine_variety][]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_957287b903cc43c683e5ab9d88d96d98"
+                    },
+                    {
+                        "name": "products[0][wine_variety][]",
+                        "value": "2",
+                        "type": "text",
+                        "id": "pair_6d34fbef43364e4d848233d77bef64d4"
+                    },
+                    {
+                        "name": "products[0][wine_tag][]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_2f1d03257a764942a7ce9544b1fc9737"
+                    },
+                    {
+                        "name": "products[0][wine_tag][]",
+                        "value": "2",
+                        "type": "text",
+                        "id": "pair_30e3c1876429435a94df34827b4b0a3b"
+                    },
+                    {
+                        "name": "products[1][id]",
+                        "value": "150",
+                        "type": "text",
+                        "id": "pair_4e9f39459958462ca0d555f97ed46663",
+                        "disabled": false
+                    },
+                    {
+                        "name": "products[1][title]",
+                        "value": "Testjhjjh",
+                        "type": "text",
+                        "id": "pair_0199a7e89e5c4c34a5a873ea308be779"
+                    },
+                    {
+                        "name": "products[1][description]",
+                        "value": "test3kgugu",
+                        "type": "text",
+                        "id": "pair_c3cd07e808fd41d898fee97d65de9c83"
+                    },
+                    {
+                        "name": "products[1][basket_quantity]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_1cda71f4f06b400b87b4d6885056d69f"
+                    },
+                    {
+                        "name": "products[1][drink_type_id]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_f6a69ad9e5264998b239a767cf0e2d70"
+                    },
+                    {
+                        "name": "products[1][wine_name]",
+                        "value": "yutfjj",
+                        "type": "text",
+                        "id": "pair_a753c8101a0c4cdf9894925af5bfea96"
+                    },
+                    {
+                        "name": "products[1][bottle_size]",
+                        "value": "10ml",
+                        "type": "text",
+                        "id": "pair_916c8c5687ba4873b85699e21d7c3499"
+                    },
+                    {
+                        "name": "products[1][country_id]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_1993ff4b827440378101409a9aeda0d8"
+                    },
+                    {
+                        "name": "products[1][region_id]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_7b08090a025b4f19b99f3cda7b1b0174"
+                    },
+                    {
+                        "name": "products[1][producer_id]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_fa25bdd2bdf94adb877808ab817f9eeb"
+                    },
+                    {
+                        "name": "products[1][wine_maker]",
+                        "value": "rwrwreer",
+                        "type": "text",
+                        "id": "pair_e1d625e76b53447b87cbe4ce4bedce18"
+                    },
+                    {
+                        "name": "products[1][wine_type_id]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_087c15e2af784af59b0e0135c546ff11"
+                    },
+                    {
+                        "name": "products[1][year]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_0cb4ecd1ffdc448d997b804b130ddcee"
+                    },
+                    {
+                        "name": "products[1][storage_condition]",
+                        "value": "test11",
+                        "type": "text",
+                        "id": "pair_2a8ad4434a86465a9f5f4a72f1135503"
+                    },
+                    {
+                        "name": "products[1][review_and_rewards]",
+                        "value": "test11",
+                        "type": "text",
+                        "id": "pair_676922ef6778471493e7133ecc8bb6c7"
+                    },
+                    {
+                        "name": "products[1][medal]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_1de6319e5bdf46deb7171b44e4c362b2"
+                    },
+                    {
+                        "name": "products[1][award_name]",
+                        "value": "hjgjg",
+                        "type": "text",
+                        "id": "pair_b2b2a4d12a2d48028263c3cf54719a05"
+                    },
+                    {
+                        "name": "products[1][score]",
+                        "value": "111",
+                        "type": "text",
+                        "id": "pair_bc74252d9abc49bdb359d2c30d56442b"
+                    },
+                    {
+                        "name": "products[1][review_name]",
+                        "value": "dwerswr",
+                        "type": "text",
+                        "id": "pair_9deca4ee545b4987aeb60b370e5926a4"
+                    },
+                    {
+                        "name": "products[1][product_images][]",
+                        "fileName": "C:\\Users\\tejal\\Downloads\\download (1).jpg",
+                        "type": "file",
+                        "id": "pair_034487b518814edd93aa772686019773",
+                        "disabled": false
+                    },
+                    {
+                        "name": "products[1][product_images][]",
+                        "fileName": "C:\\Users\\tejal\\Downloads\\download.jpg",
+                        "type": "file",
+                        "id": "pair_e2485d60ed1a40fa8ef3ff0c0e33b6f4",
+                        "disabled": true
+                    },
+                    {
+                        "name": "products[1][volume]",
+                        "value": "ml",
+                        "type": "text",
+                        "id": "pair_f1456e8c5652423d8a8f7d7664ebfd94"
+                    },
+                    {
+                        "name": "products[1][price]",
+                        "value": "120.12",
+                        "type": "text",
+                        "id": "pair_91bc45c48afc4c5196d9d9098c665b6c"
+                    },
+                    {
+                        "name": "products[1][wine_variety][]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_322f476e6df7439498973d6db42ba0de"
+                    },
+                    {
+                        "name": "products[1][wine_variety][]",
+                        "value": "2",
+                        "type": "text",
+                        "id": "pair_559a10babb9b46f1b79450da190afd95"
+                    },
+                    {
+                        "name": "products[1][wine_tag][]",
+                        "value": "1",
+                        "type": "text",
+                        "id": "pair_7a7d512b12de4899960c15b48131d837"
+                    },
+                    {
+                        "name": "products[1][wine_tag][]",
+                        "value": "2",
+                        "type": "text",
+                        "id": "pair_37842a3fda2646cdbfc9e98e3d50d569"
+                    },
+                    {
+                        "name": "",
+                        "value": "",
+                        "type": "text",
+                        "id": "pair_fce3512f31dc4fb7917477f2e82ebb8e"
+                    },
+                    {
+                        "name": "",
+                        "value": "",
+                        "type": "text",
+                        "id": "pair_88c93fea2d614316aaf84e61d8654768"
+                    },
+                    {
+                        "name": "",
+                        "value": "",
+                        "type": "text",
+                        "id": "pair_8ab869b774934bd1b26d0589df904256"
+                    },
+                    {
+                        "name": "",
+                        "value": "",
+                        "type": "text",
+                        "id": "pair_e3b9d0b6c4164bacb2c11d810dd96a21"
+                    },
+                    {
+                        "name": "",
+                        "value": "",
+                        "type": "text",
+                        "id": "pair_8deedbacbdda4213b96a4dfab43bd767"
+                    },
+                    {
+                        "name": "",
+                        "value": "",
+                        "type": "text",
+                        "id": "pair_5f4a2d9facf54458baad47aa9222dfe5"
+                    },
+                    {
+                        "name": "",
+                        "value": "",
+                        "type": "text",
+                        "id": "pair_bf1509b937b046dabad2a2459589372a"
+                    },
+                    {
+                        "name": "",
+                        "value": "",
+                        "type": "text",
+                        "id": "pair_e1908b5deeae411c996c3d9a5d3a56fe"
+                    },
+                    {
+                        "name": "",
+                        "value": "",
+                        "type": "text",
+                        "id": "pair_7714f19a46bb41c2bf7223c865d8f028"
+                    },
+                    {
+                        "name": "",
+                        "value": "",
+                        "type": "text",
+                        "id": "pair_027ee62998174deaba3b1b13dfbdb7f8"
+                    }
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "_method",
+                    "value": "PUT",
+                    "disabled": false
+                }
+            ],
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer 3|qzCCJiFDNaVnuVcQ8ZgiFaME4iYNbakSajXbRKMo"
+                },
+                {
+                    "name": "Content-Type",
+                    "value": "multipart/form-data"
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1695020947568,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
             "_id": "req_ebaafca79b6a4d25b2d865044ef41072",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
             "modified": 1694503160830,
@@ -273,18 +1015,6 @@
             "settingRebuildPath": true,
             "settingFollowRedirects": "global",
             "_type": "request"
-        },
-        {
-            "_id": "fld_608546664b5e4df4829e39a19ba62a49",
-            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
-            "modified": 1684737434110,
-            "created": 1684737434110,
-            "name": "Auction",
-            "description": "",
-            "environment": {},
-            "environmentPropertyOrder": null,
-            "metaSortKey": -1684737434110,
-            "_type": "request_group"
         },
         {
             "_id": "req_6e93161241f7471f854a145d535b54cb",
@@ -426,7 +1156,7 @@
         {
             "_id": "req_2306e0166520438480e96c80814912a9",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1694673389626,
+            "modified": 1694842269691,
             "created": 1687264928174,
             "url": "{{base}}/api/auction",
             "name": "Store Auction",
@@ -437,14 +1167,15 @@
                 "params": [
                     {
                         "name": "title",
-                        "value": "Test auction 12-09",
+                        "value": "Test auction 15-09",
                         "id": "pair_8a9749249ff54f979082b55c62033b8d"
                     },
                     {
                         "id": "pair_13c4f0296856416d84b21bc9d10f8f4d",
                         "name": "description",
                         "value": "jggjgyu",
-                        "description": ""
+                        "description": "",
+                        "disabled": false
                     },
                     {
                         "id": "pair_d9d45629e32a4b309cc548a269d3faf1",
@@ -479,7 +1210,7 @@
                     },
                     {
                         "id": "pair_b0c1383f443044318ef33057a0f87ca4",
-                        "name": "products[0][stock]",
+                        "name": "products[0][basket_quantity]",
                         "value": "1",
                         "description": ""
                     },
@@ -527,7 +1258,7 @@
                     },
                     {
                         "id": "pair_bd35dd80d38c403e8d4b960e33aaed04",
-                        "name": "products[0][type_of_wine]",
+                        "name": "products[0][wine_type_id]",
                         "value": "1",
                         "description": ""
                     },
@@ -609,7 +1340,7 @@
                         "description": "",
                         "type": "file",
                         "fileName": "C:\\Users\\tejal\\Downloads\\download.jpg",
-                        "disabled": true
+                        "disabled": false
                     },
                     {
                         "id": "pair_026d33ca39b34fc191aa80122565181a",
@@ -705,7 +1436,7 @@
         {
             "_id": "req_b3533356322c4367bd818b657d873713",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1694536758456,
+            "modified": 1695031643303,
             "created": 1687241804913,
             "url": "{{base}}/api/auction",
             "name": "Get Auction",
@@ -737,14 +1468,14 @@
                 {
                     "id": "pair_a0a74990f1bd4c0aafca643feff781b3",
                     "name": "type",
-                    "value": "1",
+                    "value": "",
                     "description": "",
                     "disabled": true
                 },
                 {
                     "id": "pair_8971de8bda824c52ae24cde90409c1aa",
                     "name": "bottle_size",
-                    "value": "0",
+                    "value": "10ml,20ml",
                     "description": "",
                     "disabled": true
                 },
@@ -753,7 +1484,27 @@
                     "name": "order_by",
                     "value": "recent",
                     "description": "",
-                    "disabled": false
+                    "disabled": true
+                },
+                {
+                    "id": "pair_a226d3cbd3a9431c8f42e8581f21b2cc",
+                    "name": "created_by",
+                    "value": "59",
+                    "description": "",
+                    "disabled": true
+                },
+                {
+                    "id": "pair_75ad10692f914d6fbaf591ff4d342575",
+                    "name": "limit",
+                    "value": "3",
+                    "description": "",
+                    "disabled": true
+                },
+                {
+                    "id": "pair_07e32cd4874848baaab26b079b88cda9",
+                    "name": "is_wishlist",
+                    "value": "1",
+                    "description": ""
                 }
             ],
             "headers": [],
@@ -835,9 +1586,9 @@
         {
             "_id": "req_4379700ce182451786ef4e6a724b02c6",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1694591871225,
+            "modified": 1695028574019,
             "created": 1687263301869,
-            "url": "{{base}}/api/auction/53",
+            "url": "{{base}}/api/auction/78",
             "name": "Show Auction",
             "description": "",
             "method": "GET",
@@ -983,6 +1734,41 @@
             "_type": "request"
         },
         {
+            "_id": "req_4c921bf3fc9c4c4783395646b9fc6096",
+            "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
+            "modified": 1694683928572,
+            "created": 1694683737756,
+            "url": "{{base}}/api/auction/50/bid",
+            "name": "store auction bid",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"price\":\"100\"\n}\n"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}",
+                "disabled": false
+            },
+            "metaSortKey": -1684437437690.5283,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
             "_id": "req_7fb96e5a5e9242be8208cde619a84d9a",
             "parentId": "fld_7a48803fca734ff7ad543059b44f6c1d",
             "modified": 1693823972869,
@@ -1025,9 +1811,9 @@
         {
             "_id": "req_bded4178976f45b4bf57ab9f3f865d24",
             "parentId": "fld_7a48803fca734ff7ad543059b44f6c1d",
-            "modified": 1694680756488,
+            "modified": 1694842417028,
             "created": 1684128222117,
-            "url": "http://uvavino-api.test/api/product",
+            "url": "{{base}}/api/product",
             "name": "Get Product",
             "description": "",
             "method": "GET",
@@ -1058,7 +1844,15 @@
                     "id": "pair_e7ac73a35f7b44ed8a92f323be972c0f",
                     "name": "wine_tag[]",
                     "value": "1",
-                    "description": ""
+                    "description": "",
+                    "disabled": true
+                },
+                {
+                    "id": "pair_a995576a331c423584472cf909523df6",
+                    "name": "created_by",
+                    "value": "11",
+                    "description": "",
+                    "disabled": true
                 }
             ],
             "headers": [],
@@ -1078,7 +1872,7 @@
         {
             "_id": "req_cf24c600c2034f0eb3ffbbc5a043ff72",
             "parentId": "fld_7a48803fca734ff7ad543059b44f6c1d",
-            "modified": 1693823772810,
+            "modified": 1694788059520,
             "created": 1684737436488,
             "url": "{{base}}/api/product",
             "name": "Store Product",
@@ -1192,7 +1986,7 @@
                     "id": "pair_94c6bd0d44654823842fd48f84fa514c"
                 },
                 {
-                    "name": "products[0][type_of_wine]",
+                    "name": "products[0][wine_type_id]",
                     "value": "1",
                     "id": "pair_05cf80727c2b4c83a355c0efbedb2fda"
                 },
@@ -1202,12 +1996,12 @@
                     "id": "pair_8b02e253480b4b209de836e64130357e"
                 },
                 {
-                    "name": "products[0][grape_̥varieties]",
+                    "name": "products[0][wine_variety][]",
                     "value": "test",
                     "id": "pair_c1870f434a4b46b79716e2dd2a81d507"
                 },
                 {
-                    "name": "products[0][wine_tag_id]",
+                    "name": "products[0][wine_tag][]",
                     "value": "1",
                     "id": "pair_4fb15b87a32345139ce4ab36f8fa6a37"
                 },
@@ -1283,7 +2077,7 @@
         {
             "_id": "req_bb834e4925514a97b613430c593e7683",
             "parentId": "fld_a3bad42106b24718b90d306a4c7757b6",
-            "modified": 1689163556813,
+            "modified": 1695027191687,
             "created": 1675226858590,
             "url": "{{base}}/api/wishlist/products",
             "name": "Wishlist list",
@@ -1295,7 +2089,7 @@
                     "id": "pair_529ff4b54f5a460aa2038005ab359651",
                     "name": "type",
                     "value": "3",
-                    "description": "",
+                    "description": "1=>auction_package,2=>auction,3=>product",
                     "disabled": false
                 }
             ],
@@ -2361,9 +3155,9 @@
         {
             "_id": "env_a30ada3ecc2a4ac89da5ab94c1505cc9",
             "parentId": "env_2a655e6350247e920858a5dfc90144e8670af491",
-            "modified": 1694675618984,
+            "modified": 1694765159286,
             "created": 1673934423089,
-            "name": "New Environment",
+            "name": "Local Server",
             "data": {
                 "base": "http://uvavino-api.test",
                 "token": "3|qzCCJiFDNaVnuVcQ8ZgiFaME4iYNbakSajXbRKMo"
@@ -2382,14 +3176,35 @@
         {
             "_id": "env_e6ef8e0ba8f3475ab364a0e0234632be",
             "parentId": "env_2a655e6350247e920858a5dfc90144e8670af491",
-            "modified": 1692861380830,
+            "modified": 1695011754847,
             "created": 1692861380830,
+            "name": "Live server",
+            "data": {
+                "base": "https://dev.api.uvavino.immera.io",
+                "token": "194|Zv5iYPtSvdUBGR8fixJIaSZX8HwFGuwAcYLEVEwd"
+            },
+            "dataPropertyOrder": {
+                "&": [
+                    "base",
+                    "token"
+                ]
+            },
+            "color": null,
+            "isPrivate": false,
+            "metaSortKey": 1692861380830,
+            "_type": "environment"
+        },
+        {
+            "_id": "env_ee10161d2dec41fdb17d291029c030bf",
+            "parentId": "env_2a655e6350247e920858a5dfc90144e8670af491",
+            "modified": 1694765116057,
+            "created": 1694765116057,
             "name": "New Environment",
             "data": {},
             "dataPropertyOrder": null,
             "color": null,
             "isPrivate": false,
-            "metaSortKey": 1692861380830,
+            "metaSortKey": 1694765116057,
             "_type": "environment"
         }
     ]
