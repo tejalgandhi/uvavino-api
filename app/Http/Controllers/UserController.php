@@ -25,5 +25,23 @@ class UserController extends Controller
 
     }
 
+    public function allWishlistCount(Request $request)
+    {
+        try {
+
+            $data = [];
+            $data['auctionsWishlistCount'] = Auction::whereHas('wishlist',function($q) use($request)  {
+                $q->where('wine_user_id',$request->wine_user_id);
+            })->count();
+            $data['productsWishlistCount'] = Basket::whereHas('wishlist',function($q) use($request)  {
+                $q->where('wine_user_id',$request->wine_user_id);
+            })->where('is_auction_product',Basket::IS_NOT_AUCTION_PRODUCT)->count();
+            $data['totalProductWishlistCount'] =  $data['auctionsWishlistCount']  +  $data['productsWishlistCount'];
+
+            return response()->json(['message'=>"Get User Wishlist Count","data"=>$data],201);
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
 
 }

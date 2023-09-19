@@ -1,6 +1,7 @@
 <?php
 namespace App\Models\Traits;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -24,6 +25,17 @@ trait FileUploadTrait
         // Make sure path exists
         if (! Storage::exists($path)) {
             Storage::makeDirectory($path);
+        }
+
+        //remove Old Files
+        $file_paths = $this->{$field};
+        if(!empty($file_paths)){
+            foreach ($file_paths as $file_path) {
+                $storagePath = str_replace(env('APP_URL') . '/storage', '', $file_path);
+                if (Storage::exists($storagePath)) {
+                    Storage::delete($storagePath);
+                }
+            }
         }
         // Store file to the storage and save path to database
         $files = [];
@@ -54,4 +66,5 @@ trait FileUploadTrait
             ...$args,
         ]);
     }
+
 }

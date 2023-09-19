@@ -37,6 +37,8 @@ class AuctionController extends Controller
     public function index(Request $request)
     {
         $order_by = $request->order_by;
+        $in_wishlist = $request->is_wishlist ?? '';
+        $limit = $request->limit ?? config('constant.number_of_items_per_page') ;
         $filter_attrs = [
             'auctions' => [
 //                'title' => 'like',
@@ -88,7 +90,11 @@ class AuctionController extends Controller
                 'baskets.products.wine_type',
                 'baskets.products.wine_tag',
             ]);
-
+        if($in_wishlist){
+            $query = $query->whereHas('wishlist',function($q) use($request)  {
+                $q->where('wine_user_id',$request->user_id);
+            });
+        }
         /*
          * Logic of table and relationships conditions
          */
@@ -139,58 +145,9 @@ class AuctionController extends Controller
         };
 
         return AuctionResource::collection(
-            $query->paginate(10)
+            $query->paginate($limit)
         );
     }
-
-    /**
-     * @param $slug
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|object|null
-     */
-    public function show(Request $request,$id)
-    {
-        $request->merge(['order_by' =>$request->order_by]);
-        $auction = Auction::query()
-            ->withCount(['bids','wishlist'=> function($q) use($request)  {
-                $q->where('wine_user_id',$request->user_id);
-            } ])
-            ->where('id', $id);
-
-          $auction = $auction->first();
-        if (!$auction) {
-            return (new Fail(__('Auction does not exist')))->json(404);
-        }
-        return new AuctionDetailResource($auction);
-    }
-
-    public function showSingleAuction(Request $request,$auction_id,Product $product)
-    {
-        $request->merge(['product' =>$product]);
-        $auction = Auction::query()
-            ->withCount(['bids','wishlist'=> function($q) use($request)  {
-                $q->where('wine_user_id',$request->user_id);
-            } ])
-            ->where('id', $auction_id)
-            ->first();
-        if (!$auction) {
-            return (new Fail(__('Auction does not exist')))->json(404);
-        }
-        return new AuctionSingleProductDetailResource($auction);
-    }
-    /**
-     * @param $slug
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|object|null
-     */
-    public function destory(Request $request,Auction $auction)
-    {
-        try {
-            $auction->delete();
-            return (new Success(__('Auction delete Successfully')))->json(201);
-        } catch (\Exception $e) {
-            return (new Fail($e->getMessage()))->json(500);
-        }
-    }
-
 
     /**
      * @param AuctionCreateRequest $request
@@ -261,6 +218,136 @@ class AuctionController extends Controller
             }
             return (new Success(__('Auction Create Successfully')))->json(201);
 
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json(500);
+        }
+    }
+
+    /**
+     * @param AuctionCreateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(AuctionCreateRequest $request,Auction $auction)
+    {
+        try {
+            $invitee = $auction->invites->pluck('email')->toArray();
+            Auction::where('id',$auction->id)->update($request->only([
+                "basket_id",
+                "title",
+                "description",
+                "is_publish",
+                "start_date",
+                "end_date",
+                "type",
+                "max_price",
+            ]));
+
+            $invite_peoples = $request->invite_peoples;
+            if($invite_peoples){
+                $diff = array_diff($invite_peoples,$invitee);
+                $remove_invites = array_diff($invitee,$invite_peoples);
+                if(!empty($diff)) {
+                    foreach ($diff as $invite_people) {
+                        Mail::to($invite_people)->queue(new InvitationMail(Auth::User()));
+                        AuctionInvite::create([
+                            "auction_id" => $auction->id,
+                            "email" => $invite_people,
+                        ]);
+                    }
+                }
+                if(!empty($remove_invites)){
+                    AuctionInvite::whereIn('email',$remove_invites)->where('auction_id',$auction->id)->delete();
+                }
+            }
+            Basket::where('id',$auction->basket_id)->update([
+                "title" => $request->title,
+                "price" => $request->price,
+            ]);
+
+            $products = $request->products;
+            foreach ($products as $product) {
+                $createdProduct = [
+                    "basket_id" => $auction->basket_id,
+                    "wine_name" => $product["wine_name"],
+                    "title" => $product["wine_name"],
+                    "description" => $product["description"],
+                    "wine_user_id" => $request->wine_user_id,
+                    "bottle_size" => $product["bottle_size"],
+                    "country_id" => $product["country_id"],
+                    "region_id" => $product["region_id"],
+                    "producer_id" => $product["producer_id"],
+                    "wine_maker" => $product["wine_maker"],
+                    "wine_type_id" => $product["wine_type_id"],
+                    "year" => $product["year"],
+                    "wine_variety" =>implode(",",$product["wine_variety"]),
+                    "wine_tag" => implode(",",$product["wine_tag"]),
+                    "storage_condition" => $product["storage_condition"],
+                    "review_and_rewards" => $product["review_and_rewards"],
+                    "medal" => $product["medal"],
+                    "award_name" => $product["award_name"],
+                    "score" => $product["score"],
+                    "review_name" => $product["review_name"],
+                    "basket_quantity" => $product["basket_quantity"],
+                    "unit_quantity" => getBottleSize($product["bottle_size"],"unit_quantity"),
+                    "unit" => getBottleSize($product["bottle_size"],"unit"),
+                    "volume" => $product["volume"],
+                    "price" => $product["price"],
+                ];
+                $updateProduct = Product::updateOrCreate(['id'=>$product['id']],$createdProduct);
+                if(isset($product['product_images'])){
+                    $updateProduct->uploadProductImages('product_images',$product['product_images'],['products']);
+                }
+            }
+
+            return (new Success(__('Auction Updated Successfully')))->json(201);
+
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json(500);
+        }
+    }
+    /**
+     * @param $slug
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|object|null
+     */
+    public function show(Request $request,$id)
+    {
+        $request->merge(['order_by' =>$request->order_by]);
+        $auction = Auction::query()
+            ->withCount(['bids','wishlist'=> function($q) use($request)  {
+                $q->where('wine_user_id',$request->user_id);
+            } ])
+            ->where('id', $id);
+
+        $auction = $auction->first();
+        if (!$auction) {
+            return (new Fail(__('Auction does not exist')))->json(404);
+        }
+        return new AuctionDetailResource($auction);
+    }
+
+    public function showSingleAuction(Request $request,$auction_id,Product $product)
+    {
+        $request->merge(['product' =>$product]);
+        $auction = Auction::query()
+            ->withCount(['bids','wishlist'=> function($q) use($request)  {
+                $q->where('wine_user_id',$request->user_id);
+            } ])
+            ->where('id', $auction_id)
+            ->first();
+        if (!$auction) {
+            return (new Fail(__('Auction does not exist')))->json(404);
+        }
+        return new AuctionSingleProductDetailResource($auction);
+    }
+    /**
+     * @param $slug
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|object|null
+     */
+    public function destory(Request $request,Auction $auction)
+    {
+        try {
+            $auction->delete();
+            return (new Success(__('Auction delete Successfully')))->json(201);
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json(500);
         }
