@@ -66,7 +66,8 @@ class Auction extends Model
         );
     }
 
-    public function wishlist(){
+    public function wishlist() :HasMany
+    {
         return $this->hasMany(Wishlist::class,'ref_id','id')->where('type',Wishlist::AUCTION_TYPE);
     }
 

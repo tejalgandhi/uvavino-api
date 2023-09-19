@@ -228,7 +228,7 @@ class AuctionTest extends TestCase
         $data = $this->store_auction_array();
         $response = $this->actingAs($user)->post('/api/auction', $data['product']);
         $this->assertEquals(1, Auction::count(), "There should not be only one auction present in the db.");
-        $data = $this->update_auction_array($user);
+        $data = $this->update_auction_array();
         $response = $this->actingAs($user)->put('/api/auction/'.$data['auction']->id, $data['product']);
         $response->assertStatus(201);
     }
