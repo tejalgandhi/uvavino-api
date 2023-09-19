@@ -30,10 +30,10 @@ class UserController extends Controller
         try {
 
             $data = [];
-            $data['auctionsWishlistCount'] = Auction::where('created_by',$request->wine_user_id)->whereHas('wishlist',function($q) use($request)  {
+            $data['auctionsWishlistCount'] = Auction::whereHas('wishlist',function($q) use($request)  {
                 $q->where('wine_user_id',$request->wine_user_id);
             })->count();
-            $data['productsWishlistCount'] = Basket::where('created_by',$request->wine_user_id)->whereHas('wishlist',function($q) use($request)  {
+            $data['productsWishlistCount'] = Basket::whereHas('wishlist',function($q) use($request)  {
                 $q->where('wine_user_id',$request->wine_user_id);
             })->where('is_auction_product',Basket::IS_NOT_AUCTION_PRODUCT)->count();
             $data['totalProductWishlistCount'] =  $data['auctionsWishlistCount']  +  $data['productsWishlistCount'];

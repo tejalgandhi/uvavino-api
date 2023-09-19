@@ -26,7 +26,7 @@ class ProductController extends Controller
     {
         $order_by = $request->order_by;
         $in_wishlist = $request->is_wishlist ?? '';
-
+        $limit = $request->limit ?? config('constant.number_of_items_per_page') ;
         $filter_attrs = [
             'baskets' => [
                 'title' => 'like',
@@ -105,7 +105,7 @@ class ProductController extends Controller
 
 //        dd($query->toSql());
         return BasketResource::collection(
-            $query->paginate(10)
+            $query->paginate($limit)
         );
     }
 
