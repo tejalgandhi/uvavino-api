@@ -164,7 +164,6 @@ class AuctionController extends Controller
             ]);
             $products = $request->products;
             foreach ($products as $product) {
-                dd(BottleSize::from($product["bottle_size"]));
                 $createdProduct = Product::create([
                     "basket_id" => $basket->id,
                     "wine_name" => $product["wine_name"],
@@ -187,8 +186,8 @@ class AuctionController extends Controller
                     "score" => $product["score"],
                     "review_name" => $product["review_name"],
                     "basket_quantity" => $product["basket_quantity"],
-                    "unit_quantity" => getBottleSize($product["bottle_size"],"unit_quantity"),
-                    "unit" => getBottleSize($product["bottle_size"],"unit"),
+                    "unit_quantity" => BottleSize::tryFrom($product["bottle_size"])->unit_quantity(),
+                    "unit" => BottleSize::tryFrom($product["bottle_size"])->unit(),
                     "volume" => $product["volume"],
                     "price" => $product["price"],
                 ]);
@@ -290,8 +289,8 @@ class AuctionController extends Controller
                     "score" => $product["score"],
                     "review_name" => $product["review_name"],
                     "basket_quantity" => $product["basket_quantity"],
-                    "unit_quantity" => getBottleSize($product["bottle_size"],"unit_quantity"),
-                    "unit" => getBottleSize($product["bottle_size"],"unit"),
+                    "unit_quantity" => BottleSize::tryFrom($product["bottle_size"])->unit_quantity(),
+                    "unit" => BottleSize::tryFrom($product["bottle_size"])->unit(),
                     "volume" => $product["volume"],
                     "price" => $product["price"],
                 ];

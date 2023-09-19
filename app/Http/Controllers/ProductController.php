@@ -11,7 +11,7 @@ use App\Models\Basket;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use App\Enums\BottleSize;
 /**
  * Class ProductController
  * @package App\Http\Controllers
@@ -164,8 +164,8 @@ class ProductController extends Controller
                     "score" => $product["score"],
                     "review_name" => $product["review_name"],
                     "basket_quantity" => $product["basket_quantity"],
-                    "unit_quantity" => $product["unit_quantity"],
-                    "unit" => $product["unit"],
+                    "unit_quantity" => BottleSize::tryFrom($product["bottle_size"])->unit_quantity(),
+                    "unit" => BottleSize::tryFrom($product["bottle_size"])->unit(),
                 ]);
             }
             return (new Success(__("Product store successfully.")))->json();

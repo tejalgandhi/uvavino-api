@@ -1,7 +1,12 @@
 <?php
 namespace App\Enums;
 
+use ArchTech\Enums\Values;
+
 Enum Year: int {
+    use Values;
+
+
     case YEAR_ONE = 0;
     case YEAR_TWO = 1;
     case YEAR_THREE = 2;
