@@ -395,9 +395,6 @@ class AuctionController extends Controller
         return AuctionResource::collection($product)->additional(['meta' => []]);
     }
 
-    /**
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-     */
     public function getBuyPurchaseHistory(Request $request)
     {
         try {
