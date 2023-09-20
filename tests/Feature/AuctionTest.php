@@ -486,6 +486,18 @@ class AuctionTest extends TestCase
         $response->assertStatus(200);
 
     }
+    public function test_get_buy_purchase_history()
+    {
+        $user = WineUser::factory()->create();
+        $auction = Auction::factory()->create();
+        $response = $this->actingAs($user)->post('/api/auction/'.$auction->id.'/bid',[
+            'price'=>100
+        ]);
+        $response->assertStatus(201);
+        $response = $this->actingAs($user)->get('/api/user/buy-purchse-history');
+        $response->assertStatus(201);
+
+    }
     public function test_delete_auction()
     {
         $user = WineUser::factory()->create();

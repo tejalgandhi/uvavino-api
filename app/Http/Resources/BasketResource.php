@@ -31,6 +31,7 @@ class BasketResource extends JsonResource
             'title' => $this->resource->title,
             'slug' => $this->resource->slug,
             'description' => $this->resource->description,
+            'is_wishlist'=> $this->wishlist_count,
             'stock' => $this->resource->stock,
             'price' => $this->resource->price,
             'weight' => $this->resource->weight,

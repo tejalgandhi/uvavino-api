@@ -38,7 +38,7 @@ class AuctionController extends Controller
     {
         $order_by = $request->order_by;
         $in_wishlist = $request->is_wishlist ?? '';
-        $limit = $request->limit ?? config('constant.number_of_items_per_page') ;
+        $limit = $request->limit ?? config('constant.number_of_items_per_page');
         $filter_attrs = [
             'auctions' => [
 //                'title' => 'like',
@@ -57,9 +57,9 @@ class AuctionController extends Controller
                         'wine_tag_id' => 'in',
                         'bottle_size' => 'in',
                         'year' => 'in',
-                     ]
+                    ]
                 ],
-           ]
+            ]
         ];
 
         $relationshipLogics = [
@@ -70,16 +70,16 @@ class AuctionController extends Controller
                 return $q->where($a, 'LIKE', '%' . $v . '%');
             },
             'greater' => function ($q, $a, $v) {
-                return $q->where($a, '>',  $v);
+                return $q->where($a, '>', $v);
             },
             'less' => function ($q, $a, $v) {
-                return $q->where($a, '<',  $v);
+                return $q->where($a, '<', $v);
             }
         ];
         $query = Auction::select(AuctionResource::selectLst())
-            ->withCount(['bids','wishlist'=> function($q) use($request)  {
-                    $q->where('wine_user_id',$request->user_id);
-            } ])
+            ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
+                $q->where('wine_user_id', $request->user_id);
+            }])
             ->with([
                 'baskets',
                 'baskets.products',
@@ -90,9 +90,10 @@ class AuctionController extends Controller
                 'baskets.products.wine_type',
                 'baskets.products.wine_tag',
             ]);
-        if($in_wishlist){
-            $query = $query->whereHas('wishlist',function($q) use($request)  {
-                $q->where('wine_user_id',$request->user_id);
+        //wishlist tab in user profile
+        if ($in_wishlist) {
+            $query = $query->whereHas('wishlist', function ($q) use ($request) {
+                $q->where('wine_user_id', $request->user_id);
             });
         }
         /*
@@ -109,7 +110,7 @@ class AuctionController extends Controller
                         }
                         if (is_array($relationshipLogic)) {
                             foreach ($relationshipLogic as $a => $r) {
-                                if(!empty($request->$a)) {
+                                if (!empty($request->$a)) {
                                     $table = $tbl . '.' . $attr;
                                     $query = $query->whereHas($table, function ($query) use ($a, $request, $attr, $relationshipLogics, $r) {
                                         $relationshipLogics[$r]($query, implode(".", [$attr, $a]), $request->$a);
@@ -119,19 +120,17 @@ class AuctionController extends Controller
                         }
                     }
                 } else {
-                    if($request->$tbl != '') {
-                        if($tbl == 'price_greater_than' || $tbl == 'price_less_than'){
+                    if ($request->$tbl != '') {
+                        if ($tbl == 'price_greater_than' || $tbl == 'price_less_than') {
                             $field = 'max_price';
                             $query = $relationshipLogics[$attrs]($query, implode(".", [$masterTbl, $field]), $request->$tbl);
-                         }
-                        else{
+                        } else {
                             $query = $relationshipLogics[$attrs]($query, implode(".", [$masterTbl, $tbl]), $request->$tbl);
                         }
                     }
                 }
             }
         }
-
 
 
         $query = match($order_by){
@@ -176,8 +175,8 @@ class AuctionController extends Controller
                     "wine_maker" => $product["wine_maker"],
                     "wine_type_id" => $product["wine_type_id"],
                     "year" => $product["year"],
-                    "wine_variety" =>implode(",",$product["wine_variety"]),
-                    "wine_tag" => implode(",",$product["wine_tag"]),
+                    "wine_variety" => implode(",", $product["wine_variety"]),
+                    "wine_tag" => implode(",", $product["wine_tag"]),
                     "storage_condition" => $product["storage_condition"],
                     "review_and_rewards" => $product["review_and_rewards"],
                     "medal" => $product["medal"],
@@ -185,13 +184,13 @@ class AuctionController extends Controller
                     "score" => $product["score"],
                     "review_name" => $product["review_name"],
                     "basket_quantity" => $product["basket_quantity"],
-                    "unit_quantity" => getBottleSize($product["bottle_size"],"unit_quantity"),
-                    "unit" => getBottleSize($product["bottle_size"],"unit"),
+                    "unit_quantity" => getBottleSize($product["bottle_size"], "unit_quantity"),
+                    "unit" => getBottleSize($product["bottle_size"], "unit"),
                     "volume" => $product["volume"],
                     "price" => $product["price"],
                 ]);
-                if(isset($product['product_images'])){
-                    $createdProduct->uploadProductImages('product_images',$product['product_images'],['products']);
+                if (isset($product['product_images'])) {
+                    $createdProduct->uploadProductImages('product_images', $product['product_images'], ['products']);
                 }
             }
             $request->request->add(['basket_id' => $basket->id]);
@@ -207,8 +206,8 @@ class AuctionController extends Controller
                 "max_price",
             ]));
             $invite_peoples = $request->invite_peoples;
-            if($invite_peoples){
-                foreach ($invite_peoples as $invite_people){
+            if ($invite_peoples) {
+                foreach ($invite_peoples as $invite_people) {
                     Mail::to($invite_people)->queue(new InvitationMail(Auth::User()));
                     AuctionInvite::create([
                         "auction_id" => $auction->id,
@@ -227,11 +226,11 @@ class AuctionController extends Controller
      * @param AuctionCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(AuctionCreateRequest $request,Auction $auction)
+    public function update(AuctionCreateRequest $request, Auction $auction)
     {
         try {
             $invitee = $auction->invites->pluck('email')->toArray();
-            Auction::where('id',$auction->id)->update($request->only([
+            Auction::where('id', $auction->id)->update($request->only([
                 "basket_id",
                 "title",
                 "description",
@@ -243,10 +242,10 @@ class AuctionController extends Controller
             ]));
 
             $invite_peoples = $request->invite_peoples;
-            if($invite_peoples){
-                $diff = array_diff($invite_peoples,$invitee);
-                $remove_invites = array_diff($invitee,$invite_peoples);
-                if(!empty($diff)) {
+            if ($invite_peoples) {
+                $diff = array_diff($invite_peoples, $invitee);
+                $remove_invites = array_diff($invitee, $invite_peoples);
+                if (!empty($diff)) {
                     foreach ($diff as $invite_people) {
                         Mail::to($invite_people)->queue(new InvitationMail(Auth::User()));
                         AuctionInvite::create([
@@ -255,11 +254,11 @@ class AuctionController extends Controller
                         ]);
                     }
                 }
-                if(!empty($remove_invites)){
-                    AuctionInvite::whereIn('email',$remove_invites)->where('auction_id',$auction->id)->delete();
+                if (!empty($remove_invites)) {
+                    AuctionInvite::whereIn('email', $remove_invites)->where('auction_id', $auction->id)->delete();
                 }
             }
-            Basket::where('id',$auction->basket_id)->update([
+            Basket::where('id', $auction->basket_id)->update([
                 "title" => $request->title,
                 "price" => $request->price,
             ]);
@@ -279,8 +278,8 @@ class AuctionController extends Controller
                     "wine_maker" => $product["wine_maker"],
                     "wine_type_id" => $product["wine_type_id"],
                     "year" => $product["year"],
-                    "wine_variety" =>implode(",",$product["wine_variety"]),
-                    "wine_tag" => implode(",",$product["wine_tag"]),
+                    "wine_variety" => implode(",", $product["wine_variety"]),
+                    "wine_tag" => implode(",", $product["wine_tag"]),
                     "storage_condition" => $product["storage_condition"],
                     "review_and_rewards" => $product["review_and_rewards"],
                     "medal" => $product["medal"],
@@ -288,14 +287,14 @@ class AuctionController extends Controller
                     "score" => $product["score"],
                     "review_name" => $product["review_name"],
                     "basket_quantity" => $product["basket_quantity"],
-                    "unit_quantity" => getBottleSize($product["bottle_size"],"unit_quantity"),
-                    "unit" => getBottleSize($product["bottle_size"],"unit"),
+                    "unit_quantity" => getBottleSize($product["bottle_size"], "unit_quantity"),
+                    "unit" => getBottleSize($product["bottle_size"], "unit"),
                     "volume" => $product["volume"],
                     "price" => $product["price"],
                 ];
-                $updateProduct = Product::updateOrCreate(['id'=>$product['id']],$createdProduct);
-                if(isset($product['product_images'])){
-                    $updateProduct->uploadProductImages('product_images',$product['product_images'],['products']);
+                $updateProduct = Product::updateOrCreate(['id' => $product['id']], $createdProduct);
+                if (isset($product['product_images'])) {
+                    $updateProduct->uploadProductImages('product_images', $product['product_images'], ['products']);
                 }
             }
 
@@ -305,17 +304,18 @@ class AuctionController extends Controller
             return (new Fail($e->getMessage()))->json(500);
         }
     }
+
     /**
      * @param $slug
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|object|null
      */
-    public function show(Request $request,$id)
+    public function show(Request $request, $id)
     {
-        $request->merge(['order_by' =>$request->order_by]);
+        $request->merge(['order_by' => $request->order_by]);
         $auction = Auction::query()
-            ->withCount(['bids','wishlist'=> function($q) use($request)  {
-                $q->where('wine_user_id',$request->user_id);
-            } ])
+            ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
+                $q->where('wine_user_id', $request->user_id);
+            }])
             ->where('id', $id);
 
         $auction = $auction->first();
@@ -325,13 +325,13 @@ class AuctionController extends Controller
         return new AuctionDetailResource($auction);
     }
 
-    public function showSingleAuction(Request $request,$auction_id,Product $product)
+    public function showSingleAuction(Request $request, $auction_id, Product $product)
     {
-        $request->merge(['product' =>$product]);
+        $request->merge(['product' => $product]);
         $auction = Auction::query()
-            ->withCount(['bids','wishlist'=> function($q) use($request)  {
-                $q->where('wine_user_id',$request->user_id);
-            } ])
+            ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
+                $q->where('wine_user_id', $request->user_id);
+            }])
             ->where('id', $auction_id)
             ->first();
         if (!$auction) {
@@ -339,11 +339,12 @@ class AuctionController extends Controller
         }
         return new AuctionSingleProductDetailResource($auction);
     }
+
     /**
      * @param $slug
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|object|null
      */
-    public function destory(Request $request,Auction $auction)
+    public function destory(Request $request, Auction $auction)
     {
         try {
             $auction->delete();
@@ -382,7 +383,7 @@ class AuctionController extends Controller
     public function getBestSellers()
     {
         $product = Auction::getBestSellersProduct();
-        return  AuctionResource::collection($product)->additional(['meta' => []]);
+        return AuctionResource::collection($product)->additional(['meta' => []]);
     }
 
     /**
@@ -394,12 +395,48 @@ class AuctionController extends Controller
         return AuctionResource::collection($product)->additional(['meta' => []]);
     }
 
-    public function attribute_list(Request $request,Attribute $attribute)
+    /**
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function getBuyPurchaseHistory(Request $request)
+    {
+        try {
+            $limit = $request->limit ?? config('constant.number_of_items_per_page');
+            $data = [];
+            $buyAuctions = Auction::select(AuctionResource::selectLst())
+                ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
+                    $q->where('wine_user_id', $request->wine_user_id);
+                }]);
+                 $buyAuctions = $buyAuctions->whereHas('bids', function ($q) use ($request) {
+                     $q->where('wine_user_id', $request->wine_user_id);
+                 });
+
+            $data['buy_auctions'] = AuctionResource::collection(
+                $buyAuctions->paginate($limit)
+            );
+            $purchaseAuctions = Auction::select(AuctionResource::selectLst())
+                ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
+                    $q->where('wine_user_id', $request->wine_user_id);
+                }]);
+            $purchaseAuctions = $purchaseAuctions->whereHas('winnerBid', function ($q) use ($request) {
+                $q->where('wine_user_id', $request->wine_user_id);
+            });
+
+            $data['purchase_auctions'] = AuctionResource::collection(
+                $purchaseAuctions->paginate($limit)
+            );
+        return response()->json(['message' => "Get User buy purchase history", "data" => $data], 201);
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
+
+    public function attribute_list(Request $request, Attribute $attribute)
     {
         $conf = config('auction_attributes');
-        if(!empty($conf)){
-            foreach ($conf as $key => $data){
-                $conf[$key] = is_array($data) ? $data: app($data)->getData();
+        if (!empty($conf)) {
+            foreach ($conf as $key => $data) {
+                $conf[$key] = is_array($data) ? $data : app($data)->getData();
             }
         }
 

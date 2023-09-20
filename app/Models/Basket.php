@@ -63,7 +63,9 @@ class Basket extends Model
     }
     public static function getBestSellersProduct()
     {
-        $query = self::orderBy('id', 'desc');
+        $query = self::withCount(['wishlist'=> function($q)   {
+            $q->where('wine_user_id',request()->user_id);
+        } ])->orderBy('id', 'desc');
         return $query->take(Config('constant.recommended_items_per_page'))->get();
     }
     public function wishlist() :HasMany
