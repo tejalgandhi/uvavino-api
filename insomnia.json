@@ -1,7 +1,7 @@
 {
     "_type": "export",
     "__export_format": 4,
-    "__export_date": "2023-09-19T08:01:53.998Z",
+    "__export_date": "2023-09-20T11:31:39.285Z",
     "__export_source": "insomnia.desktop.app:v2023.5.8",
     "resources": [
         {
@@ -115,6 +115,96 @@
             "description": "",
             "scope": "collection",
             "_type": "workspace"
+        },
+        {
+            "_id": "req_6538caa54aea46b3a9b60b4bfaad9044",
+            "parentId": "fld_83188ffe5497425c9e615d2904660903",
+            "modified": 1695195426726,
+            "created": 1695195412083,
+            "url": "{{base}}/api/user/buy-purchse-history",
+            "name": "Buy purchase history",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "authority",
+                    "value": "dev.api.uvavino.immera.io",
+                    "id": "pair_8833e16099d643e797638f0ebca07fde",
+                    "disabled": true
+                },
+                {
+                    "name": "accept",
+                    "value": "application/json, text/plain, */*",
+                    "id": "pair_935571381ce44d48a5bf7cc9f09e7719"
+                },
+                {
+                    "name": "accept-language",
+                    "value": "en-GB,en-US;q=0.9,en;q=0.8",
+                    "id": "pair_76269ed47e0840518d023ac44c7d59eb"
+                },
+                {
+                    "name": "origin",
+                    "value": "http://165.22.72.229",
+                    "id": "pair_d57a7f221e4c4ebba0cbcd8c518887f1",
+                    "disabled": true
+                },
+                {
+                    "name": "referer",
+                    "value": "http://165.22.72.229/",
+                    "id": "pair_4e2886fb3f6e41848eef0a8c6cce9dfa",
+                    "disabled": true
+                },
+                {
+                    "name": "sec-ch-ua",
+                    "value": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+                    "id": "pair_df666bbfd0fd40c4b15768accc4d7317"
+                },
+                {
+                    "name": "sec-ch-ua-mobile",
+                    "value": "?0",
+                    "id": "pair_7cbd72cfaeff48988021fe5db2422305"
+                },
+                {
+                    "name": "sec-ch-ua-platform",
+                    "value": "\"Windows\"",
+                    "id": "pair_125df8040980400ead0ca407c73d4267"
+                },
+                {
+                    "name": "sec-fetch-dest",
+                    "value": "empty",
+                    "id": "pair_e23a250a4c354e689c66e33830fe4154"
+                },
+                {
+                    "name": "sec-fetch-mode",
+                    "value": "cors",
+                    "id": "pair_cc2029e7b1d64dc09dea1a930f8b041f"
+                },
+                {
+                    "name": "sec-fetch-site",
+                    "value": "cross-site",
+                    "id": "pair_ccc4299ff44243dd96009c8786c42815"
+                },
+                {
+                    "name": "user-agent",
+                    "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+                    "id": "pair_5fa5922776cf4a89812312db6478e05e"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
+            "metaSortKey": -1694651205566.75,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
         },
         {
             "_id": "req_d86e3e415a2f4371a1dba3fb2a03ef0f",
@@ -366,14 +456,21 @@
         {
             "_id": "req_8868386567bf42a396ac00d90ea38031",
             "parentId": "fld_0ed183cee5ba4896aced2369a1942016",
-            "modified": 1689320034857,
+            "modified": 1695192952958,
             "created": 1689320019143,
             "url": "{{base}}/api/auctions/new-release",
-            "name": "newest auction",
+            "name": "new-release auction",
             "description": "",
             "method": "GET",
             "body": {},
-            "parameters": [],
+            "parameters": [
+                {
+                    "id": "pair_a834fed7ca2d4ca599eb1082ec8e9cb0",
+                    "name": "user_id",
+                    "value": "11",
+                    "description": ""
+                }
+            ],
             "headers": [],
             "authentication": {
                 "type": "bearer",
@@ -1156,7 +1253,7 @@
         {
             "_id": "req_2306e0166520438480e96c80814912a9",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1694842269691,
+            "modified": 1695111322604,
             "created": 1687264928174,
             "url": "{{base}}/api/auction",
             "name": "Store Auction",
@@ -1229,7 +1326,7 @@
                     {
                         "id": "pair_cada6b61b66a43bbb40259e57df15a8b",
                         "name": "products[0][bottle_size]",
-                        "value": "10ml",
+                        "value": "0",
                         "description": ""
                     },
                     {
@@ -1436,7 +1533,7 @@
         {
             "_id": "req_b3533356322c4367bd818b657d873713",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1695031643303,
+            "modified": 1695193996870,
             "created": 1687241804913,
             "url": "{{base}}/api/auction",
             "name": "Get Auction",
@@ -1489,9 +1586,9 @@
                 {
                     "id": "pair_a226d3cbd3a9431c8f42e8581f21b2cc",
                     "name": "created_by",
-                    "value": "59",
+                    "value": "11",
                     "description": "",
-                    "disabled": true
+                    "disabled": false
                 },
                 {
                     "id": "pair_75ad10692f914d6fbaf591ff4d342575",
@@ -1503,7 +1600,19 @@
                 {
                     "id": "pair_07e32cd4874848baaab26b079b88cda9",
                     "name": "is_wishlist",
+                    "value": "0",
+                    "description": ""
+                },
+                {
+                    "id": "pair_c105d41c684c4da3a4f406c0089fd7cc",
+                    "name": "is_buy",
                     "value": "1",
+                    "description": ""
+                },
+                {
+                    "id": "pair_6bb183c063cd46b0a82fc268c2318721",
+                    "name": "user_id",
+                    "value": "11",
                     "description": ""
                 }
             ],
@@ -1586,9 +1695,9 @@
         {
             "_id": "req_4379700ce182451786ef4e6a724b02c6",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1695028574019,
+            "modified": 1695193389106,
             "created": 1687263301869,
-            "url": "{{base}}/api/auction/78",
+            "url": "{{base}}/api/auction/20",
             "name": "Show Auction",
             "description": "",
             "method": "GET",
@@ -1606,7 +1715,7 @@
                 {
                     "id": "pair_6a1f707d3f8a43c79346ee85298d510c",
                     "name": "user_id",
-                    "value": "",
+                    "value": "11",
                     "description": ""
                 }
             ],
