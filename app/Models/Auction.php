@@ -108,7 +108,7 @@ class Auction extends Model
         $query = self::withCount(['bids','wishlist'=> function($q)   {
             $q->where('wine_user_id',request()->user_id);
         } ])->orderBy('bids_count', 'desc');
-        return $query->take(Config('constant.recommended_items_per_page'))->get();
+        return $query->paginate(Config('constant.new_items_per_page'));
     }
 
     public static function getNewProduct()
