@@ -1,14 +1,21 @@
 <?php
+
 namespace App\Enums;
 
-Enum AuctionType: int {
-    case LIVE = 0;
-    case TIMEBASED = 1;
+use ArchTech\Enums\InvokableCases;
+use ArchTech\Enums\Values;
 
-    public function label()
+Enum AuctionType: int {
+    use InvokableCases;
+    use Values;
+
+case LIVE = 0;
+case TIMEBASED = 1;
+
+    public function label(): string
     {
-        return match($this) {
-            self::LIVE => 'Live',
+        return match($this){
+        self::LIVE => 'Live',
             self::TIMEBASED => 'Timebased'
         };
     }

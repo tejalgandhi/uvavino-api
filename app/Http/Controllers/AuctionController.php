@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BottleSize;
 use App\Http\Requests\AuctionBidRequest;
 use App\Http\Requests\AuctionCreateRequest;
 use App\Http\Requests\AutomaticBidRequest;
@@ -19,6 +20,7 @@ use App\Models\AutomaticBid;
 use App\Models\Basket;
 use App\Models\Product;
 use App\Services\Attribute;
+use App\Services\Filters\StaticFilter\BottleSizeFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -38,7 +40,7 @@ class AuctionController extends Controller
     {
         $order_by = $request->order_by;
         $in_wishlist = $request->is_wishlist ?? '';
-        $limit = $request->limit ?? config('constant.number_of_items_per_page');
+        $limit = $request->limit ?? config('constant.number_of_items_per_page') ;
         $filter_attrs = [
             'auctions' => [
 //                'title' => 'like',
@@ -57,11 +59,10 @@ class AuctionController extends Controller
                         'wine_tag_id' => 'in',
                         'bottle_size' => 'in',
                         'year' => 'in',
-                    ]
+                     ]
                 ],
-            ]
+           ]
         ];
-
         $relationshipLogics = [
             'in' => function ($q, $a, $v) {
                 return $q->whereIn($a, is_array($v) ? $v : [$v]);
@@ -184,8 +185,8 @@ class AuctionController extends Controller
                     "score" => $product["score"],
                     "review_name" => $product["review_name"],
                     "basket_quantity" => $product["basket_quantity"],
-                    "unit_quantity" => getBottleSize($product["bottle_size"], "unit_quantity"),
-                    "unit" => getBottleSize($product["bottle_size"], "unit"),
+                    "unit_quantity" => BottleSize::tryFrom($product["bottle_size"])->unit_quantity(),
+                    "unit" => BottleSize::tryFrom($product["bottle_size"])->unit(),
                     "volume" => $product["volume"],
                     "price" => $product["price"],
                 ]);
@@ -287,8 +288,8 @@ class AuctionController extends Controller
                     "score" => $product["score"],
                     "review_name" => $product["review_name"],
                     "basket_quantity" => $product["basket_quantity"],
-                    "unit_quantity" => getBottleSize($product["bottle_size"], "unit_quantity"),
-                    "unit" => getBottleSize($product["bottle_size"], "unit"),
+                    "unit_quantity" => BottleSize::tryFrom($product["bottle_size"])->unit_quantity(),
+                    "unit" => BottleSize::tryFrom($product["bottle_size"])->unit(),
                     "volume" => $product["volume"],
                     "price" => $product["price"],
                 ];

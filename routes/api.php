@@ -53,7 +53,7 @@ Route::get('/update-auction-product', function (){
 Route::get('/app-variables', [StaticPageController::class, 'getAppVariables']);
 Route::get('/app-variables/{key}', [StaticPageController::class, 'showAppVariables']);
 
-// Static page
+// StaticFilter page
 Route::get('/pages', [StaticPageController::class, 'index']);
 Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
 
