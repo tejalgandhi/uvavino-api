@@ -17,7 +17,7 @@ class AuctionResource extends JsonResource
      */
     public function toArray($request)
     {
-        $user_id = $request->user_id;
+        $user_id = request()->user_id;
         return [
             'id' => $this->id,
             'user_id' => $user_id,

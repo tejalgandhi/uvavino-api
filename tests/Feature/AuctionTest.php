@@ -489,6 +489,7 @@ class AuctionTest extends TestCase
         $response->assertStatus(200);
 
     }
+
     public function test_delete_auction()
     {
         $user = WineUser::factory()->create();

@@ -34,18 +34,18 @@ class WishlistController extends Controller
         try {
             $wishlist = UserWishlist::where($request->only(['wine_user_id', 'ref_id','type']))->count();
             if ($wishlist > 0) {
-                return response()->json(['data'=>[],'status'=>200 ,'message'=>__('Product already exists')],200) ;
+                return response()->json(['data'=>[],'status'=>400 ,'message'=>__('Product already exists')],400) ;
             }
             if($request->type == Wishlist::PRODUCT_TYPE) {
                 $basket = Basket::where('id', $request->ref_id)->count();
                 if ($basket == 0) {
-                    return response()->json(['data' => [], 'status' => 200, 'message' => __('Product not found.')], 200);
+                    return response()->json(['data' => [], 'status' => 400, 'message' => __('Product not found.')], 400);
                 }
             }
             if($request->type == Wishlist::AUCTION_TYPE) {
                 $auction = Auction::where('id', $request->ref_id)->count();
                 if ($auction == 0) {
-                    return response()->json(['data' => [], 'status' => 200, 'message' => __('Auction not found.')], 200);
+                    return response()->json(['data' => [], 'status' => 400, 'message' => __('Auction not found.')], 400);
                 }
             }
             DB::enableQueryLog();

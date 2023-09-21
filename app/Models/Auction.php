@@ -76,6 +76,11 @@ class Auction extends Model
         return  $this->hasMany(AuctionBid::class);
     }
 
+    public function winnerBid() :BelongsTo
+    {
+        return  $this->belongsTo(AuctionBid::class,'winner_bid','id');
+    }
+
     public function invites() :HasMany
     {
         return  $this->hasMany(AuctionInvite::class);
@@ -100,13 +105,17 @@ class Auction extends Model
     }
     public static function getBestSellersProduct()
     {
-        $query = self::withCount('bids')->orderBy('bids_count', 'desc');
+        $query = self::withCount(['bids','wishlist'=> function($q)   {
+            $q->where('wine_user_id',request()->user_id);
+        } ])->orderBy('bids_count', 'desc');
         return $query->take(Config('constant.recommended_items_per_page'))->get();
     }
 
     public static function getNewProduct()
     {
-        $query = self::where('is_publish',1)->orderbyDesc('id');
+        $query = self::where('is_publish',1) ->withCount(['bids','wishlist'=> function($q)   {
+            $q->where('wine_user_id',request()->user_id);
+        } ])->orderbyDesc('id');
         return $query->paginate(Config('constant.new_items_per_page'));
     }
 
