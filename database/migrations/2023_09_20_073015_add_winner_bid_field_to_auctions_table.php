@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('auctions', function (Blueprint $table) {
-            $table->bigInteger('winner_bid')->after('max_price')->nullable();
+            $table->unsignedBigInteger('winner_bid')->after('max_price')->nullable();
+            $table->foreign('winner_bid')->references('id')->on('auction_bids');
         });
     }
 
@@ -26,7 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('auctions', function (Blueprint $table) {
-            $table->dropColumn('winner_bid');
+            $table->dropForeign(['winner_bid']);
+            $table->dropColumn(['winner_bid']);
         });
     }
 };
