@@ -39,7 +39,7 @@ class BasketRequest extends FormRequest
             "products.*.wine_name" => 'required|string',
             "products.*.region_id" => 'required',
             "products.*.producer_id" => 'required',
-            "products.*.year" => ['required', Rule::in(Year::values())],
+            "products.*.year" => 'required',
             "products.*.wine_maker" => 'required',
             "products.*.country_id" => 'required',
             "products.*.bottle_size" => ['required', Rule::in(BottleSize::values())],

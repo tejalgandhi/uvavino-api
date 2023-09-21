@@ -13,7 +13,7 @@ class BaseFilter
             ->map(function ($enum) {
                 return [
                     'id' => $enum->value,
-                    'name' => $enum->label($enum),
+                    'name' => $enum->label(),
                 ];
             })->toArray();
 
