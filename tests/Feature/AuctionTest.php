@@ -48,7 +48,7 @@ class AuctionTest extends TestCase
             'description' => fake()->paragraph,
             'is_publish' => 1,
             "price" => rand(1, 80) * 10,
-            'type' => 1,
+            'type' => AuctionType::TIMEBASED->value,
             'max_price' => rand(300,800),
             "start_date"=>now()->format('Y-m-d H:i:s'),
             "end_date"=>now()->format('Y-m-d H:i:s')
@@ -151,7 +151,7 @@ class AuctionTest extends TestCase
             'description' => fake()->paragraph,
             'is_publish' => 1,
             "price" => rand(1, 80) * 10,
-            'type' => AuctionType::TIMEBASED,
+            'type' => AuctionType::TIMEBASED->value,
             'max_price' => rand(300,800),
             "start_date"=>now()->format('Y-m-d H:i:s'),
             "end_date"=>now()->format('Y-m-d H:i:s')
