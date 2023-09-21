@@ -14,6 +14,9 @@ use App\Models\WineType;
 use App\Models\WineUser;
 use App\Models\WineVariety;
 use App\Models\Wishlist;
+use App\Enums\Medal;
+use App\Enums\AuctionType;
+use App\Enums\BottleSize;
 use Tests\TestCase;
 
 class AuctionTest extends TestCase
@@ -65,7 +68,8 @@ class AuctionTest extends TestCase
             "grape_̥varieties" => "Test wine grape varaieties",
             "storage_condition" => "Test wine storage_condition1",
             "review_and_rewards" => "Test wine review_and_rewards1",
-            "medal" => 1,
+            "medal" => Medal::GOLD,
+            "bottle_size" => BottleSize::TWENTY_ML,
             "award_name" => "Test award_name1",
             "review_name" => "Test review_name1",
             "score" => "11",
@@ -73,18 +77,15 @@ class AuctionTest extends TestCase
             "quantity" => rand(1, 5),
             "wine_user_id" => $data['wine_user']->id,
             "drink_type_id" => $data['drink_type']->id,
-            "bottle_size" => 1,
             "country_id" => $data["country"]->id,
             "region_id" => $data["region"]->id,
             "producer_id" => $data["producer"]->id,
             "wine_maker" => "Wine maker",
             "wine_type_id" => $data['wine_type']->id,
-            "year" => 1,
+            "year" => 2023,
             "wine_variety" => $wine_variety,
             "wine_tag" => $wine_tags,
             "basket_quantity" => 1,
-            "unit_quantity" => 1,
-            "unit" => 1,
             "volume" => 1,
             "price" => 100,
         ];
@@ -95,20 +96,20 @@ class AuctionTest extends TestCase
             "storage_condition" => "Test wine storage_condition2",
             "review_and_rewards" => "Test wine review_and_rewards",
             "award_name" => "Test wine award_name2",
-            "medal" => 1,
+            "medal" => Medal::GOLD,
+            "bottle_size" => BottleSize::TWENTY_ML,
             "review_name" => "Test wine review_name2",
             "score" => "12",
             "wine_name" => "Test wine2",
             "quantity" => rand(1, 5),
             "wine_user_id" => $data['wine_user']->id,
             "drink_type_id" => $data['drink_type']->id,
-            "bottle_size" => 1,
             "country_id" => $data["country"]->id,
             "region_id" => $data["region"]->id,
             "producer_id" => $data["producer"]->id,
             "wine_maker" => "Wine maker2",
             "wine_type_id" => $data['wine_type']->id,
-            "year" => 1,
+            "year" => 2020,
             "wine_variety" => $wine_variety,
             "wine_tag" => $wine_tags,
             "basket_quantity" => 2,
@@ -149,7 +150,7 @@ class AuctionTest extends TestCase
             'description' => fake()->paragraph,
             'is_publish' => 1,
             "price" => rand(1, 80) * 10,
-            'type' => 1,
+            'type' => AuctionType::TIMEBASED,
             'max_price' => rand(300,800),
             "start_date"=>now()->format('Y-m-d H:i:s'),
             "end_date"=>now()->format('Y-m-d H:i:s')
