@@ -395,37 +395,6 @@ class AuctionController extends Controller
         return AuctionResource::collection($product)->additional(['meta' => []]);
     }
 
-    public function getBuyPurchaseHistory(Request $request)
-    {
-        try {
-            $limit = $request->limit ?? config('constant.number_of_items_per_page');
-            $data = [];
-            $buyAuctions = Auction::select(AuctionResource::selectLst())
-                ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
-                    $q->where('wine_user_id', $request->wine_user_id);
-                }])->whereHas('bids', function ($q) use ($request) {
-                     $q->where('wine_user_id', $request->wine_user_id);
-                 });
-
-            $data['buy_auctions'] = AuctionResource::collection(
-                $buyAuctions->paginate($limit)
-            );
-            $purchaseAuctions = Auction::select(AuctionResource::selectLst())
-                ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
-                    $q->where('wine_user_id', $request->wine_user_id);
-                }])->whereHas('winnerBid', function ($q) use ($request) {
-                $q->where('wine_user_id', $request->wine_user_id);
-            });
-
-            $data['purchase_auctions'] = AuctionResource::collection(
-                $purchaseAuctions->paginate($limit)
-            );
-        return response()->json(['message' => "Get User buy purchase history", "data" => $data], 201);
-        } catch (\Exception $e) {
-            return (new Fail($e->getMessage()))->json();
-        }
-    }
-
     public function attribute_list(Request $request, Attribute $attribute)
     {
         $conf = config('auction_attributes');

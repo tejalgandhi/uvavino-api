@@ -110,7 +110,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::post('/connect-as-seller', [SellerController::class, 'connect']);
     Route::get('/user/product-count', [UserController::class, 'allProductCount']);
     Route::get('/user/wishlist-count', [UserController::class, 'allWishlistCount']);
-    Route::get('/user/buy-purchse-history', [AuctionController::class, 'getBuyPurchaseHistory']);
+    Route::get('/user/buy-purchse-history', [UserController::class, 'getBuyPurchaseHistory']);
 
     // Order API
     Route::get('/orders', [OrderController::class, 'index']);
