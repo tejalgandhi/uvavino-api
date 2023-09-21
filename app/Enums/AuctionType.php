@@ -12,7 +12,7 @@ Enum AuctionType: int {
 case LIVE = 0;
 case TIMEBASED = 1;
 
-    public function label()
+    public function label(): string
     {
         return match($this){
         self::LIVE => 'Live',
@@ -20,14 +20,6 @@ case TIMEBASED = 1;
         };
     }
 
-    public function value()
-    {
-        return match($this){
-        self::LIVE => 0,
-        self::TIMEBASED => 0,
-
-        };
-    }
 }
 
 

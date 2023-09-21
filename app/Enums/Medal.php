@@ -11,7 +11,7 @@ case PLATINUM = 0;
     case GOLD = 1;
     case SILVER = 2;
 
-    public function label()
+    public function label(): string
     {
         return match($this) {
             self::PLATINUM => 'Platinum',

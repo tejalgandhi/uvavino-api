@@ -9,7 +9,7 @@ Enum Capacity: int {
     case ML = 0;
     case LITER = 1;
 
-    public function label()
+    public function label(): string
     {
         return match($this) {
             self::ML => 'ML',

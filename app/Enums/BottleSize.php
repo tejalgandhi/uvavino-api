@@ -9,7 +9,7 @@ Enum BottleSize: int {
     case TEN_ML = 0;
     case TWENTY_ML = 1;
 
-    public function label()
+    public function label(): string
     {
         return match($this) {
             self::TEN_ML => '10ml',
@@ -17,7 +17,7 @@ Enum BottleSize: int {
         };
     }
 
-    public function unit()
+    public function unit(): string
     {
         return match($this) {
             self::TEN_ML => 'ml',
@@ -25,7 +25,7 @@ Enum BottleSize: int {
         };
     }
 
-    public function unit_quantity()
+    public function unit_quantity(): string
     {
         return match($this) {
             self::TEN_ML => '10',
