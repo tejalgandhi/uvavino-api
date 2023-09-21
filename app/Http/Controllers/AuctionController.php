@@ -403,8 +403,7 @@ class AuctionController extends Controller
             $buyAuctions = Auction::select(AuctionResource::selectLst())
                 ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
                     $q->where('wine_user_id', $request->wine_user_id);
-                }]);
-                 $buyAuctions = $buyAuctions->whereHas('bids', function ($q) use ($request) {
+                }])->whereHas('bids', function ($q) use ($request) {
                      $q->where('wine_user_id', $request->wine_user_id);
                  });
 
@@ -414,8 +413,7 @@ class AuctionController extends Controller
             $purchaseAuctions = Auction::select(AuctionResource::selectLst())
                 ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
                     $q->where('wine_user_id', $request->wine_user_id);
-                }]);
-            $purchaseAuctions = $purchaseAuctions->whereHas('winnerBid', function ($q) use ($request) {
+                }])->whereHas('winnerBid', function ($q) use ($request) {
                 $q->where('wine_user_id', $request->wine_user_id);
             });
 
