@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Country extends Model
 {
     use HasFactory;
+
+    CONST IS_ACTIVE = '1';
+
 }
