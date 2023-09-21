@@ -117,6 +117,9 @@ class ProductController extends Controller
     {
         $product = Basket::query()
             ->with('products')
+            ->withCount(['wishlist'=> function($q)   {
+                $q->where('wine_user_id',request()->user_id);
+            } ])
             ->where('baskets.slug', $slug)
             ->first();
         if (!$product) {

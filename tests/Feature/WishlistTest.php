@@ -70,7 +70,7 @@ class WishlistTest extends TestCase
             'ref_id' => 400,
             'type' => Wishlist::PRODUCT_TYPE,
         ]);
-        $response->assertStatus(200);
+        $response->assertStatus(400);
 
         $response =  $this->actingAs($data['wine_user'])->post('/api/wishlist/products');
         $response->assertStatus(422);
