@@ -62,6 +62,7 @@ class AuctionTest extends TestCase
             "weight" => rand(10, 300),
             "dimensions" => rand(10, 50) * 10,
         ];
+
         $product["products"][] = [
             "title" => "Test wine",
             "description" => "Test wine description1",
