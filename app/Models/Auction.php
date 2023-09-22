@@ -18,12 +18,8 @@ class Auction extends Model
     use HasFactory;
     use SoftDeletes;
 
-    const IS_BESTSELLER = '1';
-    const IS_NEW = '1';
-    const NUMBER_OF_ITEMS_PER_PAGE = 12;
-    const NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE = 4;
-    const NUMBER_OF_NEW_ITEMS_PER_PAGE = 4;
-    const RECENT_VIEW_LIMIT = 4;
+    const IS_PUBLISH = '1';
+
     public $timestamps = false;
 
     protected $guarded = ['id'];
@@ -107,7 +103,17 @@ class Auction extends Model
     {
         $query = self::withCount(['bids','wishlist'=> function($q)   {
             $q->where('wine_user_id',request()->user_id);
-        } ])->orderBy('bids_count', 'desc');
+        } ])
+            ->where('is_publish',Auction::IS_PUBLISH)
+            ->where(function ($q) {
+                $q->where('type', AuctionType::TIMEBASED->value)
+                    ->where('end_date', '>=', now());
+            })
+            ->orWhere(function ($q) {
+                    $q->where('type', AuctionType::LIVE->value)
+                        ->whereNotNull('winner_bid');
+            })
+            ->orderBy('bids_count', 'desc');
         return $query->paginate(Config('constant.new_items_per_page'));
     }
 
@@ -115,7 +121,17 @@ class Auction extends Model
     {
         $query = self::where('is_publish',1) ->withCount(['bids','wishlist'=> function($q)   {
             $q->where('wine_user_id',request()->user_id);
-        } ])->orderbyDesc('id');
+        } ])
+            ->where('is_publish',Auction::IS_PUBLISH)
+            ->where(function ($q) {
+                $q->where('type', AuctionType::TIMEBASED->value)
+                    ->where('end_date', '>=', now());
+            })
+            ->orWhere(function ($q) {
+                $q->where('type', AuctionType::LIVE->value)
+                        ->whereNotNull('winner_bid');
+            })
+            ->orderbyDesc('id');
         return $query->paginate(Config('constant.new_items_per_page'));
     }
 
