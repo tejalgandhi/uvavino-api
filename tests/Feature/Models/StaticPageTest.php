@@ -69,6 +69,6 @@ class StaticPageTest extends TestCase
     public function test_get_countries()
     {
         $response = $this->get('/api/countries');
-        $response->assertStatus(200);
+        $response->assertStatus(201);
     }
 }
