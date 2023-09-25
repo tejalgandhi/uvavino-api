@@ -17,7 +17,7 @@ trait FileUploadTrait
      * @param array $path
      * @return ?string
      */
-    public function uploadProductImages($field,$params,$path)
+    public function uploadImages($field,$params,$path)
     {
         // Convert path
         $path = $this->destinationPath($path);

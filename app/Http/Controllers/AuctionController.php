@@ -191,7 +191,7 @@ class AuctionController extends Controller
                     "price" => $product["price"],
                 ]);
                 if (isset($product['product_images'])) {
-                    $createdProduct->uploadProductImages('product_images', $product['product_images'], ['products']);
+                    $createdProduct->uploadImages('product_images', $product['product_images'], ['products']);
                 }
             }
             $request->request->add(['basket_id' => $basket->id]);
@@ -295,7 +295,7 @@ class AuctionController extends Controller
                 ];
                 $updateProduct = Product::updateOrCreate(['id' => $product['id']], $createdProduct);
                 if (isset($product['product_images'])) {
-                    $updateProduct->uploadProductImages('product_images', $product['product_images'], ['products']);
+                    $updateProduct->uploadImages('product_images', $product['product_images'], ['products']);
                 }
             }
 

@@ -114,5 +114,6 @@ return [
             resource_path('views/vendor/mail'),
         ],
     ],
+    'admin_mail' => env('MAIL_FROM_ADDRESS'),
 
 ];
