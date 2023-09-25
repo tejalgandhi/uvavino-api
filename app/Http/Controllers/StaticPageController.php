@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CountryResource;
 use App\Http\Resources\Fail;
 use App\Http\Resources\StaticPageResource;
 use App\Models\AppVariable;
@@ -40,7 +41,7 @@ class StaticPageController extends Controller
     {
         try {
             $data = Country::where('status',Country::IS_ACTIVE)->orderBy('name','asc')->get();
-            return response()->json(['message' => "Get Countries", "data" => $data], 201);
+            return response()->json(['message' => "Get Countries", "data" => CountryResource::collection($data)], 201);
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
