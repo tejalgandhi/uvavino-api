@@ -68,7 +68,7 @@ class Auction extends Model
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeBidCount($query){
-        $query->withCount(['bids','wishlist'=> function($q)   {
+        return  $query->withCount(['bids','wishlist'=> function($q)   {
             $q->where('wine_user_id',request()->user_id);
         }
         ]);
