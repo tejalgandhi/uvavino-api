@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Mail\UserContactMail;
 use App\Models\Traits\FileUploadTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMail;
 
-class ContactUs extends Model
+class Inquiry extends Model
 {
     use FileUploadTrait;
-    Protected $table = 'contact_us';
+    Protected $table = 'inquiry';
     protected $guarded = ['id'];
 
 
@@ -20,6 +21,7 @@ class ContactUs extends Model
 
         static::created(function ($item) {
             Mail::to(config('mail.admin_mail'))->queue(new ContactMail($item));
+            Mail::to($item->email)->queue(new UserContactMail($item));
 
         });
     }

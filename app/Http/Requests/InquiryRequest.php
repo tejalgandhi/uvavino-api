@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class ContactUsRequest extends FormRequest
+class InquiryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class ContactUsRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'max:5000',
+            'file' => 'max:5000', // check file size 5 MB
         ];
     }
 }

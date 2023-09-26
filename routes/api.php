@@ -14,7 +14,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuctionBidController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
-use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\InquiryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -99,7 +99,7 @@ Route::get('/csrf-token', function (Request $request) {
     return response()->json(['csrfToken' => $request->session()->token()]);
 })->middleware('web');
 
-Route::post('/contact-us', [ContactUsController::class, 'store']);
+Route::post('/inquiry', [InquiryController::class, 'store']);
 
 
 // Protected Routes
