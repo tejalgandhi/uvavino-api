@@ -14,6 +14,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuctionBidController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\InquiryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,11 +42,12 @@ Route::prefix('auth')->group(function() {
     Route::post('/forget-password', [WineAuthController::class, 'forget']);
     Route::post('/reset-password', [WineAuthController::class, 'reset']);
 });
-//auction product update
-Route::get('/update-auction-product', function (){
-    $auctions = \App\Models\Auction::pluck('basket_id')->toArray();
-    \App\Models\Basket::whereIn('id',$auctions)->update(['is_auction_product'=> '1']);
-    dd('update auction product run successfully.');
+//truncate table
+Route::get('/truncate-tables', function (){
+    \Illuminate\Support\Facades\Artisan::call("db:seed",array('--class'=>\Database\Seeders\TruncateTables::class));
+
+    echo "Seeder run successfully";
+    exit;
 });
 
 
@@ -97,6 +99,9 @@ Route::get('/article/{slug}', [ArticleController::class, 'show']);
 
 Route::get('/reviews', [ReviewController::class, 'index']);
 Route::get('/countries', [StaticPageController::class, 'countries']);
+
+Route::post('/inquiry', [InquiryController::class, 'store']);
+
 
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {

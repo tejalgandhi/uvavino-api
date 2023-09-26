@@ -1,7 +1,7 @@
 {
     "_type": "export",
     "__export_format": 4,
-    "__export_date": "2023-09-20T11:31:39.285Z",
+    "__export_date": "2023-09-26T11:29:37.777Z",
     "__export_source": "insomnia.desktop.app:v2023.5.8",
     "resources": [
         {
@@ -297,6 +297,232 @@
             "_type": "request"
         },
         {
+            "_id": "req_4b2cd817249e49d987783df387aaeb2c",
+            "parentId": "fld_83188ffe5497425c9e615d2904660903",
+            "modified": 1695300010900,
+            "created": 1695299966406,
+            "url": "{{base}}/api/countries",
+            "name": "countries",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "authority",
+                    "value": "dev.api.uvavino.immera.io",
+                    "id": "pair_8833e16099d643e797638f0ebca07fde",
+                    "disabled": true
+                },
+                {
+                    "name": "accept",
+                    "value": "application/json, text/plain, */*",
+                    "id": "pair_935571381ce44d48a5bf7cc9f09e7719"
+                },
+                {
+                    "name": "accept-language",
+                    "value": "en-GB,en-US;q=0.9,en;q=0.8",
+                    "id": "pair_76269ed47e0840518d023ac44c7d59eb"
+                },
+                {
+                    "name": "origin",
+                    "value": "http://165.22.72.229",
+                    "id": "pair_d57a7f221e4c4ebba0cbcd8c518887f1",
+                    "disabled": true
+                },
+                {
+                    "name": "referer",
+                    "value": "http://165.22.72.229/",
+                    "id": "pair_4e2886fb3f6e41848eef0a8c6cce9dfa",
+                    "disabled": true
+                },
+                {
+                    "name": "sec-ch-ua",
+                    "value": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+                    "id": "pair_df666bbfd0fd40c4b15768accc4d7317"
+                },
+                {
+                    "name": "sec-ch-ua-mobile",
+                    "value": "?0",
+                    "id": "pair_7cbd72cfaeff48988021fe5db2422305"
+                },
+                {
+                    "name": "sec-ch-ua-platform",
+                    "value": "\"Windows\"",
+                    "id": "pair_125df8040980400ead0ca407c73d4267"
+                },
+                {
+                    "name": "sec-fetch-dest",
+                    "value": "empty",
+                    "id": "pair_e23a250a4c354e689c66e33830fe4154"
+                },
+                {
+                    "name": "sec-fetch-mode",
+                    "value": "cors",
+                    "id": "pair_cc2029e7b1d64dc09dea1a930f8b041f"
+                },
+                {
+                    "name": "sec-fetch-site",
+                    "value": "cross-site",
+                    "id": "pair_ccc4299ff44243dd96009c8786c42815"
+                },
+                {
+                    "name": "user-agent",
+                    "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+                    "id": "pair_5fa5922776cf4a89812312db6478e05e"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
+            "metaSortKey": -1694394822714.25,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_8a0b14b41a7e4259a0f3261d055c9387",
+            "parentId": "fld_83188ffe5497425c9e615d2904660903",
+            "modified": 1695726460161,
+            "created": 1695641893266,
+            "url": "{{base}}/api/inquiry",
+            "name": "contact-us",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "multipart/form-data",
+                "params": [
+                    {
+                        "id": "pair_3c6e947e1317497881f50636e5845699",
+                        "name": "name",
+                        "value": "Tejal Gandhi",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_4962100d940e4f6a92d3b7d55667f95d",
+                        "name": "email",
+                        "value": "tejal@yopmail.com",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_53a2ba83efa2429c8cf0e88129054b0e",
+                        "name": "subject",
+                        "value": "Test contact us",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_ad4465a0277f4b92a753efe3d99b6894",
+                        "name": "message",
+                        "value": "contact us message",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_f3fc666016604332a5cfd9e7caa9ade6",
+                        "name": "country_id",
+                        "value": "1",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_a2ae9182b3c64c149cf75fd43c799282",
+                        "name": "file",
+                        "value": "",
+                        "description": "",
+                        "type": "file",
+                        "fileName": "C:\\Users\\tejal\\Downloads\\download.jpg"
+                    }
+                ]
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "multipart/form-data"
+                },
+                {
+                    "name": "authority",
+                    "value": "dev.api.uvavino.immera.io",
+                    "id": "pair_8833e16099d643e797638f0ebca07fde",
+                    "disabled": true
+                },
+                {
+                    "name": "accept",
+                    "value": "application/json, text/plain, */*",
+                    "id": "pair_935571381ce44d48a5bf7cc9f09e7719"
+                },
+                {
+                    "name": "accept-language",
+                    "value": "en-GB,en-US;q=0.9,en;q=0.8",
+                    "id": "pair_76269ed47e0840518d023ac44c7d59eb"
+                },
+                {
+                    "name": "origin",
+                    "value": "http://165.22.72.229",
+                    "id": "pair_d57a7f221e4c4ebba0cbcd8c518887f1",
+                    "disabled": true
+                },
+                {
+                    "name": "referer",
+                    "value": "http://165.22.72.229/",
+                    "id": "pair_4e2886fb3f6e41848eef0a8c6cce9dfa",
+                    "disabled": true
+                },
+                {
+                    "name": "sec-ch-ua",
+                    "value": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+                    "id": "pair_df666bbfd0fd40c4b15768accc4d7317"
+                },
+                {
+                    "name": "sec-ch-ua-mobile",
+                    "value": "?0",
+                    "id": "pair_7cbd72cfaeff48988021fe5db2422305"
+                },
+                {
+                    "name": "sec-ch-ua-platform",
+                    "value": "\"Windows\"",
+                    "id": "pair_125df8040980400ead0ca407c73d4267"
+                },
+                {
+                    "name": "sec-fetch-dest",
+                    "value": "empty",
+                    "id": "pair_e23a250a4c354e689c66e33830fe4154"
+                },
+                {
+                    "name": "sec-fetch-mode",
+                    "value": "cors",
+                    "id": "pair_cc2029e7b1d64dc09dea1a930f8b041f"
+                },
+                {
+                    "name": "sec-fetch-site",
+                    "value": "cross-site",
+                    "id": "pair_ccc4299ff44243dd96009c8786c42815"
+                },
+                {
+                    "name": "user-agent",
+                    "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+                    "id": "pair_5fa5922776cf4a89812312db6478e05e"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
+            "metaSortKey": -1694330727001.125,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
             "_id": "req_2494ebefe3894f579eaef82e538fecb8",
             "parentId": "fld_e7093d48e7bb402c9c750303c98afdb1",
             "modified": 1694505456994,
@@ -454,6 +680,32 @@
             "_type": "request_group"
         },
         {
+            "_id": "req_e5afdd0a83d149788e3bf6de68b86483",
+            "parentId": "fld_0ed183cee5ba4896aced2369a1942016",
+            "modified": 1695292367173,
+            "created": 1695278132250,
+            "url": "{{base}}/api/auctions/bestsellers",
+            "name": "recommended auction",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
+            "metaSortKey": -1687924664294.125,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
             "_id": "req_8868386567bf42a396ac00d90ea38031",
             "parentId": "fld_0ed183cee5ba4896aced2369a1942016",
             "modified": 1695192952958,
@@ -595,7 +847,7 @@
         {
             "_id": "req_df2ddf97757046b7a1ce721a4c6de0eb",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1695108277267,
+            "modified": 1695365377411,
             "created": 1695020947568,
             "url": "http://uvavino-api.test/api/auction/78",
             "name": "Update auction",
@@ -702,7 +954,7 @@
                     },
                     {
                         "name": "products[0][bottle_size]",
-                        "value": "10ml",
+                        "value": "1",
                         "type": "text",
                         "id": "pair_13765212c1f3439f9ceefc0b9464c428"
                     },
@@ -779,17 +1031,19 @@
                         "id": "pair_e0c65a7de7c949018ab13ea876ed9f59"
                     },
                     {
-                        "name": "products[0][product_images][]",
+                        "name": "products[0][product_images][0]",
                         "fileName": "C:\\Users\\tejal\\Downloads\\download (1).jpg",
                         "type": "file",
                         "id": "pair_ec31906262a34d72a9147a65b2f98196"
                     },
                     {
-                        "name": "products[0][product_images][]",
+                        "name": "products[0][product_images][1]",
                         "fileName": "C:\\Users\\tejal\\Downloads\\download.jpg",
-                        "type": "file",
+                        "type": "text",
                         "id": "pair_1403cd194edc4fa29dbfce0f31ecade5",
-                        "disabled": true
+                        "disabled": false,
+                        "multiline": false,
+                        "value": "products/169511043358.jpg"
                     },
                     {
                         "name": "products[0][volume]",
@@ -866,7 +1120,7 @@
                     },
                     {
                         "name": "products[1][bottle_size]",
-                        "value": "10ml",
+                        "value": "1",
                         "type": "text",
                         "id": "pair_916c8c5687ba4873b85699e21d7c3499"
                     },
@@ -1085,9 +1339,9 @@
         {
             "_id": "req_ebaafca79b6a4d25b2d865044ef41072",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1694503160830,
+            "modified": 1695708377624,
             "created": 1694153225932,
-            "url": "{{base}}/api/auction/50",
+            "url": "{{base}}/api/auction/13",
             "name": "delete auction",
             "description": "",
             "method": "DELETE",
@@ -1533,7 +1787,7 @@
         {
             "_id": "req_b3533356322c4367bd818b657d873713",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1695193996870,
+            "modified": 1695708334116,
             "created": 1687241804913,
             "url": "{{base}}/api/auction",
             "name": "Get Auction",
@@ -1588,7 +1842,7 @@
                     "name": "created_by",
                     "value": "11",
                     "description": "",
-                    "disabled": false
+                    "disabled": true
                 },
                 {
                     "id": "pair_75ad10692f914d6fbaf591ff4d342575",
@@ -1601,19 +1855,22 @@
                     "id": "pair_07e32cd4874848baaab26b079b88cda9",
                     "name": "is_wishlist",
                     "value": "0",
-                    "description": ""
+                    "description": "",
+                    "disabled": true
                 },
                 {
                     "id": "pair_c105d41c684c4da3a4f406c0089fd7cc",
                     "name": "is_buy",
                     "value": "1",
-                    "description": ""
+                    "description": "",
+                    "disabled": true
                 },
                 {
                     "id": "pair_6bb183c063cd46b0a82fc268c2318721",
                     "name": "user_id",
                     "value": "11",
-                    "description": ""
+                    "description": "",
+                    "disabled": true
                 }
             ],
             "headers": [],
