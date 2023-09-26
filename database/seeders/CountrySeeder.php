@@ -16,10 +16,6 @@ class CountrySeeder extends Seeder
      */
     public function run()
     {
-        Schema::disableForeignKeyConstraints();
-        Country::query()->truncate();
-        Schema::enableForeignKeyConstraints();
-
         $countries = config('countryIsoCodes');
         foreach ($countries as $c) {
             Country::updateOrCreate([
