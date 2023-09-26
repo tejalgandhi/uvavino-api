@@ -18,12 +18,6 @@ class Auction extends Model
     use HasFactory;
     use SoftDeletes;
 
-    const IS_BESTSELLER = '1';
-    const IS_NEW = '1';
-    const NUMBER_OF_ITEMS_PER_PAGE = 12;
-    const NUMBER_OF_BESTSELLERS_ITEMS_PER_PAGE = 4;
-    const NUMBER_OF_NEW_ITEMS_PER_PAGE = 4;
-    const RECENT_VIEW_LIMIT = 4;
     public $timestamps = false;
 
     protected $guarded = ['id'];
@@ -46,6 +40,38 @@ class Auction extends Model
         static::saving(function($model)  {
             $model->created_by = Auth::user()->id ?? NULL;
         });
+    }
+
+
+    /**
+     * Scope a query to only get inprogress auction.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeUnfinishedAuction($query)
+    {
+        return $query->where('is_publish','1')
+            ->where(function ($q) {
+                $q->where('type', AuctionType::TIMEBASED->value)
+                    ->where('end_date', '>=', now());
+            })
+            ->orWhere(function ($q) {
+                $q->where('type', AuctionType::LIVE->value)
+                        ->whereNull('winner_bid');
+            });
+    }
+    /**
+     * Scope a query to  get bid count and wishlist auction.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeBidCount($query){
+        return  $query->withCount(['bids','wishlist'=> function($q)   {
+            $q->where('wine_user_id',request()->user_id);
+        }
+        ]);
     }
 
     public function products(): HasManyThrough
@@ -105,17 +131,15 @@ class Auction extends Model
     }
     public static function getBestSellersProduct()
     {
-        $query = self::withCount(['bids','wishlist'=> function($q)   {
-            $q->where('wine_user_id',request()->user_id);
-        } ])->orderBy('bids_count', 'desc');
+        $query = self::bidCount()->unfinishedAuction()
+            ->orderBy('bids_count', 'desc');
         return $query->paginate(Config('constant.new_items_per_page'));
     }
 
     public static function getNewProduct()
     {
-        $query = self::where('is_publish',1) ->withCount(['bids','wishlist'=> function($q)   {
-            $q->where('wine_user_id',request()->user_id);
-        } ])->orderbyDesc('id');
+        $query = self::bidCount()->unfinishedAuction()
+            ->orderbyDesc('id');
         return $query->paginate(Config('constant.new_items_per_page'));
     }
 

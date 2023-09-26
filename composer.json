@@ -15,6 +15,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "rap2hpoutre/laravel-log-viewer": "^2.3",
+        "stidges/laravel-country-flags": "^2.0",
         "stripe/stripe-php": "^8.1"
     },
     "require-dev": {

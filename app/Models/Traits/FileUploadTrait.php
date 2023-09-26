@@ -17,7 +17,7 @@ trait FileUploadTrait
      * @param array $path
      * @return ?string
      */
-    public function uploadProductImages($field,$params,$path)
+    public function uploadImages($field,$params,$path)
     {
         // Convert path
         $path = $this->destinationPath($path);
@@ -32,20 +32,26 @@ trait FileUploadTrait
         if(!empty($file_paths)){
             foreach ($file_paths as $file_path) {
                 $storagePath = str_replace(env('APP_URL') . '/storage', '', $file_path);
-                if (Storage::exists($storagePath)) {
-                    Storage::delete($storagePath);
-                }
+                $checkPath = str_replace(env('APP_URL') . '/storage/', '', $file_path);
+                if (!in_array($checkPath,$params) && Storage::exists($storagePath)) {
+                        Storage::delete($storagePath);
+                    }
             }
         }
         // Store file to the storage and save path to database
         $files = [];
         if(is_array($params)){
             foreach ($params as $param){
-                $name = time().rand(1,100).'.'.$param->extension();
-                $filePath = Storage::putFileAs($path, $param,$name);
-                $files[] = $filePath;
+                if(!is_string($param)) {
+                    $name = time() . rand(1, 100) . '.' . $param->extension();
+                    $filePath = Storage::putFileAs($path, $param, $name);
+                    $files[] = $filePath;
+                }else{
+                    $files[] = $param;
+                }
             }
-        }else {
+        }
+        else {
             $name = time().rand(1,100).'.'.$params->extension();
             $filePath = Storage::putFileAs($path, $params,$name);
             $files[] = $filePath;

@@ -14,6 +14,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuctionBidController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\InquiryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,11 +42,12 @@ Route::prefix('auth')->group(function() {
     Route::post('/forget-password', [WineAuthController::class, 'forget']);
     Route::post('/reset-password', [WineAuthController::class, 'reset']);
 });
-//auction product update
-Route::get('/update-auction-product', function (){
-    $auctions = \App\Models\Auction::pluck('basket_id')->toArray();
-    \App\Models\Basket::whereIn('id',$auctions)->update(['is_auction_product'=> '1']);
-    dd('update auction product run successfully.');
+//truncate table
+Route::get('/truncate-tables', function (){
+    \Illuminate\Support\Facades\Artisan::call("db:seed",array('--class'=>\Database\Seeders\TruncateTables::class,'--force' => true));
+
+    echo "Seeder run successfully";
+    exit;
 });
 
 
@@ -68,6 +70,11 @@ Route::get('/product', [ProductController::class, 'index'])->withoutMiddleware('
 Route::get('/product/{slug}', [ProductController::class, 'show']);
 Route::get('/product/{slug}/recommended', [ProductController::class, 'recommended']);
 
+
+//home page recommended product api
+Route::get('/products/bestsellers', [ProductController::class, 'getBestSellers']);
+
+
 // auction pack
 Route::get('/auction-packs', [AuctionPackController::class, 'index']);
 Route::get('/auction-pack/{slug}', [AuctionPackController::class, 'show']);
@@ -86,17 +93,15 @@ Route::get('/auction-attribute', [AuctionController::class, 'attribute_list']);
 Route::get('/auctions/bestsellers', [AuctionController::class, 'getBestSellers']);
 Route::get('/auctions/new-release', [AuctionController::class, 'getNewProducts']);
 
-//home page recommended product api
-Route::get('/products/bestsellers', [ProductController::class, 'getBestSellers']);
-
 //Article
 Route::get('/articles', [ArticleController::class, 'index']);
 Route::get('/article/{slug}', [ArticleController::class, 'show']);
 
 Route::get('/reviews', [ReviewController::class, 'index']);
-Route::get('/csrf-token', function (Request $request) {
-    return response()->json(['csrfToken' => $request->session()->token()]);
-})->middleware('web');
+Route::get('/countries', [StaticPageController::class, 'countries']);
+
+Route::post('/inquiry', [InquiryController::class, 'store']);
+
 
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
