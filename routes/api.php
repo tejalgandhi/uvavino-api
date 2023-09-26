@@ -42,11 +42,12 @@ Route::prefix('auth')->group(function() {
     Route::post('/forget-password', [WineAuthController::class, 'forget']);
     Route::post('/reset-password', [WineAuthController::class, 'reset']);
 });
-//auction product update
-Route::get('/update-auction-product', function (){
-    $auctions = \App\Models\Auction::pluck('basket_id')->toArray();
-    \App\Models\Basket::whereIn('id',$auctions)->update(['is_auction_product'=> '1']);
-    dd('update auction product run successfully.');
+//truncate table
+Route::get('/truncate-tables', function (){
+    \Illuminate\Support\Facades\Artisan::call("db:seed",array('--class'=>\Database\Seeders\TruncateTables::class));
+
+    echo "Seeder run successfully";
+    exit;
 });
 
 
