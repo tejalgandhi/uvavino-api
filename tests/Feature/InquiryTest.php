@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 
-class ContactUsTest extends TestCase
+class InquiryTest extends TestCase
 {
 
     public function test_store_contact_us()
@@ -21,7 +21,7 @@ class ContactUsTest extends TestCase
           'country_id'=>$country->id,
         ];
         Mail::fake();
-        $response = $this->post('/api/contact-us', $data);
+        $response = $this->post('/api/inquiry', $data);
         $response->assertStatus(201);
     }
 
