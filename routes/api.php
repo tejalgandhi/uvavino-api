@@ -68,6 +68,11 @@ Route::get('/product', [ProductController::class, 'index'])->withoutMiddleware('
 Route::get('/product/{slug}', [ProductController::class, 'show']);
 Route::get('/product/{slug}/recommended', [ProductController::class, 'recommended']);
 
+
+//home page recommended product api
+Route::get('/products/bestsellers', [ProductController::class, 'getBestSellers']);
+
+
 // auction pack
 Route::get('/auction-packs', [AuctionPackController::class, 'index']);
 Route::get('/auction-pack/{slug}', [AuctionPackController::class, 'show']);
@@ -86,17 +91,12 @@ Route::get('/auction-attribute', [AuctionController::class, 'attribute_list']);
 Route::get('/auctions/bestsellers', [AuctionController::class, 'getBestSellers']);
 Route::get('/auctions/new-release', [AuctionController::class, 'getNewProducts']);
 
-//home page recommended product api
-Route::get('/products/bestsellers', [ProductController::class, 'getBestSellers']);
-
 //Article
 Route::get('/articles', [ArticleController::class, 'index']);
 Route::get('/article/{slug}', [ArticleController::class, 'show']);
 
 Route::get('/reviews', [ReviewController::class, 'index']);
-Route::get('/csrf-token', function (Request $request) {
-    return response()->json(['csrfToken' => $request->session()->token()]);
-})->middleware('web');
+Route::get('/countries', [StaticPageController::class, 'countries']);
 
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
