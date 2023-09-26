@@ -18,8 +18,6 @@ class Auction extends Model
     use HasFactory;
     use SoftDeletes;
 
-    const IS_PUBLISH = '1';
-
     public $timestamps = false;
 
     protected $guarded = ['id'];
@@ -43,6 +41,27 @@ class Auction extends Model
             $model->created_by = Auth::user()->id ?? NULL;
         });
     }
+
+
+    /**
+     * Scope a query to only get inprogress auction.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeUnfinishedAuction($query)
+    {
+        return $query->where('is_publish','1')
+            ->where(function ($q) {
+                $q->where('type', AuctionType::TIMEBASED->value)
+                    ->where('end_date', '>=', now());
+            })
+            ->orWhere(function ($q) {
+                $q->where('type', AuctionType::LIVE->value)
+                        ->whereNull('winner_bid');
+            });
+    }
+
 
     public function products(): HasManyThrough
     {
@@ -103,34 +122,18 @@ class Auction extends Model
     {
         $query = self::withCount(['bids','wishlist'=> function($q)   {
             $q->where('wine_user_id',request()->user_id);
-        } ])
-            ->where('is_publish',Auction::IS_PUBLISH)
-            ->where(function ($q) {
-                $q->where('type', AuctionType::TIMEBASED->value)
-                    ->where('end_date', '>=', now());
-            })
-            ->orWhere(function ($q) {
-                    $q->where('type', AuctionType::LIVE->value)
-                        ->whereNotNull('winner_bid');
-            })
+        }
+        ])->unfinishedAuction()
             ->orderBy('bids_count', 'desc');
         return $query->paginate(Config('constant.new_items_per_page'));
     }
 
     public static function getNewProduct()
     {
-        $query = self::where('is_publish',1) ->withCount(['bids','wishlist'=> function($q)   {
+        $query = self::withCount(['bids','wishlist'=> function($q)   {
             $q->where('wine_user_id',request()->user_id);
-        } ])
-            ->where('is_publish',Auction::IS_PUBLISH)
-            ->where(function ($q) {
-                $q->where('type', AuctionType::TIMEBASED->value)
-                    ->where('end_date', '>=', now());
-            })
-            ->orWhere(function ($q) {
-                $q->where('type', AuctionType::LIVE->value)
-                        ->whereNotNull('winner_bid');
-            })
+        }
+        ])->unfinishedAuction()
             ->orderbyDesc('id');
         return $query->paginate(Config('constant.new_items_per_page'));
     }
