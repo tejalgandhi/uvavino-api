@@ -44,7 +44,7 @@ Route::prefix('auth')->group(function() {
 });
 //truncate table
 Route::get('/truncate-tables', function (){
-    \Illuminate\Support\Facades\Artisan::call("db:seed",array('--class'=>\Database\Seeders\TruncateTables::class));
+    \Illuminate\Support\Facades\Artisan::call("db:seed",array('--class'=>\Database\Seeders\TruncateTables::class,'--force' => true));
 
     echo "Seeder run successfully";
     exit;
