@@ -61,7 +61,18 @@ class Auction extends Model
                         ->whereNull('winner_bid');
             });
     }
-
+    /**
+     * Scope a query to  get bid count and wishlist auction.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeBidCount($query){
+        $query->withCount(['bids','wishlist'=> function($q)   {
+            $q->where('wine_user_id',request()->user_id);
+        }
+        ]);
+    }
 
     public function products(): HasManyThrough
     {
@@ -120,20 +131,14 @@ class Auction extends Model
     }
     public static function getBestSellersProduct()
     {
-        $query = self::withCount(['bids','wishlist'=> function($q)   {
-            $q->where('wine_user_id',request()->user_id);
-        }
-        ])->unfinishedAuction()
+        $query = self::bidCount()->unfinishedAuction()
             ->orderBy('bids_count', 'desc');
         return $query->paginate(Config('constant.new_items_per_page'));
     }
 
     public static function getNewProduct()
     {
-        $query = self::withCount(['bids','wishlist'=> function($q)   {
-            $q->where('wine_user_id',request()->user_id);
-        }
-        ])->unfinishedAuction()
+        $query = self::bidCount()->unfinishedAuction()
             ->orderbyDesc('id');
         return $query->paginate(Config('constant.new_items_per_page'));
     }
