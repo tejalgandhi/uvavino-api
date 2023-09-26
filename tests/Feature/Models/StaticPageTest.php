@@ -66,4 +66,9 @@ class StaticPageTest extends TestCase
         $response->assertJson($page->toArray());
         $response->assertJsonStructure(["title", "id", "slug", "content"]);
     }
+    public function test_get_countries()
+    {
+        $response = $this->get('/api/countries');
+        $response->assertStatus(201);
+    }
 }

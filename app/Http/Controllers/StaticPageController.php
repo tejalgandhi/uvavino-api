@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CountryResource;
+use App\Http\Resources\Fail;
 use App\Http\Resources\StaticPageResource;
 use App\Models\AppVariable;
+use App\Models\Country;
 use App\Models\StaticPage;
 use Illuminate\Http\Request;
 
@@ -32,5 +35,15 @@ class StaticPageController extends Controller
     public function showStaticPages(Request $request,$key)
     {
         return AppVariable::whereKey($key)->first();
+    }
+
+    public function countries(Request $request)
+    {
+        try {
+            $data = Country::where('status',Country::IS_ACTIVE)->orderBy('name','asc')->get();
+            return response()->json(['message' => "Get Countries", "data" => CountryResource::collection($data)], 201);
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
     }
 }
