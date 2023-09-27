@@ -237,6 +237,16 @@ class AuctionTest extends TestCase
         $response = $this->actingAs($user)->get('/api/auction');
         $response->assertStatus(200);
         $response->assertJsonCount(7, "data");
+
+        $response = $this->actingAs($user)->get('/api/auction?is_wishlist=1');
+        $response->assertStatus(200);
+        $response->assertJsonCount(0, "data");
+
+        $response = $this->actingAs($user)->get('/api/auction?limit=3');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?country_id=1');
+        $response->assertStatus(200);
     }
 
     public function test_auction_listing_with_auction_more_than_a_page()
