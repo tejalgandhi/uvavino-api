@@ -46,10 +46,6 @@ class ProductFactory extends Factory
             'wine_tag' => implode(',',$wine_tags),
             'storage_condition' => fake()->text(),
             'review_and_rewards' => fake()->text(),
-            'review_name' => fake()->text(),
-            'medal' => 0,
-            'award_name' => fake()->word(),
-            'score' => fake()->numberBetween(11,50),
         ];
     }
 }

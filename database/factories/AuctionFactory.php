@@ -22,6 +22,7 @@ class AuctionFactory extends Factory
             'title' => fake()->words(rand(5,10), true),
             'description' => fake()->paragraph,
             'is_publish' => 1,
+            'is_private' => 0,
             'type' => 1,
             'max_price' => rand(300,800),
         ];

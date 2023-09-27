@@ -23,6 +23,8 @@ class AuctionResource extends JsonResource
             'user_id' => $user_id,
             'country_id' => $this->country_id,
             'country_name' => $this->country_name,
+            'iso_alpha_2' => $this->country_iso_code,
+            'flag' =>  $this->country_iso_code ? country_flag($this->country_iso_code) : '',
             'title' => $this->title,
             'total_bids' => $this->bids_count,
             'start_date' => $this->start_date ?? '',
