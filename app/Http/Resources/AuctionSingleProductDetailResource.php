@@ -36,6 +36,7 @@ class AuctionSingleProductDetailResource extends JsonResource
             'is_wishlist'=> $this->wishlist_count ?? 0,
             'description' => $this->description,
             'is_publish' => $this->is_publish,
+            'is_private' => $this->is_private,
             'auction_type' => $this->type->name,
             'type' => $this->type->value,
             'max_price' => $this->max_price,
