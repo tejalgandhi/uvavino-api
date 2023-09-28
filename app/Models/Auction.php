@@ -42,16 +42,21 @@ class Auction extends Model
         });
     }
 
-
+    public function scopePrivateAuctions($query)
+    {
+        return $query->where('is_private','1');
+    }
     /**
      * Scope a query to only get inprogress auction.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeUnfinishedAuction($query)
+    public function scopeUnfinishedAuctions($query)
     {
-        return $query->where('is_publish','1')
+        return $query
+            ->where('is_private','0')
+            ->where('is_publish','1')
             ->where(function ($q) {
                 $q->where('type', AuctionType::TIMEBASED->value)
                     ->where('end_date', '>=', now());
@@ -67,7 +72,7 @@ class Auction extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeBidCount($query){
+    public function scopeBidCounts($query){
         return  $query->withCount(['bids','wishlist'=> function($q)   {
             $q->where('wine_user_id',request()->user_id);
         }
@@ -89,6 +94,12 @@ class Auction extends Model
     {
         return Attribute::make(
             fn () => $this->products()->first()?->country?->name,
+        );
+    }
+    public function countryIsoCode() : Attribute
+    {
+        return Attribute::make(
+            fn () => $this->products()->first()?->country?->iso_alpha_2,
         );
     }
 
@@ -131,14 +142,14 @@ class Auction extends Model
     }
     public static function getBestSellersProduct()
     {
-        $query = self::bidCount()->unfinishedAuction()
+        $query = self::bidCounts()->unfinishedAuctions()
             ->orderBy('bids_count', 'desc');
         return $query->paginate(Config('constant.new_items_per_page'));
     }
 
     public static function getNewProduct()
     {
-        $query = self::bidCount()->unfinishedAuction()
+        $query = self::bidCounts()->unfinishedAuctions()
             ->orderbyDesc('id');
         return $query->paginate(Config('constant.new_items_per_page'));
     }

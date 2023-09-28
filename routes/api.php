@@ -124,6 +124,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::get('/user/product-count', [UserController::class, 'allProductCount']);
     Route::get('/user/wishlist-count', [UserController::class, 'allWishlistCount']);
     Route::get('/user/buy-purchse-history', [UserController::class, 'getBuyPurchaseHistory']);
+    Route::get('/user/private-auctions', [UserController::class, 'getPrivateAuctions']);
 
     // Order API
     Route::get('/orders', [OrderController::class, 'index']);

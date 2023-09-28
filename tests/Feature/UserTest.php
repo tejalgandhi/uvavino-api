@@ -56,4 +56,17 @@ class UserTest extends TestCase
 
     }
 
+    public function test_get_private_auctions()
+    {
+        $user = WineUser::factory()->create();
+        $auction = Auction::factory()->create(['is_private'=>'1']);
+        $response = $this->actingAs($user)->post('/api/auction/'.$auction->id.'/bid',[
+            'price'=>100
+        ]);
+        $response->assertStatus(201);
+        $response = $this->actingAs($user)->get('/api/user/private-auctions');
+        $response->assertStatus(201);
+
+    }
+
 }

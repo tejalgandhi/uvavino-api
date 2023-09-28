@@ -23,7 +23,6 @@ return [
     "bottle_size" => BottleSizeFilter::class,
     "capacity" => CapacityFilter::class,
     "type" => AuctionTypeFilter::class,
-    "medal" =>MedalFilter::class,
     "producer" => ProducerFilter::class,
     "wine-type" => WineTypeFilter::class,
     "country" => CountryFilter::class,

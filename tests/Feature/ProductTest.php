@@ -12,7 +12,6 @@ use App\Models\WineTag;
 use App\Models\WineType;
 use App\Models\WineUser;
 use App\Models\WineVariety;
-use App\Enums\Medal;
 use App\Enums\AuctionType;
 use App\Enums\BottleSize;
 use Tests\TestCase;
@@ -278,11 +277,7 @@ class ProductTest extends TestCase
             "grape_̥varieties" => "Test wine grape varaieties",
             "storage_condition" => "Test wine storage_condition1",
             "review_and_rewards" => "Test wine review_and_rewards1",
-            "medal" => Medal::GOLD->value,
             "bottle_size" => BottleSize::TWENTY_ML->value,
-            "award_name" => "Test award_name1",
-            "review_name" => "Test review_name1",
-            "score" => "11",
             "wine_name" => "Test wine",
             "quantity" => rand(1, 5),
             "wine_user_id" => $data['wine_user']->id,
@@ -306,11 +301,7 @@ class ProductTest extends TestCase
             "grape_̥varieties" => "Test wine grape varaieties2",
             "storage_condition" => "Test wine storage_condition2",
             "review_and_rewards" => "Test wine review_and_rewards",
-            "award_name" => "Test wine award_name2",
-            "medal" => Medal::GOLD->value,
             "bottle_size" => BottleSize::TWENTY_ML->value,
-            "review_name" => "Test wine review_name2",
-            "score" => "12",
             "wine_name" => "Test wine2",
             "quantity" => rand(1, 5),
             "wine_user_id" => $data['wine_user']->id,
