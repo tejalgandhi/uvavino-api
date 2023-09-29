@@ -49,6 +49,12 @@ Route::get('/truncate-tables', function (){
     echo "Seeder run successfully";
     exit;
 });
+Route::get('/country-seeder', function (){
+    \Illuminate\Support\Facades\Artisan::call("db:seed",array('--class'=>\Database\Seeders\CountrySeeder::class,'--force' => true));
+
+    echo "Country Seeder run successfully";
+    exit;
+});
 
 
 //static page
@@ -101,7 +107,9 @@ Route::get('/reviews', [ReviewController::class, 'index']);
 Route::get('/countries', [StaticPageController::class, 'countries']);
 
 Route::post('/inquiry', [InquiryController::class, 'store']);
-
+Route::get('/csrf-token', function (Request $request) {
+    return response()->json(['csrfToken' => $request->session()->token()]);
+})->middleware('web');
 
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
@@ -116,6 +124,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::get('/user/product-count', [UserController::class, 'allProductCount']);
     Route::get('/user/wishlist-count', [UserController::class, 'allWishlistCount']);
     Route::get('/user/buy-purchse-history', [UserController::class, 'getBuyPurchaseHistory']);
+    Route::get('/user/private-auctions', [UserController::class, 'getPrivateAuctions']);
 
     // Order API
     Route::get('/orders', [OrderController::class, 'index']);

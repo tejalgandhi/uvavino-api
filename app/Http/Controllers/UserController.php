@@ -76,4 +76,19 @@ class UserController extends Controller
         }
     }
 
+    public function getPrivateAuctions(Request $request)
+    {
+        try{
+            $limit = $request->limit ?? config('constant.number_of_items_per_page');
+            $data = [];
+            $privateAuctions = Auction::privateAuctions();
+            $data['private_auctions'] = AuctionResource::collection(
+                $privateAuctions->paginate($limit)
+            );
+
+            return response()->json(['message' => "Get User Private Auctions", "data" => $data], 201);
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
 }

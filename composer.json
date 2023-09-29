@@ -7,13 +7,14 @@
     "require": {
         "php": "^8.0.2",
         "archtechx/enums": "^0.3.2",
-        "beyondcode/laravel-websockets": "^2.0@beta",
+        "beyondcode/laravel-websockets": "1.14.1",
         "doctrine/dbal": "^2.5",
         "guzzlehttp/guzzle": "^7.2",
         "immera/payment-backend": "^0.0.8",
         "laravel/framework": "^9.52",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "pusher/pusher-php-server": "^7.2",
         "rap2hpoutre/laravel-log-viewer": "^2.3",
         "stidges/laravel-country-flags": "^2.0",
         "stripe/stripe-php": "^8.1"

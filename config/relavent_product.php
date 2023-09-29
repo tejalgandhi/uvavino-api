@@ -11,12 +11,10 @@ return [
     "region_id" => ["score" => 1],
     "producer_id" => ["score" => 1],
     "year" => ["score" => 1],
-    "score" => ["score" => 1],
 
     // String values to compare.
     "wine_maker" => ["score" => 1, "template" => 'strcmp'],
-    "medal" => ["score" => 1, "template" => 'strcmp'],
-    "award_name" => ["score" => 1, "template" => 'strcmp'],
+
 
   ],
 
