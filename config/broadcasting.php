@@ -38,7 +38,7 @@ return [
             'options' => [
                 'host' => env('PUSHER_HOST') ?: 'api-'.env('PUSHER_APP_CLUSTER', 'mt1').'.pusher.com',
 //                'host' => env('PUSHER_HOST'),
-                'port' => env('PUSHER_PORT', 443),
+                'port' => env('PUSHER_PORT', 6001),
 //                'port' =>  env('PUSHER_PORT'),
                 'scheme' => env('PUSHER_SCHEME', 'https'),
                 'encrypted' => false,
