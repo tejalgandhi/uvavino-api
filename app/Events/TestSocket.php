@@ -31,6 +31,10 @@ class TestSocket implements ShouldBroadcast
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
+    public function broadcastAs()
+    {
+        return 'task.created';
+    }
     public function broadcastOn()
     {
         return new Channel('bids');
