@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    event( \App\Events\TestSocket::class);
     return view('welcome');
 });
 Route::get('/reports/coverage', function () {
