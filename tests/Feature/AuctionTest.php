@@ -34,7 +34,6 @@ class AuctionTest extends TestCase
         return compact("wine_user", "drink_type", "country", "region", "producer", "wine_type", "wine_tag");
     }
 
-
     public function store_auction_array($params = null,$array_key = null)
     {
         $data = $this->common_factory();

@@ -146,7 +146,7 @@ class Auction extends Model
         // Need to write correct logic
         $auction_bid = AuctionBid::where('auction_id',$this->id)->latest()->first();
         if(empty($auction_bid)){
-            $latest_bid = $this->auction->baskets ? $this->auction->baskets->price:4;
+            $latest_bid = $this->baskets ? $this->baskets->price:4;
         } else{
             $latest_bid = $auction_bid->value ?? 4;
         }
