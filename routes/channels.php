@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Broadcast;
      return (int) $user->id === (int) $id;
  });
 
-//Broadcast::channel('common_room', function ($user) {
-//    return true;
-//});
+Broadcast::channel('bid-raised.{id}', function ($user,$id) {
+    return true;
+});
+
+Broadcast::channel('auction-ended.{id}', function ($user,$id) {
+    return true;
+});
