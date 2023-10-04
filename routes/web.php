@@ -32,6 +32,5 @@ Route::get('/event', function (){
     $quick_bids = $auction->quickBid();
     broadcast(new  \App\Events\BidRaised($auction->id,$bid_raised,$next_bid,$quick_bids));
     event(new  \App\Events\BidRaised($auction->id,$bid_raised,$next_bid,$quick_bids));
-    event(new  \App\Events\AuctionEnded(1));
     dd('hi');
 })->name('event');

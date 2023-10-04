@@ -9,19 +9,23 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class AuctionEnded
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $auction;
-    /**
-     * Create a new event instance.
-     * @param $auction
-     */
-    public function __construct($auction)
+    public $current_bid;
+    public $next_bid;
+    public $quick_bids;
+
+    public function __construct($auction,$current_bid,$next_bid,$quick_bids)
     {
         $this->auction = $auction;
+        $this->current_bid = $current_bid;
+        $this->next_bid = $next_bid;
+        $this->quick_bids = $quick_bids;
     }
 
     /**
@@ -31,8 +35,24 @@ class AuctionEnded
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('auction'.$this->auction->id);
+        Log::info('BidRaised event broadcasted');
+
+        return new Channel('auction'.$this->auction);
     }
 
+    public function broadcastWith()
+    {
+        Log::info('Broadcasting auction data', [
+            'current_bid' => $this->current_bid,
+            'next_bid' => $this->next_bid,
+            'quick_bids' => $this->quick_bids,
+        ]);
+
+        return [
+            'current_bid' => $this->current_bid,
+            'next_bid' => $this->next_bid,
+            'quick_bids' => $this->quick_bids,
+        ];
+    }
 
 }

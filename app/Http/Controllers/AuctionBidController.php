@@ -48,10 +48,7 @@ class AuctionBidController extends Controller
                 'wine_user_id' => $request->wine_user_id,
                 'value' => $value
             ]);
-            $current_bid = $auction->bidRaised();
-            $next_bid = $auction->nextMinBid();
-            $quick_bids = $auction->quickBid();
-            event(new  \App\Events\BidRaised($auction->id, $current_bid, $next_bid, $quick_bids));
+
             return response()->json(['message' => "Auction Bid Create Successfully", "data" => $data], 201);
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
