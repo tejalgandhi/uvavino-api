@@ -38,20 +38,40 @@ class AuctionBidController extends Controller
     public function storeAuctionBid(AuctionBidRequest $request, Auction $auction)
     {
         try {
-        // Check if value is valid or not.
-        $value = $request->price;
-        if(!$auction->canBid($value)) {
-            return (new Fail(__('Could not bid with ' . $value)));
+            // Check if value is valid or not.
+            $value = $request->price;
+            if (!$auction->canBid($value)) {
+                return (new Fail(__('Could not bid with ' . $value)));
+            }
+            $data = AuctionBid::create([
+                'auction_id' => $auction->id,
+                'wine_user_id' => $request->wine_user_id,
+                'value' => $value
+            ]);
+
+            return response()->json(['message' => "Auction Bid Create Successfully", "data" => $data], 201);
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
         }
-        $data = AuctionBid::create([
-            'auction_id' => $auction->id,
-            'wine_user_id' => $request->wine_user_id,
-            'value' => $value
-        ]);
-        return response()->json(['message'=>"Auction Bid Create Successfully","data"=>$data],201);
-    }catch (\Exception $e) {
-return (new Fail($e->getMessage()))->json();
-}
+    }
+
+    public function endAuction(Auction $auction){
+        try {
+
+            $auction_bid = AuctionBid::latest()->first();
+            $winner_bid = !empty($auction_bid)?$auction_bid->id:0;
+
+            Auction::where('id',$auction->id)->update([
+                'winner_bid'=>$winner_bid
+            ]);
+
+            $current_bid = $auction->bidRaised();
+            $next_bid = $auction->nextMinBid();
+            $quick_bids = $auction->quickBid();
+            event(new  \App\Events\AuctionEnded($auction->id, $current_bid, $next_bid, $quick_bids));
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
     }
 
 }

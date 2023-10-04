@@ -34,7 +34,6 @@ class AuctionTest extends TestCase
         return compact("wine_user", "drink_type", "country", "region", "producer", "wine_type", "wine_tag");
     }
 
-
     public function store_auction_array($params = null,$array_key = null)
     {
         $data = $this->common_factory();
@@ -246,6 +245,30 @@ class AuctionTest extends TestCase
         $response->assertStatus(200);
 
         $response = $this->actingAs($user)->get('/api/auction?country_id=1');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?user_id='.$user->id);
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?price_greater_than=100');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?price_less_than=100');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?slug=test');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?wine_name=test');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?wine_type_id=1');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?order_by=asc');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?producer_id=1');
         $response->assertStatus(200);
     }
 

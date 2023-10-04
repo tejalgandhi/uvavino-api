@@ -18,8 +18,14 @@ class AuctionSingleProductDetailResource extends JsonResource
     public function toArray($request)
     {
         $product = $request->product;
+        $user_id = request()->user_id;
+        $user_latest_time = !empty($user_id)?$this->userLatestBid($user_id):'';
         return [
             'id' => $this->id,
+            'user_latest_bid' => !empty($user_latest_time)?$user_latest_time->value:'',
+            'current_bid' => $this->bidRaised(),
+            'next_bid' => $this->nextMinBid(),
+            'quick_bids' => $this->quickBid(),
             'seller_id' => $this->created_by ?? '',
             'seller_name' => $this->wine_user ?$this->wine_user->username :'',
             'seller_created_at' => $this->wine_user ?$this->wine_user->created_at :'',

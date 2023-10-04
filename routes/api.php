@@ -110,6 +110,7 @@ Route::post('/inquiry', [InquiryController::class, 'store']);
 Route::get('/csrf-token', function (Request $request) {
     return response()->json(['csrfToken' => $request->session()->token()]);
 })->middleware('web');
+Route::post('/auction-ended/{auction_id}', [AuctionBidController::class, 'endAuction']);
 
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {

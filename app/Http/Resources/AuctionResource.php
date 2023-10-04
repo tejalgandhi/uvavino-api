@@ -18,8 +18,13 @@ class AuctionResource extends JsonResource
     public function toArray($request)
     {
         $user_id = request()->user_id;
+        $user_latest_time = !empty($user_id)?$this->userLatestBid($user_id):'';
         return [
             'id' => $this->id,
+            'user_latest_bid' => !empty($user_latest_time)?$user_latest_time->value:'',
+            'current_bid' => $this->bidRaised(),
+            'next_bid' => $this->nextMinBid(),
+            'quick_bids' => $this->quickBid(),
             'user_id' => $user_id,
             'country_id' => $this->country_id,
             'country_name' => $this->country_name,

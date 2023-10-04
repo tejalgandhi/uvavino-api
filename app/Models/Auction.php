@@ -134,11 +134,36 @@ class Auction extends Model
         // Need to write correct logic
         return true;
     }
-
-    public function nextMinBid()
+    public function bidRaised() : int
     {
         // Need to write correct logic
-        return 0;
+        $auction_bid = AuctionBid::where('auction_id',$this->id)->latest()->first();
+
+        return !empty($auction_bid) ? $auction_bid->value : 0 ;
+    }
+    public function nextMinBid() : int
+    {
+        // Need to write correct logic
+        $auction_bid = AuctionBid::where('auction_id',$this->id)->latest()->first();
+        if(empty($auction_bid)){
+            $latest_bid = $this->baskets ? $this->baskets->price:4;
+        } else{
+            $latest_bid = $auction_bid->value ?? 4;
+        }
+        return $latest_bid + 1;
+    }
+
+    public function quickBid() : array
+    {
+        // Need to write correct logic
+        $latest_bid = $this->nextMinBid();
+        $bids = [
+            $latest_bid,
+            $latest_bid + 1,
+            $latest_bid + 2,
+        ];
+
+        return $bids ;
     }
     public static function getBestSellersProduct()
     {
@@ -182,5 +207,9 @@ class Auction extends Model
     public function wine_user(): BelongsTo
     {
         return $this->belongsTo(WineUser::class,'created_by','id');
+    }
+    public function userLatestBid($user_id = 0)
+    {
+        return AuctionBid::where('wine_user_id',$user_id)->where('auction_id',$this->id)->latest()->first();
     }
 }

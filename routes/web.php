@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Auction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,3 +23,14 @@ Route::get('/reports/coverage', function () {
 });
 
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
+
+Route::get('/event', function (){
+//    \Illuminate\Support\Facades\Event::dispatch(new \App\Events\BidRaised(1));
+    $auction =  Auction::find(1);
+    $bid_raised = $auction->bidRaised();
+    $next_bid = $auction->nextMinBid();
+    $quick_bids = $auction->quickBid();
+    broadcast(new  \App\Events\BidRaised($auction->id,$bid_raised,$next_bid,$quick_bids));
+    event(new  \App\Events\BidRaised($auction->id,$bid_raised,$next_bid,$quick_bids));
+    dd('hi');
+})->name('event');
