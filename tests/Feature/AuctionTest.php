@@ -246,6 +246,30 @@ class AuctionTest extends TestCase
 
         $response = $this->actingAs($user)->get('/api/auction?country_id=1');
         $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?user_id='.$user->id);
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?price_greater_than=100');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?price_less_than=100');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?slug=test');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?wine_name=test');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?wine_type_id=1');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?order_by=asc');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get('/api/auction?producer_id=1');
+        $response->assertStatus(200);
     }
 
     public function test_auction_listing_with_auction_more_than_a_page()
