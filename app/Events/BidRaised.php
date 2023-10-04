@@ -49,6 +49,7 @@ class BidRaised implements ShouldBroadcast
     public function broadcastWith()
     {
         Log::info('Broadcasting auction data', [
+            'auction' => $this->auction,      
             'current_bid' => $this->current_bid,
             'next_bid' => $this->next_bid,
             'quick_bids' => $this->quick_bids,
