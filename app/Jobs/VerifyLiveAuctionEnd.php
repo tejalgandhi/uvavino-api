@@ -42,7 +42,7 @@ class VerifyLiveAuctionEnd implements ShouldQueue
            if($this->auction->is_ended == Auction::IS_NOT_ENDED_AUCTION)
            {
                $bid = AuctionBid::where('auction_id',$this->auction->id)->latest()->first();
-               $today = Carbon::now();
+               $today = $diff = $diff_auction= Carbon::now();
                if(!empty($bid)) {
                    $bid_timestamp = Carbon::createFromFormat('Y-m-d H:s:i', $bid->timestamp);
                    $diff = $today->diffInSeconds($bid_timestamp);
