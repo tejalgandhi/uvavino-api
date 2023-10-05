@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Illuminate\Support\Facades\Log;
 
 trait FileUploadTrait
 {
@@ -53,7 +54,15 @@ trait FileUploadTrait
         }
         else {
             $name = time().rand(1,100).'.'.$params->extension();
+            Log::info("bucket" . Storage::disk('do')->getAdapter()->getBucket());
+            Log::info("path" . $path);
+            Log::info("params" . $params);
+            Log::info("name" . $name);
             $filePath = Storage::putFileAs($path, $params,$name);
+            Log::info("path" . $path);
+            Log::info("params" . $param);
+            Log::info("name" . $name);
+            Log::info("filepath" .  $filePaths  );
             $files[] = $filePath;
         }
 
