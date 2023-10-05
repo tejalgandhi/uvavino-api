@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Illuminate\Support\Facades\Log;
 
 trait FileUploadTrait
 {
@@ -21,11 +22,11 @@ trait FileUploadTrait
     {
         // Convert path
         $path = $this->destinationPath($path);
-
+        Log::info($path);
         // Make sure path exists
-        if (! Storage::exists($path)) {
-            Storage::makeDirectory($path);
-        }
+        // if (! Storage::exists($path)) {
+        //     Storage::makeDirectory($path);
+        // }
 
         //remove Old Files
         $file_paths = $this->{$field};
@@ -40,11 +41,21 @@ trait FileUploadTrait
         }
         // Store file to the storage and save path to database
         $files = [];
+        
         if(is_array($params)){
+            Log::info("if");
             foreach ($params as $param){
                 if(!is_string($param)) {
                     $name = time() . rand(1, 100) . '.' . $param->extension();
+                    // Log::info("bucket" . Storage::disk('do')->getAdapter()->getBucket());
+                    Log::info("path" . $path);
+                    Log::info("params" . $params);
+                    Log::info("name" . $name);
                     $filePath = Storage::putFileAs($path, $param, $name);
+                    Log::info("path" . $path);
+                    Log::info("params" . $param);
+                    Log::info("name" . $name);
+                    Log::info("filepath" .  $filePaths  );
                     $files[] = $filePath;
                 }else{
                     $files[] = $param;
@@ -52,8 +63,17 @@ trait FileUploadTrait
             }
         }
         else {
+            Log::info("else");
             $name = time().rand(1,100).'.'.$params->extension();
+            // Log::info("bucket" . Storage::disk('do')->getAdapter()->getBucket());
+            Log::info("path" . $path);
+            Log::info("params" . $params);
+            Log::info("name" . $name);
             $filePath = Storage::putFileAs($path, $params,$name);
+            Log::info("path" . $path);
+            Log::info("params" . $param);
+            Log::info("name" . $name);
+            Log::info("filepath" .  $filePaths  );
             $files[] = $filePath;
         }
 
