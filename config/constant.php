@@ -51,4 +51,5 @@ return [
     'recommended_items_per_page'=>4,
     'new_items_per_page'=>4,
     'number_of_items_per_page'=>10,
+    'configured_auction_time'=>'3',
 ];

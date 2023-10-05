@@ -22,6 +22,9 @@ class Auction extends Model
 
     protected $guarded = ['id'];
 
+    const IS_ENDED_AUCTION = '1';
+    const IS_NOT_ENDED_AUCTION = '0';
+
     public $casts =[
       'type'=>AuctionType::class,
     ];
@@ -60,10 +63,11 @@ class Auction extends Model
             ->where(function ($q) {
                 $q->where('type', AuctionType::TIMEBASED->value)
                     ->where('end_date', '>=', now());
+                    ->orWhere('is_ended',Auction::IS_NOT_ENDED_AUCTION);
             })
             ->orWhere(function ($q) {
                 $q->where('type', AuctionType::LIVE->value)
-                        ->whereNull('winner_bid');
+                        ->orWhere('is_ended',Auction::IS_NOT_ENDED_AUCTION);
             });
     }
     /**
