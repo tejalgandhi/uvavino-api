@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class VerifyTimebasedAuctionEnd implements ShouldQueue
 {
@@ -34,6 +35,7 @@ class VerifyTimebasedAuctionEnd implements ShouldQueue
      */
     public function handle()
     {
+        Log::info('in time based auction start');
         $today = Carbon::now();
         $end_date = Carbon::createFromFormat('Y-m-d H:s:i', $this->auction->end_date);
         if($end_date <= $today && $this->auction->is_ended == Auction::IS_NOT_ENDED_AUCTION)
@@ -51,5 +53,6 @@ class VerifyTimebasedAuctionEnd implements ShouldQueue
             $quick_bids = $this->auction->quickBid();
             event(new  \App\Events\AuctionEnded($this->auction->id, $current_bid, $next_bid, $quick_bids));
         }
+        Log::info('in time based auction end');
     }
 }

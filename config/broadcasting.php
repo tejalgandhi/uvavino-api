@@ -40,10 +40,10 @@ return [
 //                'host' => env('PUSHER_HOST'),
                 'port' => env('PUSHER_PORT'),
 //                'port' =>  env('PUSHER_PORT'),
-                'scheme' => env('PUSHER_SCHEME', 'http'),
+                'scheme' => env('PUSHER_SCHEME', 'https'),
                 'encrypted' => false,
                 // 'useTLS' => env('PUSHER_SCHEME', 'https') === 'https',
-//                'useTLS' => false,
+//                'useTLS' => true,
                 'curl_options' => [
                     CURLOPT_SSL_VERIFYHOST => 0,
                     CURLOPT_SSL_VERIFYPEER => 0,

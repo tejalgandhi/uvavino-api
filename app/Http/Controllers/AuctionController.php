@@ -213,14 +213,15 @@ class AuctionController extends Controller
                     ]);
                 }
             }
-            if($auction->type == AuctionType::TIMEBASED->value)
+
+            if($auction->type == AuctionType::TIMEBASED)
             {
-                dispatch(new VerifyTimebasedAuctionEnd($auction));
+                dispatch(new VerifyTimebasedAuctionEnd($auction))->delay($auction->end_date->addMinutes(1));
 
             }
-            if($auction->type == AuctionType::LIVE->value)
+            if($auction->type == AuctionType::LIVE)
             {
-                dispatch(new VerifyLiveAuctionEnd($auction));
+                dispatch(new VerifyLiveAuctionEnd($auction))->delay($auction->start_date->addSeconds(config('constant.configured_auction_time')));
             }
 
             return (new Success(__('Auction Create Successfully')))->json(201);
@@ -248,14 +249,14 @@ class AuctionController extends Controller
                 "type",
                 "max_price",
             ]));
-            if($auction->end_date != $request->end_date && $request->type == AuctionType::TIMEBASED->value)
+            if($auction->end_date != $request->end_date && $request->type == AuctionType::TIMEBASED)
             {
-                dispatch(new VerifyTimebasedAuctionEnd($auction));
+                dispatch(new VerifyTimebasedAuctionEnd($auction))->delay($auction->end_date->addMinutes(1));
 
             }
-            if($auction->start_date != $request->start_date && $request->type == AuctionType::LIVE->value)
+            if($auction->start_date != $request->start_date && $request->type == AuctionType::LIVE)
             {
-                dispatch(new VerifyLiveAuctionEnd($auction));
+                dispatch(new VerifyLiveAuctionEnd($auction))->delay($auction->start_date->addSeconds(config('constant.configured_auction_time')));
             }
             $invite_peoples = $request->invite_peoples;
             if ($invite_peoples) {

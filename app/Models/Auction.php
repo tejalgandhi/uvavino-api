@@ -21,6 +21,7 @@ class Auction extends Model
     public $timestamps = false;
 
     protected $guarded = ['id'];
+    protected $dates = ['created_at', 'updated_at', 'start_date','end_date'];
 
     const IS_ENDED_AUCTION = '1';
     const IS_NOT_ENDED_AUCTION = '0';
@@ -62,7 +63,7 @@ class Auction extends Model
             ->where('is_publish','1')
             ->where(function ($q) {
                 $q->where('type', AuctionType::TIMEBASED->value)
-                    ->where('end_date', '>=', now());
+                    ->where('end_date', '>=', now())
                     ->orWhere('is_ended',Auction::IS_NOT_ENDED_AUCTION);
             })
             ->orWhere(function ($q) {

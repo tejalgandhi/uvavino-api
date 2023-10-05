@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class VerifyLiveAuctionEnd implements ShouldQueue
 {
@@ -34,6 +35,7 @@ class VerifyLiveAuctionEnd implements ShouldQueue
      */
     public function handle()
     {
+        Log::info('in live auction start');
         $configure_time = Carbon::parse($this->auction->start_date)
             ->addSeconds(config('constant.configured_auction_time'))
             ->format('d-m-Y H:i:s');
@@ -67,5 +69,6 @@ class VerifyLiveAuctionEnd implements ShouldQueue
                    event(new  \App\Events\AuctionEnded($this->auction->id, $current_bid, $next_bid, $quick_bids));
                }
            }
+        Log::info('in live auction end');
     }
 }
