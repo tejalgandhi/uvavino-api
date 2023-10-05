@@ -22,7 +22,6 @@ trait FileUploadTrait
     {
         // Convert path
         $path = $this->destinationPath($path);
-        Log::info($path);
         // Make sure path exists
         // if (! Storage::exists($path)) {
         //     Storage::makeDirectory($path);
@@ -43,13 +42,10 @@ trait FileUploadTrait
         $files = [];
 
         if(is_array($params)){
-            Log::info("if");
             foreach ($params as $param){
                 if(!is_string($param)) {
                     $name = time() . rand(1, 100) . '.' . $param->extension();
-                    // Log::info("bucket" . Storage::disk('do')->getAdapter()->getBucket());
                     $filePath = Storage::putFileAs($path, $param, $name);
-
                     $files[] = $filePath;
                 }else{
                     $files[] = $param;
@@ -57,17 +53,15 @@ trait FileUploadTrait
             }
         }
         else {
-            Log::info("else");
             $name = time().rand(1,100).'.'.$params->extension();
-            // Log::info("bucket" . Storage::disk('do')->getAdapter()->getBucket());
-
             $filePath = Storage::putFileAs($path, $params,$name);
-
             $files[] = $filePath;
         }
-
+        Log::info("files " . json_encode([$files]));
         $this->{$field} = $files;
+        Log::info("after files");
         $this->save();
+        Log::info("saved");
     }
     /**
      * Generate destination folder for saving files
