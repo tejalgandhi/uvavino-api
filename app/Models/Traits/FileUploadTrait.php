@@ -47,7 +47,7 @@ trait FileUploadTrait
             foreach ($params as $param){
                 if(!is_string($param)) {
                     $name = time() . rand(1, 100) . '.' . $param->extension();
-                    Log::info("bucket" . Storage::disk('do')->getAdapter()->getBucket());
+                    // Log::info("bucket" . Storage::disk('do')->getAdapter()->getBucket());
                     Log::info("path" . $path);
                     Log::info("params" . $params);
                     Log::info("name" . $name);
@@ -65,7 +65,7 @@ trait FileUploadTrait
         else {
             Log::info("else");
             $name = time().rand(1,100).'.'.$params->extension();
-            Log::info("bucket" . Storage::disk('do')->getAdapter()->getBucket());
+            // Log::info("bucket" . Storage::disk('do')->getAdapter()->getBucket());
             Log::info("path" . $path);
             Log::info("params" . $params);
             Log::info("name" . $name);
