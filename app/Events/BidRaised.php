@@ -12,15 +12,16 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
 /**
  * Class BidRaised
  * @package App\Events
  */
-class BidRaised implements ShouldBroadcast
+class BidRaised implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
+    public $timeout = 3600;
     public $auction;
     public $current_bid;
     public $next_bid;

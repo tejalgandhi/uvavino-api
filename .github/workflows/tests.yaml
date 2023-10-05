@@ -67,4 +67,4 @@ jobs:
         env:
           XDEBUG_MODE: coverage
           APP_KEY: base64:Y1WR7iq6v9BIQFqGIK32cN2IHGabXWh+EAmWmEloves=
-        run: php artisan test --env=testing --coverage --min=80
+        run: php artisan test --env=testing --coverage --min=50

@@ -40,7 +40,7 @@ trait FileUploadTrait
         }
         // Store file to the storage and save path to database
         $files = [];
-        
+
         if(is_array($params)){
             foreach ($params as $param){
                 if(!is_string($param)) {

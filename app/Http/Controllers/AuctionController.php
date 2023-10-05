@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\BottleSize;
+use App\Enums\AuctionType;
 use App\Http\Requests\AuctionBidRequest;
 use App\Http\Requests\AuctionCreateRequest;
 use App\Http\Requests\AutomaticBidRequest;
@@ -20,11 +21,11 @@ use App\Models\AutomaticBid;
 use App\Models\Basket;
 use App\Models\Product;
 use App\Services\Attribute;
-use App\Services\Filters\StaticFilter\BottleSizeFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\VerifyLiveAuctionEnd;
+use App\Jobs\VerifyTimebasedAuctionEnd;
 
 /**
  * Class AuctionController
@@ -212,6 +213,17 @@ class AuctionController extends Controller
                     ]);
                 }
             }
+
+            if($auction->type == AuctionType::TIMEBASED)
+            {
+                dispatch(new VerifyTimebasedAuctionEnd($auction))->delay($auction->end_date->addMinutes(1));
+
+            }
+            if($auction->type == AuctionType::LIVE)
+            {
+                dispatch(new VerifyLiveAuctionEnd($auction))->delay($auction->start_date->addSeconds(config('constant.configured_auction_time')));
+            }
+
             return (new Success(__('Auction Create Successfully')))->json(201);
 
         } catch (\Exception $e) {
@@ -237,7 +249,15 @@ class AuctionController extends Controller
                 "type",
                 "max_price",
             ]));
+            if($auction->end_date != $request->end_date && $request->type == AuctionType::TIMEBASED)
+            {
+                dispatch(new VerifyTimebasedAuctionEnd($auction))->delay($auction->end_date->addMinutes(1));
 
+            }
+            if($auction->start_date != $request->start_date && $request->type == AuctionType::LIVE)
+            {
+                dispatch(new VerifyLiveAuctionEnd($auction))->delay($auction->start_date->addSeconds(config('constant.configured_auction_time')));
+            }
             $invite_peoples = $request->invite_peoples;
             if ($invite_peoples) {
                 $diff = array_diff($invite_peoples, $invitee);
@@ -290,6 +310,7 @@ class AuctionController extends Controller
                     $updateProduct->uploadImages('product_images', $product['product_images'], ['products']);
                 }
             }
+
 
             return (new Success(__('Auction Updated Successfully')))->json(201);
 

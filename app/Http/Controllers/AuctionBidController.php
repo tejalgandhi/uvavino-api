@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuctionBidRequest;
 use App\Http\Resources\AuctionBidResource;
 use App\Http\Resources\Fail;
-use App\Http\Resources\Success;
 use App\Models\Auction;
 use App\Models\AuctionBid;
 use Illuminate\Support\Facades\Request;
