@@ -21,8 +21,8 @@ class AuctionResource extends JsonResource
     {
         $user_id = request()->user_id;
         $wine_user_id = request()->wine_user_id;
-        $user_latest_time = !empty($user_id)?$this->userLatestBid($user_id):'';
-        $user_latest_invite = !empty($wine_user_id)?$this->userLatestInvite():'';
+        $user_latest_time = !empty($user_id)? $this->resource->userLatestBid($user_id):'';
+        $user_latest_invite = !empty($wine_user_id)? $this->resource->userLatestInvite():'';
         return [
             'id' => $this->id,
             'user_latest_bid' => !empty($user_latest_time)?$user_latest_time->value:'',
@@ -55,18 +55,18 @@ class AuctionResource extends JsonResource
         ];
     }
 
-//    public static function selectLst() {
-//        return [
-//            'auctions.id',
-//            'auctions.title',
-//            'auctions.description',
-//            'auctions.is_publish',
-//            'auctions.is_private',
-//            'auctions.type',
-//            'auctions.max_price',
-//            'auctions.basket_id',
-//            'auctions.start_date',
-//            'auctions.end_date',
-//        ];
-//    }
+    public static function selectLst() {
+        return [
+            'auctions.id',
+            'auctions.title',
+            'auctions.description',
+            'auctions.is_publish',
+            'auctions.is_private',
+            'auctions.type',
+            'auctions.max_price',
+            'auctions.basket_id',
+            'auctions.start_date',
+            'auctions.end_date',
+        ];
+    }
 }
