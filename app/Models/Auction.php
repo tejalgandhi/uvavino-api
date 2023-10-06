@@ -54,7 +54,8 @@ class Auction extends Model
     public function scopePublishAuctions($query)
     {
         return $query->where('is_private','0')
-            ->where('is_publish','1');
+            ->where('is_publish','1')
+            ->orwhere('is_publish','true');
     }
     public function scopeFinishedAuctions($query)
     {
