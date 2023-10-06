@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\AuctionType;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 
 class Auction extends Model
 {
@@ -107,6 +108,9 @@ class Auction extends Model
 
     public function countryId() : Attribute
     {
+        Log::info('in_country');
+        Log::info($this->products()->first());
+        Log::info($this->products()->first()?->country_id);
         return Attribute::make(
             fn () => $this->products()->first()?->country_id,
         );
@@ -231,6 +235,10 @@ class Auction extends Model
     }
     public function userLatestInvite($user_id = 0)
     {
-        return AuctionInvite::where('email',Auth::user()->email)->latest()->first();
+        return AuctionInvite::where('email',Auth::user()->email)->where('auction_id',$this->id)->latest()->first();
+    }
+    public function userLatestBid($user_id = 0)
+    {
+        return AuctionBid::where('wine_user_id',$user_id)->where('auction_id',$this->id)->latest()->first();
     }
 }
