@@ -55,18 +55,18 @@ class AuctionResource extends JsonResource
         ];
     }
 
-    public static function selectLst() {
-        return [
-            'auctions.id',
-            'auctions.title',
-            'auctions.description',
-            'auctions.is_publish',
-            'auctions.is_private',
-            'auctions.type',
-            'auctions.max_price',
-            'auctions.basket_id',
-            'auctions.start_date',
-            'auctions.end_date',
-        ];
-    }
+//    public static function selectLst() {
+//        return [
+//            'auctions.id',
+//            'auctions.title',
+//            'auctions.description',
+//            'auctions.is_publish',
+//            'auctions.is_private',
+//            'auctions.type',
+//            'auctions.max_price',
+//            'auctions.basket_id',
+//            'auctions.start_date',
+//            'auctions.end_date',
+//        ];
+//    }
 }
