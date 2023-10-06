@@ -51,6 +51,11 @@ class Auction extends Model
     {
         return $query->where('is_private','1');
     }
+    public function scopePublishAuctions($query)
+    {
+        return $query->where('is_private','0')
+            ->where('is_publish','1');
+    }
     public function scopeFinishedAuctions($query)
     {
         return $query->where('is_ended',Auction::IS_ENDED_AUCTION);
