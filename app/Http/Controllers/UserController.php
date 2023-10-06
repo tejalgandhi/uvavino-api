@@ -52,6 +52,7 @@ class UserController extends Controller
             $limit = $request->limit ?? config('constant.number_of_items_per_page');
             $data = [];
             $buyAuctions = Auction::select(AuctionResource::selectLst())
+                ->unfinishedAuctions()
                 ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
                     $q->where('wine_user_id', $request->wine_user_id);
                 }])->whereHas('bids', function ($q) use ($request) {
