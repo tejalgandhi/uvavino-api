@@ -18,11 +18,14 @@ class AuctionDetailResource extends JsonResource
     public function toArray($request)
     {
         $user_id = request()->user_id;
-        $user_latest_time = !empty($user_id)?$this->userLatestBid($user_id):'';
+        $user_latest_time = !empty($user_id)? $this->resource->userLatestBid($user_id):'';
+        $user_latest_invite = !empty($wine_user_id)? $this->resource->userLatestInvite():'';
         return [
             'id' => $this->id,
             'user_latest_bid' => !empty($user_latest_time)?$user_latest_time->value:'',
             'user_auction_status' => !empty($user_latest_time) && $user_latest_time->id == $this->winner_bid?'Won':'Lose',
+            'user_invite_status' => !empty($user_latest_invite)?$user_latest_invite->status:'',
+            'user_invite_status_string' => !empty($user_latest_invite)?$user_latest_invite->status->label():'',
             'current_bid' => $this->resource->bidRaised(),
             'next_bid' => $this->resource->nextMinBid(),
             'quick_bids' => $this->resource->quickBid(),
@@ -36,6 +39,7 @@ class AuctionDetailResource extends JsonResource
             'iso_alpha_2' => $this->country_iso_code,
             'flag' =>  $this->country_iso_code ? country_flag($this->country_iso_code) : '',
             'title' => $this->title,
+            'created_by' => $this->created_by,
             'total_bids' => $this->bids_count,
             'start_date' => $this->start_date ?? '',
             'end_date' =>  $this->end_date ??'',
