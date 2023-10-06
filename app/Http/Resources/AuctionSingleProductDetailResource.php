@@ -23,6 +23,7 @@ class AuctionSingleProductDetailResource extends JsonResource
         return [
             'id' => $this->id,
             'user_latest_bid' => !empty($user_latest_time)?$user_latest_time->value:'',
+            'user_auction_status' => !empty($user_latest_time) && $user_latest_time->id == $this->winner_bid?'Won':'Lose',
             'current_bid' => $this->bidRaised(),
             'next_bid' => $this->nextMinBid(),
             'quick_bids' => $this->quickBid(),

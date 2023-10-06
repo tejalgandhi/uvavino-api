@@ -50,6 +50,22 @@ class Auction extends Model
     {
         return $query->where('is_private','1');
     }
+    public function scopeFinishedAuctions($query)
+    {
+        return $query->where('is_ended',Auction::IS_ENDED_AUCTION);
+    }
+    public function scopeParticipateAuctions($query)
+    {
+        return $query->whereHas('bids',function ($q){
+            $q->where('wine_user_id',request()->wine_user_id);
+        });
+    }
+    public function scopeInviteAuctions($query)
+    {
+        return $query->whereHas('invites',function ($q){
+            $q->where('email',Auth::user()->email);
+        });
+    }
     /**
      * Scope a query to only get inprogress auction.
      *
@@ -213,8 +229,8 @@ class Auction extends Model
     {
         return $this->belongsTo(WineUser::class,'created_by','id');
     }
-    public function userLatestBid($user_id = 0)
+    public function userLatestInvite($user_id = 0)
     {
-        return AuctionBid::where('wine_user_id',$user_id)->where('auction_id',$this->id)->latest()->first();
+        return AuctionInvite::where('email',Auth::user()->email)->latest()->first();
     }
 }
