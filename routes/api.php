@@ -126,6 +126,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::get('/user/wishlist-count', [UserController::class, 'allWishlistCount']);
     Route::get('/user/buy-purchse-history', [UserController::class, 'getBuyPurchaseHistory']);
     Route::get('/user/private-auctions', [UserController::class, 'getPrivateAuctions']);
+    Route::get('/user/participate-auctions', [UserController::class, 'getParticipateAuction']);
 
     // Order API
     Route::get('/orders', [OrderController::class, 'index']);
@@ -150,6 +151,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     // auction api
     Route::post('/auction', [AuctionController::class, 'store']);
+    Route::post('/auction/update-invite-member', [AuctionController::class, 'updateInviteMember']);
     Route::put('/auction/{auction}', [AuctionController::class, 'update']);
     Route::delete('/auction/{auction}', [AuctionController::class, 'destory']);
     Route::post('/auction/{auction}/bid', [AuctionBidController::class, 'storeAuctionBid']);

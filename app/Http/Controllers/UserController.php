@@ -7,6 +7,7 @@ use App\Http\Resources\Fail;
 use App\Models\Auction;
 use App\Models\Basket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -85,8 +86,29 @@ class UserController extends Controller
             $data['private_auctions'] = AuctionResource::collection(
                 $privateAuctions->paginate($limit)
             );
+            $inviteAuctions = Auction::inviteAuctions();
+            $inviteAuctions->paginate($limit);
+            $data['invite_auctions'] = AuctionResource::collection(
+                $inviteAuctions->paginate($limit)
+            );
+
 
             return response()->json(['message' => "Get User Private Auctions", "data" => $data], 201);
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
+
+    public function getParticipateAuction(Request $request)
+    {
+        try{
+            $limit = $request->limit ?? config('constant.number_of_items_per_page');
+            $participateAuctions = Auction::finishedAuctions()->participateAuctions();
+            $data = AuctionResource::collection(
+                $participateAuctions->paginate($limit)
+            );
+
+            return response()->json(['message' => "Get User Participate Auctions", "data" => $data], 201);
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }

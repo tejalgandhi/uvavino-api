@@ -7,6 +7,7 @@ use App\Enums\AuctionType;
 use App\Http\Requests\AuctionBidRequest;
 use App\Http\Requests\AuctionCreateRequest;
 use App\Http\Requests\AutomaticBidRequest;
+use App\Http\Requests\InviteMemberRequest;
 use App\Http\Resources\AuctionDetailResource;
 use App\Http\Resources\AuctionResource;
 use App\Http\Resources\AuctionSingleProductDetailResource;
@@ -226,6 +227,30 @@ class AuctionController extends Controller
 
             return (new Success(__('Auction Create Successfully')))->json(201);
 
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json(500);
+        }
+    }
+
+    public function updateInviteMember(InviteMemberRequest $request)
+    {
+        try{
+            $invite_peoples = $request->invite_peoples;
+            if ($invite_peoples) {
+                foreach ($invite_peoples as $invite_people) {
+                    $auctions = AuctionInvite::where('auction_id',$request->auction_id)->pluck('email')->toArray();
+                    $diff = array_diff($invite_peoples, $auctions);
+                    if(!empty($diff)) {
+                        Mail::to($invite_people)->queue(new InvitationMail(Auth::User()));
+                        AuctionInvite::create([
+                            "auction_id" => $request->auction_id,
+                            "email" => $invite_people,
+                        ]);
+                    }
+                }
+            }
+            $inviteMembers = AuctionInvite::where('auction_id',$request->auction_id)->get();
+            return response()->json(['message' => "Invite member add Successfully", "data" => $inviteMembers], 201);
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json(500);
         }

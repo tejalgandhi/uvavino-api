@@ -6,6 +6,8 @@ use App\Models\Wishlist;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Enums\AuctionType;
+use App\Enums\InviteStatus;
+
 
 class AuctionResource extends JsonResource
 {
@@ -18,10 +20,15 @@ class AuctionResource extends JsonResource
     public function toArray($request)
     {
         $user_id = request()->user_id;
+        $wine_user_id = request()->wine_user_id;
         $user_latest_time = !empty($user_id)?$this->userLatestBid($user_id):'';
+        $user_latest_invite = !empty($wine_user_id)?$this->userLatestInvite():'';
         return [
             'id' => $this->id,
             'user_latest_bid' => !empty($user_latest_time)?$user_latest_time->value:'',
+            'user_auction_status' => !empty($user_latest_time) && $user_latest_time->id == $this->winner_bid?'Won':'Lose',
+            'user_invite_status' => !empty($user_latest_invite)?$user_latest_invite->status:'',
+            'user_invite_status_string' => !empty($user_latest_invite)?$user_latest_invite->status->label():'',
             'current_bid' => $this->bidRaised(),
             'next_bid' => $this->nextMinBid(),
             'quick_bids' => $this->quickBid(),
@@ -54,6 +61,7 @@ class AuctionResource extends JsonResource
             'auctions.title',
             'auctions.description',
             'auctions.is_publish',
+            'auctions.is_private',
             'auctions.type',
             'auctions.max_price',
             'auctions.basket_id',
