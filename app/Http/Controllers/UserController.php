@@ -114,4 +114,20 @@ class UserController extends Controller
             return (new Fail($e->getMessage()))->json();
         }
     }
+
+    public function getSellAuctions(Request $request)
+    {
+        try{
+            $limit = $request->limit ?? config('constant.number_of_items_per_page');
+            $participateAuctions = Auction::where('created_by',$request->wine_user_id);
+            $data = AuctionResource::collection(
+                $participateAuctions->paginate($limit)
+            );
+
+            return response()->json(['message' => "Get User Sell Auctions", "data" => $data], 201);
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
+
 }
