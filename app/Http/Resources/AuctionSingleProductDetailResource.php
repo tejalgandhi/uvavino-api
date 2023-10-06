@@ -44,6 +44,7 @@ class AuctionSingleProductDetailResource extends JsonResource
             'description' => $this->description,
             'is_publish' => $this->is_publish,
             'is_private' => $this->is_private,
+            'is_ended' => $this->is_ended,
             'auction_type' => $this->type->name,
             'type' => $this->type->value,
             'max_price' => $this->max_price,
