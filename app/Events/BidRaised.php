@@ -18,7 +18,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
  * Class BidRaised
  * @package App\Events
  */
-class BidRaised implements ShouldBroadcastNow
+class BidRaised implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $timeout = 3600;
@@ -44,13 +44,13 @@ class BidRaised implements ShouldBroadcastNow
     {
         Log::info('BidRaised event broadcasted');
 
-        return new Channel('auction'.$this->auction);
+        return new Channel('auction.'.$this->auction);
     }
 
     public function broadcastWith()
     {
         Log::info('Broadcasting auction data', [
-            'auction' => $this->auction,      
+            'auction' => $this->auction,
             'current_bid' => $this->current_bid,
             'next_bid' => $this->next_bid,
             'quick_bids' => $this->quick_bids,
