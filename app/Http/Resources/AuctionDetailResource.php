@@ -18,6 +18,7 @@ class AuctionDetailResource extends JsonResource
     public function toArray($request)
     {
         $user_id = request()->user_id;
+        $wine_user_id = request()->wine_user_id;
         $user_latest_time = !empty($user_id)? $this->resource->userLatestBid($user_id):'';
         $user_latest_invite = !empty($wine_user_id)? $this->resource->userLatestInvite():'';
         return [
