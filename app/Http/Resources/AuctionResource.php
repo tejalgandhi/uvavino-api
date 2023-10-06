@@ -24,9 +24,8 @@ class AuctionResource extends JsonResource
         $wine_user_id = request()->wine_user_id;
         $user_latest_time = !empty($user_id)? $this->resource->userLatestBid($user_id):'';
         $user_latest_invite = !empty($wine_user_id)? $this->resource->userLatestInvite():'';
-        Log::info($this->country_id);
-        Log::info('$this->country_id');
-        Log::info($this->resource->country_id);
+        Log::info('in');
+        Log::info($this->resource->country_id());
         return [
             'id' => $this->id,
             'user_latest_bid' => !empty($user_latest_time)?$user_latest_time->value:'',
@@ -37,9 +36,9 @@ class AuctionResource extends JsonResource
             'next_bid' => $this->nextMinBid(),
             'quick_bids' => $this->quickBid(),
             'user_id' => $user_id,
-            'country_id' => $this->country_id,
-            'country_name' => $this->country_name,
-            'iso_alpha_2' => $this->country_iso_code,
+            'country_id' => $this->country_id(),
+            'country_name' => $this->country_name(),
+            'iso_alpha_2' => $this->country_iso_code(),
             'flag' =>  $this->country_iso_code ? country_flag($this->country_iso_code) : '',
             'title' => $this->title,
             'total_bids' => $this->bids_count,
