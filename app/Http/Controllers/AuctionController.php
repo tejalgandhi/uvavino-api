@@ -79,7 +79,8 @@ class AuctionController extends Controller
                 return $q->where($a, '<', $v);
             }
         ];
-        $query = Auction::withCount(['bids', 'wishlist' => function ($q) use ($request) {
+        $query = Auction::publishAuctions()
+            ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
                 $q->where('wine_user_id', $request->user_id);
             }])
             ->with([
