@@ -47,6 +47,7 @@ class AuctionResource extends JsonResource
             'description' => $this->description,
             'is_publish' => $this->is_publish,
             'is_private' => $this->is_private,
+            'created_by' => $this->created_by,
             'auction_type' => $this->type->name,
             'type' => $this->type->value,
             'max_price' => $this->max_price,
@@ -69,6 +70,7 @@ class AuctionResource extends JsonResource
             'auctions.basket_id',
             'auctions.start_date',
             'auctions.end_date',
+            'auctions.created_by',
         ];
     }
 }

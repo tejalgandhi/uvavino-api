@@ -54,8 +54,7 @@ class Auction extends Model
     public function scopePublishAuctions($query)
     {
         return $query->where('is_private','0')
-            ->where('is_publish','1')
-            ->orwhere('is_publish','true');
+            ->where('is_publish','1');
     }
     public function scopeFinishedAuctions($query)
     {
@@ -84,7 +83,6 @@ class Auction extends Model
         return $query
             ->where('is_private','0')
             ->where('is_publish','1')
-            ->orwhere('is_publish','true')
             ->where(function ($q) {
                 $q->where('type', AuctionType::TIMEBASED->value)
                     ->where('end_date', '>=', now())
