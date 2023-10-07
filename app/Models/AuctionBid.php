@@ -19,7 +19,18 @@ class AuctionBid extends Model
 
 
         // create a event to happen on saving
-        static::saving(function($model)  {
+        // static::saving(function($model)  {
+        //     $current_bid = $model->auction->bidRaised();
+        //     $next_bid = $model->auction->nextMinBid();
+        //     $quick_bids = $model->auction->quickBid();
+        //     event(new  \App\Events\BidRaised($model->auction_id, $current_bid, $next_bid, $quick_bids));
+        //     if($model->auction->type == AuctionType::LIVE)
+        //     {
+        //         dispatch(new VerifyLiveAuctionEnd($model->auction))->delay($model->timestamp->addSeconds(config('constant.configured_auction_time')));
+        //     }
+        // });
+
+        static::created(function($model)  {
             $current_bid = $model->auction->bidRaised();
             $next_bid = $model->auction->nextMinBid();
             $quick_bids = $model->auction->quickBid();
