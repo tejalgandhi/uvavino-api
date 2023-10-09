@@ -26,13 +26,15 @@ class BidRaised implements ShouldBroadcast
     public $current_bid;
     public $next_bid;
     public $quick_bids;
+    public $bid_user;
 
-    public function __construct($auction,$current_bid,$next_bid,$quick_bids)
+    public function __construct($auction,$current_bid,$next_bid,$quick_bids, $bid_user)
     {
             $this->auction = $auction;
             $this->current_bid = $current_bid;
             $this->next_bid = $next_bid;
             $this->quick_bids = $quick_bids;
+            $this->$bid_user = $bid_user;
     }
 
     /**
@@ -54,12 +56,15 @@ class BidRaised implements ShouldBroadcast
             'current_bid' => $this->current_bid,
             'next_bid' => $this->next_bid,
             'quick_bids' => $this->quick_bids,
+            'bid user' => this->bid_user,
         ]);
 
         return [
+            'auction' => $this->auction,
             'current_bid' => $this->current_bid,
             'next_bid' => $this->next_bid,
             'quick_bids' => $this->quick_bids,
+            'bid user' => this->bid_user,
         ];
     }
 }
