@@ -267,7 +267,6 @@ class AuctionController extends Controller
         try {
             \Log::info($request->all());
             $invitee = $auction->invites->pluck('email')->toArray();
-            //TODO: logic to update images in products table
             
             Basket::where('id', $auction->basket_id)->update([
                 "title" => $request->title,

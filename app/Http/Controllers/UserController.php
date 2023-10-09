@@ -109,7 +109,7 @@ class UserController extends Controller
                 $participateAuctions->paginate($limit)
             );
 
-            return response()->json(['message' => "Get User Participate Auctions", "data" => $data], 201);
+            return response()->json($data->response()->getData(true), 201);
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
