@@ -34,7 +34,7 @@ class BidRaised implements ShouldBroadcast
             $this->current_bid = $current_bid;
             $this->next_bid = $next_bid;
             $this->quick_bids = $quick_bids;
-            $this->$bid_user = $bid_user;
+            $this->bid_user = $bid_user;
     }
 
     /**
