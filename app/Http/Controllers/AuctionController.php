@@ -262,11 +262,13 @@ class AuctionController extends Controller
      * @param AuctionCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(AuctionUpdateRequest $request, Auction $auction)
+    public function update(Request $request, Auction $auction)
     {
         try {
+            \Log::info($request->all());
             $invitee = $auction->invites->pluck('email')->toArray();
-            Auction::where('id', $auction->id)->update($request->only([
+            Auction::where('id', $auction->id)->update(
+                $request->only([
                 "basket_id",
                 "title",
                 "description",
@@ -276,7 +278,8 @@ class AuctionController extends Controller
                 "end_date",
                 "type",
                 "max_price",
-            ]));
+                ])
+            );
             if($auction->end_date != $request->end_date && $request->type == AuctionType::TIMEBASED)
             {
                 dispatch(new VerifyTimebasedAuctionEnd($auction))->delay($auction->end_date->addMinutes(1));
