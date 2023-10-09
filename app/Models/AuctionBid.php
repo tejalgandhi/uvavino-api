@@ -34,7 +34,7 @@ class AuctionBid extends Model
             $current_bid = $model->auction->bidRaised();
             $next_bid = $model->auction->nextMinBid();
             $quick_bids = $model->auction->quickBid();
-            $bid_user = $model->wine_user_id;
+            $bid_user =$model->wine_user->id;
             event(new  \App\Events\BidRaised($model->auction_id, $current_bid, $next_bid, $quick_bids, $bid_user));
             if($model->auction->type == AuctionType::LIVE)
             {
