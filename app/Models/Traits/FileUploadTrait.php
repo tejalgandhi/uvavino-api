@@ -59,9 +59,7 @@ trait FileUploadTrait
         }
         Log::info("files " . json_encode([$files]));
         $this->{$field} = $files;
-        Log::info("after files");
         $this->save();
-        Log::info("saved");
     }
     /**
      * Generate destination folder for saving files

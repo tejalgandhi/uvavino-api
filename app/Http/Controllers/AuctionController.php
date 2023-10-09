@@ -267,49 +267,13 @@ class AuctionController extends Controller
         try {
             \Log::info($request->all());
             $invitee = $auction->invites->pluck('email')->toArray();
-            Auction::where('id', $auction->id)->update(
-                $request->only([
-                "basket_id",
-                "title",
-                "description",
-                "is_private",
-                "is_publish",
-                "start_date",
-                "end_date",
-                "type",
-                "max_price",
-                ])
-            );
-            if($auction->end_date != $request->end_date && $request->type == AuctionType::TIMEBASED)
-            {
-                dispatch(new VerifyTimebasedAuctionEnd($auction))->delay($auction->end_date->addMinutes(1));
-
-            }
-            if($auction->start_date != $request->start_date && $request->type == AuctionType::LIVE)
-            {
-                dispatch(new VerifyLiveAuctionEnd($auction))->delay($auction->start_date->addSeconds(config('constant.configured_auction_time')));
-            }
-            $invite_peoples = $request->invite_peoples;
-            if ($invite_peoples) {
-                $diff = array_diff($invite_peoples, $invitee);
-                $remove_invites = array_diff($invitee, $invite_peoples);
-                if (!empty($diff)) {
-                    foreach ($diff as $invite_people) {
-                        Mail::to($invite_people)->queue(new InvitationMail(Auth::User()));
-                        AuctionInvite::create([
-                            "auction_id" => $auction->id,
-                            "email" => $invite_people,
-                        ]);
-                    }
-                }
-                if (!empty($remove_invites)) {
-                    AuctionInvite::whereIn('email', $remove_invites)->where('auction_id', $auction->id)->delete();
-                }
-            }
+            //TODO: logic to update images in products table
+            
             Basket::where('id', $auction->basket_id)->update([
                 "title" => $request->title,
                 "price" => $request->price,
             ]);
+            \Log::info('Basket updated');
 
             $products = $request->products;
             foreach ($products as $product) {
@@ -341,6 +305,48 @@ class AuctionController extends Controller
                     $updateProduct->uploadImages('product_images', $product['product_images'], ['products']);
                 }
             }
+            \Log::info('Product updated');
+            Auction::where('id', $auction->id)->update(
+                $request->only([
+                "basket_id",
+                "title",
+                "description",
+                "is_private",
+                "is_publish",
+                "start_date",
+                "end_date",
+                "type",
+                "max_price",
+                ])
+            );
+            \Log::info('Auction updated');
+            if($auction->end_date != $request->end_date && $request->type == AuctionType::TIMEBASED)
+            {
+                dispatch(new VerifyTimebasedAuctionEnd($auction))->delay($auction->end_date->addMinutes(1));
+
+            }
+            if($auction->start_date != $request->start_date && $request->type == AuctionType::LIVE)
+            {
+                dispatch(new VerifyLiveAuctionEnd($auction))->delay($auction->start_date->addSeconds(config('constant.configured_auction_time')));
+            }
+            $invite_peoples = $request->invite_peoples;
+            if ($invite_peoples) {
+                $diff = array_diff($invite_peoples, $invitee);
+                $remove_invites = array_diff($invitee, $invite_peoples);
+                if (!empty($diff)) {
+                    foreach ($diff as $invite_people) {
+                        Mail::to($invite_people)->queue(new InvitationMail(Auth::User()));
+                        AuctionInvite::create([
+                            "auction_id" => $auction->id,
+                            "email" => $invite_people,
+                        ]);
+                    }
+                }
+                if (!empty($remove_invites)) {
+                    AuctionInvite::whereIn('email', $remove_invites)->where('auction_id', $auction->id)->delete();
+                }
+            }
+
 
 
             return (new Success(__('Auction Updated Successfully')))->json(201);
