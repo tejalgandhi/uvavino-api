@@ -6,6 +6,7 @@ use App\Enums\BottleSize;
 use App\Enums\AuctionType;
 use App\Http\Requests\AuctionBidRequest;
 use App\Http\Requests\AuctionCreateRequest;
+use App\Http\Requests\AuctionUpdateRequest;
 use App\Http\Requests\AutomaticBidRequest;
 use App\Http\Requests\InviteMemberRequest;
 use App\Http\Resources\AuctionDetailResource;
@@ -261,7 +262,7 @@ class AuctionController extends Controller
      * @param AuctionCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(AuctionCreateRequest $request, Auction $auction)
+    public function update(AuctionUpdateRequest $request, Auction $auction)
     {
         try {
             $invitee = $auction->invites->pluck('email')->toArray();
