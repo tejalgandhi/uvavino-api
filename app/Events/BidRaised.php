@@ -56,7 +56,7 @@ class BidRaised implements ShouldBroadcast
             'current_bid' => $this->current_bid,
             'next_bid' => $this->next_bid,
             'quick_bids' => $this->quick_bids,
-            'bid user' => this->bid_user,
+            'bid_user' => this->bid_user,
         ]);
 
         return [
@@ -64,7 +64,7 @@ class BidRaised implements ShouldBroadcast
             'current_bid' => $this->current_bid,
             'next_bid' => $this->next_bid,
             'quick_bids' => $this->quick_bids,
-            'bid user' => this->bid_user,
+            'bid_user' => this->bid_user,
         ];
     }
 }
