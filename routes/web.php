@@ -28,11 +28,6 @@ Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'i
 Route::get('/event', function (){
 //    \Illuminate\Support\Facades\Event::dispatch(new \App\Events\BidRaised(1));
     $auction =  Auction::find(1);
-//    dispatch(new VerifyLiveAuctionEnd($auction));
-    $bid_raised = $auction->bidRaised();
-    $next_bid = $auction->nextMinBid();
-    $quick_bids = $auction->quickBid();
-//    broadcast(new  \App\Events\BidRaised($auction->id,$bid_raised,$next_bid,$quick_bids));
-    broadcast(new  \App\Events\BidRaised($auction->id,$bid_raised,$next_bid,$quick_bids));
+
     dd('hi');
 })->name('event');
