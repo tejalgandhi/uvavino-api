@@ -242,7 +242,8 @@ class Auction extends Model
     }
     public function userLatestInvite($user_id = 0)
     {
-        return AuctionInvite::where('email',Auth::user()->email)->where('auction_id',$this->id)->latest()->first();
+        $user = WineUser::where('id',$user_id)->first();
+        return AuctionInvite::where('email',$user->email)->where('auction_id',$this->id)->latest()->first();
     }
     public function userLatestBid($user_id = 0)
     {

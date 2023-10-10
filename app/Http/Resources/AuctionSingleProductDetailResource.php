@@ -20,7 +20,7 @@ class AuctionSingleProductDetailResource extends JsonResource
         $product =  request()->product;
         $user_id = request()->user_id;
         $user_latest_time = !empty($user_id)? $this->resource->userLatestBid($user_id):'';
-        $user_latest_invite = !empty($user_id)? $this->resource->userLatestInvite():'';
+        $user_latest_invite = !empty($user_id)? $this->resource->userLatestInvite($user_id):'';
         return [
             'id' => $this->id,
             'user_latest_bid' => !empty($user_latest_time)?$user_latest_time->value:'',
