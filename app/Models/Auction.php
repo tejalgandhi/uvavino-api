@@ -49,7 +49,7 @@ class Auction extends Model
 
     public function scopePrivateAuctions($query)
     {
-        return $query->where('is_private','1');
+        return $query->where('is_private','1')->where('created_by',Auth::user()->id);
     }
     public function scopePublishAuctions($query)
     {

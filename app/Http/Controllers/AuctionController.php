@@ -43,6 +43,8 @@ class AuctionController extends Controller
     {
         $order_by = $request->order_by;
         $in_wishlist = $request->is_wishlist ?? '';
+        $user_id = !empty($request->wine_user_id)?$request->wine_user_id:$request->user_id;
+        $request->merge(['user_id' => $user_id]);
         $limit = $request->limit ?? config('constant.number_of_items_per_page') ;
         $filter_attrs = [
             'auctions' => [
@@ -81,8 +83,8 @@ class AuctionController extends Controller
             }
         ];
         $query = Auction::publishAuctions()
-            ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
-                $q->where('wine_user_id', $request->user_id);
+            ->withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
+                $q->where('wine_user_id', $user_id);
             }])
             ->with([
                 'baskets',
@@ -96,8 +98,8 @@ class AuctionController extends Controller
             ]);
         //wishlist tab in user profile
         if ($in_wishlist) {
-            $query = $query->whereHas('wishlist', function ($q) use ($request) {
-                $q->where('wine_user_id', $request->user_id);
+            $query = $query->whereHas('wishlist', function ($q) use ($user_id) {
+                $q->where('wine_user_id', $user_id);
             });
         }
         /*
@@ -346,9 +348,7 @@ class AuctionController extends Controller
                 }
             }
 
-
-
-            return (new Success(__('Auction Updated Successfully')))->json(201);
+            return response()->json(['message' => "Auction Updated Successfully", "data" => new AuctionResource($auction)], 201);
 
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json(500);
@@ -362,9 +362,11 @@ class AuctionController extends Controller
     public function show(Request $request, $id)
     {
         $request->merge(['order_by' => $request->order_by]);
+        $user_id = !empty($request->wine_user_id)?$request->wine_user_id:$request->user_id;
+        $request->merge(['user_id' => $user_id]);
         $auction = Auction::query()
-            ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
-                $q->where('wine_user_id', $request->user_id);
+            ->withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
+                $q->where('wine_user_id', $user_id);
             }])
             ->where('id', $id);
 
@@ -377,10 +379,12 @@ class AuctionController extends Controller
 
     public function showSingleAuction(Request $request, $auction_id, Product $product)
     {
+        $user_id = !empty($request->wine_user_id)?$request->wine_user_id:$request->user_id;
         $request->merge(['product' => $product]);
+        $request->merge(['user_id' => $user_id]);
         $auction = Auction::query()
-            ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
-                $q->where('wine_user_id', $request->user_id);
+            ->withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
+                $q->where('wine_user_id', $user_id);
             }])
             ->where('id', $auction_id)
             ->first();
