@@ -55,7 +55,7 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
-    
+
         'do' => [
         'driver' => 's3',
         'key' => env('DO_ACCESS_KEY_ID'),
@@ -67,8 +67,8 @@ return [
         'url' => env('DO_URL'),
         'endpoint' => env('DO_ENDPOINT'),
         'visibility' => 'public',
-        'use_path_style_endpoint' => env('DO_USE_PATH_STYLE_ENDPOINT', false),
-        
+        'use_path_style_endpoint' => env('DO_USE_PATH_STYLE_ENDPOINT', true),
+
     ],
 
     ],
