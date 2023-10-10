@@ -43,6 +43,8 @@ trait FileUploadTrait
                  // && Storage::disk('do')->exists($file_path)
                  if (!in_array($file_path,$params)) {
                          Storage::disk('do')->delete($file_path);
+                         Log::info('delete file');
+                         Log::info($file_path);
                      }
              }
          }
@@ -56,6 +58,10 @@ trait FileUploadTrait
                     $filePath = Storage::putFileAs($path, $param, $name);
                     $files[] = $filePath;
                 }else{
+                    Log::info('param');
+                    Log::info($param);
+                    Log::info(env('DO_ENDPOINT'));
+                    $f = str_replace(env('DO_ENDPOINT'),"",$param);
                     $files[] = $param;
                 }
             }
