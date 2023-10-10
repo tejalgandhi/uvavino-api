@@ -267,7 +267,7 @@ class AuctionController extends Controller
         try {
             \Log::info($request->all());
             $invitee = $auction->invites->pluck('email')->toArray();
-            
+
             Basket::where('id', $auction->basket_id)->update([
                 "title" => $request->title,
                 "price" => $request->price,
