@@ -348,8 +348,8 @@ class AuctionController extends Controller
                     AuctionInvite::whereIn('email', $remove_invites)->where('auction_id', $auction->id)->delete();
                 }
             }
-
-            return response()->json(['message' => "Auction Updated Successfully", "data" => new AuctionResource($auction)], 201);
+            $a = Auction::where('id',$auction->id)->first();
+            return response()->json(['message' => "Auction Updated Successfully", "data" => new AuctionResource($a)], 201);
 
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json(500);
