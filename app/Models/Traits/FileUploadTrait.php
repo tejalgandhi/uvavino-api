@@ -25,7 +25,6 @@ trait FileUploadTrait
         // Make sure path exists
         Log::info('$path');
         Log::info($path);
-        Log::info(! Storage::disk('do')->exists($path));
 //         if (! Storage::exists($path)) {
 //             Storage::makeDirectory($path);
 //         }
