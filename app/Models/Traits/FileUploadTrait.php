@@ -21,8 +21,10 @@ trait FileUploadTrait
     public function uploadImages($field,$params,$path)
     {
         // Convert path
+        $endPoint = config('filesystems.disks.default.endpoint');
         $path = $this->destinationPath($path);
         // Make sure path exists
+        Log::info($endPoint);
         Log::info('$path');
         Log::info($path);
 //        Log::info(Storage::disk('do')->exists($path));
@@ -60,8 +62,8 @@ trait FileUploadTrait
                 }else{
                     Log::info('param');
                     Log::info($param);
-                    Log::info(env('DO_ENDPOINT'));
-                    $f = str_replace(env('DO_ENDPOINT'),"",$param);
+                    Log::info($endPoint);
+                    $f = str_replace($endPoint,"",$param);
                     $files[] = $param;
                 }
             }
