@@ -128,6 +128,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::get('/user/buy-purchase-history', [UserController::class, 'getBuyPurchaseHistory']);
     Route::get('/user/private-auctions', [UserController::class, 'getPrivateAuctions']);
     Route::get('/user/participate-auctions', [UserController::class, 'getParticipateAuction']);
+    Route::post('/user/update-auction-invitation', [UserController::class, 'updateAuctionInvitation']);
 
     // Order API
     Route::get('/orders', [OrderController::class, 'index']);

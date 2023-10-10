@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AuctionInviteRequest;
 use App\Http\Resources\AuctionResource;
 use App\Http\Resources\Fail;
 use App\Models\Auction;
+use App\Models\AuctionInvite;
 use App\Models\Basket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -88,11 +90,9 @@ class UserController extends Controller
                 $privateAuctions->paginate($limit)
             );
             $inviteAuctions = Auction::inviteAuctions();
-            $inviteAuctions->paginate($limit);
             $data['invite_auctions'] = AuctionResource::collection(
                 $inviteAuctions->paginate($limit)
             );
-
 
             return response()->json(['message' => "Get User Private Auctions", "data" => $data], 201);
         } catch (\Exception $e) {
@@ -124,6 +124,22 @@ class UserController extends Controller
                 $participateAuctions->paginate($limit)
             );
             return response()->json($data->response()->getData(true), 201);
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
+
+    public function updateAuctionInvitation(AuctionInviteRequest $request)
+    {
+        try{
+            $limit = $request->limit ?? config('constant.number_of_items_per_page');
+            AuctionInvite::where('auction_id',$request->auction_id)->update(['status'=>$request->status]);
+            $inviteAuctions = Auction::inviteAuctions();
+            $data['invite_auctions'] = AuctionResource::collection(
+                $inviteAuctions->paginate($limit)
+            );
+            return response()->json(['message' => "Auction Invite Update Successfully." , "data" => $data], 201);
+
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }

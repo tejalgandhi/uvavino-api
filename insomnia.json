@@ -1,9 +1,287 @@
 {
     "_type": "export",
     "__export_format": 4,
-    "__export_date": "2023-09-26T11:29:37.777Z",
+    "__export_date": "2023-10-10T09:37:12.799Z",
     "__export_source": "insomnia.desktop.app:v2023.5.8",
     "resources": [
+        {
+            "_id": "req_eee259664c374c6b8f511197d8df391e",
+            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
+            "modified": 1695989803766,
+            "created": 1695989793734,
+            "url": "wss://dev.api.uvavino.labomba.studio/app/local?protocol=7&client=js&version=4.3.1&flash=false",
+            "name": "New Request",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "insomnia/2023.5.8"
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1695989793734,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "wrk_f2074d8fe23e48eba1eca85c76387f32",
+            "parentId": null,
+            "modified": 1692861313677,
+            "created": 1692861313677,
+            "name": "uv",
+            "description": "",
+            "scope": "collection",
+            "_type": "workspace"
+        },
+        {
+            "_id": "req_dfa37debfb824ad1b4005fef6eccbd34",
+            "parentId": "fld_83188ffe5497425c9e615d2904660903",
+            "modified": 1696508479902,
+            "created": 1696508055723,
+            "url": "{{base}}/api/user/participate-auctions",
+            "name": "Participate Auctions",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [
+                {
+                    "id": "pair_aad7476eb56046a2a6a99fd902ec6412",
+                    "name": "user_id",
+                    "value": "11",
+                    "description": ""
+                }
+            ],
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "insomnia/2023.5.8"
+                },
+                {
+                    "id": "pair_4df46fceaa6f4b8bac7f563bbc075c32",
+                    "name": "",
+                    "value": "",
+                    "description": ""
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
+            "metaSortKey": -1696508055723,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "fld_83188ffe5497425c9e615d2904660903",
+            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
+            "modified": 1694779382979,
+            "created": 1694779374982,
+            "name": "User",
+            "description": "",
+            "environment": {},
+            "environmentPropertyOrder": null,
+            "metaSortKey": -1693210031652,
+            "_type": "request_group"
+        },
+        {
+            "_id": "req_e63c06c45e264cacb3553e4a2ea2f7e9",
+            "parentId": "fld_83188ffe5497425c9e615d2904660903",
+            "modified": 1696930564019,
+            "created": 1696914355484,
+            "url": "{{base}}/api/user/update-auction-invitation",
+            "name": "Update Auction Invitation",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/x-www-form-urlencoded",
+                "params": [
+                    {
+                        "name": "auction_id",
+                        "value": "17",
+                        "id": "pair_54c417f1ac8f4d169b9ec43e8da9ad34"
+                    },
+                    {
+                        "id": "pair_0c07a44f35474d6bb00405fb33f52468",
+                        "name": "status",
+                        "value": "1",
+                        "description": ""
+                    }
+                ]
+            },
+            "parameters": [
+                {
+                    "id": "pair_aad7476eb56046a2a6a99fd902ec6412",
+                    "name": "user_id",
+                    "value": "11",
+                    "description": "",
+                    "disabled": true
+                }
+            ],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "insomnia/2023.5.8"
+                },
+                {
+                    "id": "pair_4df46fceaa6f4b8bac7f563bbc075c32",
+                    "name": "",
+                    "value": "",
+                    "description": ""
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
+            "metaSortKey": -1696443272974.375,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_57d58aa28aac40d582af564669b4e23d",
+            "parentId": "fld_83188ffe5497425c9e615d2904660903",
+            "modified": 1696589660286,
+            "created": 1696589639844,
+            "url": "{{base}}/api/user/sell-auctions",
+            "name": "Sell Auctions",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [
+                {
+                    "id": "pair_aad7476eb56046a2a6a99fd902ec6412",
+                    "name": "user_id",
+                    "value": "11",
+                    "description": ""
+                }
+            ],
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "insomnia/2023.5.8"
+                },
+                {
+                    "id": "pair_4df46fceaa6f4b8bac7f563bbc075c32",
+                    "name": "",
+                    "value": "",
+                    "description": ""
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
+            "metaSortKey": -1696378490225.75,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_063a1890607244458102fdc6fca46408",
+            "parentId": "fld_83188ffe5497425c9e615d2904660903",
+            "modified": 1696510909123,
+            "created": 1696509271367,
+            "url": "{{base}}/api/auction/update-invite-member",
+            "name": "Update Invite Member",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/x-www-form-urlencoded",
+                "params": [
+                    {
+                        "id": "pair_4b1950df55d84055b39d6811a1d6c315",
+                        "name": "auction_id",
+                        "value": "17",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_10f35c573c9846a88bc24e3754e72fa2",
+                        "name": "invite_peoples[0]",
+                        "value": "tejal@yopmail.com",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_d91a04cdde45435898b1f12290614f73",
+                        "name": "invite_peoples[1]",
+                        "value": "dharmen@yopmail.com",
+                        "description": ""
+                    }
+                ]
+            },
+            "parameters": [
+                {
+                    "id": "pair_aad7476eb56046a2a6a99fd902ec6412",
+                    "name": "user_id",
+                    "value": "11",
+                    "description": ""
+                },
+                {
+                    "id": "pair_170e2900e81945ff80ede41c4cd456e9",
+                    "name": "auction_id",
+                    "value": "17",
+                    "description": ""
+                }
+            ],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "insomnia/2023.5.8"
+                },
+                {
+                    "id": "pair_4df46fceaa6f4b8bac7f563bbc075c32",
+                    "name": "",
+                    "value": "",
+                    "description": ""
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
+            "metaSortKey": -1696248924728.5,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
         {
             "_id": "req_8c61ef95a8f6436eb76334ac8468762c",
             "parentId": "fld_83188ffe5497425c9e615d2904660903",
@@ -95,28 +373,6 @@
             "_type": "request"
         },
         {
-            "_id": "fld_83188ffe5497425c9e615d2904660903",
-            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
-            "modified": 1694779382979,
-            "created": 1694779374982,
-            "name": "User",
-            "description": "",
-            "environment": {},
-            "environmentPropertyOrder": null,
-            "metaSortKey": -1693210031652,
-            "_type": "request_group"
-        },
-        {
-            "_id": "wrk_f2074d8fe23e48eba1eca85c76387f32",
-            "parentId": null,
-            "modified": 1692861313677,
-            "created": 1692861313677,
-            "name": "uv",
-            "description": "",
-            "scope": "collection",
-            "_type": "workspace"
-        },
-        {
             "_id": "req_6538caa54aea46b3a9b60b4bfaad9044",
             "parentId": "fld_83188ffe5497425c9e615d2904660903",
             "modified": 1695195426726,
@@ -197,6 +453,96 @@
                 "token": "{{token}}"
             },
             "metaSortKey": -1694651205566.75,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_8706108bf2904901953b9bd3de05012e",
+            "parentId": "fld_83188ffe5497425c9e615d2904660903",
+            "modified": 1696913999112,
+            "created": 1695799251075,
+            "url": "{{base}}/api/user/private-auctions",
+            "name": "get Private auctions",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "authority",
+                    "value": "dev.api.uvavino.immera.io",
+                    "id": "pair_8833e16099d643e797638f0ebca07fde",
+                    "disabled": true
+                },
+                {
+                    "name": "accept",
+                    "value": "application/json, text/plain, */*",
+                    "id": "pair_935571381ce44d48a5bf7cc9f09e7719"
+                },
+                {
+                    "name": "accept-language",
+                    "value": "en-GB,en-US;q=0.9,en;q=0.8",
+                    "id": "pair_76269ed47e0840518d023ac44c7d59eb"
+                },
+                {
+                    "name": "origin",
+                    "value": "http://165.22.72.229",
+                    "id": "pair_d57a7f221e4c4ebba0cbcd8c518887f1",
+                    "disabled": true
+                },
+                {
+                    "name": "referer",
+                    "value": "http://165.22.72.229/",
+                    "id": "pair_4e2886fb3f6e41848eef0a8c6cce9dfa",
+                    "disabled": true
+                },
+                {
+                    "name": "sec-ch-ua",
+                    "value": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+                    "id": "pair_df666bbfd0fd40c4b15768accc4d7317"
+                },
+                {
+                    "name": "sec-ch-ua-mobile",
+                    "value": "?0",
+                    "id": "pair_7cbd72cfaeff48988021fe5db2422305"
+                },
+                {
+                    "name": "sec-ch-ua-platform",
+                    "value": "\"Windows\"",
+                    "id": "pair_125df8040980400ead0ca407c73d4267"
+                },
+                {
+                    "name": "sec-fetch-dest",
+                    "value": "empty",
+                    "id": "pair_e23a250a4c354e689c66e33830fe4154"
+                },
+                {
+                    "name": "sec-fetch-mode",
+                    "value": "cors",
+                    "id": "pair_cc2029e7b1d64dc09dea1a930f8b041f"
+                },
+                {
+                    "name": "sec-fetch-site",
+                    "value": "cross-site",
+                    "id": "pair_ccc4299ff44243dd96009c8786c42815"
+                },
+                {
+                    "name": "user-agent",
+                    "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+                    "id": "pair_5fa5922776cf4a89812312db6478e05e"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
+            "metaSortKey": -1694587109853.625,
             "isPrivate": false,
             "settingStoreCookies": true,
             "settingSendCookies": true,
@@ -299,9 +645,9 @@
         {
             "_id": "req_4b2cd817249e49d987783df387aaeb2c",
             "parentId": "fld_83188ffe5497425c9e615d2904660903",
-            "modified": 1695300010900,
+            "modified": 1695993958581,
             "created": 1695299966406,
-            "url": "{{base}}/api/countries",
+            "url": "{{base}}api/countries",
             "name": "countries",
             "description": "",
             "method": "GET",
@@ -847,9 +1193,9 @@
         {
             "_id": "req_df2ddf97757046b7a1ce721a4c6de0eb",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1695365377411,
+            "modified": 1696929117580,
             "created": 1695020947568,
-            "url": "http://uvavino-api.test/api/auction/78",
+            "url": "{{base}}/api/auction/34?method=put",
             "name": "Update auction",
             "description": "",
             "method": "POST",
@@ -918,7 +1264,7 @@
                     },
                     {
                         "name": "products[0][id]",
-                        "value": "138",
+                        "value": "54",
                         "type": "text",
                         "id": "pair_82b8138c92964bdd8c6c39f2292c573a"
                     },
@@ -1034,7 +1380,8 @@
                         "name": "products[0][product_images][0]",
                         "fileName": "C:\\Users\\tejal\\Downloads\\download (1).jpg",
                         "type": "file",
-                        "id": "pair_ec31906262a34d72a9147a65b2f98196"
+                        "id": "pair_ec31906262a34d72a9147a65b2f98196",
+                        "disabled": false
                     },
                     {
                         "name": "products[0][product_images][1]",
@@ -1043,7 +1390,7 @@
                         "id": "pair_1403cd194edc4fa29dbfce0f31ecade5",
                         "disabled": false,
                         "multiline": false,
-                        "value": "products/169511043358.jpg"
+                        "value": "products\\/16692267636.jpg"
                     },
                     {
                         "name": "products[0][volume]",
@@ -1086,122 +1433,140 @@
                         "value": "150",
                         "type": "text",
                         "id": "pair_4e9f39459958462ca0d555f97ed46663",
-                        "disabled": false
+                        "disabled": true
                     },
                     {
                         "name": "products[1][title]",
                         "value": "Testjhjjh",
                         "type": "text",
-                        "id": "pair_0199a7e89e5c4c34a5a873ea308be779"
+                        "id": "pair_0199a7e89e5c4c34a5a873ea308be779",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][description]",
                         "value": "test3kgugu",
                         "type": "text",
-                        "id": "pair_c3cd07e808fd41d898fee97d65de9c83"
+                        "id": "pair_c3cd07e808fd41d898fee97d65de9c83",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][basket_quantity]",
                         "value": "1",
                         "type": "text",
-                        "id": "pair_1cda71f4f06b400b87b4d6885056d69f"
+                        "id": "pair_1cda71f4f06b400b87b4d6885056d69f",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][drink_type_id]",
                         "value": "1",
                         "type": "text",
-                        "id": "pair_f6a69ad9e5264998b239a767cf0e2d70"
+                        "id": "pair_f6a69ad9e5264998b239a767cf0e2d70",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][wine_name]",
                         "value": "yutfjj",
                         "type": "text",
-                        "id": "pair_a753c8101a0c4cdf9894925af5bfea96"
+                        "id": "pair_a753c8101a0c4cdf9894925af5bfea96",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][bottle_size]",
                         "value": "1",
                         "type": "text",
-                        "id": "pair_916c8c5687ba4873b85699e21d7c3499"
+                        "id": "pair_916c8c5687ba4873b85699e21d7c3499",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][country_id]",
                         "value": "1",
                         "type": "text",
-                        "id": "pair_1993ff4b827440378101409a9aeda0d8"
+                        "id": "pair_1993ff4b827440378101409a9aeda0d8",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][region_id]",
                         "value": "1",
                         "type": "text",
-                        "id": "pair_7b08090a025b4f19b99f3cda7b1b0174"
+                        "id": "pair_7b08090a025b4f19b99f3cda7b1b0174",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][producer_id]",
                         "value": "1",
                         "type": "text",
-                        "id": "pair_fa25bdd2bdf94adb877808ab817f9eeb"
+                        "id": "pair_fa25bdd2bdf94adb877808ab817f9eeb",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][wine_maker]",
                         "value": "rwrwreer",
                         "type": "text",
-                        "id": "pair_e1d625e76b53447b87cbe4ce4bedce18"
+                        "id": "pair_e1d625e76b53447b87cbe4ce4bedce18",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][wine_type_id]",
                         "value": "1",
                         "type": "text",
-                        "id": "pair_087c15e2af784af59b0e0135c546ff11"
+                        "id": "pair_087c15e2af784af59b0e0135c546ff11",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][year]",
                         "value": "1",
                         "type": "text",
-                        "id": "pair_0cb4ecd1ffdc448d997b804b130ddcee"
+                        "id": "pair_0cb4ecd1ffdc448d997b804b130ddcee",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][storage_condition]",
                         "value": "test11",
                         "type": "text",
-                        "id": "pair_2a8ad4434a86465a9f5f4a72f1135503"
+                        "id": "pair_2a8ad4434a86465a9f5f4a72f1135503",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][review_and_rewards]",
                         "value": "test11",
                         "type": "text",
-                        "id": "pair_676922ef6778471493e7133ecc8bb6c7"
+                        "id": "pair_676922ef6778471493e7133ecc8bb6c7",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][medal]",
                         "value": "1",
                         "type": "text",
-                        "id": "pair_1de6319e5bdf46deb7171b44e4c362b2"
+                        "id": "pair_1de6319e5bdf46deb7171b44e4c362b2",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][award_name]",
                         "value": "hjgjg",
                         "type": "text",
-                        "id": "pair_b2b2a4d12a2d48028263c3cf54719a05"
+                        "id": "pair_b2b2a4d12a2d48028263c3cf54719a05",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][score]",
                         "value": "111",
                         "type": "text",
-                        "id": "pair_bc74252d9abc49bdb359d2c30d56442b"
+                        "id": "pair_bc74252d9abc49bdb359d2c30d56442b",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][review_name]",
                         "value": "dwerswr",
                         "type": "text",
-                        "id": "pair_9deca4ee545b4987aeb60b370e5926a4"
+                        "id": "pair_9deca4ee545b4987aeb60b370e5926a4",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][product_images][]",
                         "fileName": "C:\\Users\\tejal\\Downloads\\download (1).jpg",
                         "type": "file",
                         "id": "pair_034487b518814edd93aa772686019773",
-                        "disabled": false
+                        "disabled": true
                     },
                     {
                         "name": "products[1][product_images][]",
@@ -1214,37 +1579,43 @@
                         "name": "products[1][volume]",
                         "value": "ml",
                         "type": "text",
-                        "id": "pair_f1456e8c5652423d8a8f7d7664ebfd94"
+                        "id": "pair_f1456e8c5652423d8a8f7d7664ebfd94",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][price]",
                         "value": "120.12",
                         "type": "text",
-                        "id": "pair_91bc45c48afc4c5196d9d9098c665b6c"
+                        "id": "pair_91bc45c48afc4c5196d9d9098c665b6c",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][wine_variety][]",
                         "value": "1",
                         "type": "text",
-                        "id": "pair_322f476e6df7439498973d6db42ba0de"
+                        "id": "pair_322f476e6df7439498973d6db42ba0de",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][wine_variety][]",
                         "value": "2",
                         "type": "text",
-                        "id": "pair_559a10babb9b46f1b79450da190afd95"
+                        "id": "pair_559a10babb9b46f1b79450da190afd95",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][wine_tag][]",
                         "value": "1",
                         "type": "text",
-                        "id": "pair_7a7d512b12de4899960c15b48131d837"
+                        "id": "pair_7a7d512b12de4899960c15b48131d837",
+                        "disabled": true
                     },
                     {
                         "name": "products[1][wine_tag][]",
                         "value": "2",
                         "type": "text",
-                        "id": "pair_37842a3fda2646cdbfc9e98e3d50d569"
+                        "id": "pair_37842a3fda2646cdbfc9e98e3d50d569",
+                        "disabled": true
                     },
                     {
                         "name": "",
@@ -1318,14 +1689,20 @@
             "headers": [
                 {
                     "name": "Authorization",
-                    "value": "Bearer 3|qzCCJiFDNaVnuVcQ8ZgiFaME4iYNbakSajXbRKMo"
+                    "value": "Bearer 3|qzCCJiFDNaVnuVcQ8ZgiFaME4iYNbakSajXbRKMo",
+                    "id": "pair_32586f9939e94691981df5fc0f1eaa80",
+                    "disabled": true
                 },
                 {
                     "name": "Content-Type",
-                    "value": "multipart/form-data"
+                    "value": "multipart/form-data",
+                    "id": "pair_ed66cb3f74df455f92a1e92d6d597665"
                 }
             ],
-            "authentication": {},
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
             "metaSortKey": -1695020947568,
             "isPrivate": false,
             "settingStoreCookies": true,
@@ -1339,9 +1716,9 @@
         {
             "_id": "req_ebaafca79b6a4d25b2d865044ef41072",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1695708377624,
+            "modified": 1696917387168,
             "created": 1694153225932,
-            "url": "{{base}}/api/auction/13",
+            "url": "{{base}}/api/auction/33",
             "name": "delete auction",
             "description": "",
             "method": "DELETE",
@@ -1507,7 +1884,7 @@
         {
             "_id": "req_2306e0166520438480e96c80814912a9",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1695111322604,
+            "modified": 1696585893437,
             "created": 1687264928174,
             "url": "{{base}}/api/auction",
             "name": "Store Auction",
@@ -1518,7 +1895,7 @@
                 "params": [
                     {
                         "name": "title",
-                        "value": "Test auction 15-09",
+                        "value": "Test auction 04-10",
                         "id": "pair_8a9749249ff54f979082b55c62033b8d"
                     },
                     {
@@ -1537,7 +1914,7 @@
                     {
                         "id": "pair_4b8fab221e61428393c9cbf482f6bcac",
                         "name": "type",
-                        "value": "1",
+                        "value": "0",
                         "description": ""
                     },
                     {
@@ -1658,20 +2035,20 @@
                     {
                         "id": "pair_f4d59324dbef4500ac66f8bd4aad8a9c",
                         "name": "start_date",
-                        "value": "2023-02-12 12:02:03",
+                        "value": "2023-09-12 12:02:03",
                         "description": ""
                     },
                     {
                         "id": "pair_f51e1310de164b87bd53029e1018a062",
                         "name": "end_date",
-                        "value": "2023-03-12 12:02:03",
+                        "value": "2023-10-04 12:02:03",
                         "description": "",
-                        "disabled": false
+                        "disabled": true
                     },
                     {
                         "id": "pair_d449e9a491684fb3adca23a2e0a55911",
                         "name": "is_publish",
-                        "value": "0",
+                        "value": "1",
                         "description": "0=>No,1=>Yes"
                     },
                     {
@@ -1716,14 +2093,14 @@
                         "name": "invite_peoples[0]",
                         "value": "tejal@yopmail.com",
                         "description": "",
-                        "disabled": false
+                        "disabled": true
                     },
                     {
                         "id": "pair_f2cb320256884e7fb152a85f01f68fea",
                         "name": "invite_peoples[1]",
                         "value": "tejal1@yopmail.com",
                         "description": "",
-                        "disabled": false
+                        "disabled": true
                     },
                     {
                         "id": "pair_b780caf47276438ba4c8f31e1a8a565c",
@@ -1751,9 +2128,11 @@
                     },
                     {
                         "id": "pair_ab2b722a91884659bf676b2af7ebf45c",
-                        "name": "",
-                        "value": "",
-                        "description": ""
+                        "name": "is_private",
+                        "value": "0",
+                        "description": "",
+                        "type": "text",
+                        "multiline": false
                     },
                     {
                         "id": "pair_2426d32d61dc4f4a980bc370546037c7",
@@ -1787,7 +2166,7 @@
         {
             "_id": "req_b3533356322c4367bd818b657d873713",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1695708334116,
+            "modified": 1696914023742,
             "created": 1687241804913,
             "url": "{{base}}/api/auction",
             "name": "Get Auction",
@@ -1856,7 +2235,7 @@
                     "name": "is_wishlist",
                     "value": "0",
                     "description": "",
-                    "disabled": true
+                    "disabled": false
                 },
                 {
                     "id": "pair_c105d41c684c4da3a4f406c0089fd7cc",
@@ -1868,9 +2247,9 @@
                 {
                     "id": "pair_6bb183c063cd46b0a82fc268c2318721",
                     "name": "user_id",
-                    "value": "11",
+                    "value": "3",
                     "description": "",
-                    "disabled": true
+                    "disabled": false
                 }
             ],
             "headers": [],
@@ -1952,9 +2331,9 @@
         {
             "_id": "req_4379700ce182451786ef4e6a724b02c6",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1695193389106,
+            "modified": 1696917400752,
             "created": 1687263301869,
-            "url": "{{base}}/api/auction/20",
+            "url": "{{base}}/api/auction/34",
             "name": "Show Auction",
             "description": "",
             "method": "GET",
@@ -1972,7 +2351,7 @@
                 {
                     "id": "pair_6a1f707d3f8a43c79346ee85298d510c",
                     "name": "user_id",
-                    "value": "11",
+                    "value": "12",
                     "description": ""
                 }
             ],
@@ -2102,15 +2481,15 @@
         {
             "_id": "req_4c921bf3fc9c4c4783395646b9fc6096",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1694683928572,
+            "modified": 1696571830811,
             "created": 1694683737756,
-            "url": "{{base}}/api/auction/50/bid",
+            "url": "{{base}}/api/auction/17/bid",
             "name": "store auction bid",
             "description": "",
             "method": "POST",
             "body": {
                 "mimeType": "application/json",
-                "text": "{\n\t\"price\":\"100\"\n}\n"
+                "text": "{\n\t\"price\":\"135\"\n}\n"
             },
             "parameters": [],
             "headers": [
@@ -3295,7 +3674,7 @@
         {
             "_id": "req_e808c0d988db498f9a3cdedb5d8c7086",
             "parentId": "fld_fc0a3793bee544ad8bdbeece3a9b7454",
-            "modified": 1692861366874,
+            "modified": 1696501556793,
             "created": 1672643810975,
             "url": "{{base}}/api/auth/register",
             "name": "Register",
@@ -3338,7 +3717,7 @@
         {
             "_id": "req_88b752a008d44aa59b7a0d5e7e84f4f8",
             "parentId": "fld_fc0a3793bee544ad8bdbeece3a9b7454",
-            "modified": 1694153475720,
+            "modified": 1696501576767,
             "created": 1672644607343,
             "url": "{{base}}/api/auth/login",
             "name": "Login",
@@ -3542,7 +3921,7 @@
         {
             "_id": "env_e6ef8e0ba8f3475ab364a0e0234632be",
             "parentId": "env_2a655e6350247e920858a5dfc90144e8670af491",
-            "modified": 1695011754847,
+            "modified": 1695884536157,
             "created": 1692861380830,
             "name": "Live server",
             "data": {
@@ -3563,11 +3942,19 @@
         {
             "_id": "env_ee10161d2dec41fdb17d291029c030bf",
             "parentId": "env_2a655e6350247e920858a5dfc90144e8670af491",
-            "modified": 1694765116057,
+            "modified": 1696572005333,
             "created": 1694765116057,
             "name": "New Environment",
-            "data": {},
-            "dataPropertyOrder": null,
+            "data": {
+                "base": "https://dev.api.uvavino.labomba.studio",
+                "token": "26|2zHKKiSJHqhVjKswUD32bGwHf8TejdrzZjjiAfS76846988a"
+            },
+            "dataPropertyOrder": {
+                "&": [
+                    "base",
+                    "token"
+                ]
+            },
             "color": null,
             "isPrivate": false,
             "metaSortKey": 1694765116057,
