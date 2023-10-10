@@ -47,6 +47,24 @@ class UserController extends Controller
             return (new Fail($e->getMessage()))->json();
         }
     }
+    public function getWishlist(Request $request)
+    {
+        try {
+            $limit = $request->limit ?? config('constant.number_of_items_per_page');
+            $data = [];
+            $wishlistAuctions = Auction::whereHas('wishlist',function($q) use($request)  {
+                $q->where('wine_user_id',$request->wine_user_id);
+            });
+            $data['wishlistAuctions'] = AuctionResource::collection(
+                $wishlistAuctions->paginate($limit)
+            );
+
+
+            return response()->json(['message'=>"Get User Wishlist","data"=>$data],201);
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
 
     public function getBuyPurchaseHistory(Request $request)
     {

@@ -83,7 +83,7 @@ class AuctionController extends Controller
                 return $q->where($a, '<', $v);
             }
         ];
-        $query = Auction::withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
+        $query = Auction::publishAuctions()->withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
                 $q->where('wine_user_id', $user_id);
             }])
             ->with([
@@ -101,9 +101,8 @@ class AuctionController extends Controller
             $query = $query->whereHas('wishlist', function ($q) use ($user_id) {
                 $q->where('wine_user_id', $user_id);
             });
-        }else{
-            $query = $query->publishAuctions();
         }
+
         /*
          * Logic of table and relationships conditions
          */
