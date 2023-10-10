@@ -35,7 +35,9 @@ trait FileUploadTrait
              foreach ($file_paths as $file_path) {
                  Log::info('$file_paths');
                  Log::info($file_paths);
+                 Log::info('file_p');
                  Log::info($file_path);
+                 Log::info('params');
                  Log::info($params);
                  $storagePath = str_replace(env('APP_URL') . '/storage', '', $file_path);
                  $checkPath = str_replace(env('APP_URL') . '/storage/', '', $file_path);
