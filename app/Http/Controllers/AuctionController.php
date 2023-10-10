@@ -41,6 +41,7 @@ class AuctionController extends Controller
      */
     public function index(Request $request)
     {
+
         $order_by = $request->order_by;
         $in_wishlist = $request->is_wishlist ?? '';
         $user_id = !empty($request->wine_user_id)?$request->wine_user_id:$request->user_id;
@@ -82,8 +83,7 @@ class AuctionController extends Controller
                 return $q->where($a, '<', $v);
             }
         ];
-        $query = Auction::publishAuctions()
-            ->withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
+        $query = Auction::withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
                 $q->where('wine_user_id', $user_id);
             }])
             ->with([
@@ -101,6 +101,8 @@ class AuctionController extends Controller
             $query = $query->whereHas('wishlist', function ($q) use ($user_id) {
                 $q->where('wine_user_id', $user_id);
             });
+        }else{
+            $query = $query->publishAuctions();
         }
         /*
          * Logic of table and relationships conditions
