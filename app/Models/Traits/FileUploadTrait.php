@@ -23,9 +23,11 @@ trait FileUploadTrait
         // Convert path
         $path = $this->destinationPath($path);
         // Make sure path exists
-         if (! Storage::exists($path)) {
-             Storage::makeDirectory($path);
-         }
+        Log::info('$path');
+        Log::info($path);
+//         if (! Storage::exists($path)) {
+//             Storage::makeDirectory($path);
+//         }
 
         //remove Old Files
         $file_paths = $this->{$field};
