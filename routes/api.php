@@ -124,6 +124,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::post('/connect-as-seller', [SellerController::class, 'connect']);
     Route::get('/user/product-count', [UserController::class, 'allProductCount']);
     Route::get('/user/wishlist-count', [UserController::class, 'allWishlistCount']);
+    Route::get('/user/wishlist', [UserController::class, 'getWishlist']);
     Route::get('/user/sell-auctions', [UserController::class, 'getSellAuctions']);
     Route::get('/user/buy-purchase-history', [UserController::class, 'getBuyPurchaseHistory']);
     Route::get('/user/private-auctions', [UserController::class, 'getPrivateAuctions']);
