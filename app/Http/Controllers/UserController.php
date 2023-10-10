@@ -51,9 +51,12 @@ class UserController extends Controller
     {
         try {
             $limit = $request->limit ?? config('constant.number_of_items_per_page');
+            $user_id = $request->wine_user_id;
             $data = [];
-            $wishlistAuctions = Auction::whereHas('wishlist',function($q) use($request)  {
-                $q->where('wine_user_id',$request->wine_user_id);
+            $wishlistAuctions = Auction::withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
+                    $q->where('wine_user_id', $user_id);
+                }])->whereHas('wishlist',function($q) use($user_id)  {
+                $q->where('wine_user_id',$user_id);
             });
             $data['wishlistAuctions'] = AuctionResource::collection(
                 $wishlistAuctions->paginate($limit)
