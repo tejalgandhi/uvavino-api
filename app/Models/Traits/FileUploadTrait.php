@@ -25,9 +25,10 @@ trait FileUploadTrait
         // Make sure path exists
         Log::info('$path');
         Log::info($path);
-//         if (! Storage::exists($path)) {
-//             Storage::makeDirectory($path);
-//         }
+//        Log::info(Storage::disk('do')->exists($path));
+         if (! Storage::disk('do')->exists($path)) {
+             Storage::disk('do')->makeDirectory($path);
+         }
 
         //remove Old Files
         $file_paths = $this->{$field};
@@ -39,10 +40,8 @@ trait FileUploadTrait
                  Log::info($file_path);
                  Log::info('params');
                  Log::info($params);
-                 $storagePath = str_replace(env('APP_URL') . '/storage', '', $file_path);
-                 $checkPath = str_replace(env('APP_URL') . '/storage/', '', $file_path);
-                 if (!in_array($checkPath,$params) && Storage::exists($storagePath)) {
-                         Storage::delete($storagePath);
+                 if (!in_array($file_path,$params) && Storage::disk('do')->exists($file_path)) {
+                         Storage::disk('do')->delete($file_path);
                      }
              }
          }
