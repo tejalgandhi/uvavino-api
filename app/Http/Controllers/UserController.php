@@ -148,7 +148,7 @@ class UserController extends Controller
             $limit = $request->limit ?? config('constant.number_of_items_per_page');
             $participateAuctions = Auction::withCount(['bids', 'wishlist' => function ($q) use ($request) {
                 $q->where('wine_user_id', $request->wine_user_id);
-            }])->where('created_by',$request->wine_user_id);
+            }])->where('created_by',$request->wine_user_id)->orderByDesc('created_at');
             $data = AuctionResource::collection(
                 $participateAuctions->paginate($limit)
             );
