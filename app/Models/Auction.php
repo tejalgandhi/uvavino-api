@@ -80,21 +80,19 @@ class Auction extends Model
      */
     public function scopeUnfinishedAuctions($query)
     {
-        return $query
-            ->where(function ($q) {
-                $q->where('is_private','0')
-                    ->where('is_publish','1');
-            })
-
-            ->where(function ($q) {
-                $q->where('type', AuctionType::TIMEBASED->value)
-                    ->where('end_date', '>=', now())
-                    ->orWhere('is_ended',Auction::IS_NOT_ENDED_AUCTION);
-            })
-            ->orWhere(function ($q) {
-                $q->where('type', AuctionType::LIVE->value)
-                        ->orWhere('is_ended',Auction::IS_NOT_ENDED_AUCTION);
-            });
+        return $query->where('is_private','0')
+                    ->where('is_publish','1')
+                    ->where(function ($q) {
+                        $q->where(function ($q) {
+                            $q->where('type', AuctionType::TIMEBASED->value)
+                                    ->where('end_date', '>=', now())
+                                ->orWhere('is_ended', Auction::IS_NOT_ENDED_AUCTION);
+                            })
+                            ->orWhere(function ($q) {
+                                $q->where('type', AuctionType::LIVE->value)
+                                        ->orWhere('is_ended', Auction::IS_NOT_ENDED_AUCTION);
+                            });
+                    });
     }
     /**
      * Scope a query to  get bid count and wishlist auction.
