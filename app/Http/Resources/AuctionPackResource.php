@@ -25,16 +25,16 @@ class AuctionPackResource extends JsonResource
         ];
     }
 
-    public static function selectLst() {
-        return [
-            'auction_packages.id',
-            'auction_packages.slug',
-            'auction_packages.name',
-            'auction_packages.qty',
-            'auction_packages.amount',
-            'auction_packages.discount_amount',
-            'auction_packages.image',
-        ];
-    }
+//    public static function selectLst() {
+//        return [
+//            'auction_packages.id',
+//            'auction_packages.slug',
+//            'auction_packages.name',
+//            'auction_packages.qty',
+//            'auction_packages.amount',
+//            'auction_packages.discount_amount',
+//            'auction_packages.image',
+//        ];
+//    }
 
 }

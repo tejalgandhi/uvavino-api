@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuctionBidController;
 use App\Http\Controllers\UserController;
@@ -159,4 +160,8 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::delete('/auction/{auction}', [AuctionController::class, 'destory']);
     Route::post('/auction/{auction}/bid', [AuctionBidController::class, 'storeAuctionBid']);
     Route::post('/auction/{auction}/automatic-bid', [AuctionController::class, 'automaticBid']);
+
+    Route::post('/auction_package/{auction_package}/cart', [CartController::class, 'storeAuctionPackageCart']);
+    Route::get('/cart', [CartController::class, 'getCartItems']);
+
 });

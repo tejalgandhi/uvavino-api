@@ -135,5 +135,8 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
     {
         return $this->reviews()->count('rating');
     }
-
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }
