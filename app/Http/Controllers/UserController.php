@@ -106,11 +106,15 @@ class UserController extends Controller
         try{
             $limit = $request->limit ?? config('constant.number_of_items_per_page');
             $data = [];
-            $privateAuctions = Auction::privateAuctions();
+            $privateAuctions = Auction::privateAuctions()->withCount(['bids', 'wishlist' => function ($q) use ($request) {
+                $q->where('wine_user_id', $request->wine_user_id);
+            }]);
             $data['private_auctions'] = AuctionResource::collection(
                 $privateAuctions->paginate($limit)
             );
-            $inviteAuctions = Auction::inviteAuctions();
+            $inviteAuctions = Auction::inviteAuctions()->withCount(['bids', 'wishlist' => function ($q) use ($request) {
+                $q->where('wine_user_id', $request->wine_user_id);
+            }]);
             $data['invite_auctions'] = AuctionResource::collection(
                 $inviteAuctions->paginate($limit)
             );
@@ -125,7 +129,9 @@ class UserController extends Controller
     {
         try{
             $limit = $request->limit ?? config('constant.number_of_items_per_page');
-            $participateAuctions = Auction::finishedAuctions()->participateAuctions();
+            $participateAuctions = Auction::finishedAuctions()->participateAuctions()->withCount(['bids', 'wishlist' => function ($q) use ($request) {
+                $q->where('wine_user_id', $request->wine_user_id);
+            }]);
             $data = AuctionResource::collection(
                 $participateAuctions->paginate($limit)
             );
@@ -140,7 +146,9 @@ class UserController extends Controller
     {
         try{
             $limit = $request->limit ?? config('constant.number_of_items_per_page');
-            $participateAuctions = Auction::where('created_by',$request->wine_user_id);
+            $participateAuctions = Auction::withCount(['bids', 'wishlist' => function ($q) use ($request) {
+                $q->where('wine_user_id', $request->wine_user_id);
+            }])->where('created_by',$request->wine_user_id);
             $data = AuctionResource::collection(
                 $participateAuctions->paginate($limit)
             );
@@ -155,7 +163,9 @@ class UserController extends Controller
         try{
             $limit = $request->limit ?? config('constant.number_of_items_per_page');
             AuctionInvite::where('auction_id',$request->auction_id)->update(['status'=>$request->status]);
-            $inviteAuctions = Auction::inviteAuctions();
+            $inviteAuctions = Auction::inviteAuctions()->withCount(['bids', 'wishlist' => function ($q) use ($request) {
+                $q->where('wine_user_id', $request->wine_user_id);
+            }]);
             $data['invite_auctions'] = AuctionResource::collection(
                 $inviteAuctions->paginate($limit)
             );
