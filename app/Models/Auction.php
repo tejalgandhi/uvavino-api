@@ -115,7 +115,6 @@ class Auction extends Model
     public function getCountryIdAttribute(){
         Log::info('country');
         Log::info($this->products()->first());
-        Log::info($this->products()->first()?country_id);
         return $this->products()->first()?->country_id;
     }
 
