@@ -25,6 +25,7 @@ use App\Models\Product;
 use App\Services\Attribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\VerifyLiveAuctionEnd;
 use App\Jobs\VerifyTimebasedAuctionEnd;
