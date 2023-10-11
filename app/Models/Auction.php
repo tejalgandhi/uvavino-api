@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\AuctionType;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 
 class Auction extends Model
 {
@@ -21,6 +22,10 @@ class Auction extends Model
     public $timestamps = false;
 
     protected $guarded = ['id'];
+    protected $dates = ['created_at', 'updated_at', 'start_date','end_date'];
+
+    const IS_ENDED_AUCTION = '1';
+    const IS_NOT_ENDED_AUCTION = '0';
 
     public $casts =[
       'type'=>AuctionType::class,
@@ -44,7 +49,28 @@ class Auction extends Model
 
     public function scopePrivateAuctions($query)
     {
-        return $query->where('is_private','1');
+        return $query->where('is_private','1')->where('created_by',Auth::user()->id);
+    }
+    public function scopePublishAuctions($query)
+    {
+        return $query->where('is_private','0')
+            ->where('is_publish','1');
+    }
+    public function scopeFinishedAuctions($query)
+    {
+        return $query->where('is_ended',Auction::IS_ENDED_AUCTION);
+    }
+    public function scopeParticipateAuctions($query)
+    {
+        return $query->whereHas('bids',function ($q){
+            $q->where('wine_user_id',request()->wine_user_id);
+        });
+    }
+    public function scopeInviteAuctions($query)
+    {
+        return $query->whereHas('invites',function ($q){
+            $q->where('email',Auth::user()->email);
+        });
     }
     /**
      * Scope a query to only get inprogress auction.
@@ -54,17 +80,19 @@ class Auction extends Model
      */
     public function scopeUnfinishedAuctions($query)
     {
-        return $query
-            ->where('is_private','0')
-            ->where('is_publish','1')
-            ->where(function ($q) {
-                $q->where('type', AuctionType::TIMEBASED->value)
-                    ->where('end_date', '>=', now());
-            })
-            ->orWhere(function ($q) {
-                $q->where('type', AuctionType::LIVE->value)
-                        ->whereNull('winner_bid');
-            });
+        return $query->where('is_private','0')
+                    ->where('is_publish','1')
+                    ->where(function ($q) {
+                        $q->where(function ($q) {
+                            $q->where('type', AuctionType::TIMEBASED->value)
+                                    ->where('end_date', '>=', now())
+                                ->orWhere('is_ended', Auction::IS_NOT_ENDED_AUCTION);
+                            })
+                            ->orWhere(function ($q) {
+                                $q->where('type', AuctionType::LIVE->value)
+                                        ->orWhere('is_ended', Auction::IS_NOT_ENDED_AUCTION);
+                            });
+                    });
     }
     /**
      * Scope a query to  get bid count and wishlist auction.
@@ -81,11 +109,19 @@ class Auction extends Model
 
     public function products(): HasManyThrough
     {
-        return $this->hasManyThrough(Product::class,Basket::class ,'id','basket_id');
+        return $this->hasManyThrough(Product::class,Basket::class,'id','basket_id');
     }
+
+//    public function getCountryIdAttribute(){
+//        Log::info('country');
+//        Log::info($this->products()->first());
+//        return $this->products()->first()?->country_id;
+//    }
 
     public function countryId() : Attribute
     {
+        Log::info('country');
+        Log::info($this->products()->first());
         return Attribute::make(
             fn () => $this->products()->first()?->country_id,
         );
@@ -134,11 +170,37 @@ class Auction extends Model
         // Need to write correct logic
         return true;
     }
-
-    public function nextMinBid()
+    public function bidRaised() : int
     {
         // Need to write correct logic
-        return 0;
+        $auction_bid = AuctionBid::where('auction_id',$this->id)->latest()->first();
+        Log::info($auction_bid);
+
+        return !empty($auction_bid) ? $auction_bid->value : 0 ;
+    }
+    public function nextMinBid() : int
+    {
+        // Need to write correct logic
+        $auction_bid = AuctionBid::where('auction_id',$this->id)->latest()->first();
+        if(empty($auction_bid)){
+            $latest_bid = $this->baskets ? $this->baskets->price:4;
+        } else{
+            $latest_bid = $auction_bid->value ?? 4;
+        }
+        return $latest_bid + 1;
+    }
+
+    public function quickBid() : array
+    {
+        // Need to write correct logic
+        $latest_bid = $this->nextMinBid();
+        $bids = [
+            $latest_bid,
+            $latest_bid + 1,
+            $latest_bid + 2,
+        ];
+
+        return $bids ;
     }
     public static function getBestSellersProduct()
     {
@@ -182,5 +244,23 @@ class Auction extends Model
     public function wine_user(): BelongsTo
     {
         return $this->belongsTo(WineUser::class,'created_by','id');
+    }
+    public function userLatestInvite($user_id = 0)
+    {
+        $user = WineUser::where('id',$user_id)->first();
+        return AuctionInvite::where('email',$user->email)->where('auction_id',$this->id)->latest()->first();
+    }
+    public function userLatestBid($user_id = 0)
+    {
+        \Log::info('userLatestBid user: ' . $user_id . ' auction: ' .  $this->id);
+        return AuctionBid::where('wine_user_id',$user_id)->where('auction_id',$this->id)->latest()->first();
+    }
+    public function userAuctionStatus($user_latest_time = 0)
+    {
+        if($this->is_ended == Auction::IS_NOT_ENDED_AUCTION){
+            return '';
+        }
+
+        return !empty($user_latest_time) && $user_latest_time->id == $this->winner_bid?'Won':'Lose';
     }
 }

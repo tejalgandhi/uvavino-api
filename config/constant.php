@@ -28,8 +28,8 @@ return [
         ],
         'permissions' => [],
     ],
-    'front_app_url' => env('FRONT_END_URL')??'http://165.22.72.229/',
-    'upload_url' => env('UPLOAD_URL') ?? 'https://dev.admin.uvavino.immera.io/uploads/',
+    'front_app_url' => env('FRONT_END_URL')??'',
+    'upload_url' => env('UPLOAD_URL') ?? '',
     'bottle_size'=>[
         '10ml'=>'10ml',
         '20ml'=>'20ml'
@@ -51,4 +51,5 @@ return [
     'recommended_items_per_page'=>4,
     'new_items_per_page'=>4,
     'number_of_items_per_page'=>10,
+    'configured_auction_time'=>'60',
 ];

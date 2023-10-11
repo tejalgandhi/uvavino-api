@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\BottleSize;
+use App\Enums\AuctionType;
 use App\Http\Requests\AuctionBidRequest;
 use App\Http\Requests\AuctionCreateRequest;
+use App\Http\Requests\AuctionUpdateRequest;
 use App\Http\Requests\AutomaticBidRequest;
+use App\Http\Requests\InviteMemberRequest;
 use App\Http\Resources\AuctionDetailResource;
 use App\Http\Resources\AuctionResource;
 use App\Http\Resources\AuctionSingleProductDetailResource;
@@ -20,11 +23,12 @@ use App\Models\AutomaticBid;
 use App\Models\Basket;
 use App\Models\Product;
 use App\Services\Attribute;
-use App\Services\Filters\StaticFilter\BottleSizeFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\VerifyLiveAuctionEnd;
+use App\Jobs\VerifyTimebasedAuctionEnd;
 
 /**
  * Class AuctionController
@@ -38,8 +42,11 @@ class AuctionController extends Controller
      */
     public function index(Request $request)
     {
+
         $order_by = $request->order_by;
         $in_wishlist = $request->is_wishlist ?? '';
+        $user_id = !empty($request->wine_user_id)?$request->wine_user_id:$request->user_id;
+        $request->merge(['user_id' => $user_id]);
         $limit = $request->limit ?? config('constant.number_of_items_per_page') ;
         $filter_attrs = [
             'auctions' => [
@@ -77,9 +84,8 @@ class AuctionController extends Controller
                 return $q->where($a, '<', $v);
             }
         ];
-        $query = Auction::select(AuctionResource::selectLst())
-            ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
-                $q->where('wine_user_id', $request->user_id);
+        $query = Auction::publishAuctions()->withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
+                $q->where('wine_user_id', $user_id);
             }])
             ->with([
                 'baskets',
@@ -93,10 +99,11 @@ class AuctionController extends Controller
             ]);
         //wishlist tab in user profile
         if ($in_wishlist) {
-            $query = $query->whereHas('wishlist', function ($q) use ($request) {
-                $q->where('wine_user_id', $request->user_id);
+            $query = $query->whereHas('wishlist', function ($q) use ($user_id) {
+                $q->where('wine_user_id', $user_id);
             });
         }
+
         /*
          * Logic of table and relationships conditions
          */
@@ -196,6 +203,7 @@ class AuctionController extends Controller
                 "basket_id",
                 "title",
                 "description",
+                "is_private",
                 "is_publish",
                 "start_date",
                 "end_date",
@@ -212,8 +220,43 @@ class AuctionController extends Controller
                     ]);
                 }
             }
+
+            if($auction->type == AuctionType::TIMEBASED)
+            {
+                dispatch(new VerifyTimebasedAuctionEnd($auction))->delay($auction->end_date->addMinutes(1));
+
+            }
+            if($auction->type == AuctionType::LIVE)
+            {
+                dispatch(new VerifyLiveAuctionEnd($auction))->delay($auction->start_date->addSeconds(config('constant.configured_auction_time')));
+            }
+
             return (new Success(__('Auction Create Successfully')))->json(201);
 
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json(500);
+        }
+    }
+
+    public function updateInviteMember(InviteMemberRequest $request)
+    {
+        try{
+            $invite_peoples = $request->invite_peoples;
+            if ($invite_peoples) {
+                foreach ($invite_peoples as $invite_people) {
+                    $auctions = AuctionInvite::where('auction_id',$request->auction_id)->pluck('email')->toArray();
+                    $diff = array_diff($invite_peoples, $auctions);
+                    if(!empty($diff)) {
+                        Mail::to($invite_people)->queue(new InvitationMail(Auth::User()));
+                        AuctionInvite::create([
+                            "auction_id" => $request->auction_id,
+                            "email" => $invite_people,
+                        ]);
+                    }
+                }
+            }
+            $inviteMembers = AuctionInvite::where('auction_id',$request->auction_id)->get();
+            return response()->json(['message' => "Invite member add Successfully", "data" => $inviteMembers], 201);
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json(500);
         }
@@ -223,42 +266,17 @@ class AuctionController extends Controller
      * @param AuctionCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(AuctionCreateRequest $request, Auction $auction)
+    public function update(Request $request, Auction $auction)
     {
         try {
+            \Log::info($request->all());
             $invitee = $auction->invites->pluck('email')->toArray();
-            Auction::where('id', $auction->id)->update($request->only([
-                "basket_id",
-                "title",
-                "description",
-                "is_publish",
-                "start_date",
-                "end_date",
-                "type",
-                "max_price",
-            ]));
 
-            $invite_peoples = $request->invite_peoples;
-            if ($invite_peoples) {
-                $diff = array_diff($invite_peoples, $invitee);
-                $remove_invites = array_diff($invitee, $invite_peoples);
-                if (!empty($diff)) {
-                    foreach ($diff as $invite_people) {
-                        Mail::to($invite_people)->queue(new InvitationMail(Auth::User()));
-                        AuctionInvite::create([
-                            "auction_id" => $auction->id,
-                            "email" => $invite_people,
-                        ]);
-                    }
-                }
-                if (!empty($remove_invites)) {
-                    AuctionInvite::whereIn('email', $remove_invites)->where('auction_id', $auction->id)->delete();
-                }
-            }
             Basket::where('id', $auction->basket_id)->update([
                 "title" => $request->title,
                 "price" => $request->price,
             ]);
+            \Log::info('Basket updated');
 
             $products = $request->products;
             foreach ($products as $product) {
@@ -290,8 +308,49 @@ class AuctionController extends Controller
                     $updateProduct->uploadImages('product_images', $product['product_images'], ['products']);
                 }
             }
+            \Log::info('Product updated');
+            Auction::where('id', $auction->id)->update(
+                $request->only([
+                "basket_id",
+                "title",
+                "description",
+                "is_private",
+                "is_publish",
+                "start_date",
+                "end_date",
+                "type",
+                "max_price",
+                ])
+            );
+            \Log::info('Auction updated');
+            if($auction->end_date != $request->end_date && $request->type == AuctionType::TIMEBASED)
+            {
+                dispatch(new VerifyTimebasedAuctionEnd($auction))->delay($auction->end_date->addMinutes(1));
 
-            return (new Success(__('Auction Updated Successfully')))->json(201);
+            }
+            if($auction->start_date != $request->start_date && $request->type == AuctionType::LIVE)
+            {
+                dispatch(new VerifyLiveAuctionEnd($auction))->delay($auction->start_date->addSeconds(config('constant.configured_auction_time')));
+            }
+            $invite_peoples = $request->invite_peoples;
+            if ($invite_peoples) {
+                $diff = array_diff($invite_peoples, $invitee);
+                $remove_invites = array_diff($invitee, $invite_peoples);
+                if (!empty($diff)) {
+                    foreach ($diff as $invite_people) {
+                        Mail::to($invite_people)->queue(new InvitationMail(Auth::User()));
+                        AuctionInvite::create([
+                            "auction_id" => $auction->id,
+                            "email" => $invite_people,
+                        ]);
+                    }
+                }
+                if (!empty($remove_invites)) {
+                    AuctionInvite::whereIn('email', $remove_invites)->where('auction_id', $auction->id)->delete();
+                }
+            }
+            $a = Auction::where('id',$auction->id)->first();
+            return response()->json(['message' => "Auction Updated Successfully", "data" => new AuctionResource($a)], 201);
 
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json(500);
@@ -305,9 +364,11 @@ class AuctionController extends Controller
     public function show(Request $request, $id)
     {
         $request->merge(['order_by' => $request->order_by]);
+        $user_id = !empty($request->wine_user_id)?$request->wine_user_id:$request->user_id;
+        $request->merge(['user_id' => $user_id]);
         $auction = Auction::query()
-            ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
-                $q->where('wine_user_id', $request->user_id);
+            ->withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
+                $q->where('wine_user_id', $user_id);
             }])
             ->where('id', $id);
 
@@ -320,10 +381,12 @@ class AuctionController extends Controller
 
     public function showSingleAuction(Request $request, $auction_id, Product $product)
     {
+        $user_id = !empty($request->wine_user_id)?$request->wine_user_id:$request->user_id;
         $request->merge(['product' => $product]);
+        $request->merge(['user_id' => $user_id]);
         $auction = Auction::query()
-            ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
-                $q->where('wine_user_id', $request->user_id);
+            ->withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
+                $q->where('wine_user_id', $user_id);
             }])
             ->where('id', $auction_id)
             ->first();

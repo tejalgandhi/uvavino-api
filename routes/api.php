@@ -110,6 +110,7 @@ Route::post('/inquiry', [InquiryController::class, 'store']);
 Route::get('/csrf-token', function (Request $request) {
     return response()->json(['csrfToken' => $request->session()->token()]);
 })->middleware('web');
+Route::post('/auction-ended/{auction_id}', [AuctionBidController::class, 'endAuction']);
 
 // Protected Routes
 Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
@@ -123,8 +124,12 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::post('/connect-as-seller', [SellerController::class, 'connect']);
     Route::get('/user/product-count', [UserController::class, 'allProductCount']);
     Route::get('/user/wishlist-count', [UserController::class, 'allWishlistCount']);
-    Route::get('/user/buy-purchse-history', [UserController::class, 'getBuyPurchaseHistory']);
+    Route::get('/user/wishlist', [UserController::class, 'getWishlist']);
+    Route::get('/user/sell-auctions', [UserController::class, 'getSellAuctions']);
+    Route::get('/user/buy-purchase-history', [UserController::class, 'getBuyPurchaseHistory']);
     Route::get('/user/private-auctions', [UserController::class, 'getPrivateAuctions']);
+    Route::get('/user/participate-auctions', [UserController::class, 'getParticipateAuction']);
+    Route::post('/user/update-auction-invitation', [UserController::class, 'updateAuctionInvitation']);
 
     // Order API
     Route::get('/orders', [OrderController::class, 'index']);
@@ -149,6 +154,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     // auction api
     Route::post('/auction', [AuctionController::class, 'store']);
+    Route::post('/auction/update-invite-member', [AuctionController::class, 'updateInviteMember']);
     Route::put('/auction/{auction}', [AuctionController::class, 'update']);
     Route::delete('/auction/{auction}', [AuctionController::class, 'destory']);
     Route::post('/auction/{auction}/bid', [AuctionBidController::class, 'storeAuctionBid']);

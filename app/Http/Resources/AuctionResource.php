@@ -6,6 +6,9 @@ use App\Models\Wishlist;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Enums\AuctionType;
+use App\Enums\InviteStatus;
+use Illuminate\Support\Facades\Log;
+
 
 class AuctionResource extends JsonResource
 {
@@ -18,12 +21,26 @@ class AuctionResource extends JsonResource
     public function toArray($request)
     {
         $user_id = request()->user_id;
+        $user_latest_time = !empty($user_id)? $this->resource->userLatestBid($user_id):'';
+        $user_latest_invite = !empty($user_id)? $this->resource->userLatestInvite($user_id):'';
+        $user_auction_status = $this->resource->userAuctionStatus($user_latest_time);
+        Log::info('auction id');
+        Log::info($this->resource->id);
+        Log::info('country_id');
+        Log::info($this->resource->country_id);
         return [
             'id' => $this->id,
+            'user_latest_bid' => !empty($user_latest_time)?$user_latest_time->value:'',
+            'user_auction_status' => $user_auction_status,
+            'user_invite_status' => !empty($user_latest_invite)?$user_latest_invite->status:'',
+            'user_invite_status_string' => !empty($user_latest_invite)?$user_latest_invite->status->label():'',
+            'current_bid' => $this->resource->bidRaised(),
+            'next_bid' => $this->resource->nextMinBid(),
+            'quick_bids' => $this->resource->quickBid(),
             'user_id' => $user_id,
-            'country_id' => $this->country_id,
-            'country_name' => $this->country_name,
-            'iso_alpha_2' => $this->country_iso_code,
+            'country_id' => $this->resource->country_id,
+            'country_name' => $this->resource->country_name,
+            'iso_alpha_2' => $this->resource->country_iso_code,
             'flag' =>  $this->country_iso_code ? country_flag($this->country_iso_code) : '',
             'title' => $this->title,
             'total_bids' => $this->bids_count,
@@ -33,6 +50,8 @@ class AuctionResource extends JsonResource
             'description' => $this->description,
             'is_publish' => $this->is_publish,
             'is_private' => $this->is_private,
+            'is_ended' => $this->is_ended,
+            'created_by' => $this->created_by,
             'auction_type' => $this->type->name,
             'type' => $this->type->value,
             'max_price' => $this->max_price,
@@ -49,11 +68,13 @@ class AuctionResource extends JsonResource
             'auctions.title',
             'auctions.description',
             'auctions.is_publish',
+            'auctions.is_private',
             'auctions.type',
             'auctions.max_price',
             'auctions.basket_id',
             'auctions.start_date',
             'auctions.end_date',
+            'auctions.created_by',
         ];
     }
 }
