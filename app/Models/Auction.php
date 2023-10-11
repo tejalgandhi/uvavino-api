@@ -251,4 +251,12 @@ class Auction extends Model
         \Log::info('userLatestBid user: ' . $user_id . ' auction: ' .  $this->id);
         return AuctionBid::where('wine_user_id',$user_id)->where('auction_id',$this->id)->latest()->first();
     }
+    public function userAuctionStatus($user_latest_time = 0)
+    {
+        if($this->is_ended == Auction::IS_NOT_ENDED_AUCTION){
+            return '';
+        }
+
+        return !empty($user_latest_time) && $user_latest_time->id == $this->winner_bid?'Won':'Lose';
+    }
 }
