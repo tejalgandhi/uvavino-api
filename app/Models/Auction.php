@@ -109,21 +109,24 @@ class Auction extends Model
 
     public function products(): HasManyThrough
     {
-        return $this->hasManyThrough(Product::class,Basket::class ,'id','basket_id');
+        return $this->hasManyThrough(Product::class,Basket::class,'id','basket_id');
     }
 
-    public function getCountryIdAttribute(){
+//    public function getCountryIdAttribute(){
+//        Log::info('country');
+//        Log::info($this->products()->first());
+//        return $this->products()->first()?->country_id;
+//    }
+
+    public function countryId() : Attribute
+    {
         Log::info('country');
         Log::info($this->products()->first());
-        return $this->products()->first()?->country_id;
+        Log::info($this->products()->first()->country_id);
+        return Attribute::make(
+            fn () => $this->products()->first()?->country_id,
+        );
     }
-
-//    public function countryId() : Attribute
-//    {
-//        return Attribute::make(
-//            fn () => $this->products()->first()?->country_id,
-//        );
-//    }
     public function countryName() : Attribute
     {
         return Attribute::make(
