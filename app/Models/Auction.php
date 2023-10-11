@@ -109,7 +109,7 @@ class Auction extends Model
 
     public function products(): HasManyThrough
     {
-        return $this->hasManyThrough(Product::class,Basket::class ,'id','basket_id');
+        return $this->hasManyThrough(Product::class,Basket::class,'id','basket_id');
     }
 
 //    public function getCountryIdAttribute(){
@@ -120,6 +120,9 @@ class Auction extends Model
 
     public function countryId() : Attribute
     {
+        Log::info('country');
+        Log::info($this->products()->first());
+        Log::info($this->products()->first()->country_id);
         return Attribute::make(
             fn () => $this->products()->first()?->country_id,
         );
