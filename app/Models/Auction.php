@@ -112,18 +112,18 @@ class Auction extends Model
         return $this->hasManyThrough(Product::class,Basket::class ,'id','basket_id');
     }
 
-    public function getCountryIdAttribute(){
-        Log::info('country');
-        Log::info($this->products()->first());
-        return $this->products()->first()?->country_id;
-    }
-
-//    public function countryId() : Attribute
-//    {
-//        return Attribute::make(
-//            fn () => $this->products()->first()?->country_id,
-//        );
+//    public function getCountryIdAttribute(){
+//        Log::info('country');
+//        Log::info($this->products()->first());
+//        return $this->products()->first()?->country_id;
 //    }
+
+    public function countryId() : Attribute
+    {
+        return Attribute::make(
+            fn () => $this->products()->first()?->country_id,
+        );
+    }
     public function countryName() : Attribute
     {
         return Attribute::make(
