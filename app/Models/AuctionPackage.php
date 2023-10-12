@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+
 class AuctionPackage extends Model
 {
     use HasFactory;
@@ -35,5 +37,8 @@ class AuctionPackage extends Model
             get: fn(?string $value) => $value ? Storage::url($value) : null,
         );
     }
-
+    public function carts(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(Cart::class, 'cartable');
+    }
 }
