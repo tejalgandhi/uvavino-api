@@ -15,12 +15,12 @@ class CartController extends Controller
 {
     public function getCartItems(Request $request)
     {
-//        try {
+        try {
             $data =  CartResource::collection($request->user()->carts()->with('items')->paginate(10));
             return response()->json(['message' => "Get Cart Items", "data" => $data], 201);
-//        }catch (\Exception $e) {
-//            return (new Fail($e->getMessage()))->json();
-//        }
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
     }
 
     public function storeAuctionPackageCart(CartRequest $request,AuctionPackage $auctionPackage)
@@ -45,6 +45,7 @@ class CartController extends Controller
         return  $cart->items()->updateOrcreate([
             'cartable_type' => $type,
             'cartable_id' => $cartable->id,
+            'cart_id' => $cart->id,
         ],[
             'amount' =>$amount,
             'total_amount' => $total_amount,
