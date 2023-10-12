@@ -109,7 +109,7 @@ class Auction extends Model
 
     public function products(): HasManyThrough
     {
-        return $this->hasManyThrough(Product::class,Basket::class,'id','basket_id');
+        return $this->hasManyThrough(Product::class, Basket::class, 'id', 'basket_id', 'basket_id', 'id');
     }
 
 //    public function getCountryIdAttribute(){
