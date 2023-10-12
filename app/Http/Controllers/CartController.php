@@ -7,6 +7,8 @@ use App\Http\Resources\CartResource;
 use App\Http\Resources\Fail;
 use App\Http\Resources\Success;
 use App\Models\AuctionPackage;
+use App\Models\Cart;
+use App\Models\CartDetail;
 use Illuminate\Http\Request;
 use App\Enums\OrderType;
 
@@ -16,11 +18,14 @@ class CartController extends Controller
     public function getCartItems(Request $request)
     {
         try {
-            $data =  CartResource::collection($request->user()->carts()->with('items')->paginate(10));
-            return response()->json(['message' => "Get Cart Items", "data" => $data], 201);
+            return response()->json(['message' => "Get Cart Items", "data" => $this->getCartDetail()], 201);
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
+    }
+
+    public function getCartDetail(){
+        return CartResource::collection(request()->user()->carts()->with('items')->get());
     }
 
     public function storeAuctionPackageCart(CartRequest $request,AuctionPackage $auctionPackage)
@@ -35,7 +40,7 @@ class CartController extends Controller
     }
     private function storeCart($cartable, $type, Request $request)
     {
-        $amount = $request->amount;
+        $amount = $cartable->amount;
         $qty = $request->qty;
         $total_amount = $qty * $amount;
 
@@ -52,5 +57,39 @@ class CartController extends Controller
             'qty' => $qty
         ]);
 
+    }
+
+    public function update(CartRequest $request,$id)
+    {
+        try{
+            $amount = $request->amount;
+            $qty = $request->qty;
+            $total_amount = $qty * $amount;
+
+            CartDetail::where('id',$id)->update([
+                'amount' =>$amount,
+                'total_amount' => $total_amount,
+                'qty' => $qty
+            ]);
+
+            return response()->json(['message'=>"Cart Item Updated successfully.","data"=>$this->getCartDetail()],201);
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
+
+    public function destroy(Request $request,$id)
+    {
+        try{
+            $user = request()->user();
+            CartDetail::where('id',$id)->delete();
+            if ($user->carts()->has('items')->count() === 0) {
+                // If the user's cart has no items, delete it
+                $user->carts()->delete();
+            }
+            return response()->json(['message'=>"Cart Item deleted successfully.","data"=>$this->getCartDetail()],201);
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
     }
 }

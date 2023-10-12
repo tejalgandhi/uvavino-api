@@ -163,5 +163,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     Route::post('/auction_package/{auction_package}/cart', [CartController::class, 'storeAuctionPackageCart']);
     Route::get('/cart', [CartController::class, 'getCartItems']);
+    Route::put('/cart/{cart_id}', [CartController::class, 'update']);
+    Route::delete('/cart/{cart_id}', [CartController::class, 'destroy']);
 
 });
