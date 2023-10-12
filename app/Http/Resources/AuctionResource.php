@@ -24,10 +24,7 @@ class AuctionResource extends JsonResource
         $user_latest_time = !empty($user_id)? $this->resource->userLatestBid($user_id):'';
         $user_latest_invite = !empty($user_id)? $this->resource->userLatestInvite($user_id):'';
         $user_auction_status = $this->resource->userAuctionStatus($user_latest_time);
-        Log::info('auction id');
-        Log::info($this->resource->id);
-        Log::info('country_id');
-        Log::info($this->resource->country_id);
+
         return [
             'id' => $this->id,
             'user_latest_bid' => !empty($user_latest_time)?$user_latest_time->value:'',
