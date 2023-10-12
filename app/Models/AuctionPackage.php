@@ -35,8 +35,8 @@ class AuctionPackage extends Model
             get: fn(?string $value) => $value ? Storage::url($value) : null,
         );
     }
-    public function carts(): MorphMany
+    public function carts(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
-        return $this->morphMany(CartDetail::class, 'cartable');
+        return $this->morphMany(Cart::class, 'cartable');
     }
 }
