@@ -20,6 +20,8 @@ class Cart extends Model
     const AUCTION_TYPE = 2;
     const PRODUCT_TYPE = 3;
 
+    public $guarded = ['id'];
+
     public function wine_user()
     {
         return $this->belongsTo(WineUser::class);
