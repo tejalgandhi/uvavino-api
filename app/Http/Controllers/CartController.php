@@ -47,6 +47,17 @@ class CartController extends Controller
         $user = $request->user();
         $cart = $user->carts()->updateOrcreate(['wine_user_id'=>$request->wine_user_id]);
 
+       $cartDetail = CartDetail::where([
+            'cartable_type' => $type,
+            'cartable_id' => $cartable->id,
+            'cart_id' => $cart->id
+        ])->first();
+
+       if(!empty($cartDetail)){
+           $qty = $cartDetail->qty + $qty;
+           $total_amount = $qty * $amount;
+       }
+
         return  $cart->items()->updateOrcreate([
             'cartable_type' => $type,
             'cartable_id' => $cartable->id,

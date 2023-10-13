@@ -21,8 +21,7 @@ class AuctionUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        $user = Auth::id()? WineUser::find(Auth::id()): 0;
-        return $user && $user->canAuction();
+         return true;
     }
 
     /**
