@@ -263,7 +263,7 @@ class AuctionController extends Controller
     }
 
     /**
-     * @param AuctionCreateRequest $request
+     * @param AuctionUpdateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(AuctionUpdateRequest $request, Auction $auction)
