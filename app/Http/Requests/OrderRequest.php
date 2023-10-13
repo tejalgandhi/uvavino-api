@@ -25,10 +25,7 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'items.*.orderable_type' => ['required', 'in:product,auction,auction_package'],
-            'items.*.orderable_id' => ['required'],
-            'items.*.amount' => ['required', 'numeric'],
-            'items.*.qty' => ['required', 'numeric'],
+            'cart_items' => ['required'],
         ];
     }
 }
