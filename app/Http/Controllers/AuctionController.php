@@ -266,7 +266,7 @@ class AuctionController extends Controller
      * @param AuctionCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Auction $auction)
+    public function update(AuctionUpdateRequest $request, Auction $auction)
     {
         try {
             \Log::info($request->all());

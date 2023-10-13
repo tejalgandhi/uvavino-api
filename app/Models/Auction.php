@@ -45,6 +45,11 @@ class Auction extends Model
         static::saving(function($model)  {
             $model->created_by = Auth::user()->id ?? NULL;
         });
+        // create a event to happen on saving
+        static::created(function($model)  {
+            $available_auctions = Auth::user()->available_auctions - 1;
+            WineUser::where('id',Auth::user()->id)->update(['available_auctions'=>$available_auctions]);
+        });
     }
 
     public function scopePrivateAuctions($query)

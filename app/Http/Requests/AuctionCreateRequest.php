@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Resources\Fail;
 use App\Models\WineUser;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Enums\BottleSize;
@@ -11,6 +13,8 @@ use App\Enums\Medal;
 use App\Enums\Year;
 use App\Enums\AuctionType;
 use App\Enums\Capacity;
+use Illuminate\Auth\Access\AuthorizationException;
+
 
 class AuctionCreateRequest extends FormRequest
 {
@@ -24,7 +28,18 @@ class AuctionCreateRequest extends FormRequest
         $user = Auth::id()? WineUser::find(Auth::id()): 0;
         return $user && $user->canAuction();
     }
+    protected function failedAuthorization()
+    {
+        $errorResponse = [
+            'status' => 422,
+            'error' => 'You are not authorized to create auction. Please purchase auction package.',
+        ];
 
+        throw new HttpResponseException(response()->json($errorResponse, 422));
+
+        // You can also throw a custom exception:
+        // throw new AccessDeniedHttpException('You are not authorized to access this area');
+    }
     /**
      * Get the validation rules that apply to the request.
      *
