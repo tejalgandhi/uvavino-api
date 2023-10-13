@@ -46,22 +46,22 @@ jobs:
           set -e
           sed -i "s|^\(DB_PORT=\s*\).*$|\1${{ job.services.mysql.ports['3306'] }}|" .env.testing
 
-      - name: Key Generate
-        run: set -e && php artisan key:generate --env=testing
+#      - name: Key Generate
+#       run: set -e && php artisan key:generate --env=testing
+#
+#      - name: Comlplete Testing Env File
+#       run: |
+#          printf "The complete `.env.testing` ... \n\n"
+#         cat .env.testing
 
-      - name: Comlplete Testing Env File
-        run: |
-          printf "The complete `.env.testing` ... \n\n"
-          cat .env.testing
+#      - name: Optimize Stuffs
+#       run: set -e && php artisan optimize:clear --env=testing
 
-      - name: Optimize Stuffs
-        run: set -e && php artisan optimize:clear --env=testing
+#      - name: Migrate Database
+#        run: set -e && php artisan migrate --env=testing
 
-      - name: Migrate Database
-        run: set -e && php artisan migrate --env=testing
-
-      - name: Seed Database
-        run: set -e && php artisan db:seed --env=testing
+#      - name: Seed Database
+#        run: set -e && php artisan db:seed --env=testing
 
       # - name: Execute tests
       #   env:
