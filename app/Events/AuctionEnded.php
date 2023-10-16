@@ -37,7 +37,7 @@ class AuctionEnded
     {
         Log::info('BidRaised event broadcasted');
 
-        return new Channel('auction'.$this->auction);
+        return new Channel('auction.'.$this->auction);
     }
 
     public function broadcastWith()
