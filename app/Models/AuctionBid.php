@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Enums\AuctionType;
+use Illuminate\Support\Facades\Log;
 
 class AuctionBid extends Model
 {
@@ -38,6 +39,8 @@ class AuctionBid extends Model
             event(new  \App\Events\BidRaised($model->auction_id, $current_bid, $next_bid, $quick_bids, $bid_user));
             if($model->auction->type == AuctionType::LIVE)
             {
+                Log::info('config constant');
+                Log::info(config('constant.configured_auction_time'));
                 dispatch(new VerifyLiveAuctionEnd($model->auction))->delay($model->timestamp->addSeconds(config('constant.configured_auction_time')));
             }
         });
