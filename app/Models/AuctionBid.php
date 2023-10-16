@@ -41,7 +41,8 @@ class AuctionBid extends Model
             {
                 Log::info('config constant');
                 Log::info(config('constant.configured_auction_time'));
-                dispatch(new VerifyLiveAuctionEnd($model->auction))->delay($model->timestamp->addSeconds(config('constant.configured_auction_time')));
+                $time = config('constant.configured_auction_time');
+                dispatch(new VerifyLiveAuctionEnd($model->auction))->delay($model->timestamp->addSeconds($time);
             }
         });
     }
