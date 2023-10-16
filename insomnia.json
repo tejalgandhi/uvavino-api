@@ -1,7 +1,7 @@
 {
     "_type": "export",
     "__export_format": 4,
-    "__export_date": "2023-10-13T08:20:02.489Z",
+    "__export_date": "2023-10-16T08:53:55.227Z",
     "__export_source": "insomnia.desktop.app:v2023.5.8",
     "resources": [
         {
@@ -209,57 +209,6 @@
                 "token": "{{token}}"
             },
             "metaSortKey": -1696571102244,
-            "isPrivate": false,
-            "settingStoreCookies": true,
-            "settingSendCookies": true,
-            "settingDisableRenderRequestBody": false,
-            "settingEncodeUrl": true,
-            "settingRebuildPath": true,
-            "settingFollowRedirects": "global",
-            "_type": "request"
-        },
-        {
-            "_id": "req_2494ebefe3894f579eaef82e538fecb8",
-            "parentId": "fld_66c9bf8b0e2141b889a97b38cbe31bc2",
-            "modified": 1697175038171,
-            "created": 1693210038169,
-            "url": "{{base}}/api/orders",
-            "name": "Orders",
-            "description": "",
-            "method": "POST",
-            "body": {
-                "mimeType": "application/x-www-form-urlencoded",
-                "params": [
-                    {
-                        "id": "pair_a21e61a3880c43fa98f9eb99ca23ddaa",
-                        "name": "cart_items[0]",
-                        "value": "13",
-                        "description": ""
-                    },
-                    {
-                        "id": "pair_7d73dbe2f1e94bd5824ea68cbcc774ea",
-                        "name": "cart_items[1]",
-                        "value": "14",
-                        "description": ""
-                    }
-                ]
-            },
-            "parameters": [],
-            "headers": [
-                {
-                    "name": "Content-Type",
-                    "value": "application/x-www-form-urlencoded"
-                },
-                {
-                    "name": "User-Agent",
-                    "value": "Insomnia/2023.5.6"
-                }
-            ],
-            "authentication": {
-                "type": "bearer",
-                "token": "{{token}}"
-            },
-            "metaSortKey": -1696571102144,
             "isPrivate": false,
             "settingStoreCookies": true,
             "settingSendCookies": true,
@@ -1142,6 +1091,69 @@
             "_type": "request"
         },
         {
+            "_id": "req_2494ebefe3894f579eaef82e538fecb8",
+            "parentId": "fld_e7093d48e7bb402c9c750303c98afdb1",
+            "modified": 1697432548441,
+            "created": 1693210038169,
+            "url": "{{base}}/api/orders",
+            "name": "Orders",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/x-www-form-urlencoded",
+                "params": [
+                    {
+                        "id": "pair_a21e61a3880c43fa98f9eb99ca23ddaa",
+                        "name": "cart_items[0]",
+                        "value": "13",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_7d73dbe2f1e94bd5824ea68cbcc774ea",
+                        "name": "cart_items[1]",
+                        "value": "14",
+                        "description": ""
+                    }
+                ]
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Insomnia/2023.5.6"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
+            "metaSortKey": -1691264948322.5,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "fld_e7093d48e7bb402c9c750303c98afdb1",
+            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
+            "modified": 1693210031552,
+            "created": 1693210031552,
+            "name": "Orders",
+            "description": "",
+            "environment": {},
+            "environmentPropertyOrder": null,
+            "metaSortKey": -1693210031552,
+            "_type": "request_group"
+        },
+        {
             "_id": "req_e97d7eb3c7344b8f8a9c809119f0a44e",
             "parentId": "fld_e7093d48e7bb402c9c750303c98afdb1",
             "modified": 1694505542162,
@@ -1180,16 +1192,42 @@
             "_type": "request"
         },
         {
-            "_id": "fld_e7093d48e7bb402c9c750303c98afdb1",
-            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
-            "modified": 1693210031552,
-            "created": 1693210031552,
-            "name": "Orders",
+            "_id": "req_94a5adba8b72412881571756d79739f8",
+            "parentId": "fld_e7093d48e7bb402c9c750303c98afdb1",
+            "modified": 1697435741133,
+            "created": 1697435687239,
+            "url": "{{base}}/api/order/27",
+            "name": "Order detail",
             "description": "",
-            "environment": {},
-            "environmentPropertyOrder": null,
-            "metaSortKey": -1693210031552,
-            "_type": "request_group"
+            "method": "GET",
+            "body": {
+                "mimeType": "multipart/form-data",
+                "params": []
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "multipart/form-data"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Insomnia/2023.5.6"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}"
+            },
+            "metaSortKey": -1689827338588.625,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
         },
         {
             "_id": "req_0d6813deba2b420684b16362c502c31f",
@@ -1396,6 +1434,46 @@
             "_type": "request"
         },
         {
+            "_id": "req_981e4d7fdc884da08fa8f2f43d9d7dab",
+            "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
+            "modified": 1697446326267,
+            "created": 1697446243265,
+            "url": "{{base}}/api/auction-ended/33",
+            "name": "auction-ended",
+            "description": "",
+            "method": "POST",
+            "body": {},
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "insomnia/2023.5.8"
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1697446243265,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "fld_608546664b5e4df4829e39a19ba62a49",
+            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
+            "modified": 1684737434110,
+            "created": 1684737434110,
+            "name": "Auction",
+            "description": "",
+            "environment": {},
+            "environmentPropertyOrder": null,
+            "metaSortKey": -1684737434110,
+            "_type": "request_group"
+        },
+        {
             "_id": "req_553372d95f9346bf83ed0b300d5d6181",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
             "modified": 1695022065176,
@@ -1442,18 +1520,6 @@
             "settingRebuildPath": true,
             "settingFollowRedirects": "global",
             "_type": "request"
-        },
-        {
-            "_id": "fld_608546664b5e4df4829e39a19ba62a49",
-            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
-            "modified": 1684737434110,
-            "created": 1684737434110,
-            "name": "Auction",
-            "description": "",
-            "environment": {},
-            "environmentPropertyOrder": null,
-            "metaSortKey": -1684737434110,
-            "_type": "request_group"
         },
         {
             "_id": "req_df2ddf97757046b7a1ce721a4c6de0eb",
@@ -1981,9 +2047,9 @@
         {
             "_id": "req_ebaafca79b6a4d25b2d865044ef41072",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1696917387168,
+            "modified": 1697434849279,
             "created": 1694153225932,
-            "url": "{{base}}/api/auction/33",
+            "url": "{{base}}/api/auction/41",
             "name": "delete auction",
             "description": "",
             "method": "DELETE",
@@ -2149,7 +2215,7 @@
         {
             "_id": "req_2306e0166520438480e96c80814912a9",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1697006662111,
+            "modified": 1697434815265,
             "created": 1687264928174,
             "url": "{{base}}/api/auction",
             "name": "Store Auction",
@@ -2300,7 +2366,7 @@
                     {
                         "id": "pair_f4d59324dbef4500ac66f8bd4aad8a9c",
                         "name": "start_date",
-                        "value": "2023-09-12 12:02:03",
+                        "value": "2023-10-15 12:02:03",
                         "description": ""
                     },
                     {
@@ -3028,7 +3094,7 @@
         {
             "_id": "req_bb834e4925514a97b613430c593e7683",
             "parentId": "fld_a3bad42106b24718b90d306a4c7757b6",
-            "modified": 1695027191687,
+            "modified": 1697437989494,
             "created": 1675226858590,
             "url": "{{base}}/api/wishlist/products",
             "name": "Wishlist list",
@@ -3039,9 +3105,9 @@
                 {
                     "id": "pair_529ff4b54f5a460aa2038005ab359651",
                     "name": "type",
-                    "value": "3",
+                    "value": "2",
                     "description": "1=>auction_package,2=>auction,3=>product",
-                    "disabled": false
+                    "disabled": true
                 }
             ],
             "headers": [],
