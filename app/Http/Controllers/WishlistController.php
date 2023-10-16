@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Enums\WishlistType;
+
 
 class WishlistController extends Controller
 {
@@ -22,8 +24,10 @@ class WishlistController extends Controller
     {
 
         $wishlist = Wishlist::where('wine_user_id',Auth::id());
-        if($request->type){
-            $wishlist = $wishlist->where('type',$request->type);
+        $type = $request->type;
+        if($type){
+            $wishlistable_type = WishlistType::from($type)->className();
+            $wishlist = $wishlist->where('wishlistable_type',$wishlistable_type);
         }
         $wishlist = $wishlist->get();
         return WishlistResource::collection($wishlist);
@@ -32,18 +36,24 @@ class WishlistController extends Controller
     public function store(WishlistRequest $request)
     {
         try {
-            $wishlist = UserWishlist::where($request->only(['wine_user_id', 'ref_id','type']))->count();
+            $type = $request->type;
+            $wishlistable_id = $request->ref_id;
+            $wishlistable_type = WishlistType::from($type)->className();
+            $request->merge(['wishlistable_type' => $wishlistable_type]);
+            $request->merge(['wishlistable_id' => $wishlistable_id]);
+
+            $wishlist = UserWishlist::where($request->only(['wine_user_id', 'wishlistable_id','wishlistable_type']))->count();
             if ($wishlist > 0) {
                 return response()->json(['data'=>[],'status'=>204 ,'message'=>__('Product already exists')],204) ;
             }
-            if($request->type == Wishlist::PRODUCT_TYPE) {
-                $basket = Basket::where('id', $request->ref_id)->count();
+            if($request->wishlistable_type == WishlistType::product->className()) {
+                $basket = Basket::where('id', $request->wishlistable_id)->count();
                 if ($basket == 0) {
                     return response()->json(['data' => [], 'status' => 204, 'message' => __('Product not found.')], 204);
                 }
             }
-            if($request->type == Wishlist::AUCTION_TYPE) {
-                $auction = Auction::where('id', $request->ref_id)->count();
+            if($request->wishlistable_type == WishlistType::auction->className()) {
+                $auction = Auction::where('id', $request->wishlistable_id)->count();
                 if ($auction == 0) {
                     return response()->json(['data' => [], 'status' => 204, 'message' => __('Auction not found.')], 204);
                 }
@@ -51,8 +61,8 @@ class WishlistController extends Controller
             DB::enableQueryLog();
             UserWishlist::create($request->only([
                 "wine_user_id",
-                "ref_id",
-                "type"
+                "wishlistable_id",
+                "wishlistable_type"
             ]));
             return response()->json(['data'=>[],'status'=>201 ,'message'=>__('Wishlist store successfully.')],201) ;
 
@@ -66,8 +76,13 @@ class WishlistController extends Controller
     public function destroy(Request $request)
     {
         try {
+            $type = $request->type;
+            $wishlistable_id = $request->ref_id;
+            $wishlistable_type = WishlistType::from($type)->className();
+            $request->merge(['wishlistable_type' => $wishlistable_type]);
+            $request->merge(['wishlistable_id' => $wishlistable_id]);
 
-            UserWishlist::where($request->only(['wine_user_id','ref_id','type']))->delete();
+            UserWishlist::where($request->only(['wine_user_id','wishlistable_id','wishlistable_type']))->delete();
             return response()->json(['data'=>[],'status'=>200 ,'message'=>__("Wishlist delete successfully.")],200) ;
 
         }catch (\Exception $e){

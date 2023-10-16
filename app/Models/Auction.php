@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,6 +38,13 @@ class Auction extends Model
 
         // create a event to happen on deleting
         static::deleting(function($model)  {
+            // Check if the auction has not started
+            $currentTime = Carbon::now();
+            $startTime = Carbon::parse($model->start_date);
+            if($currentTime < $startTime) {
+                $available_auctions = Auth::user()->available_auctions + 1;
+                WineUser::where('id',Auth::user()->id)->update(['available_auctions'=>$available_auctions]);
+            }
             $model->deleted_by = Auth::user()->id ?? NULL;
             $model->save();
         });
