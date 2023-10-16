@@ -57,13 +57,13 @@ class UserController extends Controller
             $user_id = $request->wine_user_id;
             $request->merge(['user_id' => $user_id]);
             $data = [];
-            $wishlistAuctions = Wishlist::where('wine_user_id',Auth::id())->orderByDesc('id');
-//            $wishlistAuctions = Auction::withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
-//                    $q->where('wine_user_id', $user_id);
-//                }])->whereHas('wishlist',function($q) use($user_id)  {
-//                $q->where('wine_user_id',$user_id);
-//            })->orderByDesc('id');
-            $data['wishlistAuctions'] = WishlistResource::collection(
+//            $wishlistAuctions = Wishlist::where('wine_user_id',Auth::id())->orderByDesc('id');
+            $wishlistAuctions = Auction::withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
+                    $q->where('wine_user_id', $user_id);
+                }])->whereHas('wishlist',function($q) use($user_id)  {
+                $q->where('wine_user_id',$user_id);
+            })->orderByDesc('id');
+            $data['wishlistAuctions'] = AuctionResource::collection(
                 $wishlistAuctions->paginate($limit)
             );
 
