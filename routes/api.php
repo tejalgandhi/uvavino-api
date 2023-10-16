@@ -57,7 +57,7 @@ Route::get('/country-seeder', function (){
     exit;
 });
 Route::get('/update-auction-pack', function (){
-    \App\Models\WineUser::update(['available_auctions'=>0]);
+    (new App\Models\WineUser)->update(['available_auctions'=>0]);
 
     echo "update auction pack successfully.";
     exit;
