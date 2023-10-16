@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Wishlist;
+use App\Enums\WishlistType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class WishlistResource extends JsonResource
@@ -15,15 +16,27 @@ class WishlistResource extends JsonResource
      */
     public function toArray($request)
     {
+        $type = WishlistType::product->className();
+        $auction_type = WishlistType::auction->className();
+        $auction_id = $basket_id = $auction_pack_id = 0;
+        if ($this->resource->wishlistable_type == $type) {
+            $basket_id = $this->resource->wishlistable_id;
+            $items = new BasketResource($this->resource->wishlistable);
+
+        } else if ($this->resource->wishlistable_type == $auction_type) {
+            $auction_id = $this->resource->wishlistable_id;
+            $items = new AuctionResource($this->resource->wishlistable);
+        } else {
+            $auction_pack_id = $this->resource->wishlistable_id;
+            $items = new AuctionPackResource($this->resource->wishlistable);
+        }
         $data = [
             'id' => $this->resource->id,
-            'type' => $this->resource->type,
-            'type_name' => $this->resource->type == Wishlist::AUCTION_TYPE ? 'auction':'product' ,
-            'auction_id' => $this->resource->type == Wishlist::AUCTION_TYPE ? $this->resource->ref_id : 0,
-            'basket_id' => $this->resource->type == Wishlist::PRODUCT_TYPE ? $this->resource->ref_id : $this->resource->auction->basket_id,
-            'title' => $this->resource->type == Wishlist::PRODUCT_TYPE ? $this->resource->basket->title:$this->resource->auction->title,
-            'slug' => $this->resource->type == Wishlist::PRODUCT_TYPE ? $this->resource->basket->slug :"-" ,
-            'description' => $this->resource->type == Wishlist::PRODUCT_TYPE ? $this->resource->basket->description:$this->resource->auction->description,
+            'type' => WishlistType::fromClassName($this->resource->wishlistable_type),
+            'auction_id' => $auction_id,
+            'basket_id' => $basket_id,
+            'auction_pack_id' => $auction_pack_id,
+            'items'=>$items
         ];
 
         return $data;

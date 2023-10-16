@@ -16,8 +16,9 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'wine_user' => new WineUserResource($this->wine_user),
-            'items' => $this->items            
+//            'wine_user' => new WineUserResource($this->wine_user),
+            'wine_user' => $this->wine_user_id,
+            'items' => OrderDetailResource::collection($this->items)
         ];
     }
 }

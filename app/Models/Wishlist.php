@@ -11,19 +11,14 @@ class Wishlist extends Model
     use HasFactory;
     protected $table = 'wishlist';
 
-    protected $fillable = ['ref_id','type','wine_user_id'];
+    protected $guarded = ['id'];
 
     const AUCTION_TYPE = 2;
     const PRODUCT_TYPE = 3;
 
-    public function basket(): BelongsTo
+    public function wishlistable()
     {
-        return $this->belongsTo(Basket::class,'ref_id','id');
-    }
-
-    public function auction(): BelongsTo
-    {
-        return $this->belongsTo(Auction::class,'ref_id','id');
+        return $this->morphTo();
     }
 
 }

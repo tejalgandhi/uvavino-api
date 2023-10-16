@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrderRequest;
 use App\Http\Requests\OrderShowRequest;
 use App\Http\Resources\CartDetailResource;
+use App\Http\Resources\CartResource;
 use App\Http\Resources\Fail;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\Success;
@@ -19,7 +20,15 @@ use Illuminate\Support\Facades\Log;
 class OrderController extends Controller
 {
     public function index(Request $request) {
-        return OrderResource::collection($request->user()->orders()->with('items')->paginate(10));
+        try {
+            return response()->json(['message' => "Get Order Items", "data" => $this->getOrderDetail()], 201);
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
+
+    public function getOrderDetail(){
+        return OrderResource::collection(request()->user()->orders()->with('items')->orderByDesc('id')->paginate(10));
     }
 
     public function show(Request $request, Order $order)
@@ -42,12 +51,14 @@ class OrderController extends Controller
         {
             $item = $this->getCartDetail($cart_item);
             $cart_id = $item->cart_id;
+            $total_amount = $item->amount * $item->qty;
             $order->items()->create([
                 'order_id' => $order->id,
                 'orderable_type' => $item->cartable_type,
                 'orderable_id' => $item->cartable_id,
                 'amount' => $item->amount,
                 'qty' => $item->qty,
+                'total_amount' => $total_amount,
             ]);
 
             if($item->cartable_type == OrderType::auction_package->className())

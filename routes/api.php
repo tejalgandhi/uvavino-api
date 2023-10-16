@@ -140,7 +140,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
     // Order API
     Route::get('/orders', [OrderController::class, 'index']);
-    Route::get('/orders/{order}', [OrderController::class, 'show']);
+    Route::get('/order/{order}', [OrderController::class, 'show']);
     Route::post('/orders', [OrderController::class, 'store']);
 
     //product

@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuctionInviteRequest;
 use App\Http\Resources\AuctionResource;
 use App\Http\Resources\Fail;
+use App\Http\Resources\WishlistResource;
 use App\Models\Auction;
 use App\Models\AuctionInvite;
 use App\Models\Basket;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
@@ -52,13 +55,15 @@ class UserController extends Controller
         try {
             $limit = $request->limit ?? config('constant.number_of_items_per_page');
             $user_id = $request->wine_user_id;
+            $request->merge(['user_id' => $user_id]);
             $data = [];
-            $wishlistAuctions = Auction::withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
-                    $q->where('wine_user_id', $user_id);
-                }])->whereHas('wishlist',function($q) use($user_id)  {
-                $q->where('wine_user_id',$user_id);
-            })->orderByDesc('id');
-            $data['wishlistAuctions'] = AuctionResource::collection(
+            $wishlistAuctions = Wishlist::where('wine_user_id',Auth::id())->orderByDesc('id');
+//            $wishlistAuctions = Auction::withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
+//                    $q->where('wine_user_id', $user_id);
+//                }])->whereHas('wishlist',function($q) use($user_id)  {
+//                $q->where('wine_user_id',$user_id);
+//            })->orderByDesc('id');
+            $data['wishlistAuctions'] = WishlistResource::collection(
                 $wishlistAuctions->paginate($limit)
             );
 
