@@ -70,7 +70,7 @@ class Basket extends Model
     }
     public function wishlist() :HasMany
     {
-        return $this->hasMany(Wishlist::class,'ref_id','id')->where('type',Wishlist::PRODUCT_TYPE);
+        return $this->hasMany(Wishlist::class,'wishlistable_type',Basket::class);
     }
 //    public function reviews()
 //    {
