@@ -56,6 +56,12 @@ Route::get('/country-seeder', function (){
     echo "Country Seeder run successfully";
     exit;
 });
+Route::get('/update-auction-pack', function (){
+    (new App\Models\WineUser)->update(['available_auctions'=>0]);
+
+    echo "update auction pack successfully.";
+    exit;
+});
 
 
 //static page
