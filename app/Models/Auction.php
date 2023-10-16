@@ -155,7 +155,7 @@ class Auction extends Model
 
     public function wishlist() :HasMany
     {
-        return $this->hasMany(Wishlist::class,'wishlistable_type',Auction::class);
+        return $this->hasMany(Wishlist::class,'wishlistable_id','id')->where('wishlistable_type',Auction::class);
     }
 
     public function bids() :HasMany
