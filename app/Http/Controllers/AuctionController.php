@@ -207,6 +207,7 @@ class AuctionController extends Controller
                 "is_publish",
                 "start_date",
                 "end_date",
+                "live_time_interval",
                 "type",
                 "max_price",
             ]));
@@ -228,7 +229,8 @@ class AuctionController extends Controller
             }
             if($auction->type == AuctionType::LIVE)
             {
-                dispatch(new VerifyLiveAuctionEnd($auction))->delay($auction->start_date->addSeconds(config('constant.configured_auction_time')));
+                $secs = $auction->live_time_interval ?? config('constant.configured_auction_time');
+                dispatch(new VerifyLiveAuctionEnd($auction))->delay($auction->start_date->addSeconds($secs));
             }
 
             return (new Success(__('Auction Create Successfully')))->json(201);
@@ -318,6 +320,7 @@ class AuctionController extends Controller
                 "is_publish",
                 "start_date",
                 "end_date",
+                "live_time_interval",
                 "type",
                 "max_price",
                 ])
@@ -330,7 +333,8 @@ class AuctionController extends Controller
             }
             if($auction->start_date != $request->start_date && $request->type == AuctionType::LIVE)
             {
-                dispatch(new VerifyLiveAuctionEnd($auction))->delay($auction->start_date->addSeconds(config('constant.configured_auction_time')));
+                $secs = $auction->live_time_interval ?? config('constant.configured_auction_time');
+                dispatch(new VerifyLiveAuctionEnd($auction))->delay($auction->start_date->addSeconds($secs));
             }
             $invite_peoples = $request->invite_peoples;
             if ($invite_peoples) {
