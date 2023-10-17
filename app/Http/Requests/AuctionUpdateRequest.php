@@ -39,6 +39,7 @@ class AuctionUpdateRequest extends FormRequest
             "type" => ["nullable",Rule::in(AuctionType::values())],
             "start_date" => ["nullable","date_format:Y-m-d H:i:s"],
             "end_date" => ["required_if:type,".AuctionType::TIMEBASED->value,"date_format:Y-m-d H:i:s"],
+            "live_time_interval" => ["required_if:type,".AuctionType::LIVE->value,'integer'],
             'products' => 'nullable|array',
             "products.*.description" => 'nullable|string',
             "products.*.wine_name" => 'nullable|string',

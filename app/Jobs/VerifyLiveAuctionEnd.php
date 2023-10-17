@@ -36,26 +36,21 @@ class VerifyLiveAuctionEnd implements ShouldQueue
     public function handle()
     {
         Log::info('in live auction start');
+        $secs = $this->auction->live_time_interval ?? config('constant.configured_auction_time');
         $configure_time = Carbon::parse($this->auction->start_date)
-            ->addSeconds(config('constant.configured_auction_time'))
-            ->format('d-m-Y H:i:s');
+            ->addSeconds($secs)
+            ->format('Y-m-d H:i:s');
            if($this->auction->is_ended == Auction::IS_NOT_ENDED_AUCTION)
            {
                $bid = AuctionBid::where('auction_id',$this->auction->id)->latest()->first();
                $today = $diff = $diff_auction= Carbon::now();
                if(!empty($bid)) {
-                   $bid_timestamp = Carbon::createFromFormat('Y-m-d H:s:i', $bid->timestamp);
-                   $diff = $today->diffInSeconds($bid_timestamp);
-
-               }
-               else{
-                   $bid_timestamp = Carbon::createFromFormat('Y-m-d H:s:i', $this->auction->start_date);
-                   $t = Carbon::createFromFormat('Y-m-d H:s:i', $today);
-                   $diff_auction = $t->diffInSeconds($bid_timestamp);
-
+                   $configure_time = Carbon::parse($bid->created_at)
+                       ->addSeconds($secs)
+                       ->format('Y-m-d H:i:s');
                }
 
-               if((empty($bid) && $diff_auction >= $configure_time)|| ($diff >= $configure_time))
+               if((empty($bid) && $today->greaterThanOrEqualTo($configure_time))|| ($today->greaterThanOrEqualTo($configure_time)))
                {
                    $winner_bid = !empty($bid)?$bid->id:NULL;
                     Auction::where('id',$this->auction->id)->update([

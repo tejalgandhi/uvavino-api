@@ -55,6 +55,7 @@ class AuctionCreateRequest extends FormRequest
             "type" => ["required",Rule::in(AuctionType::values())],
             "start_date" => ["required","date_format:Y-m-d H:i:s"],
             "end_date" => ["required_if:type,".AuctionType::TIMEBASED->value,"date_format:Y-m-d H:i:s"],
+            "live_time_interval" => ["required_if:type,".AuctionType::LIVE->value,'integer'],
             'products' => 'required|array',
             "products.*.description" => 'required|string',
             "products.*.wine_name" => 'required|string',

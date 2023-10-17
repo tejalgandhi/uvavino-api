@@ -27,7 +27,7 @@ Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'i
 
 Route::get('/event', function (){
 //    \Illuminate\Support\Facades\Event::dispatch(new \App\Events\BidRaised(1));
-    $auction =  Auction::find(1);
-
+    $auction =  Auction::find(72);
+    dispatch(new VerifyLiveAuctionEnd($auction));
     dd('hi');
 })->name('event');
