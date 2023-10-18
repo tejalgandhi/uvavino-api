@@ -85,7 +85,7 @@ class UserController extends Controller
                     $q->where('wine_user_id', $request->wine_user_id);
                 }])->whereHas('bids', function ($q) use ($request) {
                     $q->where('wine_user_id', $request->wine_user_id);
-                })->orderByDesc('id');
+                })->orderByDesc('wishlist.id');
 
             $data['buy_auctions'] = AuctionResource::collection(
                 $buyAuctions->paginate($limit)
@@ -95,7 +95,7 @@ class UserController extends Controller
                     $q->where('wine_user_id', $request->wine_user_id);
                 }])->whereHas('winnerBid', function ($q) use ($request) {
                     $q->where('wine_user_id', $request->wine_user_id);
-                })->orderByDesc('id');
+                })->orderByDesc('wishlist.id');
 
             $data['purchase_auctions'] = AuctionResource::collection(
                 $purchaseAuctions->paginate($limit)
