@@ -52,4 +52,5 @@ return [
     'new_items_per_page'=>4,
     'number_of_items_per_page'=>10,
     'configured_auction_time'=>'60',
+    'minimum_bid_step'=>5,
 ];
