@@ -49,7 +49,6 @@ class VerifyLiveAuctionEnd implements ShouldQueue
                        ->addSeconds($secs)
                        ->format('Y-m-d H:i:s');
                }
-
                if((empty($bid) && $today->greaterThanOrEqualTo($configure_time))|| ($today->greaterThanOrEqualTo($configure_time)))
                {
                    $winner_bid = !empty($bid)?$bid->id:NULL;

@@ -195,23 +195,25 @@ class Auction extends Model
     public function nextMinBid() : int
     {
         // Need to write correct logic
+        $minimum_bid_step = Config('constant.minimum_bid_step');
         $auction_bid = AuctionBid::where('auction_id',$this->id)->latest()->first();
         if(empty($auction_bid)){
             $latest_bid = $this->baskets ? $this->baskets->price:4;
         } else{
             $latest_bid = $auction_bid->value ?? 4;
         }
-        return $latest_bid + 1;
+        return $latest_bid + $minimum_bid_step;
     }
 
     public function quickBid() : array
     {
         // Need to write correct logic
+        $minimum_bid_step = Config('constant.minimum_bid_step');
         $latest_bid = $this->nextMinBid();
         $bids = [
             $latest_bid,
-            $latest_bid + 1,
-            $latest_bid + 2,
+            $latest_bid + $minimum_bid_step,
+            $latest_bid + ($minimum_bid_step*2),
         ];
 
         return $bids ;
