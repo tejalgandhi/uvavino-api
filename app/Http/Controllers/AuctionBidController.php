@@ -73,11 +73,13 @@ class AuctionBidController extends Controller
                 'value' => $value
             ]);
             if($auction->activeAutoBid()->count() > 0){
+                $automaticBid = $auction->autoBids()->first();
                 $activeAutoBid = $auction->activeAutoBid()->first();
-                $activeAutoBid->evalWith($activeAutoBid,$auction);
+                /** @phpstan-ignore-next-line */
+                $automaticBid->evalWith($activeAutoBid,$auction);
             }
             $autoBid->storeEvent($autoBid);
-            return response()->json(['message' => "Auction Bid Create Successfully", "data" => $data], 201);
+            return response()->json(['message' => "Auction Bid Create Successfully", "data" => $autoBid], 201);
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
@@ -103,6 +105,7 @@ class AuctionBidController extends Controller
         $autoBid->save();
         if($auction->activeAutoBid()->count() > 0){
             $activeAutoBid = $auction->activeAutoBid()->first();
+            /** @phpstan-ignore-next-line */
             $autoBid->evalWith($activeAutoBid,$auction);
         }
         else{

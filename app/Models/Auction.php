@@ -253,7 +253,7 @@ class Auction extends Model
             'value' => $min
         ]);
 
-        $bid->saveQuietly();
+        $bid->save();
 
     }
 
