@@ -25,7 +25,7 @@ class AutomaticBidRequest extends FormRequest
     public function rules()
     {
         return [
-            'max_amount' => ['required', 'numeric']
+            'amount' => ['required', 'numeric']
         ];
     }
 }

@@ -15,20 +15,31 @@ use App\Models\Order;
 use App\Enums\OrderType;
 use App\Models\WineUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
     public function index(Request $request) {
         try {
-            return response()->json(['message' => "Get Order Items", "data" => $this->getOrderDetail()], 201);
+            return response()->json(['message' => "Get Order Items", "data" => $this->getOrderDetail($request)], 201);
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
     }
 
-    public function getOrderDetail(){
-        return OrderResource::collection(request()->user()->orders()->with('items')->orderByDesc('id')->paginate(10));
+    public function getOrderDetail($request){
+        $orderType = $request->order_type;
+        $query = request()->user()->orders()->with('items');
+        if(!empty($orderType)){
+            $type = OrderType::from($orderType)->className();
+
+            $query=$query->whereHas('items',function ($q) use($type){
+                $q->where('orderable_type',$type);
+            });
+        }
+        $query = $query->orderByDesc('id')->paginate(10);
+        return OrderResource::collection($query);
     }
 
     public function show(Request $request, Order $order)
