@@ -20,10 +20,9 @@ class Auction extends Model
     use HasFactory;
     use SoftDeletes;
 
-    public $timestamps = false;
 
     protected $guarded = ['id'];
-    protected $dates = ['created_at', 'updated_at', 'start_date','end_date'];
+    protected $dates = ['start_date','end_date'];
 
     const IS_ENDED_AUCTION = '1';
     const IS_NOT_ENDED_AUCTION = '0';
