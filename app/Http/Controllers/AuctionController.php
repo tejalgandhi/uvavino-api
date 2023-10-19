@@ -418,28 +418,6 @@ class AuctionController extends Controller
 
 
     /**
-     * @param AutomaticBidRequest $request
-     * @param Auction $auction
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function automaticBid(AutomaticBidRequest $request, Auction $auction)
-    {
-        $max = $request->max_amount;
-        if ($auction->max_price != null && $max < $auction->max_price) {
-            return (new Fail(__('You should buy without auction in that price.')))->json(400);
-        }
-        if ($max < $auction->nextMinBid()) {
-            return (new Fail(__('Your auto bid amount is too low.')))->json(400);
-        }
-        AutomaticBid::create([
-            'auction_id' => $auction->id,
-            'wine_user_id' => $request->wine_user_id,
-            'max_amount' => $request->max_amount
-        ]);
-        return (new Success(__('Auction Bit Create Successfully')))->json(201);
-    }
-
-    /**
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function getBestSellers()

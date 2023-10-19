@@ -218,6 +218,28 @@ class Auction extends Model
 
         return $bids ;
     }
+
+    public function auto_bids(): HasMany
+    {
+        return  $this->hasMany(AutomaticBid::class);
+    }
+
+
+    public function makeAutoBid(AutomaticBid $automaticBid,Auction $auction)
+    {
+
+        Log::info("trying to autobid from {".request()->wine_user_id."}");
+        $min = $this->next($auction);
+        if($automaticBid->max_limit >= $min){
+            Log::info(request()->wine_user_id ." bidded automatically.");
+            $this->setNewBid(request()->wine_user_id, $auction->id, $min);
+            return true;
+        }
+        Log::info(request()->wine_user_id ." can't bid automatically (out of limit).");
+        return false;
+
+    }
+
     public static function getBestSellersProduct()
     {
         $query = self::bidCounts()->unfinishedAuctions()
