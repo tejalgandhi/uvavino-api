@@ -14,9 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('auctions', function (Blueprint $table) {
-            $table->timestamp('start_date')->nullable()->change();
-            $table->timestamp('end_date')->nullable()->change();
-
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
         });
     }
 
@@ -28,8 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('auctions', function (Blueprint $table) {
-            $table->dateTime('start_date')->nullable()->change();
-            $table->dateTime('end_date')->nullable()->change();
+            $table->dropColumn('start_date');
+            $table->dropColumn('end_date');
         });
     }
 };
