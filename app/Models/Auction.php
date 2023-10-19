@@ -219,24 +219,41 @@ class Auction extends Model
         return $bids ;
     }
 
-    public function auto_bids(): HasMany
+    public function autoBids(): HasMany
     {
-        return  $this->hasMany(AutomaticBid::class);
+        return $this->hasMany(AutomaticBid::class);
     }
 
+    public function activeAutoBid(): HasMany
+    {
+        $highestBid = $this->bids()->max('value') ?? $this->baskets->price;
+        return $this->autoBids()->where('max_limit','>=',$highestBid);
+    }
 
-    public function makeAutoBid(AutomaticBid $automaticBid,Auction $auction)
+    public function makeAutoBid(AutomaticBid $automaticBid): bool
     {
 
-        Log::info("trying to autobid from {".request()->wine_user_id."}");
-        $min = $this->next($auction);
+        Log::info("trying to autobid from {".$automaticBid->wine_user_id."}");
+        $min = $this->nextMinBid();
         if($automaticBid->max_limit >= $min){
-            Log::info(request()->wine_user_id ." bidded automatically.");
-            $this->setNewBid(request()->wine_user_id, $auction->id, $min);
+            Log::info($automaticBid->wine_user_id ." bidded automatically.");
+            $this->setNewBid($automaticBid->wine_user_id, $min);
             return true;
         }
-        Log::info(request()->wine_user_id ." can't bid automatically (out of limit).");
+        Log::info($automaticBid->wine_user_id ." can't bid automatically (out of limit).");
         return false;
+
+    }
+
+    public function setNewBid($user_id,$min)
+    {
+        $bid = new AuctionBid([
+            'auction_id' => $this->id,
+            'wine_user_id' => $user_id,
+            'value' => $min
+        ]);
+
+        $bid->saveQuietly();
 
     }
 
