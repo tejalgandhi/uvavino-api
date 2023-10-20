@@ -226,7 +226,7 @@ class AuctionController extends Controller
 
             if($auction->type == AuctionType::TIMEBASED)
             {
-                dispatch(new VerifyTimebasedAuctionEnd($auction))->delay($auction->end_date->addMinutes(1));
+                dispatch(new VerifyTimebasedAuctionEnd($auction))->delay($auction->end_date->addSeconds(config('constant.configured_timebased_auction_time')));
 
             }
             if($auction->type == AuctionType::LIVE)
@@ -330,7 +330,7 @@ class AuctionController extends Controller
             \Log::info('Auction updated');
             if($auction->end_date != $request->end_date && $request->type == AuctionType::TIMEBASED)
             {
-                dispatch(new VerifyTimebasedAuctionEnd($auction))->delay($auction->end_date->addMinutes(1));
+                dispatch(new VerifyTimebasedAuctionEnd($auction))->delay($auction->end_date->addSeconds(config('constant.configured_timebased_auction_time')));
 
             }
             if($auction->start_date != $request->start_date && $request->type == AuctionType::LIVE)
