@@ -76,7 +76,10 @@ class AuctionBidController extends Controller
                 $automaticBid = $auction->autoBids()->first();
                 $activeAutoBid = $auction->activeAutoBid()->first();
                 /** @phpstan-ignore-next-line */
-                $automaticBid->evalWith($activeAutoBid,$auction);
+                if($autoBid->wine_user_id !=  $automaticBid->wine_user_id) {
+                    $automaticBid->evalWith($activeAutoBid,$auction);
+                }
+
             }
             $autoBid->storeEvent($autoBid);
             return response()->json(['message' => "Auction Bid Create Successfully", "data" => $autoBid], 201);
