@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Enums\AuctionType;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use function Nette\Utils\first;
 
 class Auction extends Model
 {
@@ -191,7 +192,7 @@ class Auction extends Model
 
         return !empty($auction_bid) ? $auction_bid->value : 0 ;
     }
-    public function nextMinBid() : int
+    public function nextMinBid() : float
     {
         // Need to write correct logic
         $minimum_bid_step = Config('constant.minimum_bid_step');
@@ -234,6 +235,7 @@ class Auction extends Model
 
         Log::info("trying to autobid from {".$automaticBid->wine_user_id."}");
         $min = $this->nextMinBid();
+        Log::info('min '. $min);
         if($automaticBid->max_limit >= $min){
             Log::info($automaticBid->wine_user_id ." bidded automatically.");
             $this->setNewBid($automaticBid->wine_user_id, $min);
