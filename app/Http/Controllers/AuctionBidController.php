@@ -108,8 +108,9 @@ class AuctionBidController extends Controller
         $autoBid->save();
         if($auction->activeAutoBid()->count() > 0){
             $activeAutoBid = $auction->activeAutoBid()->first();
+            $bid = $auction->bids()->latest()->first();
             /** @phpstan-ignore-next-line */
-            if($wine_user_id !=  $activeAutoBid->wine_user_id) {
+            if(empty($bid) || (!empty($bid) && $wine_user_id !=  $bid->wine_user_id)) {
                 /** @phpstan-ignore-next-line */
                 $autoBid->evalWith($activeAutoBid, $auction);
             }
