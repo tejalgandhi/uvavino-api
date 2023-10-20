@@ -23,9 +23,9 @@ class AutomaticBid extends Model
         if ($auction->makeAutobid($this)) {
             Log::info('evalWith by user '.$this->wine_user_id.' Autobid done');
             // If successful, recursively call evalWith on the opponent
-            if($this->wine_user_id !=  $automaticBid->wine_user_id) {
+//            if($this->wine_user_id !=  $automaticBid->wine_user_id) {
                 return $automaticBid->evalWith($this, $auction);
-            }
+//            }
         }
         Log::info('evalWith by user '.$this->wine_user_id.' limit exceed, returning '. $automaticBid->wine_user_id);
         // If the auto-bid fails, return the opponent
