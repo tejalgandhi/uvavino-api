@@ -110,10 +110,10 @@ class AuctionBidController extends Controller
             $activeAutoBid = $auction->activeAutoBid()->first();
             $bid = $auction->bids()->latest()->first();
             /** @phpstan-ignore-next-line */
-            if(empty($bid) || (!empty($bid) && $wine_user_id !=  $bid->wine_user_id)) {
+//            if(empty($bid) || (!empty($bid) && $wine_user_id !=  $bid->wine_user_id)) {
                 /** @phpstan-ignore-next-line */
                 $autoBid->evalWith($activeAutoBid, $auction);
-            }
+//            }
         }
         else{
             $auction->makeAutobid($autoBid);
