@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\ForgotPassword;
 use App\Http\Requests\ForgotPasswordRequest;
 use App\Http\Requests\UserRegistrationRequest;
+use App\Http\Requests\WineUserRequest;
 use App\Http\Resources\AuthToken;
 use App\Http\Resources\Fail;
 use App\Http\Resources\Success;
@@ -95,5 +96,26 @@ class WineAuthController extends Controller
             'status' => 200,
             'user' => new WineUserResource($user),
         ]);
+    }
+
+    public function updateUser(WineUserRequest $request)
+    {
+        try{
+           $user = WineUser::updateOrCreate(
+            ['id'=>Auth::user()->id],
+            [
+               'first_name'=> $request->first_name,
+               'last_name'=> $request->last_name,
+               'city'=> $request->city,
+               'country'=> $request->country,
+            ]);
+
+            return response()->json([
+                'status' => 200,
+                'user' => new WineUserResource($user),
+            ]);
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
     }
 }

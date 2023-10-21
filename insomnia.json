@@ -1,7 +1,7 @@
 {
     "_type": "export",
     "__export_format": 4,
-    "__export_date": "2023-10-16T08:53:55.227Z",
+    "__export_date": "2023-10-20T17:16:58.918Z",
     "__export_source": "insomnia.desktop.app:v2023.5.8",
     "resources": [
         {
@@ -597,9 +597,9 @@
         {
             "_id": "req_6538caa54aea46b3a9b60b4bfaad9044",
             "parentId": "fld_83188ffe5497425c9e615d2904660903",
-            "modified": 1695195426726,
+            "modified": 1697618880966,
             "created": 1695195412083,
-            "url": "{{base}}/api/user/buy-purchse-history",
+            "url": "{{base}}/api/user/buy-purchase-history",
             "name": "Buy purchase history",
             "description": "",
             "method": "GET",
@@ -1093,7 +1093,7 @@
         {
             "_id": "req_2494ebefe3894f579eaef82e538fecb8",
             "parentId": "fld_e7093d48e7bb402c9c750303c98afdb1",
-            "modified": 1697432548441,
+            "modified": 1697619585873,
             "created": 1693210038169,
             "url": "{{base}}/api/orders",
             "name": "Orders",
@@ -1105,13 +1105,13 @@
                     {
                         "id": "pair_a21e61a3880c43fa98f9eb99ca23ddaa",
                         "name": "cart_items[0]",
-                        "value": "13",
+                        "value": "1",
                         "description": ""
                     },
                     {
                         "id": "pair_7d73dbe2f1e94bd5824ea68cbcc774ea",
                         "name": "cart_items[1]",
-                        "value": "14",
+                        "value": "2",
                         "description": ""
                     }
                 ]
@@ -1156,7 +1156,7 @@
         {
             "_id": "req_e97d7eb3c7344b8f8a9c809119f0a44e",
             "parentId": "fld_e7093d48e7bb402c9c750303c98afdb1",
-            "modified": 1694505542162,
+            "modified": 1697619771944,
             "created": 1694505533689,
             "url": "{{base}}/api/orders",
             "name": "get Orders",
@@ -1166,7 +1166,14 @@
                 "mimeType": "multipart/form-data",
                 "params": []
             },
-            "parameters": [],
+            "parameters": [
+                {
+                    "id": "pair_73f6f518f01a446baf30577c164387d4",
+                    "name": "order_type",
+                    "value": "1",
+                    "description": ""
+                }
+            ],
             "headers": [
                 {
                     "name": "Content-Type",
@@ -1434,6 +1441,100 @@
             "_type": "request"
         },
         {
+            "_id": "req_4c921bf3fc9c4c4783395646b9fc6096",
+            "parentId": "fld_7b5971b248174920a7cee69293b14b47",
+            "modified": 1697802596868,
+            "created": 1694683737756,
+            "url": "{{base}}/api/auction/2/bid",
+            "name": "store auction bid",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"price\":\"400\"\n}\n"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}",
+                "disabled": false
+            },
+            "metaSortKey": -1697630925589,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "fld_7b5971b248174920a7cee69293b14b47",
+            "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
+            "modified": 1697630920097,
+            "created": 1697630906102,
+            "name": "Bids",
+            "description": "",
+            "environment": {},
+            "environmentPropertyOrder": null,
+            "metaSortKey": -1697446243365,
+            "_type": "request_group"
+        },
+        {
+            "_id": "fld_608546664b5e4df4829e39a19ba62a49",
+            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
+            "modified": 1684737434110,
+            "created": 1684737434110,
+            "name": "Auction",
+            "description": "",
+            "environment": {},
+            "environmentPropertyOrder": null,
+            "metaSortKey": -1684737434110,
+            "_type": "request_group"
+        },
+        {
+            "_id": "req_a09027c504ab42e7b79355bec85d9018",
+            "parentId": "fld_7b5971b248174920a7cee69293b14b47",
+            "modified": 1697802208592,
+            "created": 1697630933462,
+            "url": "{{base}}/api/auction/2/automatic-bid",
+            "name": "store automatic bid",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"amount\":\"380\"\n}\n"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}",
+                "disabled": false
+            },
+            "metaSortKey": -1697538584427,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
             "_id": "req_981e4d7fdc884da08fa8f2f43d9d7dab",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
             "modified": 1697446326267,
@@ -1460,18 +1561,6 @@
             "settingRebuildPath": true,
             "settingFollowRedirects": "global",
             "_type": "request"
-        },
-        {
-            "_id": "fld_608546664b5e4df4829e39a19ba62a49",
-            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
-            "modified": 1684737434110,
-            "created": 1684737434110,
-            "name": "Auction",
-            "description": "",
-            "environment": {},
-            "environmentPropertyOrder": null,
-            "metaSortKey": -1684737434110,
-            "_type": "request_group"
         },
         {
             "_id": "req_553372d95f9346bf83ed0b300d5d6181",
@@ -2215,7 +2304,7 @@
         {
             "_id": "req_2306e0166520438480e96c80814912a9",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1697434815265,
+            "modified": 1697614718345,
             "created": 1687264928174,
             "url": "{{base}}/api/auction",
             "name": "Store Auction",
@@ -2226,7 +2315,7 @@
                 "params": [
                     {
                         "name": "title",
-                        "value": "Test auction 04-10",
+                        "value": "Test auction 18-10",
                         "id": "pair_8a9749249ff54f979082b55c62033b8d"
                     },
                     {
@@ -2250,10 +2339,10 @@
                     },
                     {
                         "id": "pair_a39b46ad5c4a4504b1e3e7987e3b8a8a",
-                        "name": "max_price",
-                        "value": "250",
+                        "name": "live_time_interval",
+                        "value": "10000",
                         "description": "",
-                        "disabled": true
+                        "disabled": false
                     },
                     {
                         "id": "pair_c8bb170d975049cdbc6a38c1aead0314",
@@ -2366,13 +2455,13 @@
                     {
                         "id": "pair_f4d59324dbef4500ac66f8bd4aad8a9c",
                         "name": "start_date",
-                        "value": "2023-10-15 12:02:03",
+                        "value": "2023-10-18 08:15:00",
                         "description": ""
                     },
                     {
                         "id": "pair_f51e1310de164b87bd53029e1018a062",
                         "name": "end_date",
-                        "value": "2023-10-04 12:02:03",
+                        "value": "2023-10-20 12:02:03",
                         "description": "",
                         "disabled": true
                     },
@@ -2601,9 +2690,9 @@
         {
             "_id": "req_4379700ce182451786ef4e6a724b02c6",
             "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1697007374817,
+            "modified": 1697786718168,
             "created": 1687263301869,
-            "url": "{{base}}/api/auction/34",
+            "url": "{{base}}/api/auction/2",
             "name": "Show Auction",
             "description": "",
             "method": "GET",
@@ -2622,9 +2711,9 @@
                 {
                     "id": "pair_6a1f707d3f8a43c79346ee85298d510c",
                     "name": "user_id",
-                    "value": "12",
+                    "value": "10",
                     "description": "",
-                    "disabled": true
+                    "disabled": false
                 }
             ],
             "headers": [
@@ -2741,41 +2830,6 @@
                 "disabled": true
             },
             "metaSortKey": -1684480124292.3066,
-            "isPrivate": false,
-            "settingStoreCookies": true,
-            "settingSendCookies": true,
-            "settingDisableRenderRequestBody": false,
-            "settingEncodeUrl": true,
-            "settingRebuildPath": true,
-            "settingFollowRedirects": "global",
-            "_type": "request"
-        },
-        {
-            "_id": "req_4c921bf3fc9c4c4783395646b9fc6096",
-            "parentId": "fld_608546664b5e4df4829e39a19ba62a49",
-            "modified": 1696571830811,
-            "created": 1694683737756,
-            "url": "{{base}}/api/auction/17/bid",
-            "name": "store auction bid",
-            "description": "",
-            "method": "POST",
-            "body": {
-                "mimeType": "application/json",
-                "text": "{\n\t\"price\":\"135\"\n}\n"
-            },
-            "parameters": [],
-            "headers": [
-                {
-                    "name": "Content-Type",
-                    "value": "application/json"
-                }
-            ],
-            "authentication": {
-                "type": "bearer",
-                "token": "{{token}}",
-                "disabled": false
-            },
-            "metaSortKey": -1684437437690.5283,
             "isPrivate": false,
             "settingStoreCookies": true,
             "settingSendCookies": true,
@@ -3140,7 +3194,7 @@
         {
             "_id": "req_c49ea9c28f7f4508941c8e22c9778dba",
             "parentId": "fld_a3bad42106b24718b90d306a4c7757b6",
-            "modified": 1697179076369,
+            "modified": 1697618836784,
             "created": 1675226898656,
             "url": "{{base}}/api/wishlist/products",
             "name": "wishlist store",
@@ -3150,7 +3204,7 @@
             "parameters": [
                 {
                     "name": "ref_id",
-                    "value": "33",
+                    "value": "1",
                     "id": "pair_5aa79fc272f745b192965b3fe1cbfbee"
                 },
                 {
@@ -3946,9 +4000,141 @@
             "_type": "request"
         },
         {
+            "_id": "req_62cc904e9d84482a83c05cea410a31bb",
+            "parentId": "fld_7579792862f940f78a64c39c5f5b348f",
+            "modified": 1697822154995,
+            "created": 1697820757119,
+            "url": "{{base}}/api/user-address",
+            "name": "update Current User",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/x-www-form-urlencoded",
+                "params": [
+                    {
+                        "id": "pair_54e6e1c06a3f4aaf96bf51bd77086558",
+                        "name": "company_name",
+                        "value": "Tj3",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_cc4286a29e4845d3853d643c46464183",
+                        "name": "nif",
+                        "value": "123",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_9b369c85516d4be3a1628a7fbd09ff9e",
+                        "name": "country_code",
+                        "value": "91",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_8c09245ec02741ff89a138a44e55f4dc",
+                        "name": "country",
+                        "value": "Portugal",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_1d3b2daf1d5b4dbfa686f676df0f90c7",
+                        "name": "city",
+                        "value": "porto",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_e5910bffdad8404282755f432941f8ab",
+                        "name": "state",
+                        "value": "Gujara",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_9785e53b13b04fbd85ab90108c9c3173",
+                        "name": "post_code",
+                        "value": "396321",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_05ce1d6e3a454d3c963cad9428591e66",
+                        "name": "phone_no",
+                        "value": "8866776577",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_3f00c12b5e164b0cbe504f491b788f3a",
+                        "name": "email",
+                        "value": "tj@yopmail.com",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_29c7529aa616484fbe498242db4b461d",
+                        "name": "dial_code",
+                        "value": "91",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_adf115cf6e0747f58024c6f24d735640",
+                        "name": "iso_alpha2",
+                        "value": "91",
+                        "description": ""
+                    },
+                    {
+                        "id": "pair_2b8abe32514d4a65aa465750db3a2010",
+                        "name": "is_default",
+                        "value": "1",
+                        "description": ""
+                    }
+                ]
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{token}}",
+                "prefix": ""
+            },
+            "metaSortKey": -1697821676841,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "fld_7579792862f940f78a64c39c5f5b348f",
+            "parentId": "fld_fc0a3793bee544ad8bdbeece3a9b7454",
+            "modified": 1697821669590,
+            "created": 1697821669590,
+            "name": "User Address",
+            "description": "",
+            "environment": {},
+            "environmentPropertyOrder": null,
+            "metaSortKey": -1697821669590,
+            "_type": "request_group"
+        },
+        {
+            "_id": "fld_fc0a3793bee544ad8bdbeece3a9b7454",
+            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
+            "modified": 1672916900633,
+            "created": 1672916900633,
+            "name": "Authentication",
+            "description": "",
+            "environment": {},
+            "environmentPropertyOrder": null,
+            "metaSortKey": -1672916900634,
+            "_type": "request_group"
+        },
+        {
             "_id": "req_e808c0d988db498f9a3cdedb5d8c7086",
             "parentId": "fld_fc0a3793bee544ad8bdbeece3a9b7454",
-            "modified": 1696501556793,
+            "modified": 1697787608966,
             "created": 1672643810975,
             "url": "{{base}}/api/auth/register",
             "name": "Register",
@@ -3956,7 +4142,7 @@
             "method": "POST",
             "body": {
                 "mimeType": "application/json",
-                "text": "{\n\t\"username\": \"tejal\",\n\t\"email\": \"tejal@enstead.com\",\n\t\"password\": \"123123\",\n\t\"first_name\":\"Tejal\",\n\t\"last_name\":\"Gandhi\"\n}"
+                "text": "{\n\t\"username\": \"tejal\",\n\t\"email\": \"tejal1@enstead.com\",\n\t\"password\": \"123123\",\n\t\"first_name\":\"Tejal\",\n\t\"last_name\":\"Gandhi\"\n}"
             },
             "parameters": [],
             "headers": [
@@ -3977,21 +4163,9 @@
             "_type": "request"
         },
         {
-            "_id": "fld_fc0a3793bee544ad8bdbeece3a9b7454",
-            "parentId": "wrk_f2074d8fe23e48eba1eca85c76387f32",
-            "modified": 1672916900633,
-            "created": 1672916900633,
-            "name": "Authentication",
-            "description": "",
-            "environment": {},
-            "environmentPropertyOrder": null,
-            "metaSortKey": -1672916900634,
-            "_type": "request_group"
-        },
-        {
             "_id": "req_88b752a008d44aa59b7a0d5e7e84f4f8",
             "parentId": "fld_fc0a3793bee544ad8bdbeece3a9b7454",
-            "modified": 1696942070764,
+            "modified": 1697787650032,
             "created": 1672644607343,
             "url": "{{base}}/api/auth/login",
             "name": "Login",
@@ -3999,7 +4173,7 @@
             "method": "POST",
             "body": {
                 "mimeType": "application/json",
-                "text": "{\n\t\"email\": \"tejal@enstead.com\",\n\t\"password\": \"123123\"\n}"
+                "text": "{\n\t\"email\": \"tejal1@enstead.com\",\n\t\"password\": \"123123\"\n}"
             },
             "parameters": [],
             "headers": [
@@ -4174,12 +4348,12 @@
         {
             "_id": "env_a30ada3ecc2a4ac89da5ab94c1505cc9",
             "parentId": "env_2a655e6350247e920858a5dfc90144e8670af491",
-            "modified": 1694765159286,
+            "modified": 1697788019195,
             "created": 1673934423089,
-            "name": "Local Server",
+            "name": "Hari Local Server",
             "data": {
                 "base": "http://uvavino-api.test",
-                "token": "3|qzCCJiFDNaVnuVcQ8ZgiFaME4iYNbakSajXbRKMo"
+                "token": "16|vh8mCRpiTXUPHUFtHQ42oH8CIKSQ5sArV13WYsiS4ddb65ee"
             },
             "dataPropertyOrder": {
                 "&": [
@@ -4195,9 +4369,9 @@
         {
             "_id": "env_e6ef8e0ba8f3475ab364a0e0234632be",
             "parentId": "env_2a655e6350247e920858a5dfc90144e8670af491",
-            "modified": 1695884536157,
+            "modified": 1697787817046,
             "created": 1692861380830,
-            "name": "Live server",
+            "name": "old Live server",
             "data": {
                 "base": "https://dev.api.uvavino.immera.io",
                 "token": "194|Zv5iYPtSvdUBGR8fixJIaSZX8HwFGuwAcYLEVEwd"
@@ -4216,9 +4390,9 @@
         {
             "_id": "env_ee10161d2dec41fdb17d291029c030bf",
             "parentId": "env_2a655e6350247e920858a5dfc90144e8670af491",
-            "modified": 1696572005333,
+            "modified": 1697787826273,
             "created": 1694765116057,
-            "name": "New Environment",
+            "name": "Live server",
             "data": {
                 "base": "https://dev.api.uvavino.labomba.studio",
                 "token": "26|2zHKKiSJHqhVjKswUD32bGwHf8TejdrzZjjiAfS76846988a"
@@ -4232,6 +4406,27 @@
             "color": null,
             "isPrivate": false,
             "metaSortKey": 1694765116057,
+            "_type": "environment"
+        },
+        {
+            "_id": "env_29f14298ddbc4a15b70cc6b74c2ab040",
+            "parentId": "env_2a655e6350247e920858a5dfc90144e8670af491",
+            "modified": 1697785643967,
+            "created": 1697785604627,
+            "name": "Tejal local environment",
+            "data": {
+                "base": "http://uvavino-api.test",
+                "token": "15|n9tqpNDy7upBJ2rXtR3HYlLzvCGZWpH55AwzOp5Gf7b0d421"
+            },
+            "dataPropertyOrder": {
+                "&": [
+                    "base",
+                    "token"
+                ]
+            },
+            "color": null,
+            "isPrivate": false,
+            "metaSortKey": 1697785604627,
             "_type": "environment"
         }
     ]
