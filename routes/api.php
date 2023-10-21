@@ -14,6 +14,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuctionBidController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\InquiryController;
 use Illuminate\Http\Request;
@@ -125,7 +126,13 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::post('/logout', [WineAuthController::class, 'logout']);
     Route::post('/auction-pack', [AuctionPackController::class, 'store']);
 
+    //user profile api
     Route::get('/user', [WineAuthController::class, 'getUser']);
+    Route::post('/user', [WineAuthController::class, 'updateUser']);
+    Route::get('/user-address', [WineAuthController::class, 'getUser']);
+    Route::post('/user-address', [UserAddressController::class, 'addAddress']);
+
+
 
     // Routes for connect as seller of wine products
     Route::post('/connect-as-seller', [SellerController::class, 'connect']);
@@ -171,5 +178,6 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::get('/cart', [CartController::class, 'getCartItems']);
     Route::put('/cart/{cart_id}', [CartController::class, 'update']);
     Route::delete('/cart/{cart_id}', [CartController::class, 'destroy']);
+
 
 });
