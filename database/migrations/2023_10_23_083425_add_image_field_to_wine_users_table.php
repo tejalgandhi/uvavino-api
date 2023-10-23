@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('wine_users', function (Blueprint $table) {
             $table->string('image')->nullable()->after('country');
+            $table->longText('about_us')->nullable();
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('wine_users', function (Blueprint $table) {
             $table->dropColumn('image');
+            $table->dropColumn('about_us');
         });
     }
 };
