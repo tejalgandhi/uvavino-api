@@ -40,17 +40,17 @@ class UserAddressController extends Controller
                 $userAddress = UserAddress::whereId(request()->input('id'))->first();
                 $userAddress->fill($addressArr)->save();
             }else{
-                $address = UserAddress::create($addressArr);
+                $userAddress = UserAddress::create($addressArr);
             }
             if(request()->input('is_default') == 1){
                 UserAddress::where('wine_user_id',request()->user()->id)
-                    ->where('id','!=',$address->id)
+                    ->where('id','!=',$userAddress->id)
                     ->update([
                         'is_default'=>0
                     ]);
             }
 
-            return response()->json(['code' => 200, 'data' => $address], 200);
+            return response()->json(['code' => 200, 'data' => $userAddress], 200);
         } catch (\Exception $e) {
             return response()->json(['code' => 500, 'message' => $e->getMessage()], 500);
         }
