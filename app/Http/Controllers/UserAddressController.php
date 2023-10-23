@@ -2,16 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserAddressResource;
 use App\Models\UserAddress;
+use Illuminate\Http\Request;
 
 class UserAddressController extends Controller
 {
+    public function index()
+    {
+        try {
+            $address = UserAddress::where('wine_user_id',request()->user()->id)->get();
+            return response()->json(['code' => 200, 'data' => UserAddressResource::collection($address)], 200);
+        } catch (\Exception $e) {
+            return response()->json(['code' => 500, 'message' => $e->getMessage()], 500);
+        }
+    }
     public function addAddress()
     {
         try {
             $addressArr = [
                 'wine_user_id' => request()->user()->id,
-                'company_name' => request()->input('company_name'),
                 'nif' => request()->input('nif'),
                 'country_code' => request()->input('country_code'),
                 'country' => request()->input('country'),
@@ -26,9 +36,31 @@ class UserAddressController extends Controller
                 'iso_alpha2' => request()->input('iso_alpha2'),
                 'is_default' => request()->input('is_default'),
             ];
+            if (request()->has('id')) {
+                $userAddress = UserAddress::whereId(request()->input('id'))->first();
+                $userAddress->fill($addressArr)->save();
+            }else{
+                $address = UserAddress::create($addressArr);
+            }
+            if(request()->input('is_default') == 1){
+                UserAddress::where('wine_user_id',request()->user()->id)
+                    ->where('id','!=',$address->id)
+                    ->update([
+                        'is_default'=>0
+                    ]);
+            }
 
-            $address = UserAddress::create($addressArr);
             return response()->json(['code' => 200, 'data' => $address], 200);
+        } catch (\Exception $e) {
+            return response()->json(['code' => 500, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function destroy(Request $request,$id)
+    {
+        try {
+            UserAddress::where('id',$id)->delete();
+            return response()->json(['code' => 200, 'message' => "Address Deleted Successfully"], 200);
         } catch (\Exception $e) {
             return response()->json(['code' => 500, 'message' => $e->getMessage()], 500);
         }
