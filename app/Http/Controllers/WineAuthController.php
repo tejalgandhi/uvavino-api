@@ -112,7 +112,7 @@ class WineAuthController extends Controller
             if ($request->hasFile('image')) {
                 $user->uploadImages('image', $request->image, ['user']);
             }
-
+            $user = WineUser::find(Auth::user()->id);
             return response()->json([
                 'status' => 200,
                 'user' => new WineUserResource($user),
