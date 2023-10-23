@@ -109,6 +109,9 @@ class WineAuthController extends Controller
                'city'=> $request->city,
                'country'=> $request->country,
             ]);
+            if ($request->hasFile('image')) {
+                $user->uploadImages('image', $request->image, ['user']);
+            }
 
             return response()->json([
                 'status' => 200,

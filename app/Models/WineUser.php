@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\ConnectableUser;
+use App\Models\Traits\FileUploadTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,6 +26,7 @@ use Laravel\Sanctum\HasApiTokens;
 class WineUser extends Authenticatable implements ConnectableUser, PaymentUserContract
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use FileUploadTrait;
 
     /**
      * The attributes that are mass assignable.

@@ -27,6 +27,9 @@ class WineUserResource extends JsonResource
             'remaining_auction_qty' => $this->available_auctions,
             'city' => $this->city ?? '',
             'country' => $this->country ?? '',
+            'image' => $this->image ?? '',
+            'about_us' => $this->about_us ?? '',
+            'user_created' => $this->created_at ?? '',
         ];
     }
 }
