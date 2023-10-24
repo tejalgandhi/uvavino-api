@@ -152,7 +152,8 @@ class AuctionController extends Controller
             default => $query->orderBy('type')->orderBy('is_ended'),
         };
 
-
+        $query = $query->orderBy('auctions.is_ended') // Sort by is_ended (0 for live, 1 for ended)
+        ->orderBy('auctions.start_date', 'asc');
         return AuctionResource::collection(
             $query->paginate($limit)
         );
