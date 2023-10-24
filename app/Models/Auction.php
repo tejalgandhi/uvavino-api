@@ -12,9 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\AuctionType;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
-use function Nette\Utils\first;
 
 class Auction extends Model
 {

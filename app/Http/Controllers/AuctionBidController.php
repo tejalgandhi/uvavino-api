@@ -11,9 +11,7 @@ use App\Http\Resources\Success;
 use App\Models\Auction;
 use App\Models\AuctionBid;
 use App\Models\AutomaticBid;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
-use function Psr\Log\error;
 
 /**
  * Class AuctionController
@@ -109,8 +107,10 @@ class AuctionBidController extends Controller
 
         if($auction->activeAutoBid()->count() > 0){
             $activeAutoBid = $auction->activeAutoBid()->first();
+            /** @phpstan-ignore-next-line */
             if($activeAutoBid->wine_user_id == $wine_user_id)
             {
+                /** @phpstan-ignore-next-line */
                 if($activeAutoBid->max_limit == $max){
                     throw new \Exception('You already have active auto bid');
                 }
