@@ -101,18 +101,18 @@ class WineAuthController extends Controller
     public function updateUser(WineUserRequest $request)
     {
         try{
-           $user = WineUser::updateOrCreate(
-            ['id'=>Auth::user()->id],
-            [
-               'first_name'=> $request->first_name,
-               'last_name'=> $request->last_name,
-               'city'=> $request->city,
-               'country'=> $request->country,
-            ]);
+            $userArr = [
+                'first_name'=> $request->first_name,
+                'last_name'=> $request->last_name,
+                'city'=> $request->city,
+                'country'=> $request->country,
+            ];
+            $user= WineUser::whereId(Auth::user()->id)->first();
+            $user->fill($userArr)->save();
+
             if ($request->hasFile('image')) {
                 $user->uploadImages('image', $request->image, ['user']);
             }
-            $user = WineUser::find(Auth::user()->id);
             return response()->json([
                 'status' => 200,
                 'user' => new WineUserResource($user),
