@@ -36,4 +36,5 @@ class AutomaticBid extends Model
     {
         return $this->belongsTo(Auction::class,'auction_id','id');
     }
+
 }

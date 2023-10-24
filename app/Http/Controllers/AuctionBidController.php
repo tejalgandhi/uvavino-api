@@ -11,7 +11,6 @@ use App\Http\Resources\Success;
 use App\Models\Auction;
 use App\Models\AuctionBid;
 use App\Models\AutomaticBid;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 
 /**
@@ -75,8 +74,11 @@ class AuctionBidController extends Controller
             if($auction->activeAutoBid()->count() > 0){
                 $automaticBid = $auction->autoBids()->first();
                 $activeAutoBid = $auction->activeAutoBid()->first();
-                /** @phpstan-ignore-next-line */
-                $automaticBid->evalWith($activeAutoBid,$auction);
+                if($autoBid->wine_user_id !=  $automaticBid->wine_user_id) {
+                    /** @phpstan-ignore-next-line */
+                    $automaticBid->evalWith($activeAutoBid,$auction);
+                }
+
             }
             $autoBid->storeEvent($autoBid);
             return response()->json(['message' => "Auction Bid Create Successfully", "data" => $autoBid], 201);
@@ -92,7 +94,7 @@ class AuctionBidController extends Controller
      */
     public function automaticBid(AutomaticBidRequest $request, Auction $auction)
     {
-        $max = $request->amount;
+        $max = floatval($request->amount);
         $wine_user_id = $request->wine_user_id;
         if ($max < $auction->nextMinBid()) {
             return (new Fail(__('Invalid amount, amount must be higher than current bid.')))->json(400);
@@ -100,13 +102,27 @@ class AuctionBidController extends Controller
         $autoBid = new AutomaticBid([
             'auction_id' => $auction->id,
             'wine_user_id' => $wine_user_id,
-            'max_limit' => floatval($max)
+            'max_limit' => $max
         ]);
-        $autoBid->save();
+
         if($auction->activeAutoBid()->count() > 0){
             $activeAutoBid = $auction->activeAutoBid()->first();
             /** @phpstan-ignore-next-line */
-            $autoBid->evalWith($activeAutoBid,$auction);
+            if($activeAutoBid->wine_user_id == $wine_user_id)
+            {
+                /** @phpstan-ignore-next-line */
+                if($activeAutoBid->max_limit == $max){
+                    throw new \Exception('You already have active auto bid');
+                }
+                $activeAutoBid->update(['max_limit'=>$max]);
+                return (new Success(__('Existing automatic bid updated')))->json(200);
+            }
+            $autoBid->save();
+            /** @phpstan-ignore-next-line */
+//            if(empty($bid) || (!empty($bid) && $wine_user_id !=  $bid->wine_user_id)) {
+                /** @phpstan-ignore-next-line */
+                $autoBid->evalWith($activeAutoBid, $auction);
+//            }
         }
         else{
             $auction->makeAutobid($autoBid);

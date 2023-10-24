@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\AuctionType;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 
 class Auction extends Model
@@ -191,7 +190,7 @@ class Auction extends Model
 
         return !empty($auction_bid) ? $auction_bid->value : 0 ;
     }
-    public function nextMinBid() : int
+    public function nextMinBid() : float
     {
         // Need to write correct logic
         $minimum_bid_step = Config('constant.minimum_bid_step');
@@ -234,6 +233,7 @@ class Auction extends Model
 
         Log::info("trying to autobid from {".$automaticBid->wine_user_id."}");
         $min = $this->nextMinBid();
+        Log::info('min '. $min);
         if($automaticBid->max_limit >= $min){
             Log::info($automaticBid->wine_user_id ." bidded automatically.");
             $this->setNewBid($automaticBid->wine_user_id, $min);
@@ -307,7 +307,7 @@ class Auction extends Model
     public function userLatestBid($user_id = 0)
     {
         \Log::info('userLatestBid user: ' . $user_id . ' auction: ' .  $this->id);
-        return AuctionBid::where('wine_user_id',$user_id)->where('auction_id',$this->id)->latest()->first();
+        return $this->bids()->where('wine_user_id',$user_id)->latest()->first();
     }
     public function userAuctionStatus($user_latest_time = 0)
     {
