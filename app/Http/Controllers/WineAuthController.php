@@ -102,6 +102,7 @@ class WineAuthController extends Controller
     {
         try{
             $userArr = [
+                'username'=> $request->first_name,
                 'first_name'=> $request->first_name,
                 'last_name'=> $request->last_name,
                 'city'=> $request->city,
