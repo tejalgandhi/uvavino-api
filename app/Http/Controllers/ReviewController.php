@@ -20,7 +20,8 @@ class ReviewController extends Controller
 {
     public function index(Request $request) {
         try {
-            return response()->json(['message' => "Get Review Items", "data" => $this->getReviewDetail($request)], 201);
+            $data = $this->getReviewDetail($request);
+            return response()->json(['message' => "Get Review Items", "data" => $data->response()->getData(false)], 201);
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
