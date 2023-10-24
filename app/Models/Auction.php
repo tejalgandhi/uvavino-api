@@ -236,11 +236,7 @@ class Auction extends Model
         $latestBid = $this->bids()->latest()->first();
              Log::info('min ' . $min);
              if ($automaticBid->max_limit >= $min) {
-                 Log::info($automaticBid->wine_user_id . " bidded automatically.");
-                 Log::info('$min');
-                 Log::info($min);
-                 Log::info('$latestBid');
-                 Log::info($latestBid);
+                 /** @phpstan-ignore-next-line */
                  if((empty($latestBid) || (!empty($latestBid) && $latestBid->wine_user_id != $automaticBid->wine_user_id && $min != $latestBid->value))) {
                      $this->setNewBid($automaticBid->wine_user_id, $min);
                  }
