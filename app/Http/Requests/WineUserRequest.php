@@ -24,6 +24,7 @@ class WineUserRequest extends FormRequest
     public function rules()
     {
         return [
+            "username" => ["required"],
             "first_name" => ["required"],
             "last_name" => ["required"],
             "city" => ["required"],
