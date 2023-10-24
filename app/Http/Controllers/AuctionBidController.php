@@ -125,6 +125,7 @@ class AuctionBidController extends Controller
 //            }
         }
         else{
+            $autoBid->save();
             $auction->makeAutobid($autoBid);
         }
 

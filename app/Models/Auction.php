@@ -233,12 +233,19 @@ class Auction extends Model
 
         Log::info("trying to autobid from {".$automaticBid->wine_user_id."}");
         $min = $this->nextMinBid();
-        Log::info('min '. $min);
-        if($automaticBid->max_limit >= $min){
-            Log::info($automaticBid->wine_user_id ." bidded automatically.");
-            $this->setNewBid($automaticBid->wine_user_id, $min);
-            return true;
-        }
+        $latestBid = $this->bids()->latest()->first();
+             Log::info('min ' . $min);
+             if ($automaticBid->max_limit >= $min) {
+                 Log::info($automaticBid->wine_user_id . " bidded automatically.");
+                 Log::info('$min');
+                 Log::info($min);
+                 Log::info('$latestBid');
+                 Log::info($latestBid);
+                 if((empty($latestBid) || (!empty($latestBid) && $latestBid->wine_user_id != $automaticBid->wine_user_id && $min != $latestBid->value))) {
+                     $this->setNewBid($automaticBid->wine_user_id, $min);
+                 }
+                 return true;
+             }
         Log::info($automaticBid->wine_user_id ." can't bid automatically (out of limit).");
         return false;
 
@@ -246,13 +253,11 @@ class Auction extends Model
 
     public function setNewBid($user_id,$min)
     {
-        $bid = new AuctionBid([
+        AuctionBid::create([
             'auction_id' => $this->id,
             'wine_user_id' => $user_id,
             'value' => $min
         ]);
-
-        $bid->save();
 
     }
 
