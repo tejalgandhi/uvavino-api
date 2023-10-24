@@ -20,10 +20,12 @@ class AutomaticBid extends Model
                 throw new \Exception('auction  not matched');
         }
         // Check if the auction can be auto-bid with the current AutoBid
-        if ($auction->makeAutobid($this)) {
-            Log::info('evalWith by user '.$this->wine_user_id.' Autobid done');
-            // If successful, recursively call evalWith on the opponent
-            return $automaticBid->evalWith($this,$auction);
+        if($automaticBid->wine_user_id != $this->wine_user_id) {
+            if ($auction->makeAutobid($this)) {
+                Log::info('evalWith by user ' . $this->wine_user_id . ' Autobid done');
+                // If successful, recursively call evalWith on the opponent
+                return $automaticBid->evalWith($this, $auction);
+            }
         }
         Log::info('evalWith by user '.$this->wine_user_id.' limit exceed, returning '. $automaticBid->wine_user_id);
         // If the auto-bid fails, return the opponent
