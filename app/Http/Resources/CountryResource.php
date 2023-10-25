@@ -19,6 +19,7 @@ class CountryResource extends JsonResource
             'name' => $this->resource->name,
             'iso_alpha_2' => $this->resource->iso_alpha_2,
             'iso_alpha_3' => $this->resource->iso_alpha_3,
+            'phone_code' => $this->resource->phone_code ?? '',
             'flag' => $this->resource->iso_alpha_2 ? country_flag($this->resource->iso_alpha_2) : '',
         ];
     }
