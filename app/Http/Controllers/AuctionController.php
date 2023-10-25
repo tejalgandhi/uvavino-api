@@ -140,7 +140,10 @@ class AuctionController extends Controller
             }
         }
 
-
+       $query = $query
+           ->orderBy('auctions.is_ended', 'asc')
+           ->orderBy('auctions.type', 'asc')
+           ->orderBy('auctions.start_date', 'asc');
 
         $query = match($order_by){
         'ascending' => $query->orderBy('auctions.title', 'asc'),
@@ -149,11 +152,8 @@ class AuctionController extends Controller
             'older' => $query->orderBy('auctions.created_at', 'asc'),
             'expensive' => $query->orderBy('auctions.max_price', 'desc'),
             'cheapest' => $query->orderBy('auctions.max_price', 'asc'),
-            default => $query->orderBy('type')->orderBy('is_ended'),
+            default =>$query,
         };
-
-        $query = $query->orderBy('auctions.is_ended') // Sort by is_ended (0 for live, 1 for ended)
-        ->orderBy('auctions.start_date', 'asc');
         return AuctionResource::collection(
             $query->paginate($limit)
         );
