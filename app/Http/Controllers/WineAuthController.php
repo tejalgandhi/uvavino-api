@@ -107,6 +107,7 @@ class WineAuthController extends Controller
                 'last_name'=> $request->last_name,
                 'city'=> $request->city,
                 'country'=> $request->country,
+                'about_us'=> $request->about_us,
             ];
             $user= WineUser::whereId(Auth::user()->id)->first();
             $user->fill($userArr)->save();
