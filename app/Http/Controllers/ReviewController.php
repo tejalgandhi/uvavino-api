@@ -28,6 +28,7 @@ class ReviewController extends Controller
     }
 
     public function getReviewDetail($request){
+        $limit = $request->limit ?? config('constant.number_of_items_per_page');
         $reviewType = $request->reviewable_type;
         $reviewId = $request->reviewable_id;
         $query = Review::with('wineUser');
@@ -39,7 +40,7 @@ class ReviewController extends Controller
                 $query=$query->where('reviewable_id',$reviewId);
             }
         }
-        $query = $query->orderByDesc('id')->paginate(10);
+        $query = $query->orderByDesc('id')->paginate($limit);
         return ReviewResource::collection($query);
     }
 //    public function index(Request $request)
