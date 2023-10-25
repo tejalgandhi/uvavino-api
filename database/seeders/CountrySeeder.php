@@ -23,7 +23,8 @@ class CountrySeeder extends Seeder
             ], [
                 'name' => $c['name'],
                 'iso_alpha_2'=> strtoupper($c['alpha2']),
-                'iso_alpha_3'=>strtoupper($c['alpha3'])
+                'iso_alpha_3'=>strtoupper($c['alpha3']),
+                'phone_code'=>strtoupper($c['phonecode'])
             ]);
         }
     }

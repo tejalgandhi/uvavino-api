@@ -33,13 +33,7 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'username',
-        'first_name',
-        'last_name',
-        'email',
-        'password',
-    ];
+    protected $guarded=['id'];
 
     /**
      * The attributes that should be hidden for serialization.
