@@ -21,7 +21,7 @@ class ReviewController extends Controller
     public function index(Request $request) {
         try {
             $data = $this->getReviewDetail($request);
-            return response()->json(['message' => "Get Review Items", "data" => $data->response()->getData(false)], 201);
+            return  $data->response()->getData(false);
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
@@ -43,36 +43,13 @@ class ReviewController extends Controller
         $query = $query->orderByDesc('id')->paginate($limit);
         return ReviewResource::collection($query);
     }
-//    public function index(Request $request)
-//    {
-//        //category => product
-//        //category_id => product_id
-//        $reviewable_type = $request->reviewable_type;
-//        $reviewable_id = $request->reviewable_id;
-//        $review =  Review::with('wineUser');
-//        if(!empty($reviewable_type) && !empty($reviewable_id)) {
-//            $reviewableClass =  match($request->reviewable_type){
-//                'wine_user' => WineUser::class,
-//                'product' => Product::class,
-//                'auction' => Auction::class,
-//                'auction_package' => AuctionPackage::class,
-//                default => Product::class,
-//            };
-//
-//            $review = $review->where('reviewable_type', $reviewableClass)
-//                ->where('reviewable_id', $reviewable_id);
-//        }
-//        $review = $review->paginate(10);
-//        return ReviewResource::collection($review);
-//    }
 
     public function storeWineUserReview(ReviewRequest $request,WineUser $wineUser)
     {
         try {
 
-            $this->storeReview($wineUser,$request);
-
-            return (new Success(__("User Review store successfully.")))->json();
+            $review = $this->storeReview($wineUser,$request);
+            return response()->json(['message' => "User Review store successfully.", "data" => new ReviewResource($review)], 201);
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
@@ -81,9 +58,9 @@ class ReviewController extends Controller
     {
         try {
 
-            $this->storeReview($product,$request);
+            $review = $this->storeReview($product,$request);
 
-            return (new Success(__("Product Review store successfully.")))->json();
+            return response()->json(['message' => "Product Review store successfully.", "data" => new ReviewResource($review)], 201);
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
@@ -93,9 +70,10 @@ class ReviewController extends Controller
     {
         try {
 
-            $this->storeReview($auction,$request);
+            $review = $this->storeReview($auction,$request);
 
-            return (new Success(__("Auction Review store successfully.")))->json();
+            return response()->json(['message' => "Auction Review store successfully.", "data" => new ReviewResource($review)], 201);
+
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
@@ -105,9 +83,9 @@ class ReviewController extends Controller
     {
         try {
 
-            $this->storeReview($auctionPackage,$request);
+            $review = $this->storeReview($auctionPackage,$request);
 
-            return (new Success(__("Auction Package Review store successfully.")))->json();
+            return response()->json(['message' => "Auction Package Review store successfully.", "data" => new ReviewResource($review)], 201);
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
         }
@@ -123,6 +101,31 @@ class ReviewController extends Controller
     {
         try {
             return new ProductReviewResource($product);
+
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
+    public function deleteReview(Request $request,$id)
+    {
+        try {
+            Review::where('id',$id)->delete();
+            $data = $this->getReviewDetail($request);
+            return response()->json(['message' => "Review deleted successfully.", "data" => $data], 201);
+
+        }catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
+    public function updateReview(ReviewRequest $request,$id)
+    {
+        try {
+            Review::where('id',$id)->update([
+                'rating'=>$request->rating,
+                'review_content'=>$request->review_content,
+            ]);
+            $data = $this->getReviewDetail($request);
+            return response()->json(['message' => "Review updated successfully.", "data" => $data], 201);
 
         }catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();

@@ -50,7 +50,7 @@ class UserAddressController extends Controller
                     ]);
             }
 
-            return response()->json(['code' => 200, 'data' => $userAddress], 200);
+            return response()->json(['code' => 200, 'data' => new  UserAddressResource($userAddress)], 200);
         } catch (\Exception $e) {
             return response()->json(['code' => 500, 'message' => $e->getMessage()], 500);
         }
