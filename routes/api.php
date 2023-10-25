@@ -158,6 +158,8 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     Route::post('/product/{product}/reviews', [ReviewController::class, 'storeProductReview']);
     Route::post('/auction/{auction}/reviews', [ReviewController::class, 'storeAuctionReview']);
     Route::post('/auction_package/{auction_package}/reviews', [ReviewController::class, 'storeAuctionPackageReview']);
+    Route::delete('/review/{review_id}',[ReviewController::class, 'deleteReview']);
+    Route::put('/review/{review_id}',[ReviewController::class, 'updateReview']);
 
 
     //wishlist
