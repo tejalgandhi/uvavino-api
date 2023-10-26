@@ -249,11 +249,16 @@ class Auction extends Model
 
     public function setNewBid($user_id,$min)
     {
-        AuctionBid::create([
-            'auction_id' => $this->id,
-            'wine_user_id' => $user_id,
-            'value' => $min
-        ]);
+        $existingBid = $this->bids()->where('wine_user_id', $user_id)
+            ->where('value', $min)
+            ->first();
+        if(empty($existingBid)) {
+            AuctionBid::create([
+                'auction_id' => $this->id,
+                'wine_user_id' => $user_id,
+                'value' => $min
+            ]);
+        }
 
     }
 
