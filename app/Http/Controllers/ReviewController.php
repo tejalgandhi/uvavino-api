@@ -31,7 +31,7 @@ class ReviewController extends Controller
         $limit = $request->limit ?? config('constant.number_of_items_per_page');
         $reviewType = $request->reviewable_type;
         $reviewId = $request->reviewable_id;
-        $query = Review::with('wineUser');
+        $query = Review::with('wine_user');
         if(!empty($reviewType)){
             $type = ReviewType::from($reviewType)->className();
 

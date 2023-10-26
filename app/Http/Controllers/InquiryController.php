@@ -18,7 +18,7 @@ class InquiryController extends Controller
                 $contactUs->uploadImages('file', $request->file, ['inquiry']);
             }
 
-            return response()->json(['data'=>[],'status'=>201 ,'message'=>__('Inquiry form submitted successfully.')],201) ;
+            return response()->json(['data'=>$contactUs,'status'=>201 ,'message'=>__('Inquiry form submitted successfully.')],201) ;
 
         }catch (\Exception $e){
 

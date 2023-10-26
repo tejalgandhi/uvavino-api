@@ -36,6 +36,7 @@ class AuctionSingleProductDetailResource extends JsonResource
             'seller_created_at' => $this->wine_user ?$this->wine_user->created_at :'',
             'seller_reviews_count' =>  $this->wine_user ?$this->wine_user->countRating():0,
             'seller_ratings' =>  $this->wine_user ?$this->wine_user->averageRating():0,
+            'seller_image' =>  $this->wine_user ? json_decode($this->wine_user->image) : '',
             'country_id' => $this->country_id,
             'country_name' => $this->country_name,
             'iso_alpha_2' => $this->country_iso_code,

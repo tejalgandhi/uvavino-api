@@ -31,11 +31,10 @@ class ReviewResource extends JsonResource
             'id' => $this->resource->id,
             'reviewable_type' => $this->resource->reviewable_type,
             'reviewable_id' => $this->resource->reviewable_id,
-            'wine_user_id' => $this->resource->wine_user_id,
-            'user_name' => $this->resource->wineUser->username,
             'rating' => $this->resource->rating,
             'review_content' => $this->resource->review_content,
             'review_date' => $this->resource->created_at,
+            'reviewer'=> new WineUserResource($this->wine_user),
             'reviewable' => $reviewable
 
         ];

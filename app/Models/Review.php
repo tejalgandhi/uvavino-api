@@ -22,7 +22,7 @@ class Review extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function wineUser(){
+    public function wine_user(){
         return $this->belongsTo(WineUser::class,'wine_user_id','id');
     }
 
