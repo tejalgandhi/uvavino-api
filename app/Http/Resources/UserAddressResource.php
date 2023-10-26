@@ -15,7 +15,6 @@ class UserAddressResource extends JsonResource
      */
     public function toArray($request)
     {
-
         return [
             'id' => $this->id,
             'wine_user_id' => $this->wine_user_id,

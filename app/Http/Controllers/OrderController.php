@@ -54,7 +54,8 @@ class OrderController extends Controller
     {
         $user = $request->user();
         $cart_items = $request->cart_items;
-        $order = $user->orders()->create();
+        $order_no =generateOrderNo();
+        $order = $user->orders()->create(['address_id'=>$request->address_id,'order_no'=>$order_no]);
         $cart_id = 0;
         $available_auctions = $user->available_auctions;
 

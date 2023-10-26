@@ -26,6 +26,7 @@ class OrderRequest extends FormRequest
     {
         return [
             'cart_items' => ['required'],
+            'address_id' => ['required'],
         ];
     }
 }
