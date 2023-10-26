@@ -18,6 +18,9 @@ class OrderResource extends JsonResource
             'id' => $this->id,
 //            'wine_user' => new WineUserResource($this->wine_user),
             'wine_user' => $this->wine_user_id,
+            'order_no' => $this->order_no,
+            'request_date' => $this->created_at,
+            'shipping_address' => $this->address ? new UserAddressResource($this->address):'',
             'items' => OrderDetailResource::collection($this->items)
         ];
     }
