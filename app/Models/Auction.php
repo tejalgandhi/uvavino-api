@@ -233,11 +233,12 @@ class Auction extends Model
 
         Log::info("trying to autobid from {".$automaticBid->wine_user_id."}");
         $min = $this->nextMinBid();
-        $latestBid = $this->bids()->latest()->first();
+        $latestBid = $this->bids()->where('wine_user_id', $automaticBid->wine_user_id)
+            ->where('value', $min)->latest()->first();
              Log::info('min ' . $min);
              if ($automaticBid->max_limit >= $min) {
                  /** @phpstan-ignore-next-line */
-                 if((empty($latestBid) || (!empty($latestBid) && $latestBid->wine_user_id != $automaticBid->wine_user_id && $min != $latestBid->value))) {
+                 if(empty($latestBid)) {
                      $this->setNewBid($automaticBid->wine_user_id, $min);
                  }
                  return true;
@@ -249,17 +250,11 @@ class Auction extends Model
 
     public function setNewBid($user_id,$min)
     {
-        $existingBid = $this->bids()->where('wine_user_id', $user_id)
-            ->where('value', $min)
-            ->first();
-        if(empty($existingBid)) {
             AuctionBid::create([
                 'auction_id' => $this->id,
                 'wine_user_id' => $user_id,
                 'value' => $min
             ]);
-        }
-
     }
 
     public static function getBestSellersProduct()
