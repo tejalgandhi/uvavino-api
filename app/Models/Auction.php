@@ -233,7 +233,7 @@ class Auction extends Model
 
         Log::info("trying to autobid from {".$automaticBid->wine_user_id."}");
         $min = $this->nextMinBid();
-        $latestBid = $this->bids()->where('wine_user_id', $automaticBid->wine_user_id)
+        $latestBid = $this->bids()
             ->where('value', $min)->latest()->first();
              Log::info('min ' . $min);
              if ($automaticBid->max_limit >= $min) {
