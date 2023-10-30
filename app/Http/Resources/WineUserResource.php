@@ -30,6 +30,7 @@ class WineUserResource extends JsonResource
             'image' => $this->image ? json_decode($this->image) : '',
             'rating' => $this->averageRating(),
             'review_count' => $this->countRating(),
+            'rating_group_by_count' => $this->countRatingGroupedBy(),
             'about_us' => $this->about_us ?? '',
             'user_created' => $this->created_at ?? '',
         ];
