@@ -238,9 +238,9 @@ class Auction extends Model
              Log::info('min ' . $min);
              if ($automaticBid->max_limit >= $min) {
                  /** @phpstan-ignore-next-line */
-                 if(empty($latestBid)) {
+//                 if(empty($latestBid)) {
                      $this->setNewBid($automaticBid->wine_user_id, $min);
-                 }
+//                 }
                  return true;
              }
         Log::info($automaticBid->wine_user_id ." can't bid automatically (out of limit).");
