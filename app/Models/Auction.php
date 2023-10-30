@@ -229,7 +229,7 @@ class Auction extends Model
     public function activeAutoBid(): HasMany
     {
         $highestBid = $this->bids()->max('value') ?? $this->baskets->price;
-        return $this->autoBids()->where('max_limit','>=',$highestBid);
+        return $this->autoBids()->where('max_limit','>',$highestBid);
     }
 
     public function makeAutoBid(AutomaticBid $automaticBid): bool
