@@ -107,6 +107,7 @@ class AuctionBidController extends Controller
 
         if($auction->activeAutoBid()->count() > 0){
             $activeAutoBid = $auction->activeAutoBid()->latest()->first();
+            $latestBid = $auction->bids()->latest('id')->first();
             /** @phpstan-ignore-next-line */
             if($activeAutoBid->wine_user_id == $wine_user_id)
             {
@@ -115,6 +116,10 @@ class AuctionBidController extends Controller
                     throw new \Exception('You already have active auto bid');
                 }
                 $activeAutoBid->update(['max_limit'=>$max]);
+                if(!empty($latestBid) && $latestBid->wine_user_id != $wine_user_id){
+                    $autoBid = $activeAutoBid;
+                    $autoBid->evalWith($activeAutoBid, $auction);
+                }
                 return (new Success(__('Existing automatic bid updated')))->json(200);
             }
             $autoBid->save();
