@@ -185,7 +185,7 @@ class Auction extends Model
     public function bidRaised() : int
     {
         // Need to write correct logic
-        $auction_bid = AuctionBid::where('auction_id',$this->id)->latest()->first();
+        $auction_bid = AuctionBid::where('auction_id',$this->id)->latest('id')->first();
         Log::info($auction_bid);
 
         return !empty($auction_bid) ? $auction_bid->value : 0 ;
