@@ -313,7 +313,7 @@ class Auction extends Model
     public function userLatestBid($user_id = 0)
     {
         \Log::info('userLatestBid user: ' . $user_id . ' auction: ' .  $this->id);
-        return $this->bids()->where('wine_user_id',$user_id)->latest()->first();
+        return $this->bids()->where('wine_user_id',$user_id)->latest('id')->first();
     }
     public function userAuctionStatus($user_latest_time = 0)
     {
