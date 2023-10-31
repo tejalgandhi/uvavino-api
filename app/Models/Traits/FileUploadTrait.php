@@ -37,7 +37,7 @@ trait FileUploadTrait
         Log::info('$file_paths');
         Log::info($file_paths);
          if(!empty($file_paths)){
-             foreach ($file_paths as $file_path) {
+             foreach ((array)$file_paths as $file_path) {
                  Log::info('$file_paths');
                  Log::info($file_paths);
                  Log::info('file_p');
