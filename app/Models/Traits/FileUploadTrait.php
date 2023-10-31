@@ -44,9 +44,10 @@ trait FileUploadTrait
                          Log::info('delete file');
                          Log::info($file_path);
                 }
-//                if(str_contains($params,)){
-//                    Storage::disk('do')->delete($params);
-//                }
+                 if (is_string($params) && str_contains($params, $endPoint)) {
+                         Storage::disk('do')->delete($params);
+                 }
+
              }
          }
         // Store file to the storage and save path to database
