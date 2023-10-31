@@ -24,9 +24,9 @@ trait FileUploadTrait
         $endPoint = config('filesystems.disks.do.endpoint');
         $path = $this->destinationPath($path);
         // Make sure path exists
-        Log::info($endPoint);
-        Log::info('$path');
-        Log::info($path);
+//        Log::info($endPoint);
+//        Log::info('$path');
+//        Log::info($path);
 //        Log::info(Storage::disk('do')->exists($path));
 //         if (! Storage::disk('do')->exists($path)) {
 //             Storage::disk('do')->makeDirectory($path);
@@ -34,8 +34,8 @@ trait FileUploadTrait
 
         //remove Old Files
         $file_paths = $this->{$field};
-        Log::info('$file_paths');
-        Log::info($file_paths);
+//        Log::info('$file_paths');
+//        Log::info($file_paths);
          if(!empty($file_paths)){
              foreach ((array)$file_paths as $file_path) {
                  // && Storage::disk('do')->exists($file_path)
@@ -45,6 +45,8 @@ trait FileUploadTrait
                          Log::info($file_path);
                 }
                  if (is_string($params) && str_contains($params, $endPoint)) {
+                     Log::info('delete file 1');
+                     Log::info($params);
                          Storage::disk('do')->delete($params);
                  }
 
@@ -52,8 +54,6 @@ trait FileUploadTrait
          }
         // Store file to the storage and save path to database
         $files = [];
-        Log::info('$params');
-        Log::info($params);
         if(is_array($params)){
             foreach ($params as $param){
                 if(!is_string($param)) {
