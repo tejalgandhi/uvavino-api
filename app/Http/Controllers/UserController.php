@@ -109,6 +109,8 @@ class UserController extends Controller
     public function getPrivateAuctions(Request $request)
     {
         try{
+            $request->merge(['user_id' => $request->wine_user_id]);
+
             $limit = $request->limit ?? config('constant.number_of_items_per_page');
             $data = [];
             $privateAuctions = Auction::privateAuctions()->withCount(['bids', 'wishlist' => function ($q) use ($request) {
