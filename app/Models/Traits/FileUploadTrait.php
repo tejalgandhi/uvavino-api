@@ -36,22 +36,22 @@ trait FileUploadTrait
         $file_paths = $this->{$field};
         Log::info('$file_paths');
         Log::info($file_paths);
-//         if(!empty($file_paths)){
-//             foreach ($file_paths as $file_path) {
-//                 Log::info('$file_paths');
-//                 Log::info($file_paths);
-//                 Log::info('file_p');
-//                 Log::info($file_path);
-//                 Log::info('params');
-//                 Log::info($params);
-//                 // && Storage::disk('do')->exists($file_path)
-//                 if (!in_array($file_path,$params)) {
-//                         Storage::disk('do')->delete($file_path);
-//                         Log::info('delete file');
-//                         Log::info($file_path);
-//                     }
-//             }
-//         }
+         if(!empty($file_paths)){
+             foreach ($file_paths as $file_path) {
+                 Log::info('$file_paths');
+                 Log::info($file_paths);
+                 Log::info('file_p');
+                 Log::info($file_path);
+                 Log::info('params');
+                 Log::info($params);
+                 // && Storage::disk('do')->exists($file_path)
+                 if (!in_array($file_path,$params)) {
+                         Storage::disk('do')->delete($file_path);
+                         Log::info('delete file');
+                         Log::info($file_path);
+                     }
+             }
+         }
         // Store file to the storage and save path to database
         $files = [];
         Log::info('$params');
