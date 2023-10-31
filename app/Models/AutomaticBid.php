@@ -14,12 +14,11 @@ class AutomaticBid extends Model
 
     public function evalWith(AutomaticBid $automaticBid,Auction $auction)
     {
-        Log::info('evalWith by user '.$this->wine_user_id.' Max limit '.$this->max_limit);
         if($this->auction_id != $auction->id || $automaticBid->auction_id != $auction->id)
         {
                 throw new \Exception('auction  not matched');
         }
-        // Check if the auction can be auto-bid with the current AutoBid
+         //Check if the auction can be auto-bid with the current AutoBid
             if ($auction->makeAutobid($this)) {
                 Log::info('evalWith by user ' . $this->wine_user_id . ' Autobid done');
                 // If successful, recursively call evalWith on the opponent
