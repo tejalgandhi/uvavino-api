@@ -48,7 +48,7 @@ class AuctionResource extends JsonResource
             'description' => $this->description,
             'is_publish' => $this->is_publish,
             'is_private' => $this->is_private,
-            'is_ended' => $this->is_ended,
+            'is_ended' => $this->is_ended ?? 0,
             'created_by' => $this->created_by,
             'auction_type' => $this->type->name,
             'type' => $this->type->value,

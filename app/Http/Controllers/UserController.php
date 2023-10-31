@@ -77,6 +77,7 @@ class UserController extends Controller
     public function getBuyPurchaseHistory(Request $request)
     {
         try {
+            $request->merge(['user_id' => $request->wine_user_id]);
             $limit = $request->limit ?? config('constant.number_of_items_per_page');
             $data = [];
             $buyAuctions = Auction::select(AuctionResource::selectLst())
@@ -135,6 +136,7 @@ class UserController extends Controller
     public function getParticipateAuction(Request $request)
     {
         try{
+            $request->merge(['user_id' => $request->wine_user_id]);
             $limit = $request->limit ?? config('constant.number_of_items_per_page');
             $participateAuctions = Auction::finishedAuctions()->participateAuctions()->withCount(['bids', 'wishlist' => function ($q) use ($request) {
                 $q->where('wine_user_id', $request->wine_user_id);
@@ -152,6 +154,7 @@ class UserController extends Controller
     public function getSellAuctions(Request $request)
     {
         try{
+            $request->merge(['user_id' => $request->wine_user_id]);
             $limit = $request->limit ?? config('constant.number_of_items_per_page');
             $participateAuctions = Auction::withCount(['bids', 'wishlist' => function ($q) use ($request) {
                 $q->where('wine_user_id', $request->wine_user_id);
@@ -168,6 +171,7 @@ class UserController extends Controller
     public function updateAuctionInvitation(AuctionInviteRequest $request)
     {
         try{
+            $request->merge(['user_id' => $request->wine_user_id]);
             $limit = $request->limit ?? config('constant.number_of_items_per_page');
             AuctionInvite::where('auction_id',$request->auction_id)->update(['status'=>$request->status]);
             $inviteAuctions = Auction::inviteAuctions()->withCount(['bids', 'wishlist' => function ($q) use ($request) {
