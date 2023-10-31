@@ -129,6 +129,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
     //user profile api
     Route::get('/user', [WineAuthController::class, 'getUser']);
     Route::post('/user', [WineAuthController::class, 'updateUser']);
+    Route::post('/user-profile', [WineAuthController::class, 'updateProfile']);
     Route::get('/user-address', [UserAddressController::class, 'index']);
     Route::post('/user-address', [UserAddressController::class, 'addAddress']);
     Route::delete('/user-address/{user_address_id}', [UserAddressController::class, 'destroy']);
