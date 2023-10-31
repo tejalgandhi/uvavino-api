@@ -52,7 +52,11 @@ trait FileUploadTrait
                  if (is_string($file_paths) && str_contains($file_paths, $endPoint)) {
                      Log::info('delete file 1');
                      Log::info($file_paths);
+                     try {
                          Storage::disk('do')->delete($file_paths);
+                     } catch (\Exception $e) {
+                         \Log::error('Error deleting file: ' . $e->getMessage());
+                     }
                  }
 
              }
