@@ -131,7 +131,7 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
     {
         return $this->hasMany(Cart::class);
     }
-    public function userImage(): Attribute
+    public function image(): Attribute
     {
         return Attribute::make(
             get: fn($value) => $value ? collect(json_decode($value))->map(fn($path) => Storage::url($path))->toArray() : null
