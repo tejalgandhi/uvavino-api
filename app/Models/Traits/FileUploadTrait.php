@@ -38,6 +38,8 @@ trait FileUploadTrait
         Log::info($params);
         Log::info('$file_paths');
         Log::info($file_paths);
+        Log::info('$endPoint');
+        Log::info($endPoint);
          if(!empty($file_paths)){
              foreach ((array)$file_paths as $file_path) {
                  // && Storage::disk('do')->exists($file_path)
