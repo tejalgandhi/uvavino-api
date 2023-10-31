@@ -36,6 +36,8 @@ trait FileUploadTrait
         $file_paths = $this->{$field};
         Log::info('$params');
         Log::info($params);
+        Log::info('$file_paths');
+        Log::info($file_paths);
          if(!empty($file_paths)){
              foreach ((array)$file_paths as $file_path) {
                  // && Storage::disk('do')->exists($file_path)
@@ -44,6 +46,7 @@ trait FileUploadTrait
                          Log::info('delete file');
                          Log::info($file_path);
                 }
+                 Log::info('in foreach');
                  if (is_string($params) && str_contains($params, $endPoint)) {
                      Log::info('delete file 1');
                      Log::info($params);
