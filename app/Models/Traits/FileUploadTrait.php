@@ -34,6 +34,8 @@ trait FileUploadTrait
 
         //remove Old Files
         $file_paths = $this->{$field};
+        Log::info('$file_paths');
+        Log::info($file_paths);
          if(!empty($file_paths)){
              foreach ($file_paths as $file_path) {
                  Log::info('$file_paths');
