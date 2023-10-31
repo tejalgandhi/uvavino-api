@@ -126,7 +126,7 @@ class WineAuthController extends Controller
 
     public function updateProfile(Request $request)
     {
-        try {
+//        try {
             $user = WineUser::whereId(Auth::user()->id)->first();
             if ($request->hasFile('image')) {
                 $user->uploadImages('image', $request->image, ['user']);
@@ -135,8 +135,8 @@ class WineAuthController extends Controller
                 'status' => 200,
                 'user' => new WineUserResource($user),
             ]);
-        } catch (\Exception $e) {
-            return (new Fail($e->getMessage()))->json();
-        }
+//        } catch (\Exception $e) {
+//            return (new Fail($e->getMessage()))->json();
+//        }
     }
 }

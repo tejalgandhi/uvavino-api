@@ -52,7 +52,9 @@ trait FileUploadTrait
          }
         // Store file to the storage and save path to database
         $files = [];
-
+        Log::info('$params');
+        Log::info($params);
+        Log::info(is_array($params));
         if(is_array($params)){
             foreach ($params as $param){
                 if(!is_string($param)) {
