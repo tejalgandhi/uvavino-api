@@ -131,9 +131,7 @@ class Auction extends Model
 
     public function countryId() : Attribute
     {
-        Log::info('country');
         $firstProduct = $this->products()->first();
-        Log::info($firstProduct);
         return Attribute::make(
             fn () => $firstProduct?->country_id,
         );
