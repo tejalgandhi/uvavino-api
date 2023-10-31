@@ -123,4 +123,20 @@ class WineAuthController extends Controller
             return (new Fail($e->getMessage()))->json();
         }
     }
+
+    public function updateProfile(Request $request)
+    {
+        try {
+            $user = WineUser::whereId(Auth::user()->id)->first();
+            if ($request->hasFile('image')) {
+                $user->uploadImages('image', $request->image, ['user']);
+            }
+            return response()->json([
+                'status' => 200,
+                'user' => new WineUserResource($user),
+            ]);
+        } catch (\Exception $e) {
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
 }

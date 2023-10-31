@@ -18,8 +18,12 @@ class ReviewResource extends JsonResource
     {
         $productType = ReviewType::product->className();
         $wineuserType = ReviewType::wine_user->className();
+        $auctionType = ReviewType::auction->className();
         if ($this->resource->reviewable_type == $productType) {
             $reviewable = new BasketResource($this->resource->reviewable);
+        }
+        else if ($this->resource->reviewable_type == $auctionType) {
+            $reviewable = new AuctionResource($this->resource->reviewable);
         }
         else if ($this->resource->reviewable_type == $wineuserType) {
             $reviewable = new WineUserResource($this->resource->reviewable);
