@@ -21,7 +21,7 @@ trait FileUploadTrait
     public function uploadImages($field,$params,$path)
     {
         // Convert path
-        $endPoint = config('filesystems.disks.do.endpoint');
+        $endPoint = config('filesystems.disks.do.url');
         $path = $this->destinationPath($path);
         // Make sure path exists
 //        Log::info($endPoint);
