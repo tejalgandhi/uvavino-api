@@ -45,7 +45,7 @@ trait FileUploadTrait
                  Log::info('params');
                  Log::info($params);
                  // && Storage::disk('do')->exists($file_path)
-                 if (!in_array($file_path,$params)) {
+                 if (is_array($params) && !in_array($file_path,$params)) {
                          Storage::disk('do')->delete($file_path);
                          Log::info('delete file');
                          Log::info($file_path);
