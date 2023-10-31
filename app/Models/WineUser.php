@@ -134,7 +134,7 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
     public function image(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $value ? collect(json_decode($value))->map(fn($path) => Storage::url($path))->toArray() : null
+            get: fn($value) => $value ? Storage::url($value) : null
         );
     }
 }
