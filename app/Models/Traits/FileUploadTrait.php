@@ -54,10 +54,8 @@ trait FileUploadTrait
                      Log::info($file_paths);
                      try {
                          $file = str_replace($endPoint,"",$file_paths);
-                         if (Storage::disk('do')->exists($file)) {
                              Log::info('exist check');
                              Storage::disk('do')->delete($file);
-                         }
                      } catch (\Exception $e) {
                          \Log::error('Error deleting file: ' . $e->getMessage());
                      }
