@@ -11,6 +11,7 @@ use App\Http\Resources\Success;
 use App\Models\Auction;
 use App\Models\AuctionBid;
 use App\Models\AutomaticBid;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 
 /**
@@ -72,12 +73,13 @@ class AuctionBidController extends Controller
                 'value' => $value
             ]);
             if($auction->activeAutoBid()->count() > 0){
-                $automaticBid = $auction->autoBids()->first();
-                $activeAutoBid = $auction->activeAutoBid()->first();
-                if($autoBid->wine_user_id !=  $automaticBid->wine_user_id) {
+                Log::info('in');
+                $automaticBid = $auction->autoBids()->latest('id')->first();
+                $activeAutoBid = $auction->activeAutoBid()->latest('id')->first();
+//                if($autoBid->wine_user_id !=  $automaticBid->wine_user_id) {
                     /** @phpstan-ignore-next-line */
                     $automaticBid->evalWith($activeAutoBid,$auction);
-                }
+//                }
 
             }
             $autoBid->storeEvent($autoBid);
