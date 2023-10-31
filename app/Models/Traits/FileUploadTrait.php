@@ -72,8 +72,9 @@ trait FileUploadTrait
             }
         }
         else {
-            $files[] = $params;
-
+            $name = time().rand(1,100).'.'.$params->extension();
+            $filePath = Storage::putFileAs($path, $params,$name);
+            $files[] = $filePath;
         }
         Log::info("files " . json_encode([$files]));
         $this->{$field} = $files;
