@@ -136,7 +136,7 @@ class AuctionBidController extends Controller
             $auction->makeAutobid($autoBid);
         }
 
-        $autoBid = AuctionBid::latest()->first();
+        $autoBid = AuctionBid::latest('id')->first();
         $autoBid->storeEvent($autoBid);
 
         return (new Success(__('Auction Automatic Bidder Create Successfully')))->json(201);
