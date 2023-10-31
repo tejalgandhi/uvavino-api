@@ -90,9 +90,9 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
     }
 
     // This will be used in the payment to get stripe ID
-    public function getId() : string
+    public function getId()
     {
-        return $this->stripe_customer_id ?? '';
+        return $this->id;
     }
 
     public function getName()
