@@ -33,6 +33,7 @@ class WineUserResource extends JsonResource
             'rating_group_by_count' => $this->countRatingGroupedBy(),
             'about_us' => $this->about_us ?? '',
             'user_created' => $this->created_at ?? '',
+            'is_order' => $this->orders->count() > 0,
         ];
     }
 }

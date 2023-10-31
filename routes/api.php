@@ -136,6 +136,7 @@ Route::middleware(['auth:sanctum','wine_user_id'])->group(function() {
 
 
     // Routes for connect as seller of wine products
+    Route::get('/seller-info/{id}', [SellerController::class, 'getSellerInfo']);
     Route::post('/connect-as-seller', [SellerController::class, 'connect']);
     Route::get('/user/product-count', [UserController::class, 'allProductCount']);
     Route::get('/user/wishlist-count', [UserController::class, 'allWishlistCount']);
