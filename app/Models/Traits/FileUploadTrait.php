@@ -47,10 +47,10 @@ trait FileUploadTrait
                          Log::info($file_path);
                 }
                  Log::info('in foreach');
-                 if (is_string($params) && str_contains($params, $endPoint)) {
+                 if (is_string($file_paths) && str_contains($file_paths, $endPoint)) {
                      Log::info('delete file 1');
-                     Log::info($params);
-                         Storage::disk('do')->delete($params);
+                     Log::info($file_paths);
+                         Storage::disk('do')->delete($file_paths);
                  }
 
              }
