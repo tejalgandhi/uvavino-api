@@ -142,8 +142,7 @@ class AuctionController extends Controller
 
        $query = $query
            ->orderBy('auctions.is_ended', 'asc')
-           ->orderBy('auctions.type', 'asc')
-           ->orderBy('auctions.start_date', 'asc');
+           ->orderBy('auctions.type', 'asc');
 
         $query = match($order_by){
         'ascending' => $query->orderBy('auctions.title', 'asc'),
@@ -152,7 +151,7 @@ class AuctionController extends Controller
             'older' => $query->orderBy('auctions.created_at', 'asc'),
             'expensive' => $query->orderBy('auctions.max_price', 'desc'),
             'cheapest' => $query->orderBy('auctions.max_price', 'asc'),
-            default =>$query,
+            default =>$query->orderBy('auctions.start_date', 'asc'),
         };
         return AuctionResource::collection(
             $query->paginate($limit)
