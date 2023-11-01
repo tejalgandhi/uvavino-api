@@ -25,12 +25,11 @@ class AuctionResource extends JsonResource
         $user_auto_bid = !empty($user_id)? $this->resource->userAutoBid($user_id):'';
         $user_latest_invite = !empty($user_id)? $this->resource->userLatestInvite($user_id):'';
         $user_auction_status = $this->resource->userAuctionStatus($user_latest_time);
-        Log::info($user_auto_bid);
 
         return [
             'id' => $this->id,
             'user_latest_bid' => !empty($user_latest_time)?$user_latest_time->value:'',
-            'user_automatic_bid' => !empty($user_auto_bid)?$user_latest_time->max_limit:'',
+            'user_automatic_bid' => !empty($user_auto_bid)?$user_auto_bid->max_limit:'',
             'user_auction_status' => $user_auction_status,
             'user_invite_status' => !empty($user_latest_invite)?$user_latest_invite->status:'',
             'user_invite_status_string' => !empty($user_latest_invite)?$user_latest_invite->status->label():'',
