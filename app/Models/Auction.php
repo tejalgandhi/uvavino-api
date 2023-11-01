@@ -311,6 +311,7 @@ class Auction extends Model
     }
     public function userAutoBid($user_id = 0)
     {
+        Log::info($user_id);
         return $this->autoBids()->where('wine_user_id',$user_id)->latest('id')->first();
     }
     public function userAuctionStatus($user_latest_time = 0)
