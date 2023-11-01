@@ -19,6 +19,8 @@ class AuctionEnded
     public $current_bid;
     public $next_bid;
     public $quick_bids;
+    public $previous_bid;
+    public $previous_bid_user;
 
     public function __construct($auction)
     {
@@ -26,6 +28,8 @@ class AuctionEnded
         $this->current_bid = $auction->bidRaised();
         $this->next_bid = $auction->nextMinBid();
         $this->quick_bids = $auction->quickBid();
+        $this->previous_bid = $auction->secondLastBid()?->value;
+        $this->previous_bid_user = $auction->secondLastBid()?->wine_user_id;
     }
 
     /**
@@ -35,23 +39,27 @@ class AuctionEnded
      */
     public function broadcastOn()
     {
-        Log::info('BidRaised event broadcasted');
+        Log::info('AuctionEnded event broadcasted');
 
         return new Channel('auction.'.$this->auction);
     }
 
     public function broadcastWith()
     {
-        Log::info('Broadcasting auction data', [
+        Log::info('Broadcasting AuctionEnded data', [
             'current_bid' => $this->current_bid,
             'next_bid' => $this->next_bid,
             'quick_bids' => $this->quick_bids,
+            'previous_bid' => $this->previous_bid,
+            'previous_bid_user' => $this->previous_bid_user,
         ]);
 
         return [
             'current_bid' => $this->current_bid,
             'next_bid' => $this->next_bid,
             'quick_bids' => $this->quick_bids,
+            'previous_bid' => $this->previous_bid,
+            'previous_bid_user' => $this->previous_bid_user,
         ];
     }
 

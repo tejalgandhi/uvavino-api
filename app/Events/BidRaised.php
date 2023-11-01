@@ -48,7 +48,7 @@ class BidRaised implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        Log::info('BidRaised event broadcasted');
+        Log::info('BidRaised event broadcasted 1');
 
         return new Channel('auction.'.$this->auction);
     }
