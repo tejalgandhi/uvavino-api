@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "485122b3c70d578afecdac51d0ce09bd",
+    "content-hash": "cf5b32d57a8293cf348e1614ff333152",
     "packages": [
         {
             "name": "archtechx/enums",
@@ -1809,16 +1809,16 @@
         },
         {
             "name": "immera/payment-backend",
-            "version": "0.0.8",
+            "version": "0.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/immera/payment-backend.git",
-                "reference": "22dc605ef902e831912a1a8e91d679346502be42"
+                "reference": "553231853cf915e8fab01e35e4ab7593a123a781"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/immera/payment-backend/zipball/22dc605ef902e831912a1a8e91d679346502be42",
-                "reference": "22dc605ef902e831912a1a8e91d679346502be42",
+                "url": "https://api.github.com/repos/immera/payment-backend/zipball/553231853cf915e8fab01e35e4ab7593a123a781",
+                "reference": "553231853cf915e8fab01e35e4ab7593a123a781",
                 "shasum": ""
             },
             "require": {
@@ -1869,9 +1869,9 @@
             ],
             "support": {
                 "issues": "https://github.com/immera/payment-backend/issues",
-                "source": "https://github.com/immera/payment-backend/tree/0.0.8"
+                "source": "https://github.com/immera/payment-backend/tree/0.0.9"
             },
-            "time": "2022-08-05T10:47:47+00:00"
+            "time": "2023-11-01T07:25:43+00:00"
         },
         {
             "name": "laravel/framework",
