@@ -191,14 +191,14 @@ class Auction extends Model
     public function bidRaised() : int
     {
         // Need to write correct logic
-        return $this->bids()->max('value');
+        return $this->bids()->max('value') ?? 0;
 
     }
     public function nextMinBid() : float
     {
         // Need to write correct logic
         $minimum_bid_step = Config('constant.minimum_bid_step');
-        $max = $this->bids()->max('value') ?? $this->baskets()?->price;
+        $max = $this->bids()->max('value') ?? $this->baskets?->price;
 
         return $max ? $max+$minimum_bid_step:config('constant.bid_initial_step');
 
