@@ -180,25 +180,28 @@ class Auction extends Model
         // Need to write correct logic
         return true;
     }
+    public function secondLastBid()
+    {
+        return $this->bids()->skip(1) // Skip the last record (first skip)
+        ->take(1) // Take only one record (second skip)
+        ->latest('id')
+        ->first();
+    }
+
     public function bidRaised() : int
     {
         // Need to write correct logic
-        $auction_bid = AuctionBid::where('auction_id',$this->id)->latest('id')->first();
+        return $this->bids()->max('value');
 
-        return !empty($auction_bid) ? $auction_bid->value : 0 ;
     }
     public function nextMinBid() : float
     {
         // Need to write correct logic
         $minimum_bid_step = Config('constant.minimum_bid_step');
-        $auction_bid = AuctionBid::where('auction_id',$this->id)->latest('id')->first();
-        if(empty($auction_bid)){
-            $latest_bid = $this->baskets ? $this->baskets->price:4;
-        } else{
-            $latest_bid = $auction_bid->value ?? 4;
-        }
+        $max = $this->bids()->max('value') ?? $this->baskets()?->price;
 
-        return  $latest_bid + $minimum_bid_step;
+        return $max ? $max+$minimum_bid_step:config('constant.bid_initial_step');
+
     }
 
     public function quickBid() : array
@@ -305,6 +308,10 @@ class Auction extends Model
     public function userLatestBid($user_id = 0)
     {
         return $this->bids()->where('wine_user_id',$user_id)->latest('id')->first();
+    }
+    public function userAutoBid($user_id = 0)
+    {
+        return $this->autoBids()->where('wine_user_id',$user_id)->latest('id')->first();
     }
     public function userAuctionStatus($user_latest_time = 0)
     {

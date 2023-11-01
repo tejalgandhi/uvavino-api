@@ -36,11 +36,8 @@ class AuctionBid extends Model
     }
 
     public function storeEvent(AuctionBid $auctionBid){
-        $current_bid = $auctionBid->auction->bidRaised();
-        $next_bid = $auctionBid->auction->nextMinBid();
-        $quick_bids = $auctionBid->auction->quickBid();
         $bid_user = $auctionBid->wine_user->id;
-        event(new  \App\Events\BidRaised($auctionBid->auction_id, $current_bid, $next_bid, $quick_bids, $bid_user));
+        event(new  \App\Events\BidRaised($auctionBid->auction,$bid_user));
         if ($auctionBid->auction->type == AuctionType::LIVE) {
             Log::info('config constant');
             Log::info(config('constant.configured_auction_time'));
