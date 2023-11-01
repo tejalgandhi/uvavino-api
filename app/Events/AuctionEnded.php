@@ -21,10 +21,12 @@ class AuctionEnded
     public $quick_bids;
     public $previous_bid;
     public $previous_bid_user;
+    public $last_bid_at;
 
     public function __construct($auction)
     {
         $this->auction = $auction->id;
+        $this->last_bid_at = $auction->last_bid_at;
         $this->current_bid = $auction->bidRaised();
         $this->next_bid = $auction->nextMinBid();
         $this->quick_bids = $auction->quickBid();
@@ -52,6 +54,7 @@ class AuctionEnded
             'quick_bids' => $this->quick_bids,
             'previous_bid' => $this->previous_bid,
             'previous_bid_user' => $this->previous_bid_user,
+            'last_bid_at' => $this->last_bid_at,
         ]);
 
         return [
@@ -60,6 +63,7 @@ class AuctionEnded
             'quick_bids' => $this->quick_bids,
             'previous_bid' => $this->previous_bid,
             'previous_bid_user' => $this->previous_bid_user,
+            'last_bid_at' => $this->last_bid_at,
         ];
     }
 
