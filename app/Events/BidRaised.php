@@ -27,7 +27,8 @@ class BidRaised implements ShouldBroadcast
     public $next_bid;
     public $quick_bids;
     public $bid_user;
-    public $last_bid;
+    public $previous_bid;
+    public $previous_bid_user;
 
     public function __construct($auction,$bid_user)
     {
@@ -36,7 +37,8 @@ class BidRaised implements ShouldBroadcast
             $this->next_bid = $auction->nextMinBid();
             $this->quick_bids = $auction->quickBid();
             $this->bid_user = $bid_user;
-            $this->last_bid = $auction->secondLastBid();
+            $this->previous_bid = $auction->secondLastBid()?->value;
+            $this->previous_bid_user = $auction->secondLastBid()?->wine_user_id;
     }
 
     /**
@@ -59,7 +61,8 @@ class BidRaised implements ShouldBroadcast
             'next_bid' => $this->next_bid,
             'quick_bids' => $this->quick_bids,
             'bid_user' => $this->bid_user,
-            'last_bid' => $this->last_bid,
+            'previous_bid' => $this->previous_bid,
+            'previous_bid_user' => $this->previous_bid_user,
         ]);
 
         return [
@@ -68,7 +71,8 @@ class BidRaised implements ShouldBroadcast
             'next_bid' => $this->next_bid,
             'quick_bids' => $this->quick_bids,
             'bid_user' => $this->bid_user,
-            'last_bid' => $this->last_bid,
+            'previous_bid' => $this->previous_bid,
+            'previous_bid_user' => $this->previous_bid_user,
         ];
     }
 }
