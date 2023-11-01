@@ -20,8 +20,11 @@ class AuctionBid extends Model
         parent::boot();
 
 
-        static::created(function($auctionBid)  {
-
+        static::saved(function ($bid) {
+            // Update the last_bid_at column in the associated Auction
+           $bid->auction->update([
+                'last_bid_at' => $bid->created_at,
+            ]);
         });
     }
 

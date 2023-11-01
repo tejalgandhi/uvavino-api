@@ -21,7 +21,7 @@ class Auction extends Model
 
 
     protected $guarded = ['id'];
-    protected $dates = ['start_date','end_date'];
+    protected $dates = ['start_date','end_date','last_bid_at'];
 
     const IS_ENDED_AUCTION = '1';
     const IS_NOT_ENDED_AUCTION = '0';

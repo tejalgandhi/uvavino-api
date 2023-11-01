@@ -48,6 +48,7 @@ class AuctionSingleProductDetailResource extends JsonResource
             'total_bids' => $this->bids_count,
             'start_date' => $this->start_date ?? '',
             'end_date' =>  $this->end_date ??'',
+            'last_bid_at' =>  $this->last_bid_at ??'',
             'live_time_interval' =>  $this->live_time_interval,
             'is_wishlist'=> $this->wishlist_count ?? 0,
             'description' => $this->description,
