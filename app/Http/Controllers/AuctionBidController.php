@@ -82,7 +82,8 @@ class AuctionBidController extends Controller
 //                }
 
             }
-            $autoBid->storeEvent($autoBid);
+            $bid = AuctionBid::latest('id')->first();
+            $bid->storeEvent($bid);
             return response()->json(['message' => "Auction Bid Create Successfully", "data" => $autoBid], 201);
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
