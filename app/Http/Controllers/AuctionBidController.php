@@ -43,10 +43,7 @@ class AuctionBidController extends Controller
                 'winner_bid'=>$winner_bid
             ]);
 
-            $current_bid = $auction->bidRaised();
-            $next_bid = $auction->nextMinBid();
-            $quick_bids = $auction->quickBid();
-            event(new  \App\Events\AuctionEnded($auction->id, $current_bid, $next_bid, $quick_bids));
+            event(new  \App\Events\AuctionEnded($auction));
 
             return response()->json(['message' => "Auction end Successfully", "data" =>[] ], 201);
         } catch (\Exception $e) {

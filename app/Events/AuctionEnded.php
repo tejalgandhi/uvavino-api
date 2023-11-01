@@ -20,12 +20,12 @@ class AuctionEnded
     public $next_bid;
     public $quick_bids;
 
-    public function __construct($auction,$current_bid,$next_bid,$quick_bids)
+    public function __construct($auction)
     {
-        $this->auction = $auction;
-        $this->current_bid = $current_bid;
-        $this->next_bid = $next_bid;
-        $this->quick_bids = $quick_bids;
+        $this->auction = $auction->id;
+        $this->current_bid = $auction->bidRaised();
+        $this->next_bid = $auction->nextMinBid();
+        $this->quick_bids = $auction->quickBid();
     }
 
     /**
