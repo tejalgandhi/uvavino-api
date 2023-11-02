@@ -11,6 +11,8 @@ use App\Models\Cart;
 use App\Models\CartDetail;
 use Illuminate\Http\Request;
 use App\Enums\OrderType;
+use Stripe\PaymentIntent;
+use Stripe\Stripe;
 
 
 class CartController extends Controller
@@ -103,4 +105,29 @@ class CartController extends Controller
             return (new Fail($e->getMessage()))->json();
         }
     }
+
+    public function createPaymentIntent(Request $request)
+    {
+        Stripe::setApiKey(config('payment.stripe.secret_key'));
+
+        try {
+            $intent = PaymentIntent::create([
+                'amount' => $request->amount,  // Amount in cents
+                'currency' => $request->currency,
+            ]);
+
+            // Return the Payment Intent ID to your frontend for confirmation
+            return response()->json(['client_secret' => $intent->client_secret]);
+        } catch (\Stripe\Exception\CardException $e) {
+            // Handle card error
+            return (new Fail($e->getMessage()))->json();
+        } catch (\Stripe\Exception\InvalidRequestException $e) {
+            // Handle other Stripe-specific errors
+            return (new Fail($e->getMessage()))->json();
+        } catch (\Exception $e) {
+            // Handle generic exceptions
+            return (new Fail($e->getMessage()))->json();
+        }
+    }
+
 }
