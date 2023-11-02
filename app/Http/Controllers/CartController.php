@@ -112,7 +112,7 @@ class CartController extends Controller
 
         try {
             $intent = PaymentIntent::create([
-                'amount' => $request->amount,  // Amount in cents
+                'amount' => $request->amount * 100,  // Amount in cents
                 'currency' => $request->currency,
             ]);
 
