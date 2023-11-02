@@ -71,6 +71,7 @@ class AuctionResource extends JsonResource
             'auctions.is_publish',
             'auctions.is_private',
             'auctions.type',
+            'auctions.is_ended',
             'auctions.max_price',
             'auctions.basket_id',
             'auctions.start_date',
