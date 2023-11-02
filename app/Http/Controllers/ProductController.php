@@ -55,6 +55,7 @@ class ProductController extends Controller
             }
         ];
         $query = Basket::select(BasketResource::selectLst())
+           ->where('is_auction_product',Basket::IS_NOT_AUCTION_PRODUCT)
             ->withCount(['wishlist'=> function($q) use($request)  {
                 $q->where('wine_user_id',$request->user_id);
             } ])
@@ -103,7 +104,6 @@ class ProductController extends Controller
             default => $query
         };
 
-//        dd($query->toSql());
         return BasketResource::collection(
             $query->paginate($limit)
         );
@@ -146,11 +146,12 @@ class ProductController extends Controller
                 ]));
             $products = $request->products;
             foreach ($products as $product) {
-                Product::create([
+                $createdProduct =  Product::create([
                     "basket_id" => $basket->id,
                     "wine_name" => $product["wine_name"],
+                    "title" => $product["wine_name"],
                     "description" => $product["description"],
-                    "wine_user_id" =>$request->wine_user_id,
+                    "wine_user_id" => $request->wine_user_id,
                     "bottle_size" => $product["bottle_size"],
                     "country_id" => $product["country_id"],
                     "region_id" => $product["region_id"],
@@ -158,14 +159,19 @@ class ProductController extends Controller
                     "wine_maker" => $product["wine_maker"],
                     "wine_type_id" => $product["wine_type_id"],
                     "year" => $product["year"],
-                    "wine_variety" =>implode(",",$product["wine_variety"]),
-                    "wine_tag" => implode(",",$product["wine_tag"]),
+                    "wine_variety" => implode(",", $product["wine_variety"]),
+                    "wine_tag" => implode(",", $product["wine_tag"]),
                     "storage_condition" => $product["storage_condition"],
                     "review_and_rewards" => $product["review_and_rewards"],
                     "basket_quantity" => $product["basket_quantity"],
                     "unit_quantity" => BottleSize::tryFrom($product["bottle_size"])->unit_quantity(),
                     "unit" => BottleSize::tryFrom($product["bottle_size"])->unit(),
+                    "volume" => $product["volume"],
+                    "price" => $product["price"],
                 ]);
+                if (isset($product['product_images'])) {
+                    $createdProduct->uploadImages('product_images', $product['product_images'], ['products']);
+                }
             }
             return (new Success(__("Product store successfully.")))->json();
         } catch (\Exception $e) {
