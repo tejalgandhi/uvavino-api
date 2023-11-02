@@ -92,6 +92,7 @@ class UserController extends Controller
                 $buyAuctions->paginate($limit)
             );
             $purchaseAuctions = Auction::select(AuctionResource::selectLst())
+                ->finishedAuctions()
                 ->withCount(['bids', 'wishlist' => function ($q) use ($request) {
                     $q->where('wine_user_id', $request->wine_user_id);
                 }])->whereHas('winnerBid', function ($q) use ($request) {
