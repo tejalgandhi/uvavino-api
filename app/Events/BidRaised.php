@@ -27,14 +27,20 @@ class BidRaised implements ShouldBroadcast
     public $next_bid;
     public $quick_bids;
     public $bid_user;
+    public $previous_bid;
+    public $previous_bid_user;
+    public $last_bid_at;
 
-    public function __construct($auction,$current_bid,$next_bid,$quick_bids, $bid_user)
+    public function __construct($auction,$bid_user)
     {
-            $this->auction = $auction;
-            $this->current_bid = $current_bid;
-            $this->next_bid = $next_bid;
-            $this->quick_bids = $quick_bids;
+            $this->auction = $auction->id;
+            $this->last_bid_at = $auction->last_bid_at;
+            $this->current_bid = $auction->bidRaised();
+            $this->next_bid = $auction->nextMinBid();
+            $this->quick_bids = $auction->quickBid();
             $this->bid_user = $bid_user;
+            $this->previous_bid = $auction->secondLastBid()?->value;
+            $this->previous_bid_user = $auction->secondLastBid()?->wine_user_id;
     }
 
     /**
@@ -44,19 +50,22 @@ class BidRaised implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        Log::info('BidRaised event broadcasted');
+        Log::info('BidRaised event broadcasted 1');
 
         return new Channel('auction.'.$this->auction);
     }
 
     public function broadcastWith()
     {
-        Log::info('Broadcasting auction data', [
+        Log::info('Broadcasting auction data 12121', [
             'auction' => $this->auction,
             'current_bid' => $this->current_bid,
             'next_bid' => $this->next_bid,
             'quick_bids' => $this->quick_bids,
             'bid_user' => $this->bid_user,
+            'previous_bid' => $this->previous_bid,
+            'previous_bid_user' => $this->previous_bid_user,
+            'last_bid_at' => $this->last_bid_at,
         ]);
 
         return [
@@ -65,6 +74,9 @@ class BidRaised implements ShouldBroadcast
             'next_bid' => $this->next_bid,
             'quick_bids' => $this->quick_bids,
             'bid_user' => $this->bid_user,
+            'previous_bid' => $this->previous_bid,
+            'previous_bid_user' => $this->previous_bid_user,
+            'last_bid_at' => $this->last_bid_at,
         ];
     }
 }

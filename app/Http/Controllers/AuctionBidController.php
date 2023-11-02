@@ -11,6 +11,7 @@ use App\Http\Resources\Success;
 use App\Models\Auction;
 use App\Models\AuctionBid;
 use App\Models\AutomaticBid;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 
 /**
@@ -42,10 +43,7 @@ class AuctionBidController extends Controller
                 'winner_bid'=>$winner_bid
             ]);
 
-            $current_bid = $auction->bidRaised();
-            $next_bid = $auction->nextMinBid();
-            $quick_bids = $auction->quickBid();
-            event(new  \App\Events\AuctionEnded($auction->id, $current_bid, $next_bid, $quick_bids));
+            event(new  \App\Events\AuctionEnded($auction));
 
             return response()->json(['message' => "Auction end Successfully", "data" =>[] ], 201);
         } catch (\Exception $e) {
@@ -72,15 +70,17 @@ class AuctionBidController extends Controller
                 'value' => $value
             ]);
             if($auction->activeAutoBid()->count() > 0){
-                $automaticBid = $auction->autoBids()->first();
-                $activeAutoBid = $auction->activeAutoBid()->first();
-                if($autoBid->wine_user_id !=  $automaticBid->wine_user_id) {
+                Log::info('in');
+                $automaticBid = $auction->autoBids()->latest('id')->first();
+                $activeAutoBid = $auction->activeAutoBid()->latest('id')->first();
+//                if($autoBid->wine_user_id !=  $automaticBid->wine_user_id) {
                     /** @phpstan-ignore-next-line */
                     $automaticBid->evalWith($activeAutoBid,$auction);
-                }
+//                }
 
             }
-            $autoBid->storeEvent($autoBid);
+            $bid = AuctionBid::latest('id')->first();
+            $bid->storeEvent($bid);
             return response()->json(['message' => "Auction Bid Create Successfully", "data" => $autoBid], 201);
         } catch (\Exception $e) {
             return (new Fail($e->getMessage()))->json();
@@ -134,7 +134,7 @@ class AuctionBidController extends Controller
             $auction->makeAutobid($autoBid);
         }
 
-        $autoBid = AuctionBid::latest()->first();
+        $autoBid = AuctionBid::latest('id')->first();
         $autoBid->storeEvent($autoBid);
 
         return (new Success(__('Auction Automatic Bidder Create Successfully')))->json(201);

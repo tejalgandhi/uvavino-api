@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Contracts\ConnectableUser;
 use App\Models\Traits\FileUploadTrait;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Immera\Payment\Contracts\PaymentUserContract;
 use Laravel\Sanctum\HasApiTokens;
 /**
@@ -90,9 +92,9 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
     }
 
     // This will be used in the payment to get stripe ID
-    public function getId() : string
+    public function getId()
     {
-        return $this->stripe_customer_id;
+        return $this->id;
     }
 
     public function getName()
@@ -117,8 +119,22 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
     {
         return $this->reviews()->count('rating');
     }
+    public function countRatingGroupedBy()
+    {
+        return $this->reviews()
+            ->selectRaw('rating, COUNT(*) as count')
+            ->groupBy('rating')
+            ->orderBy('rating')
+            ->get();
+    }
     public function carts()
     {
         return $this->hasMany(Cart::class);
+    }
+    public function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $value ? Storage::url($value) : null
+        );
     }
 }

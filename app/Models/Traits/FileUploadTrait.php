@@ -21,12 +21,12 @@ trait FileUploadTrait
     public function uploadImages($field,$params,$path)
     {
         // Convert path
-        $endPoint = config('filesystems.disks.default.endpoint');
+        $endPoint = config('filesystems.disks.do.url');
         $path = $this->destinationPath($path);
         // Make sure path exists
-        Log::info($endPoint);
-        Log::info('$path');
-        Log::info($path);
+//        Log::info($endPoint);
+//        Log::info('$path');
+//        Log::info($path);
 //        Log::info(Storage::disk('do')->exists($path));
 //         if (! Storage::disk('do')->exists($path)) {
 //             Storage::disk('do')->makeDirectory($path);
@@ -34,25 +34,37 @@ trait FileUploadTrait
 
         //remove Old Files
         $file_paths = $this->{$field};
+        Log::info('$params');
+        Log::info($params);
+        Log::info('$file_paths');
+        Log::info($file_paths);
+        Log::info('$endPoint');
+        Log::info($endPoint);
          if(!empty($file_paths)){
-             foreach ($file_paths as $file_path) {
-                 Log::info('$file_paths');
-                 Log::info($file_paths);
-                 Log::info('file_p');
-                 Log::info($file_path);
-                 Log::info('params');
-                 Log::info($params);
+             foreach ((array)$file_paths as $file_path) {
                  // && Storage::disk('do')->exists($file_path)
-                 if (!in_array($file_path,$params)) {
+                 if (is_array($params) && !in_array($file_path,$params)) {
                          Storage::disk('do')->delete($file_path);
                          Log::info('delete file');
                          Log::info($file_path);
+                }
+                 Log::info('in foreach');
+                 if (is_string($file_paths) && str_contains($file_paths, $endPoint)) {
+                     Log::info('delete file 1');
+                     Log::info($file_paths);
+                     try {
+                         $file = str_replace($endPoint,"",$file_paths);
+                             Log::info('exist check');
+                             Storage::disk('do')->delete($file);
+                     } catch (\Exception $e) {
+                         \Log::error('Error deleting file: ' . $e->getMessage());
                      }
+                 }
+
              }
          }
         // Store file to the storage and save path to database
         $files = [];
-
         if(is_array($params)){
             foreach ($params as $param){
                 if(!is_string($param)) {
@@ -60,10 +72,6 @@ trait FileUploadTrait
                     $filePath = Storage::putFileAs($path, $param, $name);
                     $files[] = $filePath;
                 }else{
-                    Log::info('param');
-                    Log::info($param);
-                    Log::info($endPoint);
-                    $f = str_replace($endPoint,"",$param);
                     $files[] = $param;
                 }
             }
@@ -71,7 +79,7 @@ trait FileUploadTrait
         else {
             $name = time().rand(1,100).'.'.$params->extension();
             $filePath = Storage::putFileAs($path, $params,$name);
-            $files[] = $filePath;
+            $files = $filePath;
         }
         Log::info("files " . json_encode([$files]));
         $this->{$field} = $files;

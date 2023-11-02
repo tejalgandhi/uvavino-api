@@ -54,4 +54,5 @@ return [
     'configured_auction_time'=>'60',
     'configured_timebased_auction_time'=>'1',
     'minimum_bid_step'=>5,
+    'bid_initial_step'=>4,
 ];

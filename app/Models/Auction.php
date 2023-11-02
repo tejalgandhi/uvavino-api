@@ -21,7 +21,7 @@ class Auction extends Model
 
 
     protected $guarded = ['id'];
-    protected $dates = ['start_date','end_date'];
+    protected $dates = ['start_date','end_date','last_bid_at'];
 
     const IS_ENDED_AUCTION = '1';
     const IS_NOT_ENDED_AUCTION = '0';
@@ -131,9 +131,7 @@ class Auction extends Model
 
     public function countryId() : Attribute
     {
-        Log::info('country');
         $firstProduct = $this->products()->first();
-        Log::info($firstProduct);
         return Attribute::make(
             fn () => $firstProduct?->country_id,
         );
@@ -182,29 +180,28 @@ class Auction extends Model
         // Need to write correct logic
         return true;
     }
+    public function secondLastBid()
+    {
+        return $this->bids()->skip(1) // Skip the last record (first skip)
+        ->take(1) // Take only one record (second skip)
+        ->latest('id')
+        ->first();
+    }
+
     public function bidRaised() : int
     {
         // Need to write correct logic
-        $auction_bid = AuctionBid::where('auction_id',$this->id)->latest('id')->first();
-        Log::info($auction_bid);
+        return $this->bids()->max('value') ?? 0;
 
-        return !empty($auction_bid) ? $auction_bid->value : 0 ;
     }
     public function nextMinBid() : float
     {
         // Need to write correct logic
         $minimum_bid_step = Config('constant.minimum_bid_step');
-        $auction_bid = AuctionBid::where('auction_id',$this->id)->latest('id')->first();
-        if(empty($auction_bid)){
-            $latest_bid = $this->baskets ? $this->baskets->price:4;
-        } else{
-            $latest_bid = $auction_bid->value ?? 4;
-        }
-        Log::info($auction_bid);
-        Log::info('latest bid'.$latest_bid);
-        $bid = $latest_bid + $minimum_bid_step;
-        Log::info('bid'.$bid);
-        return $bid;
+        $max = $this->bids()->max('value') ?? $this->baskets?->price;
+
+        return $max ? $max+$minimum_bid_step:config('constant.bid_initial_step');
+
     }
 
     public function quickBid() : array
@@ -236,10 +233,8 @@ class Auction extends Model
     {
         Log::info("trying to autobid from {" . $automaticBid->wine_user_id . "}");
         $min = $this->nextMinBid();
-        $latestBid = $this->bids()
-            ->where('value', $min)->latest()->first();
+        $latestBid = $this->bids()->latest('id')->first();
 
-        Log::info('min ' . $min);
 
         if ($automaticBid->max_limit >= $min) {
             if (empty($latestBid) || $latestBid->wine_user_id !== $automaticBid->wine_user_id) {
@@ -312,8 +307,11 @@ class Auction extends Model
     }
     public function userLatestBid($user_id = 0)
     {
-        \Log::info('userLatestBid user: ' . $user_id . ' auction: ' .  $this->id);
         return $this->bids()->where('wine_user_id',$user_id)->latest('id')->first();
+    }
+    public function userAutoBid($user_id = 0)
+    {
+        return $this->autoBids()->where('wine_user_id',$user_id)->latest('id')->first();
     }
     public function userAuctionStatus($user_latest_time = 0)
     {
