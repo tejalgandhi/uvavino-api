@@ -68,8 +68,10 @@ return [
         'endpoint' => env('DO_ENDPOINT'),
         'visibility' => 'public',
         'use_path_style_endpoint' => env('DO_USE_PATH_STYLE_ENDPOINT', true),
+        'log' => true, // Enable debug logs
 
-    ],
+
+        ],
 
     ],
 

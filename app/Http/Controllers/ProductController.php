@@ -55,7 +55,7 @@ class ProductController extends Controller
             }
         ];
         $query = Basket::select(BasketResource::selectLst())
-           ->where('is_auction_product',Basket::IS_NOT_AUCTION_PRODUCT)
+            ->where('baskets.is_auction_product',Basket::IS_NOT_AUCTION_PRODUCT)
             ->withCount(['wishlist'=> function($q) use($request)  {
                 $q->where('wine_user_id',$request->user_id);
             } ])
@@ -92,7 +92,6 @@ class ProductController extends Controller
                 }
             }
         }
-        $query->where('baskets.is_auction_product',Basket::IS_NOT_AUCTION_PRODUCT);
 
         $query = match($order_by){
             'ascending' => $query->orderBy('baskets.title', 'asc'),
