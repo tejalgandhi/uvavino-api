@@ -15,6 +15,7 @@ use App\Models\Order;
 use App\Enums\OrderType;
 use App\Models\WineUser;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -52,39 +53,45 @@ class OrderController extends Controller
 
     public function store(OrderRequest $request)
     {
-        $user = $request->user();
-        $cart_items = $request->cart_items;
-        $order_no =generateOrderNo();
-        $order = $user->orders()->create(['address_id'=>$request->address_id,'order_no'=>$order_no]);
-        $cart_id = 0;
-        $available_auctions = $user->available_auctions;
+        $response = DB::transaction(function () use ($request) {
+            $user = $request->user();
+            $cart_items = $request->cart_items;
+            $order_no = generateOrderNo();
+            $order = $user->orders()->create(['address_id' => $request->address_id, 'order_no' => $order_no]);
+            $cart_id = 0;
+            $available_auctions = $user->available_auctions;
 
-        foreach ($cart_items as $cart_item)
-        {
-            $item = $this->getCartDetail($cart_item);
-            $cart_id = $item->cart_id;
-            $total_amount = $item->amount * $item->qty;
-            $order->items()->create([
-                'order_id' => $order->id,
-                'orderable_type' => $item->cartable_type,
-                'orderable_id' => $item->cartable_id,
-                'amount' => $item->amount,
-                'qty' => $item->qty,
-                'total_amount' => $total_amount,
-            ]);
+            foreach ($cart_items as $cart_item) {
+                $item = $this->getCartDetail($cart_item);
+                $cart_id = $item->cart_id;
+                $total_amount = $item->amount * $item->qty;
+                $order->items()->create([
+                    'order_id' => $order->id,
+                    'orderable_type' => $item->cartable_type,
+                    'orderable_id' => $item->cartable_id,
+                    'amount' => $item->amount,
+                    'qty' => $item->qty,
+                    'total_amount' => $total_amount,
+                ]);
 
-            if($item->cartable_type == OrderType::auction_package->className())
-            {
-                  $qty = $item->cartable->qty * $item->qty;
-                  $available_auctions = $available_auctions + $qty;
-                  WineUser::where('id',$user->id)->update(['available_auctions'=>$available_auctions]);
+                if ($item->cartable_type == OrderType::auction_package->className())
+                {
+                    $qty = $item->cartable->qty * $item->qty;
+                    $available_auctions = $available_auctions + $qty;
+                    WineUser::where('id', $user->id)->update(['available_auctions' => $available_auctions]);
+                }
             }
-        }
 
-        CartDetail::where('cart_id',$cart_id)->delete();
-        Cart::where('id',$cart_id)->delete();
+            CartDetail::where('cart_id', $cart_id)->delete();
+            Cart::where('id', $cart_id)->delete();
+            return [
+                'msg' => __('order.placed'),
+                'status' => true,
+                'order' => $order,
+            ];
+        });
+        return response()->json($response, Response::HTTP_OK);
 
-        return (new Success(__('order.placed')))->json(201);
     }
 
     public function getCartDetail($id)
