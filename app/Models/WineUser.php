@@ -99,7 +99,7 @@ class WineUser extends Authenticatable implements ConnectableUser, PaymentUserCo
 
     public function getName()
     {
-        return $this->username;
+        return $this->first_name;
     }
 
     public function wishlist() : HasMany
