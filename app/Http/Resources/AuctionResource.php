@@ -27,7 +27,7 @@ class AuctionResource extends JsonResource
         $user_auction_status = $this->resource->userAuctionStatus($user_latest_time);
 
         return [
-            'id' => $this->id,
+            'id' => $this->resource->id,
             'user_latest_bid' => !empty($user_latest_time)?$user_latest_time->value:'',
             'user_automatic_bid' => !empty($user_auto_bid)?$user_auto_bid->max_limit:'',
             'user_auction_status' => $user_auction_status,

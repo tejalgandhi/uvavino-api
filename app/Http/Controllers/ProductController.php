@@ -9,6 +9,7 @@ use App\Http\Resources\ProductResource;
 use App\Http\Resources\Success;
 use App\Models\Basket;
 use App\Models\Product;
+use App\Services\Attribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Enums\BottleSize;
@@ -197,6 +198,20 @@ class ProductController extends Controller
         $product = Basket::getBestSellersProduct();
         $collections =  BasketResource::collection($product)->additional(['meta' => []]);
         return $collections;
+    }
+
+
+    public function attribute_list(Request $request, Attribute $attribute)
+    {
+        $conf = config('product_attributes');
+        if (!empty($conf)) {
+            foreach ($conf as $key => $data) {
+                $conf[$key] = is_array($data) ? $data : app($data)->getData();
+            }
+        }
+
+        return $conf;
+
     }
 
 }

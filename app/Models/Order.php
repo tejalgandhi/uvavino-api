@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\ShippingMethod;
+
 
 /**
  * App\Models\Order
@@ -20,6 +22,7 @@ class Order extends Model
     protected $guarded=['id'];
     protected $casts = [
         'payment_response' => 'array',
+        'shipping_method' => ShippingMethod::class,
     ];
 
     // Payment methods
@@ -40,6 +43,10 @@ class Order extends Model
         return $this->belongsTo(WineUser::class);
     }
 
+    public function seller()
+    {
+        return $this->belongsTo(WineUser::class,'seller_id','id');
+    }
     public function address()
     {
         return $this->belongsTo(UserAddress::class);

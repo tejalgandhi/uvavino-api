@@ -74,7 +74,7 @@ Route::get('/pages', [StaticPageController::class, 'index']);
 Route::get('/pages/{slug}', [StaticPageController::class, 'show']);
 
 
-Route::get('/product-attribute/{attribute_name}', [ProductAttributeController::class, 'attribute_list']);
+//Route::get('/product-attribute/{attribute_name}', [ProductAttributeController::class, 'attribute_list']);
 Route::post('/product-attribute/wine-variety', [ProductAttributeController::class, 'storeWineVarietyAttribute']);
 Route::post('/product-attribute/wine-tag', [ProductAttributeController::class, 'storeWineTagsAttribute']);
 
@@ -83,6 +83,8 @@ Route::post('/product-attribute/wine-tag', [ProductAttributeController::class, '
 Route::get('/product', [ProductController::class, 'index'])->withoutMiddleware('throttle:api');
 Route::get('/product/{slug}', [ProductController::class, 'show']);
 Route::get('/product/{slug}/recommended', [ProductController::class, 'recommended']);
+Route::get('/product-attribute', [ProductController::class, 'attribute_list']);
+
 
 
 //home page recommended product api
