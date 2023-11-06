@@ -15,13 +15,15 @@ class OrderResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => $this->resource->id,
 //            'wine_user' => new WineUserResource($this->wine_user),
-            'wine_user' => $this->wine_user_id,
-            'order_no' => $this->order_no,
-            'request_date' => $this->created_at,
-            'shipping_address' => $this->address ? new UserAddressResource($this->address):'',
-            'items' => OrderDetailResource::collection($this->items)
+            'wine_user' => $this->resource->wine_user_id,
+            'seller' => $this->resource->seller_id ? $this->resource->seller :'',
+            'request_no' => $this->resource->order_no,
+            'request_date' => $this->resource->created_at,
+            'shipping_method' => $this->resource->shipping_method->label(),
+            'shipping_address' => $this->resource->address ? new UserAddressResource($this->resource->address):'',
+            'items' => OrderDetailResource::collection($this->resource->items)
         ];
     }
 }
