@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -61,6 +63,25 @@ class Basket extends Model
             $model->created_by = Auth::user()->id ?? NULL;
         });
     }
+    public function countryId() : Attribute
+    {
+        $firstProduct = $this->products()->first();
+        return Attribute::make(
+            fn () => $firstProduct?->country_id,
+        );
+    }
+    public function countryName() : Attribute
+    {
+        return Attribute::make(
+            fn () => $this->products()->first()?->country?->name,
+        );
+    }
+    public function countryIsoCode() : Attribute
+    {
+        return Attribute::make(
+            fn () => $this->products()->first()?->country?->iso_alpha_2,
+        );
+    }
     public static function getBestSellersProduct()
     {
         $query = self::withCount(['wishlist'=> function($q)   {
@@ -71,6 +92,10 @@ class Basket extends Model
     public function wishlist() :HasMany
     {
         return $this->hasMany(Wishlist::class,'wishlistable_id','id')->where('wishlistable_type',Basket::class);
+    }
+    public function wine_user(): BelongsTo
+    {
+        return $this->belongsTo(WineUser::class,'created_by','id');
     }
 //    public function reviews()
 //    {

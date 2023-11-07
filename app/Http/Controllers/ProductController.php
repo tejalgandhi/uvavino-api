@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BasketRequest;
+use App\Http\Resources\BasketDetailResource;
 use App\Http\Resources\BasketResource;
+use App\Http\Resources\BasketSingleProductDetailResource;
 use App\Http\Resources\Fail;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\Success;
@@ -30,16 +32,16 @@ class ProductController extends Controller
         $limit = $request->limit ?? config('constant.number_of_items_per_page') ;
         $filter_attrs = [
             'baskets' => [
-                'title' => 'like',
                 'slug' => 'like',
-                'created_by' => 'in',
                 'products' => [
                     'wine_name' => 'like',
                     'wine_type_id' => 'in',
                     'country_id' => 'in',
                     'region_id' => 'in',
                     'producer_id' => 'in',
-//                    'wine_tag' => 'json_decode_in',
+                    'wine_tag' => 'string',
+                    'bottle_size' => 'in',
+                    'year' => 'in',
                 ]
             ],
         ];
@@ -47,6 +49,17 @@ class ProductController extends Controller
         $relationshipLogics = [
             'in' => function ($q, $a, $v) {
                 return $q->whereIn($a, is_array($v) ? $v : [$v]);
+            },
+            'string' => function ($q, $a, $v) {
+                if(is_array($v)) {
+                    foreach ($v as $i) {
+                        $query = $q->where($a, 'LIKE', '%' . $i . '%');
+                    }
+                    return $query;
+                }
+                else{
+                    return $q->where($a, 'LIKE', '%' . $v . '%');
+                }
             },
 //            'json_decode_in' => function ($q, $a, $v) {
 //                return $q->whereRaw('FIND_IN_SET('.$v.','. $a.')');
@@ -113,19 +126,40 @@ class ProductController extends Controller
      * @param $slug
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|object|null
      */
-    public function show($slug)
+    public function show(Request $request, $id)
     {
-        $product = Basket::query()
+        $request->merge(['order_by' => $request->order_by]);
+        $user_id = !empty($request->wine_user_id)?$request->wine_user_id:$request->user_id;
+        $request->merge(['user_id' => $user_id]);
+        $product =  Basket::query()
             ->with('products')
             ->withCount(['wishlist'=> function($q)   {
                 $q->where('wine_user_id',request()->user_id);
             } ])
-            ->where('baskets.slug', $slug)
+            ->where('id', $id)
             ->first();
         if (!$product) {
             return (new Fail(__('Product does not exist')))->json(404);
         }
-        return $product;
+        return new BasketDetailResource($product);
+    }
+
+    public function showSingleProduct(Request $request, $basket_id, Product $product)
+    {
+        $user_id = !empty($request->wine_user_id)?$request->wine_user_id:$request->user_id;
+        $request->merge(['product' => $product]);
+        $request->merge(['user_id' => $user_id]);
+        $product =  Basket::query()
+            ->with('products')
+            ->withCount(['wishlist'=> function($q)   {
+                $q->where('wine_user_id',request()->user_id);
+            } ])
+            ->where('id', $basket_id)
+            ->first();
+        if (!$product) {
+            return (new Fail(__('Product does not exist')))->json(404);
+        }
+        return new BasketSingleProductDetailResource($product);
     }
 
     /**

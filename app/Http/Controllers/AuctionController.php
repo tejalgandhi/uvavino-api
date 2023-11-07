@@ -63,7 +63,7 @@ class AuctionController extends Controller
                         'country_id' => 'in',
                         'region_id' => 'in',
                         'producer_id' => 'in',
-                        'wine_tag_id' => 'in',
+                        'wine_tag' => 'string',
                         'bottle_size' => 'in',
                         'year' => 'in',
                      ]
@@ -82,7 +82,18 @@ class AuctionController extends Controller
             },
             'less' => function ($q, $a, $v) {
                 return $q->where($a, '<', $v);
-            }
+            },
+            'string' => function ($q, $a, $v) {
+                if(is_array($v)) {
+                    foreach ($v as $i) {
+                        $query = $q->where($a, 'LIKE', '%' . $i . '%');
+                    }
+                    return $query;
+                }
+                else{
+                    return $q->where($a, 'LIKE', '%' . $v . '%');
+                }
+            },
         ];
         $query = Auction::publishAuctions()->withCount(['bids', 'wishlist' => function ($q) use ($user_id) {
                 $q->where('wine_user_id', $user_id);

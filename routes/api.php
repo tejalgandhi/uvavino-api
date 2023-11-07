@@ -80,8 +80,9 @@ Route::post('/product-attribute/wine-tag', [ProductAttributeController::class, '
 
 
 //product
-Route::get('/product', [ProductController::class, 'index'])->withoutMiddleware('throttle:api');
-Route::get('/product/{slug}', [ProductController::class, 'show']);
+Route::get('/basket', [ProductController::class, 'index'])->withoutMiddleware('throttle:api');
+Route::get('/basket/{id}', [ProductController::class, 'show']);
+Route::get('/basket/{basket_id}/product/{product}', [ProductController::class, 'showSingleProduct']);
 Route::get('/product/{slug}/recommended', [ProductController::class, 'recommended']);
 Route::get('/product-attribute', [ProductController::class, 'attribute_list']);
 
